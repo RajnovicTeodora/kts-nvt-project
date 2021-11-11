@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class Bartender extends Employee{
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bartender", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
     public List<OrderedItem> getOrderedItems() {

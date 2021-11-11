@@ -16,8 +16,7 @@ public class RestaurantTable {
     @Column(name = "positionY", nullable=false)
     private int positionY;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @Column( nullable=false)
+    @ManyToOne(fetch=FetchType.EAGER, optional = true)
     private Waiter waiter;
 
     public Long getId() {

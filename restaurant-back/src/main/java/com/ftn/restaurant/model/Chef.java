@@ -6,7 +6,7 @@ import java.util.List;
 @Entity
 public class Chef extends Employee {
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "chef", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
     public List<OrderedItem> getOrderedItems() {

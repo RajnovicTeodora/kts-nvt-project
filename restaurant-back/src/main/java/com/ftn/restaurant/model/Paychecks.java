@@ -20,7 +20,7 @@ public class Paychecks {
     private LocalDate dateTo;
 
     @Column(name = "paycheck", nullable=false)
-    private double paychack;
+    private double paycheck;
 
     public Long getId() {
         return id;
@@ -46,11 +46,11 @@ public class Paychecks {
         this.dateTo = dateTo;
     }
 
-    public double getPaychack() {
-        return paychack;
+    public double getPaycheck() {
+        return paycheck;
     }
 
-    public void setPaychack(double paychack) {
-        this.paychack = paychack;
+    public void setPaycheck(double paycheck) {
+        this.paycheck = paycheck;
     }
 }

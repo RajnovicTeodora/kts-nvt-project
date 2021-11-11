@@ -25,7 +25,7 @@ public class OrderedItem {
     @OneToOne(cascade = CascadeType.ALL)
     private MenuItem manuItem;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ordered_item", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
     public MenuItem getManuItem() {

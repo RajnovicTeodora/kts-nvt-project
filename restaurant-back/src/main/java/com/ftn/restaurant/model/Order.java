@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "restaurant_order")
 public class Order {
 
     @Id
@@ -30,7 +30,7 @@ public class Order {
     @Column(name = "time", nullable=false)
     private LocalTime time;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
     public List<OrderedItem> getOrderedItems() {

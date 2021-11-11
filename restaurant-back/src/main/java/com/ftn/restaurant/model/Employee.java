@@ -7,19 +7,19 @@ import java.util.List;
 @Table(name = "employee")
 public class Employee extends User {
 
-    @Column(name = "name", nullable=false)
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "surname", nullable=false)
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "image", nullable=false)
+    @Column(name = "image")
     private String image;
 
-    @Column(name = "telephone", nullable=false)
+    @Column(name = "telephone")
     private String telephone;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
 
     public List<Paychecks> getPaychecksList() {

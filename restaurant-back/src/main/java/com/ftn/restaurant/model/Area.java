@@ -14,7 +14,7 @@ public class Area {
     @Column(name = "name", nullable=false)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "area", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<RestaurantTable> tables;
 
     public Long getId() {

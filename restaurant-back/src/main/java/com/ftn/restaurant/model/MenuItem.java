@@ -25,7 +25,7 @@ public abstract class MenuItem {
     @Column(name="id", unique=true, nullable=false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu_item", cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<MenuItemPrice> priceList;
 
     public void setId(Long id) {
