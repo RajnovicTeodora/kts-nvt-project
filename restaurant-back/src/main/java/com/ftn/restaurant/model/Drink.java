@@ -5,17 +5,27 @@ import com.ftn.restaurant.model.enums.DrinkType;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
-public class Drink extends MenuItem{
+public class Drink extends MenuItem {
 
-    @Column(name = "drink_type", nullable=false)
+    @Column(name = "drink_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private DrinkType drinkType;
 
-    @Column(name = "container_type", nullable=false)
+    @Column(name = "container_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ContainerType containerType;
+
+    public Drink() {
+    }
+
+    public Drink(String name, String image, boolean approved, boolean deleted, List<MenuItemPrice> priceList, DrinkType drinkType, ContainerType containerType) {
+        super(name, image, approved, deleted, priceList);
+        this.drinkType = drinkType;
+        this.containerType = containerType;
+    }
 
     public DrinkType getDrinkType() {
         return drinkType;
