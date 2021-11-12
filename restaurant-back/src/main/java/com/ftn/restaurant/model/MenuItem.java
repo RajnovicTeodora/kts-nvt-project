@@ -8,28 +8,35 @@ import java.util.List;
 @Table(name = "menu_item")
 public abstract class MenuItem {
 
-    @Column(name = "name", nullable=false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "image", nullable=false)
+    @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name = "approved", nullable=false)
+    @Column(name = "approved", nullable = false)
     private boolean approved;
 
-    @Column(name = "deleted", nullable=false)
+    @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MenuItemPrice> priceList;
 
-    public void setId(Long id) {
-        this.id = id;
+    public MenuItem() {
+    }
+
+    public MenuItem(String name, String image, boolean approved, boolean deleted, List<MenuItemPrice> priceList) {
+        this.name = name;
+        this.image = image;
+        this.approved = approved;
+        this.deleted = deleted;
+        this.priceList = priceList;
     }
 
     public List<MenuItemPrice> getPriceList() {
