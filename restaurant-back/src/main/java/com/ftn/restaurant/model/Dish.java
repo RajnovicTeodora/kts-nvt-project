@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 public class Dish extends MenuItem{
 
-    @Column(name = "dish_type", nullable=false)
+    @Column(name = "dish_type")
     @Enumerated(EnumType.STRING)
     private DishType dishType;
 
