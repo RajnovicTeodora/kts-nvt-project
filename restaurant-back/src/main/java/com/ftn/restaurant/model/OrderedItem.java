@@ -28,6 +28,17 @@ public class OrderedItem {
     @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Order order;
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
     public MenuItem getManuItem() {
         return manuItem;
     }
