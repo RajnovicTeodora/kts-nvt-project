@@ -3,7 +3,7 @@ package com.ftn.restaurant.dto;
 import com.ftn.restaurant.model.MenuItem;
 
 public class MenuItemDTO {
-
+    private Long id;
     private String name;
     private String image;
 
@@ -11,13 +11,23 @@ public class MenuItemDTO {
     }
 
     public MenuItemDTO(MenuItem menuItem) {
+        this.id = menuItem.getId();
         this.name = menuItem.getName();
         this.image = menuItem.getImage();
     }
 
-    public MenuItemDTO(String name, String image) {
+    public MenuItemDTO(Long id, String name, String image) {
+        this.id = id;
         this.name = name;
         this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
