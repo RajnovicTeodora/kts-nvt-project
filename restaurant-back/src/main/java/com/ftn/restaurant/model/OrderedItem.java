@@ -29,6 +29,9 @@ public class OrderedItem {
     @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
+    @Column(name = "deleted")
+    private boolean deleted;
+
     /*@ManyToOne(fetch = FetchType.EAGER)
 	private Order order;*/
 
@@ -80,5 +83,13 @@ public class OrderedItem {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

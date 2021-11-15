@@ -14,6 +14,7 @@ public class OrderItemDTO {
     private Long id;
     private OrderedItemStatus status;
     private int priority;
+    private boolean deleted;
     private MenuItemDTO menuItem;
     private List<IngredientDTO> activeIngredients;
 
@@ -24,6 +25,7 @@ public class OrderItemDTO {
         this.id = oi.getId();
         this.status = oi.getStatus();
         this.priority = oi.getPriority();
+        this.deleted = oi.isDeleted();
         this.menuItem = new MenuItemDTO(oi.getMenuItem());
         fillActiveIngredients(oi.getActiveIngredients());
     }
@@ -73,5 +75,13 @@ public class OrderItemDTO {
 
     public void setActiveIngredients(List<IngredientDTO> activeIngredients) {
         this.activeIngredients = activeIngredients;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -16,13 +16,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping(consumes = "application/json")
+    @PostMapping(value = "/createOrder", consumes = "application/json")
     public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO orderDTO) {
         Order order = orderService.createOrder(orderDTO);
         return new ResponseEntity<>(new OrderDTO(order), HttpStatus.CREATED);
     }
 
-    @PutMapping(consumes = "application/json")
+    @PutMapping(value = "/updateOrder", consumes = "application/json")
     public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO orderDTO) {
 
         Order order = orderService.findOne(orderDTO.getId());
@@ -33,5 +33,35 @@ public class OrderController {
             return new ResponseEntity<>(new OrderDTO(orderService.updateOrder(orderDTO)), HttpStatus.OK);
 
     }
+
+    @PutMapping(value = "/pay", consumes = "application/json")
+    public ResponseEntity<Void> payOrder(@RequestBody OrderDTO orderDTO) {
+
+        Order order = orderService.findOne(orderDTO.getId());
+        if (order == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        else
+            order.setPaid(true);
+            orderService.save(order);
+            return new ResponseEntity<>( HttpStatus.OK);
+
+    }
+
+    @PutMapping(value = "/setDeleted", consumes = "application/json")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+
+        Order order = orderService.findOne(id);
+
+        if (order != null) {
+            order.setDeleted(true);
+            orderService.save(order);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 }

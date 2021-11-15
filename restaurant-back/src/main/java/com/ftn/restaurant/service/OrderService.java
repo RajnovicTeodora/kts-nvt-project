@@ -11,6 +11,7 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class OrderService {
             MenuItem menuItem = menuItemService.findOne(orderItemDto.getMenuItem().getId());
             orderItem.setMenuItem(menuItem);
             orderItem.setPriority(orderItemDto.getPriority());
-            orderItem.setStatus(orderItemDto.getStatus());
+            orderItem.setStatus(OrderedItemStatus.ORDERED);
             for (IngredientDTO acIngr: orderItemDto.getActiveIngredients()) {
                 Ingredient i = ingredientService.findOne(acIngr.getId());
                 orderItem.addActiveIngredients(i);
@@ -82,7 +83,7 @@ public class OrderService {
 
         for (OrderItemDTO orderItemDTO : ordDTO.getOrderItems()) {
             OrderedItem orderItem = orderedItemService.findOne(orderItemDTO.getId());
-            if(orderItemDTO.getStatus() == OrderedItemStatus.ORDERED) {
+            if(orderItemDTO.getStatus() == OrderedItemStatus.ORDERED && !orderItemDTO.isDeleted()) {
                 orderItem.setActiveIngredients(new ArrayList<>());
                 for(IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()){
                     Ingredient i = ingredientService.findOne(ingredientDTO.getId());
@@ -95,5 +96,6 @@ public class OrderService {
         order = findOneWithOrderItems(ordDTO.getId());
         return order;
     }
+
 
 }
