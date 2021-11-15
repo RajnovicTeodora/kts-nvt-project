@@ -10,25 +10,32 @@ public class Paychecks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "date_from", nullable=false)
+    @Column(name = "date_from", nullable = false)
     private LocalDate dateFrom;
 
-    @Column(name = "date_to", nullable=false)
+    @Column(name = "date_to", nullable = true)
     private LocalDate dateTo;
 
-    @Column(name = "paycheck", nullable=false)
+    @Column(name = "paycheck", nullable = false)
     private double paycheck;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
 
-    public Paychecks(LocalDate dateFrom, LocalDate dateTo, double paycheck) {
+    public Paychecks(LocalDate dateFrom, LocalDate dateTo, double paycheck, Employee employee) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.paycheck = paycheck;
+        this.employee = employee;
     }
 
+    public Paychecks() {
+
+    }
 
     public Long getId() {
         return id;
@@ -60,5 +67,13 @@ public class Paychecks {
 
     public void setPaycheck(double paycheck) {
         this.paycheck = paycheck;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
