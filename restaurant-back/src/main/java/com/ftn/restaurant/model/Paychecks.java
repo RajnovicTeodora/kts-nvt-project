@@ -22,6 +22,14 @@ public class Paychecks {
     @Column(name = "paycheck", nullable=false)
     private double paycheck;
 
+
+    public Paychecks(LocalDate dateFrom, LocalDate dateTo, double paycheck) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.paycheck = paycheck;
+    }
+
+
     public Long getId() {
         return id;
     }

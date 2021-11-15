@@ -1,6 +1,11 @@
 package com.ftn.restaurant.model;
 
 import javax.persistence.*;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,6 +25,18 @@ public class Employee extends User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
+
+
+    public Employee() {
+    }
+
+    public Employee(String name, String surname, String image, String telephone, List<Paychecks> paychecksList) {
+        this.name = name;
+        this.surname = surname;
+        this.image = image;
+        this.telephone = telephone;
+        this.paychecksList = paychecksList;
+    }
 
     public List<Paychecks> getPaychecksList() {
         return paychecksList;
@@ -59,5 +76,13 @@ public class Employee extends User {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Employee(EmployeeDTO employeeDTO){
+        super(employeeDTO.getUsername(), employeeDTO.getPassword(), false);
+        this.name = employeeDTO.getName();
+        this.surname = employeeDTO.getSurname();
+        this.image = employeeDTO.getImage();
+        this.telephone = employeeDTO.getTelephone();
     }
 }

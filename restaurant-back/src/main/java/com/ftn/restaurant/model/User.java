@@ -30,6 +30,13 @@ public abstract class User {
 
     public User() { }
 
+    public User(String username, String password, boolean deleted) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.deleted = deleted;
+    }
+
     public User(Long id, String username, String password, boolean deleted) {
         super();
         this.id = id;
