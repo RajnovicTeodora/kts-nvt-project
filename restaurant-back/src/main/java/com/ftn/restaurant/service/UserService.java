@@ -37,7 +37,7 @@ public class UserService {
         }
         Employee newEmployee = new Employee(employeeDTO);
         ArrayList<Paychecks> paycheckList = new ArrayList<Paychecks>();
-        paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 0), null, 100));
+        paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 0), null, 100, newEmployee));
         newEmployee.setPaychecksList(paycheckList);
 
         employeeRepository.saveAndFlush(newEmployee);
