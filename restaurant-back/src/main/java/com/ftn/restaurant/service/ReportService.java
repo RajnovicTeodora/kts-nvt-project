@@ -1,10 +1,7 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.controller.ReportController;
-import com.ftn.restaurant.dto.reports.AnnualIncomeReportDTO;
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
-import com.ftn.restaurant.dto.reports.MonthlyIncomeReportDTO;
-import com.ftn.restaurant.dto.reports.QuarterlyIncomeReportDTO;
 import com.ftn.restaurant.model.Order;
 
 import com.ftn.restaurant.repository.OrderRepository;
@@ -51,7 +48,7 @@ public class ReportService {
         if (type == 0) {
             // From start date to end date calculate monthly income
             for (LocalDate date = from; to.plusDays(1).isAfter(date); date = date.plusMonths(1)) {
-                MonthlyIncomeReportDTO report = new MonthlyIncomeReportDTO(0, 0, YearMonth.of(date.getYear(), date.getMonthValue()));
+                IncomeReportDTO report = new IncomeReportDTO(0, 0, YearMonth.of(date.getYear(), date.getMonthValue()).toString());
 
                 report.setEarnings(orderRepository.sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(1).minusDays(1)));
                 report.setTotalSoldItems(orderedItemRepository.sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusMonths(1).minusDays(1)));
@@ -60,17 +57,17 @@ public class ReportService {
         } else if (type == 1) {
             long q = (from.getMonthValue() / 3);
             for (LocalDate date = from.with(IsoFields.QUARTER_OF_YEAR, q).with(IsoFields.DAY_OF_QUARTER, 1L); to.plusDays(1).isAfter(date); date = date.plusMonths(3)) {
-                QuarterlyIncomeReportDTO report = new QuarterlyIncomeReportDTO(0, 0, "Q" + date.get(IsoFields.QUARTER_OF_YEAR) + " - " + date.getYear());
+                IncomeReportDTO report = new IncomeReportDTO(0, 0, "Q" + date.get(IsoFields.QUARTER_OF_YEAR) + " - " + date.getYear());
 
                 report.setEarnings(orderRepository
-                        .sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1l).minusDays(1)));
+                        .sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1L).minusDays(1)));
                 report.setTotalSoldItems(orderedItemRepository
-                        .sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1l).minusDays(1)));
+                        .sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1L).minusDays(1)));
                 incomeAndSold.add(report);
             }
         } else {
             for (LocalDate date = from; to.plusDays(1).isAfter(date); date = date.plusYears(1)) {
-                AnnualIncomeReportDTO report = new AnnualIncomeReportDTO(0, 0, date.getYear());
+                IncomeReportDTO report = new IncomeReportDTO(0, 0, Integer.toString(date.getYear()));
 
                 report.setEarnings(orderRepository.sumTotalPriceByIsPaidAndDateBetween(date, date.plusYears(1).minusDays(1)));
                 report.setTotalSoldItems(orderedItemRepository.sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusYears(1).minusDays(1)));

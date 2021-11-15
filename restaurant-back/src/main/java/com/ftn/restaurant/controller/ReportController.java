@@ -1,8 +1,6 @@
 package com.ftn.restaurant.controller;
 
-import com.ftn.restaurant.dto.reports.AnnualIncomeReportDTO;
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
-import com.ftn.restaurant.dto.reports.QuarterlyIncomeReportDTO;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

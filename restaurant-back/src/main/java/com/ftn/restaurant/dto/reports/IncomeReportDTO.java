@@ -3,13 +3,15 @@ package com.ftn.restaurant.dto.reports;
 public class IncomeReportDTO {
     private double earnings;
     private int totalSoldItems;
+    private String period;
 
     public IncomeReportDTO() {
     }
 
-    public IncomeReportDTO(double earnings, int totalSoldItems) {
+    public IncomeReportDTO(double earnings, int totalSoldItems, String period) {
         this.earnings = earnings;
         this.totalSoldItems = totalSoldItems;
+        this.period = period;
     }
 
     public double getEarnings() {
@@ -26,5 +28,13 @@ public class IncomeReportDTO {
 
     public void setTotalSoldItems(int totalSoldItems) {
         this.totalSoldItems = totalSoldItems;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
     }
 }
