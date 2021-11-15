@@ -1,6 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
+import com.ftn.restaurant.dto.reports.PreparationCostsReportDAO;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,5 +50,32 @@ public class ReportController {
     public List<IncomeReportDTO> incomeAndSoldAnnualReport() {
         LOG.info("Monthly income and sold items report...");
         return reportService.getIncomeAndSoldItemReport(2);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/monthly/preparationCosts")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PreparationCostsReportDAO> preparationCostsMonthlyReport() {
+        LOG.info("Monthly preparation costs report...");
+        return reportService.getPreparationsCostReport(0);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/quarterly/preparationCosts")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PreparationCostsReportDAO> preparationCostsQuarterlyReport() {
+        LOG.info("Quarterly preparation costs report...");
+        return reportService.getPreparationsCostReport(1);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/annual/preparationCosts")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PreparationCostsReportDAO> preparationCostsAnnualReport() {
+        LOG.info("Annual preparation costs report...");
+        return reportService.getPreparationsCostReport(2);
     }
 }
