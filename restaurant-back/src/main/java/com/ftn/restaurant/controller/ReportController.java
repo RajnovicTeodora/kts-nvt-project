@@ -1,6 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
+import com.ftn.restaurant.dto.reports.PaychecksReportDTO;
 import com.ftn.restaurant.dto.reports.PreparationCostsReportDAO;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
@@ -77,5 +78,32 @@ public class ReportController {
     public List<PreparationCostsReportDAO> preparationCostsAnnualReport() {
         LOG.info("Annual preparation costs report...");
         return reportService.getPreparationsCostReport(2);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/monthly/paychecks")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PaychecksReportDTO> paychecksMonthlyReport() {
+        LOG.info("Monthly paychecks report...");
+        return reportService.getPaycheckReport(0);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/quarterly/paychecks")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PaychecksReportDTO> paychecksQuarterlyReport() {
+        LOG.info("Quarterly paychecks report...");
+        return reportService.getPaycheckReport(1);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/annual/paychecks")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<PaychecksReportDTO> paychecksAnnualReport() {
+        LOG.info("Annual paychecks report...");
+        return reportService.getPaycheckReport(2);
     }
 }

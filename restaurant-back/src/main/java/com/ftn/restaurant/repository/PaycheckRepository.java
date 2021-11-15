@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
@@ -14,4 +15,11 @@ public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
     Optional<Paychecks> findByEmployeeUsernameAndEmployeeDeletedAndDateToIsNull(
             @Param("username") String username);
 
+    @Query("SELECT COALESCE(SUM(p.paycheck), 0) FROM Paychecks p WHERE " +
+            "(p.dateFrom <= :from AND p.dateTo >= :to) OR (p.dateFrom <= :from AND p.dateTo IS NULL)")
+    double sumTotalPaychecksAndDateBetween(@Param("from") LocalDate from, @Param("to") LocalDate to);
+
+    Optional<Paychecks> findTopByOrderByDateFromAsc();
+
+    Optional<Paychecks> findTopByOrderByDateFromDesc();
 }
