@@ -1,6 +1,8 @@
 package com.ftn.restaurant.controller;
 
-import com.ftn.restaurant.dto.reports.MonthlyIncomeReportDTO;
+import com.ftn.restaurant.dto.reports.AnnualIncomeReportDTO;
+import com.ftn.restaurant.dto.reports.IncomeReportDTO;
+import com.ftn.restaurant.dto.reports.QuarterlyIncomeReportDTO;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +30,26 @@ public class ReportController {
     @GetMapping(path = "/monthly/incomeAndSold")
     //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
     @ResponseStatus(HttpStatus.OK)
-    public List<MonthlyIncomeReportDTO> incomeAndSoldMonthlyReport() {
+    public List<IncomeReportDTO> incomeAndSoldMonthlyReport() {
         LOG.info("Monthly income and sold items report...");
-        return reportService.getMonthlyIncomeAndSoldItemReport();
+        return reportService.getIncomeAndSoldItemReport(0);
     }
 
+    @ResponseBody
+    @GetMapping(path = "/quarterly/incomeAndSold")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<IncomeReportDTO> incomeAndSoldQuarterlyReport() {
+        LOG.info("Monthly income and sold items report...");
+        return reportService.getIncomeAndSoldItemReport(1);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/annual/incomeAndSold")
+    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @ResponseStatus(HttpStatus.OK)
+    public List<IncomeReportDTO> incomeAndSoldAnnualReport() {
+        LOG.info("Monthly income and sold items report...");
+        return reportService.getIncomeAndSoldItemReport(2);
+    }
 }
