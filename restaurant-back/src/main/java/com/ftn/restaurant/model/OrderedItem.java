@@ -37,9 +37,6 @@ public class OrderedItem {
     private List<Ingredient> activeIngredients;
 
     @ManyToOne(fetch=FetchType.EAGER)
-    private Order order;
-
-    @ManyToOne(fetch=FetchType.EAGER)
     private Employee employee;
 
     public Employee getEmployee() {
@@ -48,14 +45,6 @@ public class OrderedItem {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     public MenuItem getManuItem() {
