@@ -34,6 +34,9 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
+    @ManyToOne(fetch=FetchType.EAGER, optional = true)
+    private Waiter waiter;
+    
     @Column(name = "deleted")
     private boolean deleted;
 
@@ -46,9 +49,17 @@ public class Order {
             this.orderedItems.add(orderItem);
         }
     }
-
+    
     public List<OrderedItem> getOrderedItems() {
         return orderedItems;
+    }
+
+    public Waiter getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(Waiter waiter) {
+        this.waiter = waiter;
     }
 
     public void setOrderedItems(List<OrderedItem> orderedItems) {
