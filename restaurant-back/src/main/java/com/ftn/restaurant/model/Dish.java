@@ -5,6 +5,7 @@ import com.ftn.restaurant.model.enums.DishType;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "dish")
 public class Dish extends MenuItem{
 
     @Column(name = "dish_type")
