@@ -25,6 +25,7 @@ public class Notification {
         this.text = message;
         this.isActive = true;
     }
+    public Notification(){}
 
     public Long getId() {
         return id;

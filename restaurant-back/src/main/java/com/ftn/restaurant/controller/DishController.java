@@ -1,9 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.DishDTO;
-import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDishDTO;
-import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.service.DishService;
 import com.ftn.restaurant.service.OrderedItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ public class DishController {
     @ResponseBody
     @PostMapping(path = "/addDish")
     @ResponseStatus(HttpStatus.CREATED)
-    public DishDTO addDrink(@RequestBody NewDishDTO dishDTO){
+    public DishDTO addDish(@RequestBody NewDishDTO dishDTO){
         return new DishDTO(dishService.addDish(dishDTO));
     }
 }

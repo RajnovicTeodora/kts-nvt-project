@@ -1,9 +1,8 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.DrinkDTO;
-import com.ftn.restaurant.model.Drink;
-import com.ftn.restaurant.model.Notification;
-import com.ftn.restaurant.model.OrderedItem;
+import com.ftn.restaurant.model.*;
+import com.ftn.restaurant.model.enums.DishType;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.repository.DrinkRepository;
 import com.ftn.restaurant.repository.OrderedItemRepository;
@@ -37,7 +36,7 @@ public class OrderedItemService {
         return "Order doesn't exists";
     }
 
-    public String finishOrderedItem(long id) { //todo na neki nacin u isto vreme obavestiti i konobara i onog ko salje poruku da je posla poruku
+    public String finishOrderedItem(long id) {
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
 
         if (item.isPresent()){

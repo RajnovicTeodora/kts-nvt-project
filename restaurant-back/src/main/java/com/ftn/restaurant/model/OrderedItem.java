@@ -31,6 +31,17 @@ public class OrderedItem {
     @ManyToOne(fetch=FetchType.EAGER)
     private Order order;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Employee employee;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
     public Order getOrder() {
         return order;
     }

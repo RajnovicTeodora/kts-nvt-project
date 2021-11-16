@@ -6,6 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "menu_item")
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class MenuItem {
 
     @Column(name = "name", nullable = false)
