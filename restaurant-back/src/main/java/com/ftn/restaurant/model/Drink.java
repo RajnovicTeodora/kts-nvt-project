@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("drink")
 public class Drink extends MenuItem {
 
     @Column(name = "drink_type", nullable = false)
