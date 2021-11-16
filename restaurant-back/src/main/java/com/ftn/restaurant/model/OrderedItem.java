@@ -12,20 +12,28 @@ public class OrderedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "status", nullable=false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderedItemStatus status;
 
-    @Column(name = "priority", nullable=false)
+    @Column(name = "priority", nullable = false)
     private int priority;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "menu_item_id", nullable = false)
     private MenuItem manuItem;
 
-    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
     @ManyToOne(fetch=FetchType.EAGER)
@@ -88,5 +96,21 @@ public class OrderedItem {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }
