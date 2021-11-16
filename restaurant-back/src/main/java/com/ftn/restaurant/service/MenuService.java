@@ -1,10 +1,18 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
-import com.ftn.restaurant.exception.ForbiddenException;;
+import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.MenuItemNotFoundException;
+import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.MenuItemPrice;
-
+import com.ftn.restaurant.model.enums.DishType;
+import com.ftn.restaurant.model.enums.DrinkType;
+import com.ftn.restaurant.repository.DishRepository;
+import com.ftn.restaurant.repository.DrinkRepository;
 import com.ftn.restaurant.repository.MenuItemPriceRepository;
+import com.ftn.restaurant.repository.MenuItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +31,15 @@ public class MenuService {
 
         this.menuItemPriceRepository = menuItemPriceRepository;
     }
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
+
+    @Autowired
+    private DrinkRepository drinkRepository;
+
+    @Autowired
+    private DishRepository dishRepository;
 
     //Sets active menu items and returns all items
     public List<MenuItemPrice> defineActiveMenuItem(SelectedMenuItemsDTO selectedItems) {
@@ -60,4 +77,53 @@ public class MenuService {
         return menuItems;
     }
 
+    public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
+    // jedna funkcija i za search i za filter, prima string name koje korisnik unosi za pretragu (ili "" ako ne unese nista)
+    // i prima grupu koja je trenutno aktivna, "" ako pretrazuje i hranu i pica, "dish"/"drink" ako pretrazuje sva jela/pica
+    // ili string oblik enuma tipa jela tj pica 
+    // metoda vraca listu svih artikala iz unete grupe koja sadrze name u nazivu, ili praznu listu ako ni jedan artikl ne zadovoljava pretragu        
+        List<MenuItem> menuItems = new ArrayList<MenuItem>(); //glavna lista u koju dobavljamo rezultate pretrage
+
+        if (group.equalsIgnoreCase("")){
+            menuItems = menuItemRepository.findByName(name);
+            return collectPrices(menuItems);
+        }
+
+        if (group.equalsIgnoreCase("drink")){
+            menuItems = drinkRepository.findByNameAndType(name, -1);
+            return collectPrices(menuItems);
+        } 
+
+        if (group.equalsIgnoreCase("dish")){
+            menuItems = dishRepository.findByNameAndType(name, -1);
+            return collectPrices(menuItems);
+        } 
+
+        int groupIndex = DrinkType.isValid(group);
+        if (groupIndex != -1) {
+            menuItems = drinkRepository.findByNameAndType(name, groupIndex);
+            return collectPrices(menuItems);
+        }
+
+        groupIndex = DishType.isValid(group);
+        if (groupIndex != -1) {
+            menuItems = dishRepository.findByNameAndType(name, groupIndex);
+            return collectPrices(menuItems);
+        }
+
+        throw new MenuItemNotFoundException("Invalid group for filtering menu items!");
+    }
+
+    private List<MenuItemPriceDTO> collectPrices(List<MenuItem> menuItems){
+        List<MenuItemPriceDTO> itemsDTOs = new ArrayList<MenuItemPriceDTO>(); 
+
+        menuItems.forEach(item -> {
+            MenuItemPrice menuItemPrice = item.getPriceList().get(item.getPriceList().size()-1);
+            if (menuItemPrice.isActive() == true) {
+                itemsDTOs.add(new MenuItemPriceDTO(menuItemPrice));
+            } 
+        });
+
+        return itemsDTOs;
+    }
 }

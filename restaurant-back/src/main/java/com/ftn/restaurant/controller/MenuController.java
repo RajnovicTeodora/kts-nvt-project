@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 @Controller
 @RequestMapping("/api/menu")
 public class MenuController {
@@ -37,5 +39,14 @@ public class MenuController {
         menuService.defineActiveMenuItem(selectedMenuItemsDTO).forEach(item ->
                 menuItemPriceDTOS.add(new MenuItemPriceDTO(item)));
         return menuItemPriceDTOS;
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/searchMenuItems/{group}/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MenuItemPriceDTO> searchMenuItems(@PathParam("group") String group, @PathParam("name") String name){
+        LOG.info("searching menu items...");
+        return menuService.searchMenuItems(group, name);
+        
     }
 }
