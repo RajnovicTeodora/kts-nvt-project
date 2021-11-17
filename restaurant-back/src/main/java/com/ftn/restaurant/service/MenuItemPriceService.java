@@ -33,7 +33,7 @@ public class MenuItemPriceService {
 
         Optional<MenuItemPrice> maybeMenuItemPrice = menuItemPriceRepository
                 .findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(updateMenuItemPriceDTO.getMenuItemId());
-        Optional<MenuItem> maybeItem = menuItemRepository.findById(updateMenuItemPriceDTO.getMenuItemId());
+        Optional<MenuItem> maybeItem = menuItemRepository.findByIdAndDeletedFalse(updateMenuItemPriceDTO.getMenuItemId());
 
         if (!maybeItem.isPresent()){
             throw new MenuItemNotFoundException(

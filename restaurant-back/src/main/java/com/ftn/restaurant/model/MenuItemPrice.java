@@ -26,12 +26,16 @@ public class MenuItemPrice {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @Column(name = "purchace_price", nullable = false)
+    @Column(name = "purchase_price", nullable = false)
     private double purchasePrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
     private MenuItem item;
+
+    public MenuItemPrice() {
+
+    }
 
     public MenuItemPrice(LocalDate dateFrom, LocalDate dateTo, double price, boolean active, double purchasePrice, MenuItem item) {
         this.dateFrom = dateFrom;
