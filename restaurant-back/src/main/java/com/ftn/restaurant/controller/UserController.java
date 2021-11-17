@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.EmployeeDTO;
 import com.ftn.restaurant.dto.LoginDTO;
 import com.ftn.restaurant.dto.UserTokenStateDTO;
 import com.ftn.restaurant.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -51,7 +54,6 @@ public class UserController {
     //autorizacija za admina
     @ResponseStatus(HttpStatus.OK)
     public EmployeeDTO addUser(@RequestBody EmployeeDTO employeeDTO){
-        LOG.info("Adding new user...");
         return (new EmployeeDTO(userService.addUser(employeeDTO)));
     }
 
@@ -60,7 +62,6 @@ public class UserController {
     //autorizacija za admina
     @ResponseStatus(HttpStatus.OK)
     public EmployeeDTO editUser(@RequestBody EmployeeDTO employeeDTO){
-        LOG.info("Editing user...");
         return (new EmployeeDTO(userService.editUser(employeeDTO)));
     }
 

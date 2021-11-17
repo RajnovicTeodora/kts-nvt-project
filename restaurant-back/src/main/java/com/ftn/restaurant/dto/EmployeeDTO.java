@@ -25,7 +25,7 @@ public class EmployeeDTO {
         this.surname = surname;
         this.image = image;
         this.telephone = telephone;
-        this.role = role; // 0=admin, 1-manager, 2-chef, 3-bartender, 4-waiter
+        this.role = role; // 0-manager, 1-head chef, 2-chef, 3-bartender, 4-waiter
     }
 
     public EmployeeDTO(Employee employee){

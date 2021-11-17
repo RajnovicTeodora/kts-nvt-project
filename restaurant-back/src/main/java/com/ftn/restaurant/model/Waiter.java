@@ -6,6 +6,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -57,5 +60,9 @@ public class Waiter extends Employee{
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Waiter(EmployeeDTO employeeDTO){
+        super(employeeDTO);
     }
 }

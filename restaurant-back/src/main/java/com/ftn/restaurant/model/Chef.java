@@ -3,6 +3,9 @@ package com.ftn.restaurant.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -43,5 +46,9 @@ public class Chef extends Employee {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Chef(EmployeeDTO employeeDTO){
+        super(employeeDTO);
     }
 }

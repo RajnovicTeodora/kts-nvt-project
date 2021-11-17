@@ -1,7 +1,7 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
-import com.ftn.restaurant.exception.ForbiddenException;;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.MenuItemPrice;
 
 import com.ftn.restaurant.repository.MenuItemPriceRepository;

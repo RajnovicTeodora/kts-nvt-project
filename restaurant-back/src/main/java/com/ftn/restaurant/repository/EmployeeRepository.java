@@ -1,14 +1,17 @@
 package com.ftn.restaurant.repository;
 
+import java.util.Optional;
+
 import com.ftn.restaurant.model.Employee;
 
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     
-    public Page<Employee> findAll(Pageable pageable);
+    // Page<Employee> findAll(Pageable pageable);
 
-    public Employee findByUsername(String username);
+    Optional<Employee> findByUsername(@Param("username") String username);
 }

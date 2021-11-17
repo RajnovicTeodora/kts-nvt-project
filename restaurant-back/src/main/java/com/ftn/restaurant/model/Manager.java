@@ -4,6 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
+
 import java.util.Collection;
 
 @Entity
@@ -31,5 +34,9 @@ public class Manager extends Employee{
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public Manager(EmployeeDTO employeeDTO){
+        super(employeeDTO);
     }
 }
