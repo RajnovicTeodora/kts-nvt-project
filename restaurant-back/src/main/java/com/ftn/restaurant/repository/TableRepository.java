@@ -1,9 +1,12 @@
 package com.ftn.restaurant.repository;
 
+import java.util.Optional;
+
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.RestaurantTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface TableRepository extends JpaRepository<RestaurantTable, Long> {
 
@@ -15,5 +18,8 @@ public interface TableRepository extends JpaRepository<RestaurantTable, Long> {
 
     @Query("select res from RestaurantTable res left join fetch res.waiter w where res.id =?1 ")
     public RestaurantTable findOneWithoutWaiter(Long id);
+
+    // todo dodati queri ako treba
+    Optional<RestaurantTable> findByPositionXAndPositionY(@Param("positionX") int positionX, @Param("positionY") int positionY);
 
 }

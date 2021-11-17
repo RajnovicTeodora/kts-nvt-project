@@ -2,6 +2,8 @@ package com.ftn.restaurant.model;
 
 import javax.persistence.*;
 
+import com.ftn.restaurant.dto.RestaurantTableDTO;
+
 @Entity
 @Table(name = "restaurant_table")
 public class RestaurantTable {
@@ -24,6 +26,12 @@ public class RestaurantTable {
 
     public Long getId() {
         return id;
+    }
+
+    public RestaurantTable(RestaurantTableDTO table){
+        this.positionX = table.getX();
+        this.positionY = table.getY();
+        this.occupied = false;
     }
 
     public void setId(Long id) {

@@ -1,5 +1,11 @@
 package com.ftn.restaurant.service;
 
+import java.util.Optional;
+
+import javax.management.RuntimeErrorException;
+
+import com.ftn.restaurant.dto.RestaurantTableDTO;
+import com.ftn.restaurant.exception.TableNotFoundException;
 import com.ftn.restaurant.model.RestaurantTable;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.TableRepository;
@@ -55,5 +61,22 @@ public class TableService {
 
     public RestaurantTable findOneWithoutWaiter(Long tableId) {
         return tableRepository.findOneWithoutWaiter(tableId);
+    }
+
+    public RestaurantTable deleteTable(Long tableId){
+        Optional<RestaurantTable> optTable = tableRepository.findById(tableId);
+        if(!optTable.isPresent()) 
+            throw new TableNotFoundException("Table not found!");
+        tableRepository.delete(optTable.get());
+        return optTable.get();
+    }
+
+    public RestaurantTable addTable(RestaurantTableDTO tableDTO){
+        if(tableRepository.findByPositionXAndPositionY(tableDTO.getX(), tableDTO.getY()).isPresent())
+            return null; //ovo mozda nece biti moguce pa ne bude greske
+
+        RestaurantTable newTable = new RestaurantTable(tableDTO);
+        tableRepository.saveAndFlush(newTable);
+        return newTable;
     }
 }

@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.RestaurantTableDTO;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.RestaurantTable;
 import com.ftn.restaurant.model.Waiter;
@@ -64,4 +65,17 @@ public class TableController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @ResponseBody
+    @PostMapping(path = "/addTable")
+    public RestaurantTableDTO addTable(@RequestBody RestaurantTableDTO tableDTO){
+        return new RestaurantTableDTO(tableService.addTable(tableDTO));
+    }
+
+    @ResponseBody
+    @DeleteMapping(path = "/deleteTable/{id}")
+    public RestaurantTableDTO deleteTable(@PathVariable(value = "id") Long id){
+        return new RestaurantTableDTO(tableService.deleteTable(id));
+    }
+
 }
