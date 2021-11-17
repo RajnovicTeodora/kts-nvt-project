@@ -1,6 +1,8 @@
 package com.ftn.restaurant.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +18,16 @@ public class Area {
 
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<RestaurantTable> tables;
+
+
+    public Area() {
+    }
+
+    public Area(String name) {
+        this.name = name;
+        this.tables = new ArrayList<RestaurantTable>();
+    }
+
 
     public Long getId() {
         return id;
