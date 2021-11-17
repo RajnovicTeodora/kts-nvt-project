@@ -1,7 +1,5 @@
 package com.ftn.restaurant.repository;
 
-import com.ftn.restaurant.model.MenuItem;
-
 import com.ftn.restaurant.model.MenuItemPrice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +17,6 @@ public interface MenuItemPriceRepository extends JpaRepository<MenuItemPrice, Lo
             @Param("id") long id, @Param("date") LocalDate date);
 
     List<MenuItemPrice> findByItemIdNotIn(@Param("itemIds") List<Long> itemIds);
+
+    Optional<MenuItemPrice> findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(@Param("id") long id);
 }
