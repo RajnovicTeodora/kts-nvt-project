@@ -26,7 +26,7 @@ public class MenuItemPrice {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @Column(name = "purchace_price", nullable = false)
+    @Column(name = "purchase_price", nullable = false)
     private double purchasePrice;
 
     @ManyToOne(fetch = FetchType.EAGER)

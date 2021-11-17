@@ -46,7 +46,6 @@ public class OrderService {
     public Order createOrder(OrderDTO ordDTO) {
         Order o = new Order();
         o.setDate(LocalDate.parse(ordDTO.getDate()));
-        o.setDeleted(false);
         o.setNote(ordDTO.getNote());
         o.setPaid(ordDTO.isPaid());
         o.setTime(ordDTO.getTime());

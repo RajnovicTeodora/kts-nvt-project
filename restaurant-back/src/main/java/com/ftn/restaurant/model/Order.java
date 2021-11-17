@@ -36,9 +36,6 @@ public class Order {
 
     @ManyToOne(fetch=FetchType.EAGER, optional = true)
     private Waiter waiter;
-    
-    @Column(name = "deleted")
-    private boolean deleted;
 
     public void addOrderedItem(OrderedItem orderItem) {
         if (orderItem == null)
@@ -112,13 +109,5 @@ public class Order {
 
     public void setTime(LocalTime time) {
         this.time = time;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 }
