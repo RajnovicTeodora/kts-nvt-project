@@ -6,7 +6,6 @@ import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.DrinkRepository;
-import com.ftn.restaurant.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
