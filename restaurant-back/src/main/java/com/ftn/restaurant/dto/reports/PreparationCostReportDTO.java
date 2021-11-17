@@ -1,13 +1,13 @@
 package com.ftn.restaurant.dto.reports;
 
-public class PreparationCostsReportDAO {
+public class PreparationCostReportDTO {
     private double totalPreparationCosts;
     private String period;
 
-    public PreparationCostsReportDAO() {
+    public PreparationCostReportDTO() {
     }
 
-    public PreparationCostsReportDAO(double totalPreparationCosts, String period) {
+    public PreparationCostReportDTO(double totalPreparationCosts, String period) {
         this.totalPreparationCosts = totalPreparationCosts;
         this.period = period;
     }
