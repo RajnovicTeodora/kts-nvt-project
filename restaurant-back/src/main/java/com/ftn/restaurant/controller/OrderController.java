@@ -47,21 +47,4 @@ public class OrderController {
             return new ResponseEntity<>( HttpStatus.OK);
 
     }
-
-    @PutMapping(value = "/setDeleted", consumes = "application/json")
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-
-        Order order = orderService.findOne(id);
-
-        if (order != null) {
-            order.setDeleted(true);
-            orderService.save(order);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
 }

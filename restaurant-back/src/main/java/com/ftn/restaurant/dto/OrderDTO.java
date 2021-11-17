@@ -29,7 +29,6 @@ public class OrderDTO {
         this.date = (o.getDate() == null) ? null : o.getDate().toString();
         this.note = o.getNote();
         this.time = o.getTime();
-        this.deleted = o.isDeleted();
         fillOrderItems(o.getOrderedItems());
     }
 
