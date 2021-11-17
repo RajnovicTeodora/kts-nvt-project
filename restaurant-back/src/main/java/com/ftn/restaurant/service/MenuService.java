@@ -78,11 +78,7 @@ public class MenuService {
     }
 
     public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
-    // jedna funkcija i za search i za filter, prima string name koje korisnik unosi za pretragu (ili "" ako ne unese nista)
-    // i prima grupu koja je trenutno aktivna, "" ako pretrazuje i hranu i pica, "dish"/"drink" ako pretrazuje sva jela/pica
-    // ili string oblik enuma tipa jela tj pica 
-    // metoda vraca listu svih artikala iz unete grupe koja sadrze name u nazivu, ili praznu listu ako ni jedan artikl ne zadovoljava pretragu        
-        List<MenuItem> menuItems = new ArrayList<MenuItem>(); //glavna lista u koju dobavljamo rezultate pretrage
+        List<MenuItem> menuItems = new ArrayList<MenuItem>(); 
 
         if (group.equalsIgnoreCase("")){
             menuItems = menuItemRepository.findByName(name);
