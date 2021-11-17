@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     Optional<MenuItem> findById(@Param("id") long id);
-
+    Optional<MenuItem> findByIdAndDeletedFalse(@Param("id") long id);
 
 }
