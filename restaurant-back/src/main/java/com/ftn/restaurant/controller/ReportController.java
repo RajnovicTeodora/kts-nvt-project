@@ -2,7 +2,7 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
 import com.ftn.restaurant.dto.reports.PaychecksReportDTO;
-import com.ftn.restaurant.dto.reports.PreparationCostsReportDAO;
+import com.ftn.restaurant.dto.reports.PreparationCostReportDTO;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class ReportController {
     @GetMapping(path = "/monthly/preparationCosts")
     //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostsReportDAO> preparationCostsMonthlyReport() {
+    public List<PreparationCostReportDTO> preparationCostsMonthlyReport() {
         LOG.info("Monthly preparation costs report...");
         return reportService.getPreparationsCostReport(0);
     }
@@ -66,7 +66,7 @@ public class ReportController {
     @GetMapping(path = "/quarterly/preparationCosts")
     //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostsReportDAO> preparationCostsQuarterlyReport() {
+    public List<PreparationCostReportDTO> preparationCostsQuarterlyReport() {
         LOG.info("Quarterly preparation costs report...");
         return reportService.getPreparationsCostReport(1);
     }
@@ -75,7 +75,7 @@ public class ReportController {
     @GetMapping(path = "/annual/preparationCosts")
     //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostsReportDAO> preparationCostsAnnualReport() {
+    public List<PreparationCostReportDTO> preparationCostsAnnualReport() {
         LOG.info("Annual preparation costs report...");
         return reportService.getPreparationsCostReport(2);
     }

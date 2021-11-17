@@ -11,26 +11,40 @@ public class MenuItemPrice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "date_from", nullable=false)
+    @Column(name = "date_from", nullable = false)
     private LocalDate dateFrom;
 
-    @Column(name = "date_to", nullable=false)
+    @Column(name = "date_to")
     private LocalDate dateTo;
 
-    @Column(name = "price", nullable=false)
+    @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "active", nullable=false)
+    @Column(name = "active", nullable = false)
     private boolean active;
 
-    @Column(name = "purchace_price", nullable=false)
+    @Column(name = "purchase_price", nullable = false)
     private double purchasePrice;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id", nullable = false)
     private MenuItem item;
+
+    public MenuItemPrice() {
+
+    }
+
+    public MenuItemPrice(LocalDate dateFrom, LocalDate dateTo, double price, boolean active, double purchasePrice, MenuItem item) {
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.price = price;
+        this.active = active;
+        this.purchasePrice = purchasePrice;
+        this.item = item;
+    }
 
     public MenuItem getItem() {
         return item;

@@ -1,10 +1,13 @@
 package com.ftn.restaurant.model;
 
+import static javax.persistence.InheritanceType.JOINED;
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Employee extends User {
+@Table(name = "employees")
+@Inheritance(strategy=JOINED)
+public abstract class Employee extends User {
 
     @Column(name = "name")
     private String name;
@@ -20,6 +23,17 @@ public class Employee extends User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
+
+    public Employee() {
+    }
+
+    public Employee(String name, String surname, String image, String telephone, List<Paychecks> paychecksList) {
+        this.name = name;
+        this.surname = surname;
+        this.image = image;
+        this.telephone = telephone;
+        this.paychecksList = paychecksList;
+    }
 
     public List<Paychecks> getPaychecksList() {
         return paychecksList;

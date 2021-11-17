@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,8 +34,32 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
+    @ManyToOne(fetch=FetchType.EAGER, optional = true)
+    private Waiter waiter;
+    
+    @Column(name = "deleted")
+    private boolean deleted;
+
+    public void addOrderedItem(OrderedItem orderItem) {
+        if (orderItem == null)
+            return;
+        if (this.orderedItems == null)
+            this.orderedItems = new ArrayList<>();
+        if (!this.orderedItems.contains(orderItem)) {
+            this.orderedItems.add(orderItem);
+        }
+    }
+    
     public List<OrderedItem> getOrderedItems() {
         return orderedItems;
+    }
+
+    public Waiter getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(Waiter waiter) {
+        this.waiter = waiter;
     }
 
     public void setOrderedItems(List<OrderedItem> orderedItems) {
@@ -87,5 +112,13 @@ public class Order {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -11,17 +11,14 @@ public class DishDTO extends MenuItemDTO {
         this.dishType = dish.getDishType().toString();
     }
 
-
     public DishDTO() {
     }
 
     public String getDishType() {
-        return this.dishType;
+        return dishType;
     }
 
     public void setDishType(String dishType) {
         this.dishType = dishType;
     }
-
-
 }

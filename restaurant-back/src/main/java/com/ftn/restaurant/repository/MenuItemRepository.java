@@ -18,5 +18,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
             " AND m.approved = true)")
     List<MenuItem> findByName(@Param("name") String name);
 
+    Optional<MenuItem> findByIdAndDeletedFalse(@Param("id") long id);
 
 }

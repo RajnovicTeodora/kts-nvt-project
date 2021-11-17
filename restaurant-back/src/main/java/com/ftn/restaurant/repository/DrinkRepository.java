@@ -22,4 +22,7 @@ public interface DrinkRepository extends JpaRepository<Drink, Long> {
     @Query("SELECT d from Drink d where" +
             " lower(d.name) LIKE lower(concat('%',:name,'%')) AND (:type = -1 or :type = d.drinkType ) AND d.deleted = false")
     List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") int type);
+    
+    @Query("SELECT d from Drink d where d.approved = true")
+    List<Drink> getApprovedDrinks();
 }

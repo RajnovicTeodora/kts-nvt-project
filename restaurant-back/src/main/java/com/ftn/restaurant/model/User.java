@@ -1,18 +1,17 @@
 package com.ftn.restaurant.model;
 
+import com.ftn.restaurant.model.enums.UserRole;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import static javax.persistence.InheritanceType.JOINED;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "system_user")
-public abstract class User {
+@Inheritance(strategy=JOINED)
+public abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +26,15 @@ public abstract class User {
 
     @Column(name = "deleted", unique=false, nullable=false)
     private boolean deleted;
+
+    @Column(name = "loggedFirstTime", unique=false, nullable=false)
+    private boolean loggedFirstTime;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<UserRole> roles;
 
     public User() { }
 
@@ -68,6 +76,22 @@ public abstract class User {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public List<UserRole> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(List<UserRole> roles) {
+        this.roles = roles;
+    }
+
+    public boolean isLoggedFirstTime() {
+        return loggedFirstTime;
+    }
+
+    public void setLoggedFirstTime(boolean loggedFirstTime) {
+        this.loggedFirstTime = loggedFirstTime;
     }
 }
 
