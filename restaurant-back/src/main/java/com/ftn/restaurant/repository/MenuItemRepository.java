@@ -14,7 +14,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     Optional<MenuItem> findById(@Param("id") long id);
 
-    @Query("SELECT mip FROM MenuItem mip WHERE (lower(m.name) LIKE lower(concat('%',:name,'%')) AND m.deleted = false" +
+    @Query("SELECT m FROM MenuItem m WHERE (lower(m.name) LIKE lower(concat('%',:name,'%')) AND m.deleted = false" +
             " AND m.approved = true)")
     List<MenuItem> findByName(@Param("name") String name);
 
