@@ -33,6 +33,10 @@ public class MenuItemPrice {
     @JoinColumn(name = "item_id", nullable = false)
     private MenuItem item;
 
+    public MenuItemPrice() {
+
+    }
+
     public MenuItemPrice(LocalDate dateFrom, LocalDate dateTo, double price, boolean active, double purchasePrice, MenuItem item) {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
