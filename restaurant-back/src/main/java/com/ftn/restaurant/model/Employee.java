@@ -1,5 +1,6 @@
 package com.ftn.restaurant.model;
 
+import static javax.persistence.InheritanceType.JOINED;
 import javax.persistence.*;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
@@ -9,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Employee extends User {
+@Table(name = "employees")
+@Inheritance(strategy=JOINED)
+public abstract class Employee extends User {
 
     @Column(name = "name")
     private String name;
@@ -25,7 +28,6 @@ public class Employee extends User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
-
 
     public Employee() {
     }

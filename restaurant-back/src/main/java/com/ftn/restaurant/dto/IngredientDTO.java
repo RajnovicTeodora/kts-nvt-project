@@ -1,26 +1,30 @@
-package com.ftn.restaurant.model;
+package com.ftn.restaurant.dto;
 
-import javax.persistence.*;
-import javax.persistence.Table;
+import com.ftn.restaurant.model.Ingredient;
 
+import javax.persistence.Column;
 
-@Entity
-@Table(name = "ingredient")
-public class Ingredient {
+public class IngredientDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique=true, nullable=false)
     private Long id;
-
-    @Column(name = "name", nullable=false)
     private String name;
-
-    @Column(name = "alergen", nullable=false)
     private boolean isAlergen;
+
+    public IngredientDTO() {
+    }
+
+    public IngredientDTO(Ingredient i){
+        this.id = i.getId();
+        this.name= i.getName();
+        this.isAlergen = i.isAlergen();
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -38,6 +42,4 @@ public class Ingredient {
     public void setAlergen(boolean alergen) {
         isAlergen = alergen;
     }
-
-
 }

@@ -19,6 +19,9 @@ public class RestaurantTable {
     @ManyToOne(fetch=FetchType.EAGER, optional = true)
     private Waiter waiter;
 
+    @Column(name = "occupied", nullable=false)
+    private boolean occupied;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +44,21 @@ public class RestaurantTable {
 
     public void setPositionY(int positionY) {
         this.positionY = positionY;
+    }
+
+    public Waiter getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(Waiter waiter) {
+        this.waiter = waiter;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 }

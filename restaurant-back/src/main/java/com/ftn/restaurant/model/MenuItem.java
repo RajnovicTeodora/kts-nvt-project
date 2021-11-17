@@ -4,8 +4,11 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import java.util.List;
 
+import static javax.persistence.InheritanceType.JOINED;
+
 @Entity
 @Table(name = "menu_item")
+@Inheritance(strategy=JOINED)
 public abstract class MenuItem {
 
     @Column(name = "name", nullable = false)

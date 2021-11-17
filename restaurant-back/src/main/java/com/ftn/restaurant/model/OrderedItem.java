@@ -4,6 +4,7 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,13 +32,38 @@ public class OrderedItem {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "menu_item_id", nullable = false)
-    private MenuItem manuItem;
+    private MenuItem menuItem;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
-    public MenuItem getManuItem() {
-        return manuItem;
+    @Column(name = "deleted")
+    private boolean deleted;
+
+    @ManyToOne(fetch=FetchType.EAGER)
+    private Employee employee;
+
+    public void addActiveIngredients(Ingredient ingredient) {
+        if (ingredient == null)
+            return;
+        if (this.activeIngredients == null)
+            this.activeIngredients = new ArrayList<>();
+        if (!this.activeIngredients.contains(ingredient)) {
+            this.activeIngredients.add(ingredient);
+        }
+    }
+
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public MenuItem getMenuItem() {
+        return menuItem;
     }
 
     public List<Ingredient> getActiveIngredients() {
@@ -48,8 +74,8 @@ public class OrderedItem {
         this.activeIngredients = activeIngredients;
     }
 
-    public void setManuItem(MenuItem manuItem) {
-        this.manuItem = manuItem;
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
     }
 
     public Long getId() {
@@ -74,6 +100,14 @@ public class OrderedItem {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public int getQuantity() {
