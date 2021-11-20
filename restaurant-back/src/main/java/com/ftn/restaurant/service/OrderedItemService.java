@@ -22,7 +22,7 @@ public class OrderedItemService {
     public String acceptOrderedItem(long id) { //setovati i uloge todo
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
         if (item.isPresent()){
-          if(item.get().getStatus() != OrderedItemStatus.ORDERED){
+          if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){
               return "You can't accept order if it is not in status ordered.";
           }
           item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
@@ -36,7 +36,7 @@ public class OrderedItemService {
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
 
         if (item.isPresent()){
-            if(item.get().getStatus() != OrderedItemStatus.IN_PROGRESS){
+            if(item.get().getStatus() != OrderedItemStatus.IN_PROGRESS && !item.get().isDeleted()){
                 return "You can't finish order if it is not in status in progres.";
             }
 

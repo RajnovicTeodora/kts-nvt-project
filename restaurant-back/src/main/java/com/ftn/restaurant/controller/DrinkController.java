@@ -56,7 +56,7 @@ public class DrinkController {
     @PostMapping(path = "/addDrink")
     @ResponseStatus(HttpStatus.CREATED)
     public DrinkDTO addDrink(@RequestBody NewDrinkDTO drinkDTO){
-        return new DrinkDTO(drinkService.addDrink(drinkDTO));
+        return new DrinkDTO(drinkService.addDrinkByBartender(drinkDTO)); //todo if uloga bartender or manager
     }
 
 }
