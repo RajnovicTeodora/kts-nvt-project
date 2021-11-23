@@ -1,5 +1,7 @@
 package com.ftn.restaurant.model;
 
+import com.ftn.restaurant.dto.IngredientDTO;
+
 import javax.persistence.*;
 import javax.persistence.Table;
 
@@ -18,6 +20,14 @@ public class Ingredient {
 
     @Column(name = "alergen", nullable=false)
     private boolean isAlergen;
+
+    public Ingredient(IngredientDTO ingredient) {
+        this.name = ingredient.getName();
+        this.isAlergen = ingredient.isAlergen();
+    }
+
+    public Ingredient() {
+    }
 
     public Long getId() {
         return id;

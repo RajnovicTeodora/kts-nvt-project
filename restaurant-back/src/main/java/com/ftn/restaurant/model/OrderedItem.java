@@ -40,6 +40,10 @@ public class OrderedItem {
     @Column(name = "deleted")
     private boolean deleted;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    //@JoinColumn(name = "employ_id", nullable = false) todo proveri
+    private Employee whoPreapiring;
+
     @ManyToOne(fetch=FetchType.EAGER)
     private Employee employee;
 
@@ -124,5 +128,13 @@ public class OrderedItem {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public Employee getWhoPreapiring() {
+        return whoPreapiring;
+    }
+
+    public void setWhoPreapiring(Employee whoPreapiring) {
+        this.whoPreapiring = whoPreapiring;
     }
 }
