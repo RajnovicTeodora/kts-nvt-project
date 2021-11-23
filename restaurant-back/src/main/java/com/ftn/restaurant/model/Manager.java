@@ -39,4 +39,9 @@ public class Manager extends Employee{
     public Manager(EmployeeDTO employeeDTO){
         super(employeeDTO);
     }
+
+
+    public Manager() {
+    }
+
 }

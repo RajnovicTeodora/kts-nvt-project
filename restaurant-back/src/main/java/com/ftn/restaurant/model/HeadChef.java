@@ -10,4 +10,9 @@ public class HeadChef extends Chef{
     public HeadChef(EmployeeDTO employeeDTO){
         super(employeeDTO);
     }
+
+
+    public HeadChef() {
+    }
+
 }

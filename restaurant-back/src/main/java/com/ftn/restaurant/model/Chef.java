@@ -51,4 +51,9 @@ public class Chef extends Employee {
     public Chef(EmployeeDTO employeeDTO){
         super(employeeDTO);
     }
+
+
+    public Chef() {
+    }
+
 }

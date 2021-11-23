@@ -1,13 +1,12 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.LoginDTO;
+import com.ftn.restaurant.dto.UserDTO;
 import com.ftn.restaurant.dto.UserTokenStateDTO;
 import com.ftn.restaurant.exception.BadUserRoleException;
 import com.ftn.restaurant.exception.UsernameExistsException;
 import com.ftn.restaurant.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
@@ -34,8 +34,7 @@ import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.EmployeeRepository;
 import com.ftn.restaurant.repository.UserRepository;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -88,7 +87,7 @@ public class UserService implements UserDetailsService {
                 throw new BadUserRoleException("Unknown user role!");
         }
         ArrayList<Paychecks> paycheckList = new ArrayList<Paychecks>();
-        paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 0), null, 100, newEmployee));
+        paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1), null, 100, newEmployee));
         newEmployee.setPaychecksList(paycheckList);
 
         employeeRepository.saveAndFlush(newEmployee);
@@ -97,15 +96,16 @@ public class UserService implements UserDetailsService {
 
     public Employee editUser(EmployeeDTO employeeDTO){
         Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
-        if(optEmployee.isPresent()) return null;
+        if(!optEmployee.isPresent()) return null;
         Employee employee = optEmployee.get();
         if(employee.getPassword()!= employeeDTO.getPassword()) employee.setPassword(employeeDTO.getPassword());
         if(employee.getName()!= employeeDTO.getName()) employee.setName(employeeDTO.getName());
         if(employee.getSurname()!= employeeDTO.getSurname()) employee.setSurname(employeeDTO.getSurname());
         if(employee.getImage()!= employeeDTO.getImage()) employee.setImage(employeeDTO.getImage());
-        if(employee.getTelephone()!= employeeDTO.getTelephone()) employee.setPassword(employeeDTO.getPassword());
+        if(employee.getTelephone()!= employeeDTO.getTelephone()) employee.setTelephone(employeeDTO.getTelephone());
 
-        
+        employeeRepository.saveAndFlush(employee);
+
         return employee;
     }
     
@@ -154,5 +154,11 @@ public class UserService implements UserDetailsService {
             return null;
         }
         return new UserTokenStateDTO(jwt, expiresIn);
+    }
+
+    public List<UserDTO> getAllUsers(){
+        List<UserDTO> users = new ArrayList<UserDTO>();
+        userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
+        return users;
     }
 }

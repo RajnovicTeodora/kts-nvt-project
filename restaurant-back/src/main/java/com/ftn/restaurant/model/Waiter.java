@@ -65,4 +65,9 @@ public class Waiter extends Employee{
     public Waiter(EmployeeDTO employeeDTO){
         super(employeeDTO);
     }
+
+    public Waiter() {
+    }
+
+
 }

@@ -22,6 +22,9 @@ public class Bartender extends Employee{
         return orderedItems;
     }
 
+    public Bartender() {
+    }
+
     public void setOrderedItems(List<OrderedItem> orderedItems) {
         this.orderedItems = orderedItems;
     }
