@@ -2,6 +2,8 @@ package com.ftn.restaurant.dto;
 
 import com.ftn.restaurant.model.MenuItem;
 
+import java.util.ArrayList;
+
 public class MenuItemDTO {
     private Long id;
     private String name;
@@ -45,4 +47,5 @@ public class MenuItemDTO {
     public void setImage(String image) {
         this.image = image;
     }
+
 }

@@ -2,6 +2,7 @@ package com.ftn.restaurant.model;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.InheritanceType.JOINED;
@@ -31,6 +32,9 @@ public abstract class MenuItem {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MenuItemPrice> priceList;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Ingredient> ingredients;
+
     public MenuItem() {
     }
 
@@ -40,6 +44,16 @@ public abstract class MenuItem {
         this.approved = approved;
         this.deleted = deleted;
         this.priceList = priceList;
+        this.ingredients = new ArrayList<>();
+    }
+
+    public MenuItem(String name, String image, boolean approved, boolean deleted, List<MenuItemPrice> priceList, ArrayList<Ingredient> ingredients) {
+        this.name = name;
+        this.image = image;
+        this.approved = approved;
+        this.deleted = deleted;
+        this.priceList = priceList;
+        this.ingredients = ingredients;
     }
 
     public List<MenuItemPrice> getPriceList() {
@@ -84,5 +98,17 @@ public abstract class MenuItem {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
