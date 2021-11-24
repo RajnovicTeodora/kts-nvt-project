@@ -4,6 +4,8 @@ import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.MenuItemNotFoundException;
+import com.ftn.restaurant.model.Dish;
+import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.model.enums.DishType;
@@ -80,30 +82,65 @@ public class MenuService {
     public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
         List<MenuItem> menuItems = new ArrayList<MenuItem>(); 
 
-        if (group.equalsIgnoreCase("")){
-            menuItems = menuItemRepository.findByName(name);
+        if (group.equalsIgnoreCase("...")){
+            List<MenuItem> all = menuItemRepository.findAll();
+            for (MenuItem item : all) {
+                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                    if(item.isDeleted() == false && item.isApproved() == true){
+                        menuItems.add(item);
+                    }
+                }
+            };
             return collectPrices(menuItems);
         }
 
         if (group.equalsIgnoreCase("drink")){
-            menuItems = drinkRepository.findByNameAndType(name, -1);
+            List<Drink> allDrinks = drinkRepository.findAll();
+            for (Drink item : allDrinks) {
+                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                    if(item.isDeleted() == false && item.isApproved() == true){
+                        menuItems.add(item);
+                    }
+                }
+            };
             return collectPrices(menuItems);
         } 
 
         if (group.equalsIgnoreCase("dish")){
-            menuItems = dishRepository.findByNameAndType(name, -1);
+            List<Dish> allDishes = dishRepository.findAll();
+            for (Dish item : allDishes) {
+                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                    if(item.isDeleted() == false && item.isApproved() == true){
+                        menuItems.add(item);
+                    }
+                }
+            };
             return collectPrices(menuItems);
         } 
 
         int groupIndex = DrinkType.isValid(group);
         if (groupIndex != -1) {
-            menuItems = drinkRepository.findByNameAndType(name, groupIndex);
+            List<Drink> allDrinks = drinkRepository.findAll();
+            for (Drink item : allDrinks) {
+                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
+                    if(item.isDeleted() == false && item.isApproved() == true){
+                        menuItems.add(item);
+                    }
+                }
+            };
             return collectPrices(menuItems);
         }
 
         groupIndex = DishType.isValid(group);
         if (groupIndex != -1) {
-            menuItems = dishRepository.findByNameAndType(name, groupIndex);
+            List<Dish> allDishes = dishRepository.findAll();
+            for (Dish item : allDishes) {
+                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
+                    if(item.isDeleted() == false && item.isApproved() == true){
+                        menuItems.add(item);
+                    }
+                }
+            };
             return collectPrices(menuItems);
         }
 
@@ -113,12 +150,12 @@ public class MenuService {
     private List<MenuItemPriceDTO> collectPrices(List<MenuItem> menuItems){
         List<MenuItemPriceDTO> itemsDTOs = new ArrayList<MenuItemPriceDTO>(); 
 
-        menuItems.forEach(item -> {
-            MenuItemPrice menuItemPrice = item.getPriceList().get(item.getPriceList().size()-1);
-            if (menuItemPrice.isActive() == true) {
-                itemsDTOs.add(new MenuItemPriceDTO(menuItemPrice));
+        for (MenuItem item : menuItems) {
+            Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
+            if (optionalPrice.isPresent() && optionalPrice.get().isActive() == true) {
+                itemsDTOs.add(new MenuItemPriceDTO(optionalPrice.get()));
             } 
-        });
+        }
 
         return itemsDTOs;
     }

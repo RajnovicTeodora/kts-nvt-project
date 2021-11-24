@@ -25,7 +25,7 @@ INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Vanilla ice crea
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Cheese platter', 'todo',    false, true);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Caesar salad', 'todo',      false, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Chicken soup', 'todo',      true, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Sprite', 'todo',            true, true);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Sprite', 'todo',            true, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Nes Coffee', 'todo',        false, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Hot chocolate', 'todo',     true, true);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'todo',              false, false);

@@ -6,7 +6,6 @@ import com.ftn.restaurant.model.enums.DishType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +19,6 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
     Optional<Dish> findById(@Param("id") long id);
 
     @Query("SELECT d from Dish d where" +
-            " lower(d.name) LIKE lower(concat('%',:name,'%')) AND (:type = -1 or :type = d.dishType ) AND d.deleted = false")
-    List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") int type);
+            " (lower(d.name) LIKE lower(concat('%',:name,'%')) OR :name = '...') AND (:type = null or :type = d.dishType ) AND d.deleted = false")
+    List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") DishType type);
 }

@@ -20,8 +20,8 @@ public interface DrinkRepository extends JpaRepository<Drink, Long> {
     Optional<Drink> findByNameAndDrinkTypeAndContainerType(String name, DrinkType drinkType, ContainerType containerType);
 
     @Query("SELECT d from Drink d where" +
-            " lower(d.name) LIKE lower(concat('%',:name,'%')) AND (:type = -1 or :type = d.drinkType ) AND d.deleted = false")
-    List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") int type);
+            " (lower(d.name) LIKE lower(concat('%',:name,'%')) OR :name = '...') AND (:type = null OR :type = d.drinkType ) AND d.deleted = false AND d.approved = true")
+    List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") DrinkType type);
     
     @Query("SELECT d from Drink d where d.approved = true")
     List<Drink> getApprovedDrinks();
