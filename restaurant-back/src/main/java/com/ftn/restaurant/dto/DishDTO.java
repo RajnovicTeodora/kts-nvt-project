@@ -1,7 +1,6 @@
 package com.ftn.restaurant.dto;
 
 import com.ftn.restaurant.model.Dish;
-import com.ftn.restaurant.model.Drink;
 
 public class DishDTO extends MenuItemDTO {
 
@@ -10,6 +9,9 @@ public class DishDTO extends MenuItemDTO {
     public DishDTO(Dish dish) {
         super(dish);
         this.dishType = dish.getDishType().toString();
+    }
+
+    public DishDTO() {
     }
 
     public String getDishType() {
