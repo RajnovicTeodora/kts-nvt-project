@@ -1,5 +1,6 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.controller.ReportController;
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
 import com.ftn.restaurant.dto.reports.PaychecksReportDTO;
 import com.ftn.restaurant.dto.reports.PreparationCostReportDTO;
@@ -9,11 +10,14 @@ import com.ftn.restaurant.model.Paychecks;
 import com.ftn.restaurant.repository.OrderRepository;
 import com.ftn.restaurant.repository.OrderedItemRepository;
 import com.ftn.restaurant.repository.PaycheckRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.ChronoField;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ public class ReportService {
     private final OrderedItemRepository orderedItemRepository;
     private final PaycheckRepository paycheckRepository;
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReportService.class);
     @Autowired
     public ReportService(OrderRepository orderRepository, OrderedItemRepository orderedItemRepository,
                          PaycheckRepository paycheckRepository) {
@@ -50,7 +55,7 @@ public class ReportService {
 
         if (type == 0) {
             // From start date to end date calculate monthly income
-            for (LocalDate date = from; to.plusDays(1).isAfter(date); date = date.plusMonths(1)) {
+            for (LocalDate date = from.withDayOfMonth(1); to.plusDays(1).isAfter(date); date = date.plusMonths(1)) {
                 IncomeReportDTO report = new IncomeReportDTO(0, 0, YearMonth.of(date.getYear(), date.getMonthValue()).toString());
 
                 report.setEarnings(orderRepository.sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(1).minusDays(1)));
@@ -58,14 +63,23 @@ public class ReportService {
                 incomeAndSold.add(report);
             }
         } else if (type == 1) {
-            long q = (from.getMonthValue() / 3);
+            long q = (from.getMonthValue() / 3) + 1;
             for (LocalDate date = from.with(IsoFields.QUARTER_OF_YEAR, q).with(IsoFields.DAY_OF_QUARTER, 1L); to.plusDays(1).isAfter(date); date = date.plusMonths(3)) {
                 IncomeReportDTO report = new IncomeReportDTO(0, 0, "Q" + date.get(IsoFields.QUARTER_OF_YEAR) + " - " + date.getYear());
 
-                report.setEarnings(orderRepository
-                        .sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1L).minusDays(1)));
-                report.setTotalSoldItems(orderedItemRepository
-                        .sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1L).minusDays(1)));
+                int sumEarnings = 0;
+                int sumSold = 0;
+
+                for (int i = 0; i <= 2; i++) {
+
+                    if (date.plusMonths(i + 1).minusDays(1).isAfter(to.withDayOfMonth(1).plusMonths(1).minusDays(1))) break;
+                    sumEarnings += orderRepository
+                            .sumTotalPriceByIsPaidAndDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
+                    sumSold += orderedItemRepository
+                            .sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
+                }
+                report.setEarnings(sumEarnings);
+                report.setTotalSoldItems(sumSold);
                 incomeAndSold.add(report);
             }
         } else {
@@ -97,7 +111,7 @@ public class ReportService {
 
         if (type == 0) {
             // From start date to end date
-            for (LocalDate date = from; to.plusDays(1).isAfter(date); date = date.plusMonths(1)) {
+            for (LocalDate date = from.withDayOfMonth(1); to.plusDays(1).isAfter(date); date = date.plusMonths(1)) {
                 PreparationCostReportDTO report = new PreparationCostReportDTO(0, YearMonth.of(date.getYear(), date.getMonthValue()).toString());
 
                 report.setTotalPreparationCosts(orderedItemRepository
@@ -105,12 +119,18 @@ public class ReportService {
                 prepCosts.add(report);
             }
         } else if (type == 1) {
-            long q = (from.getMonthValue() / 3);
+            long q = (from.getMonthValue() / 3) + 1;
             for (LocalDate date = from.with(IsoFields.QUARTER_OF_YEAR, q).with(IsoFields.DAY_OF_QUARTER, 1L); to.plusDays(1).isAfter(date); date = date.plusMonths(3)) {
                 PreparationCostReportDTO report = new PreparationCostReportDTO(0, "Q" + date.get(IsoFields.QUARTER_OF_YEAR) + " - " + date.getYear());
 
-                report.setTotalPreparationCosts(orderedItemRepository
-                        .sumPreparationCostsByOrderedItemStatusNotOrderedAndOrderDateBetween(date, date.plusMonths(3).with(IsoFields.DAY_OF_QUARTER, 1L).minusDays(1)));
+                int sum = 0;
+                for (int i = 0; i <= 2; i++) {
+
+                    if (date.plusMonths(i + 1).minusDays(1).isAfter(to.withDayOfMonth(1).plusMonths(1).minusDays(1))) break;
+                    sum += orderedItemRepository
+                            .sumPreparationCostsByOrderedItemStatusNotOrderedAndOrderDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
+                }
+                report.setTotalPreparationCosts(sum);
                 prepCosts.add(report);
             }
         } else {
@@ -129,12 +149,11 @@ public class ReportService {
     public List<PaychecksReportDTO> getPaycheckReport(int type) {
 
         Optional<Paychecks> minPaycheck = paycheckRepository.findTopByOrderByDateFromAsc();
-        Optional<Paychecks> maxPaycheck = paycheckRepository.findTopByOrderByDateFromDesc();
 
         List<PaychecksReportDTO> paychecks = new ArrayList<>();
 
         //No paid orders in system
-        if (!minPaycheck.isPresent() || !maxPaycheck.isPresent())
+        if (!minPaycheck.isPresent())
             return paychecks;
 
         LocalDate from = minPaycheck.get().getDateFrom();
@@ -155,6 +174,7 @@ public class ReportService {
 
                 int sum = 0;
                 for (int i = 0; i <= 2; i++) {
+
                     if (date.plusMonths(i + 1).minusDays(1).isAfter(to)) break;
                     sum += paycheckRepository
                             .sumTotalPaychecksAndDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
