@@ -85,10 +85,10 @@ public class TableService {
 
         Optional<Area> area = areaRepository.findById(tableDTO.getAreaId());
 
-        if(area.isPresent()) {throw new AreaNotFoundException("Area with id "+tableDTO.getAreaId()+" not found!");}
+        if(!area.isPresent()) {throw new AreaNotFoundException("Area with id "+tableDTO.getAreaId()+" not found!");}
         newTable.setArea(area.get());
-        area.get().addTable(newTable);
-        areaRepository.saveAndFlush(area.get());
+        //area.get().addTable(newTable);
+        //areaRepository.saveAndFlush(area.get());
         tableRepository.saveAndFlush(newTable);
         return newTable;
     }

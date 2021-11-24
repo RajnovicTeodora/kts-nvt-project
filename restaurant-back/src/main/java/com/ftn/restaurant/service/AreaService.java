@@ -72,7 +72,19 @@ public class AreaService {
 
     public List<AreaDTO> getAllAreas(){
         List<AreaDTO> areas = new ArrayList<AreaDTO>();
-        areaRepository.findAll().forEach(area -> areas.add(new AreaDTO(area)));
+        for (Area area : areaRepository.findAll()) {
+            AreaDTO areaDto = new AreaDTO();
+            areaDto.setId(area.getId());
+            areaDto.setName(area.getName());
+            List<RestaurantTable> tables = tableRepository.findByAreaId(area.getId());
+            List<RestaurantTableDTO> tableDTOs = new ArrayList<RestaurantTableDTO>();
+            for (RestaurantTable table : tables) {
+                tableDTOs.add(new RestaurantTableDTO(table));
+            }
+            areaDto.setTables(tableDTOs);
+            areas.add(areaDto);
+        }
+        //areaRepository.findAll().forEach(area -> areas.add(new AreaDTO(area)));
         return areas;
     }
 

@@ -1,5 +1,6 @@
 package com.ftn.restaurant.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.ftn.restaurant.model.Order;
@@ -21,5 +22,8 @@ public interface TableRepository extends JpaRepository<RestaurantTable, Long> {
 
     // todo dodati queri ako treba
     Optional<RestaurantTable> findByPositionXAndPositionY(@Param("positionX") int positionX, @Param("positionY") int positionY);
+
+    @Query("select res from RestaurantTable res where res.area.id = :area_id ")
+    List<RestaurantTable> findByAreaId(@Param("area_id") Long areaId);
 
 }
