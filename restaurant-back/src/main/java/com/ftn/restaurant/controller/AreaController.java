@@ -1,5 +1,9 @@
 package com.ftn.restaurant.controller;
 
+import java.util.List;
+
+import javax.websocket.server.PathParam;
+
 import com.ftn.restaurant.dto.AreaDTO;
 import com.ftn.restaurant.service.AreaService;
 
@@ -36,6 +40,18 @@ public class AreaController {
     @PutMapping(path = "/editTables")
     public AreaDTO editTables(@RequestBody AreaDTO area){
         return new AreaDTO(areaService.editTables(area));
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/getAllAreas")
+    public List<AreaDTO> getAllAreas(){
+        return areaService.getAllAreas();
+    }
+    
+    @ResponseBody
+    @GetMapping(path = "/getById/{id}")
+    public AreaDTO getById(@PathVariable(value = "id") Long id){
+        return new AreaDTO(areaService.findByID(id));
     }
     
 }

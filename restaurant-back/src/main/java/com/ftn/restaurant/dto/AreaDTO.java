@@ -1,8 +1,10 @@
 package com.ftn.restaurant.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ftn.restaurant.model.Area;
+import com.ftn.restaurant.model.RestaurantTable;
 
 public class AreaDTO {
     
@@ -12,6 +14,7 @@ public class AreaDTO {
 
 
     public AreaDTO() {
+        this.tables = new ArrayList<RestaurantTableDTO>();
     }
 
     public AreaDTO(Long id, String name, List<RestaurantTableDTO> tables) {
@@ -23,7 +26,10 @@ public class AreaDTO {
     public AreaDTO(Area area){
         this.id = area.getId();
         this.name = area.getName();
-        area.getTables().forEach(table -> this.tables.add(new RestaurantTableDTO(table)));
+        this.tables = new ArrayList<RestaurantTableDTO>();
+        for (RestaurantTable table : area.getTables()) {
+            this.tables.add(new RestaurantTableDTO(table));
+        }
     }
 
     public Long getId() {

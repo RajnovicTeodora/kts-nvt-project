@@ -69,4 +69,14 @@ public class AreaService {
 
 
     }
+
+    public List<AreaDTO> getAllAreas(){
+        List<AreaDTO> areas = new ArrayList<AreaDTO>();
+        areaRepository.findAll().forEach(area -> areas.add(new AreaDTO(area)));
+        return areas;
+    }
+
+    public Area findByID(Long id){
+        return areaRepository.getById(id);
+    }
 }

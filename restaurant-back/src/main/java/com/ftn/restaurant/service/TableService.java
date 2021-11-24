@@ -5,9 +5,12 @@ import java.util.Optional;
 import javax.management.RuntimeErrorException;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
+import com.ftn.restaurant.exception.AreaNotFoundException;
 import com.ftn.restaurant.exception.TableNotFoundException;
+import com.ftn.restaurant.model.Area;
 import com.ftn.restaurant.model.RestaurantTable;
 import com.ftn.restaurant.model.Waiter;
+import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,9 @@ public class TableService {
 
     @Autowired
     private TableRepository tableRepository;
+
+    @Autowired
+    private AreaRepository areaRepository;
 
     @Autowired
     private WaiterService waiterService;
@@ -76,6 +82,13 @@ public class TableService {
             return null; //ovo mozda nece biti moguce pa ne bude greske
 
         RestaurantTable newTable = new RestaurantTable(tableDTO);
+
+        Optional<Area> area = areaRepository.findById(tableDTO.getAreaId());
+
+        if(area.isPresent()) {throw new AreaNotFoundException("Area with id "+tableDTO.getAreaId()+" not found!");}
+        newTable.setArea(area.get());
+        area.get().addTable(newTable);
+        areaRepository.saveAndFlush(area.get());
         tableRepository.saveAndFlush(newTable);
         return newTable;
     }

@@ -1,7 +1,6 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
-import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.RestaurantTable;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.service.TableService;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/table")
+@RequestMapping("/api/table")
 public class TableController {
 
     @Autowired

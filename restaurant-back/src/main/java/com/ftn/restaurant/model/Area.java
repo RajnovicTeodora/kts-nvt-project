@@ -52,4 +52,8 @@ public class Area {
     public void setTables(List<RestaurantTable> tables) {
         this.tables = tables;
     }
+
+    public void addTable(RestaurantTable table){
+        this.tables.add(table);
+    }
 }

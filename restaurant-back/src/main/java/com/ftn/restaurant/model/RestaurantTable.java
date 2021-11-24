@@ -24,9 +24,18 @@ public class RestaurantTable {
     @Column(name = "occupied", nullable=false)
     private boolean occupied;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "area_id", nullable = false)
+    private Area area;
+
     public Long getId() {
         return id;
     }
+
+
+    public RestaurantTable() {
+    }
+
 
     public RestaurantTable(RestaurantTableDTO table){
         this.positionX = table.getX();
@@ -69,4 +78,13 @@ public class RestaurantTable {
     public void setOccupied(boolean occupied) {
         this.occupied = occupied;
     }
+
+    public Area getArea() {
+        return this.area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
 }
