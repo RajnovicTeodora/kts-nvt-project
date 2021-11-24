@@ -1,7 +1,7 @@
 package com.ftn.restaurant.repository;
 
 import com.ftn.restaurant.model.Drink;
-
+import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +19,10 @@ public interface DrinkRepository extends JpaRepository<Drink, Long> {
             " d.name = :name AND d.drinkType = :drinkType AND d.containerType = :containerType AND d.deleted = false")
     Optional<Drink> findByNameAndDrinkTypeAndContainerType(String name, DrinkType drinkType, ContainerType containerType);
 
+    @Query("SELECT d from Drink d where" +
+            " (lower(d.name) LIKE lower(concat('%',:name,'%')) OR :name = '...') AND (:type = null OR :type = d.drinkType ) AND d.deleted = false AND d.approved = true")
+    List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") DrinkType type);
+    
     @Query("SELECT d from Drink d where d.approved = true")
     List<Drink> getApprovedDrinks();
 }

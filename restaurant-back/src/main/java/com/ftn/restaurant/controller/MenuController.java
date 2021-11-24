@@ -38,4 +38,15 @@ public class MenuController {
                 menuItemPriceDTOS.add(new MenuItemPriceDTO(item)));
         return menuItemPriceDTOS;
     }
+
+    @ResponseBody
+    @GetMapping(path = "/searchMenuItems/{group}/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MenuItemPriceDTO> searchMenuItems(@PathVariable(value = "group") String group, @PathVariable(value = "name") String name){
+        LOG.info("searching menu items...");
+        LOG.info("group: " + group);
+        LOG.info("name: "+name);
+        return menuService.searchMenuItems(group, name);
+        
+    }
 }
