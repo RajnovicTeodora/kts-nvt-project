@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
 import com.ftn.restaurant.dto.UserDTO;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.UserService;
 
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,17 +34,17 @@ public class EmployeeController {
 
     @ResponseBody
     @PostMapping(path = "/addUser")
-    //autorizacija za admina
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeDTO addUser(@RequestBody EmployeeDTO employeeDTO){
+    public EmployeeDTO addUser(@AuthenticationPrincipal User user, @RequestBody EmployeeDTO employeeDTO){
         return (new EmployeeDTO(userService.addUser(employeeDTO)));
     }
 
     @ResponseBody
     @PostMapping(path = "/editUser")
-    //autorizacija za admina
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeDTO editUser(@RequestBody EmployeeDTO employeeDTO){
+    public EmployeeDTO editUser(@AuthenticationPrincipal User user, @RequestBody EmployeeDTO employeeDTO){
         return (new EmployeeDTO(userService.editUser(employeeDTO)));
     }
 

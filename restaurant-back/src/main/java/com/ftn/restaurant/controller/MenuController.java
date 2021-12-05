@@ -2,11 +2,14 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +31,9 @@ public class MenuController {
 
     @ResponseBody
     @PutMapping(path = "/activateItems")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> setActiveMenuItems(@RequestBody SelectedMenuItemsDTO selectedMenuItemsDTO) {
+    public List<MenuItemPriceDTO> setActiveMenuItems(@AuthenticationPrincipal User user, @RequestBody SelectedMenuItemsDTO selectedMenuItemsDTO) {
         LOG.info("Updating active menu items...");
         List<MenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
 

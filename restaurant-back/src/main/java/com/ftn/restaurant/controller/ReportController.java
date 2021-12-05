@@ -3,11 +3,14 @@ package com.ftn.restaurant.controller;
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
 import com.ftn.restaurant.dto.reports.PaychecksReportDTO;
 import com.ftn.restaurant.dto.reports.PreparationCostReportDTO;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.ReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,81 +31,81 @@ public class ReportController {
 
     @ResponseBody
     @GetMapping(path = "/monthly/incomeAndSold")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<IncomeReportDTO> incomeAndSoldMonthlyReport() {
+    public List<IncomeReportDTO> incomeAndSoldMonthlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Monthly income and sold items report...");
         return reportService.getIncomeAndSoldItemReport(0);
     }
 
     @ResponseBody
     @GetMapping(path = "/quarterly/incomeAndSold")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<IncomeReportDTO> incomeAndSoldQuarterlyReport() {
+    public List<IncomeReportDTO> incomeAndSoldQuarterlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Monthly income and sold items report...");
         return reportService.getIncomeAndSoldItemReport(1);
     }
 
     @ResponseBody
     @GetMapping(path = "/annual/incomeAndSold")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<IncomeReportDTO> incomeAndSoldAnnualReport() {
+    public List<IncomeReportDTO> incomeAndSoldAnnualReport(@AuthenticationPrincipal User user) {
         LOG.info("Monthly income and sold items report...");
         return reportService.getIncomeAndSoldItemReport(2);
     }
 
     @ResponseBody
     @GetMapping(path = "/monthly/preparationCosts")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostReportDTO> preparationCostsMonthlyReport() {
+    public List<PreparationCostReportDTO> preparationCostsMonthlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Monthly preparation costs report...");
         return reportService.getPreparationsCostReport(0);
     }
 
     @ResponseBody
     @GetMapping(path = "/quarterly/preparationCosts")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostReportDTO> preparationCostsQuarterlyReport() {
+    public List<PreparationCostReportDTO> preparationCostsQuarterlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Quarterly preparation costs report...");
         return reportService.getPreparationsCostReport(1);
     }
 
     @ResponseBody
     @GetMapping(path = "/annual/preparationCosts")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PreparationCostReportDTO> preparationCostsAnnualReport() {
+    public List<PreparationCostReportDTO> preparationCostsAnnualReport(@AuthenticationPrincipal User user) {
         LOG.info("Annual preparation costs report...");
         return reportService.getPreparationsCostReport(2);
     }
 
     @ResponseBody
     @GetMapping(path = "/monthly/paychecks")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PaychecksReportDTO> paychecksMonthlyReport() {
+    public List<PaychecksReportDTO> paychecksMonthlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Monthly paychecks report...");
         return reportService.getPaycheckReport(0);
     }
 
     @ResponseBody
     @GetMapping(path = "/quarterly/paychecks")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PaychecksReportDTO> paychecksQuarterlyReport() {
+    public List<PaychecksReportDTO> paychecksQuarterlyReport(@AuthenticationPrincipal User user) {
         LOG.info("Quarterly paychecks report...");
         return reportService.getPaycheckReport(1);
     }
 
     @ResponseBody
     @GetMapping(path = "/annual/paychecks")
-    //TODO @PreAuthorize("hasRole('X')") + @AuthenticationPrincipal Manager manager
+    @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<PaychecksReportDTO> paychecksAnnualReport() {
+    public List<PaychecksReportDTO> paychecksAnnualReport(@AuthenticationPrincipal User user) {
         LOG.info("Annual paychecks report...");
         return reportService.getPaycheckReport(2);
     }

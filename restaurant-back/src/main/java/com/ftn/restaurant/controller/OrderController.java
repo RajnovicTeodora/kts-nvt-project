@@ -2,11 +2,13 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.model.Order;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
-import org.hibernate.dialect.lock.PessimisticEntityLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +19,15 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping(value = "/createOrder", consumes = "application/json")
-    public ResponseEntity<OrderDTO> saveOrder(@RequestBody OrderDTO orderDTO) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<OrderDTO> saveOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
         Order order = orderService.createOrder(orderDTO);
         return new ResponseEntity<>(new OrderDTO(order), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/updateOrder", consumes = "application/json")
-    public ResponseEntity<OrderDTO> updateOrder(@RequestBody OrderDTO orderDTO) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<OrderDTO> updateOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
 
         Order order = orderService.findOne(orderDTO.getId());
         if (order == null) {
@@ -35,7 +39,8 @@ public class OrderController {
     }
 
     @PutMapping(value = "/pay", consumes = "application/json")
-    public ResponseEntity<Void> payOrder(@RequestBody OrderDTO orderDTO) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<Void> payOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
 
         Order order = orderService.findOne(orderDTO.getId());
         if (order == null) {

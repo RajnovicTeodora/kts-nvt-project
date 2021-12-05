@@ -2,12 +2,15 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
 import com.ftn.restaurant.model.RestaurantTable;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.service.TableService;
 import com.ftn.restaurant.service.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +24,8 @@ public class TableController {
     private WaiterService waiterService;
 
     @PutMapping(value = "/occupyTable", consumes = "application/json")
-    public ResponseEntity<Void> occupyTable(@RequestParam String waiterUsername, @RequestParam Long tableId) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<Void> occupyTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
         RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
         if (rt != null) {
             tableService.occupyTable(tableId);
@@ -32,7 +36,8 @@ public class TableController {
     }
 
     @PutMapping(value = "/clearTable", consumes = "application/json")
-    public ResponseEntity<Void> clearTable(@RequestParam String waiterUsername, @RequestParam Long tableId) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<Void> clearTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
         RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
         if (rt != null) {
             tableService.clearTable(tableId);
@@ -43,7 +48,8 @@ public class TableController {
     }
 
     @PutMapping(value = "/claimTable", consumes = "application/json")
-    public ResponseEntity<Void> claimTable(@RequestParam String waiterUsername, @RequestParam Long tableId) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<Void> claimTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
         RestaurantTable rt = tableService.findOneWithoutWaiter(tableId);
         Waiter waiter = waiterService.findByUsername(waiterUsername);
         if (rt != null && waiter!=null && rt.getWaiter()== null) {
@@ -55,7 +61,8 @@ public class TableController {
     }
 
     @PutMapping(value = "/leaveTable", consumes = "application/json")
-    public ResponseEntity<Void> leaveTable(@RequestParam String waiterUsername, @RequestParam Long tableId) {
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<Void> leaveTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
         RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
         if (rt != null ) {
             tableService.leaveTable(tableId);
@@ -67,13 +74,15 @@ public class TableController {
 
     @ResponseBody
     @PostMapping(path = "/addTable")
-    public RestaurantTableDTO addTable(@RequestBody RestaurantTableDTO tableDTO){
+    @PreAuthorize("hasRole('ADMIN')")
+    public RestaurantTableDTO addTable(@AuthenticationPrincipal User user, @RequestBody RestaurantTableDTO tableDTO){
         return new RestaurantTableDTO(tableService.addTable(tableDTO));
     }
 
     @ResponseBody
     @DeleteMapping(path = "/deleteTable/{id}")
-    public RestaurantTableDTO deleteTable(@PathVariable(value = "id") Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public RestaurantTableDTO deleteTable(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
         return new RestaurantTableDTO(tableService.deleteTable(id));
     }
 
