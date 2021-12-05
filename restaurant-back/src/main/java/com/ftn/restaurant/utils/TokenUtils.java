@@ -1,7 +1,11 @@
 package com.ftn.restaurant.utils;
 
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Optional;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -54,7 +58,7 @@ public class TokenUtils {
      * @param username Korisničko ime korisnika kojem se token izdaje
      * @return JWT token
      */
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role) {//
         //Potencijalno potrebno dodati vise uloga - moguce preko mape
         String token = Jwts.builder()
                 .claim("role", role)
@@ -111,16 +115,24 @@ public class TokenUtils {
      * @return JWT token ili null ukoliko se token ne nalazi u odgovarajućem zaglavlju HTTP zahteva.
      */
     public String getToken(HttpServletRequest request) {
-        String authHeader = getAuthHeaderFromHeader(request);
+        // String authHeader = getAuthHeaderFromHeader(request);
 
-        // JWT se prosledjuje kroz header 'Authorization' u formatu:
-        // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        // // JWT se prosledjuje kroz header 'Authorization' u formatu:
+        // // Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // preuzimamo samo token (vrednost tokena je nakon "Bearer " prefiksa)
-        }
+        // if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        //     return authHeader.substring(7); // preuzimamo samo token (vrednost tokena je nakon "Bearer " prefiksa)
+        // }
+        Cookie[] maybeCookies = getCookies(request);
+		String cookieName = "accessToken";
 
-        return null;
+		// JWT se prosledjuje kroz cookie u formatu:
+		// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+		return Optional.ofNullable(maybeCookies).flatMap(
+				cookies -> Arrays.stream(cookies).filter(cookie -> cookieName.equals(cookie.getName())).findAny())
+				.map(cookie -> cookie.getValue()).orElse(null);
+
+        //return null;
     }
 
     /**
@@ -277,5 +289,9 @@ public class TokenUtils {
     public String getAuthHeaderFromHeader(HttpServletRequest request) {
         return request.getHeader(AUTH_HEADER);
     }
+
+    public Cookie[] getCookies(HttpServletRequest request) {
+		return request.getCookies();
+	}
 
 }
