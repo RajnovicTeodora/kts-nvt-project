@@ -1,35 +1,21 @@
 package com.ftn.restaurant.model;
 
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Collection;
+import com.ftn.restaurant.dto.UserDTO;
+
 
 @Entity
 public class Admin extends User{
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+
+    public Admin() {
+        super();
+        this.setRole(new UserRole("ADMIN"));
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
+    public Admin(UserDTO userDTO){
+        super(userDTO.getUsername(), userDTO.getPassword(), false);
+        this.setRole(new UserRole("ADMIN"));
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
 }

@@ -11,13 +11,13 @@ public class EmployeeDTO {
     private String surname;
     private String image;
     private String telephone;
-    private int role;
+    private String role;
 
 
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(Long id, String username, String password, String name, String surname, String image, String telephone, int role) {
+    public EmployeeDTO(Long id, String username, String password, String name, String surname, String image, String telephone, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -25,7 +25,7 @@ public class EmployeeDTO {
         this.surname = surname;
         this.image = image;
         this.telephone = telephone;
-        this.role = role; // 0-manager, 1-head chef, 2-chef, 3-bartender, 4-waiter
+        this.role = role; 
     }
 
     public EmployeeDTO(Employee employee){
@@ -36,6 +36,7 @@ public class EmployeeDTO {
         this.surname = employee.getSurname();
         this.image = employee.getImage();
         this.telephone = employee.getTelephone();
+        this.role = employee.getRole().getName();
     }
 
     public Long getId() {
@@ -94,11 +95,11 @@ public class EmployeeDTO {
         this.telephone = telephone;
     }
 
-    public int getRole() {
+    public String getRole() {
         return this.role;
     }
 
-    public void setRole(int role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

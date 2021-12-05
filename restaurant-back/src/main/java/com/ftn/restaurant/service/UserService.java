@@ -2,10 +2,8 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.LoginDTO;
 import com.ftn.restaurant.dto.UserDTO;
-import com.ftn.restaurant.dto.UserTokenStateDTO;
 import com.ftn.restaurant.exception.BadUserRoleException;
 import com.ftn.restaurant.exception.UsernameExistsException;
-import com.ftn.restaurant.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,9 +48,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private TokenUtils tokenUtils;
-
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -68,19 +63,19 @@ public class UserService implements UserDetailsService {
 
         Employee newEmployee;
         switch(employeeDTO.getRole()){
-            case 0:
+            case "MANAGER":
                 newEmployee = new Manager(employeeDTO);
             break;
-            case 1:
+            case "HEAD_CHEF":
                 newEmployee = new HeadChef(employeeDTO); 
             break;
-            case 2:
+            case "CHEF":
                 newEmployee = new Chef(employeeDTO);
             break;
-            case 3:
+            case "BARTENDER":
                 newEmployee = new Bartender(employeeDTO);
             break;
-            case 4:
+            case "WAITER":
                 newEmployee = new Waiter(employeeDTO);
             break;
             default:
@@ -143,17 +138,12 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public UserTokenStateDTO login( LoginDTO loginRequest) {
+    public User login( LoginDTO loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername(), user.getRoles().get(0).getName().substring(5));
-        int expiresIn = tokenUtils.getExpiredIn();
-        if (!user.isDeleted()) {
-            return null;
-        }
-        return new UserTokenStateDTO(jwt, expiresIn);
+        return user;
     }
 
     public List<UserDTO> getAllUsers(){

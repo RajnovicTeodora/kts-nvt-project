@@ -9,7 +9,6 @@ import javax.persistence.OneToMany;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
 
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -37,36 +36,13 @@ public class Waiter extends Employee{
         this.tables = tables;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
-
     public Waiter(EmployeeDTO employeeDTO){
         super(employeeDTO);
+        this.setRole(new UserRole("WAITER"));
     }
 
     public Waiter() {
+        this.setRole(new UserRole("WAITER"));
     }
 
 

@@ -9,10 +9,12 @@ public class HeadChef extends Chef{
 
     public HeadChef(EmployeeDTO employeeDTO){
         super(employeeDTO);
+        this.setRole(new UserRole("HEAD_CHEF"));
     }
 
 
     public HeadChef() {
+        this.setRole(new UserRole("HEAD_CHEF"));
     }
 
 }

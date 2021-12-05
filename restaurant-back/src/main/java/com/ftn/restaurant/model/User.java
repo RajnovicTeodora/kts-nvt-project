@@ -1,12 +1,17 @@
 package com.ftn.restaurant.model;
 
-import com.ftn.restaurant.model.enums.UserRole;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import static javax.persistence.InheritanceType.JOINED;
 
 import javax.persistence.*;
-import java.util.List;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Table(name = "system_user")
@@ -30,11 +35,12 @@ public abstract class User implements UserDetails {
     @Column(name = "loggedFirstTime", unique=false, nullable=false)
     private boolean loggedFirstTime;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<UserRole> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    // @JoinTable(name = "user_role",
+    //         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+    //         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private UserRole role;
 
     public User() { }
 
@@ -52,6 +58,7 @@ public abstract class User implements UserDetails {
         this.password = password;
         this.deleted = deleted;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -85,12 +92,12 @@ public abstract class User implements UserDetails {
         return deleted;
     }
 
-    public List<UserRole> getRoles() {
-        return this.roles;
+    public UserRole getRole() {
+        return this.role;
     }
 
-    public void setRoles(List<UserRole> roles) {
-        this.roles = roles;
+    public void setRole(UserRole roles) {
+        this.role = roles;
     }
 
     public boolean isLoggedFirstTime() {
@@ -100,5 +107,40 @@ public abstract class User implements UserDetails {
     public void setLoggedFirstTime(boolean loggedFirstTime) {
         this.loggedFirstTime = loggedFirstTime;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<Authority> authorities = new ArrayList<Authority>();
+        authorities.add(new Authority("ROLE_USER"));
+        
+        if(!this.loggedFirstTime){
+            authorities.add(new Authority("ROLE_" + this.role.getName()));
+        }
+        return authorities;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
 }
 
