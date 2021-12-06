@@ -14,35 +14,35 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("classpath:application-test.properties")
 public class DrinkRepositoryTest_SQL {
-    @Autowired
-    private DrinkRepository drinkRepository;
 
-    @Test
-    public void findByNameAndDrinkTypeAndContainerTypeTest(){
-        Optional<Drink> maybeDrink = drinkRepository.findByNameAndDrinkTypeAndContainerType(
-                "Wine",
-                DrinkType.ALCOHOLIC,
-                ContainerType.BOTTLE);
+  @Autowired
+  private DrinkRepository drinkRepository;
 
-        Assert.assertTrue(maybeDrink.isPresent());
+  public DrinkRepositoryTest_SQL() {
+  }
 
-        maybeDrink = drinkRepository.findByNameAndDrinkTypeAndContainerType(
-                "aaaaa",
-                DrinkType.ALCOHOLIC,
-                ContainerType.BOTTLE);
+  @Test
+  public void testFindByNameAndDrinkTypeAndContainerType() {
+    Optional<Drink> found = this.drinkRepository.findByNameAndDrinkTypeAndContainerType("Sprite", DrinkType.COLD_DRINK,
+        ContainerType.BOTTLE);
+    Assert.assertTrue(found.isPresent());
+    Assert.assertEquals("Sprite", found.get().getName());
 
-        Assert.assertFalse(maybeDrink.isPresent());
+    found = drinkRepository.findByNameAndDrinkTypeAndContainerType(
+            "Non existent drink",
+            DrinkType.ALCOHOLIC,
+            ContainerType.BOTTLE);
 
-        drinkRepository.findByNameAndDrinkTypeAndContainerType(
-                "",
-                DrinkType.ALCOHOLIC,
-                ContainerType.BOTTLE);
-        Assert.assertFalse(maybeDrink.isPresent());
+    Assert.assertFalse(found.isPresent());
 
-    }
-
+    found = drinkRepository.findByNameAndDrinkTypeAndContainerType(
+            "",
+            DrinkType.ALCOHOLIC,
+            ContainerType.BOTTLE);
+    Assert.assertFalse(found.isPresent());
+  }
 
 }
