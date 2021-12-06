@@ -52,13 +52,7 @@ public class OrderService {
         o.setTotalPrice(ordDTO.getTotalPrice());
         save(o);
 
-        createAndAddOrderItems(ordDTO, o);
-
-        return o;
-    }
-
-    public void createAndAddOrderItems(OrderDTO orderDTO, Order o){
-        for (OrderItemDTO orderItemDto : orderDTO.getOrderItems()) {
+        for (OrderItemDTO orderItemDto : ordDTO.getOrderItems()) {
             OrderedItem orderItem = new OrderedItem();
 
             MenuItem menuItem = menuItemService.findOne(orderItemDto.getMenuItem().getId());
@@ -72,7 +66,10 @@ public class OrderService {
             orderedItemService.save(orderItem);
             o.addOrderedItem(orderItem);
         }
+
+        return o;
     }
+
 
     public Order updateOrder(OrderDTO ordDTO){
         Order order = findOne(ordDTO.getId());
@@ -96,5 +93,11 @@ public class OrderService {
         return order;
     }
 
+    public String finishAndBill(long id){
+        Order order = findOne(id);
+        //TODO
+
+        return "";
+    }
 
 }

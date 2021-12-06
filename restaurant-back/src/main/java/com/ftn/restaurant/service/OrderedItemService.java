@@ -55,20 +55,41 @@ public class OrderedItemService {
         return "Order doesn't exists";
     }
 
-    public OrderedItem findOne(Long id) {
-        return orderedItemRepository.findById(id).orElseGet(null);
-    }
-
     public OrderedItem save(OrderedItem orderItem) {
         return orderedItemRepository.save(orderItem);
     }
 
-    public void confirmPickup(Long id){
-        OrderedItem oi = findOne(id);
-        if(oi != null && oi.getStatus() == OrderedItemStatus.READY){
-            oi.setStatus(OrderedItemStatus.DELIVERED);
-            save(oi);
+    public OrderedItem findOne(long id){
+        Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
+        return item.orElse(null);
+    }
+
+    public String confirmPickup(long id){
+        Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
+
+        if(item.isPresent() && item.get().getStatus() == OrderedItemStatus.READY && !item.get().isDeleted()){
+            item.get().setStatus(OrderedItemStatus.DELIVERED);
+            orderedItemRepository.save(item.get());
+            return  "You delivered ordered item with id: "+ id;
         }
+        return "Ordered item doesn't exists";
+    }
+
+    public String deleteOrderedItem(long id){
+        Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
+
+        if(item.isPresent()){
+            if(item.get().isDeleted()){
+                return  "Already deleted ordered item with id: "+ id;
+            }
+            else if(item.get().getStatus() != OrderedItemStatus.ORDERED){
+                return  "Can't delete ordered item with id: "+ id;
+            }
+            item.get().setDeleted(true);
+            orderedItemRepository.save(item.get());
+            return  "You deleted ordered item with id: "+ id;
+        }
+        return "Ordered item doesn't exists";
     }
 
 }

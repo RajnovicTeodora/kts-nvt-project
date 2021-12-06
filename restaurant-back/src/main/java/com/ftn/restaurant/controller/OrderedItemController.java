@@ -35,25 +35,13 @@ public class OrderedItemController {
         return this.orderedItemService.finishOrderedItem(id);
     }
 
-    @GetMapping(value = "/confirmPickup")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> confirmPickup(@AuthenticationPrincipal User user, @RequestParam Long id){
-        orderedItemService.confirmPickup(id);
-        return new ResponseEntity<>( HttpStatus.OK);
-    }
+    @ResponseBody
+    @PostMapping(value = "/confirmPickup/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String confirmPickup(@PathVariable long id){ return orderedItemService.confirmPickup(id);   }
 
-    @PutMapping(value = "/setDeleted/{id}", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> deleteOrderedItem(@AuthenticationPrincipal User user, @PathVariable Long id) {
-
-        OrderedItem orderedItem = orderedItemService.findOne(id);
-
-        if (orderedItem != null) {
-            orderedItem.setDeleted(true);   //TODO: remove from order?
-            orderedItemService.save(orderedItem);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    @ResponseBody
+    @PostMapping(value = "/setDeleted/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String deleteOrderedItem( @PathVariable long id) { return orderedItemService.deleteOrderedItem(id);  }
 }

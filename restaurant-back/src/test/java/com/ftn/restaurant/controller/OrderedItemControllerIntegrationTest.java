@@ -78,5 +78,61 @@ public class OrderedItemControllerIntegrationTest {
         Assert.assertEquals("You can't finish order if it is not in status in progres.", message);
     }
 
+    @Test
+    public void confirmPickupTest(){
+        ResponseEntity<String> responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/confirmPickup/2", 2,String.class);
 
+        String message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("You delivered ordered item with id: 2", message);
+
+        //////////////////
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/confirmPickup/-1", -1,String.class);
+
+        message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("Ordered item doesn't exists", message);
+    }
+
+    @Test
+    public void deleteOrderedItemTest(){
+        ResponseEntity<String> responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/setDeleted/7", 7,String.class);
+
+        String message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("You deleted ordered item with id: 7", message);
+
+        //////////////////
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/setDeleted/-1", -1,String.class);
+
+        message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("Ordered item doesn't exists", message);
+
+        //////////////////
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/setDeleted/8", 8,String.class);
+
+        message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("Already deleted ordered item with id: 8", message);
+
+        //////////////////
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/setDeleted/6", 6,String.class);
+
+        message = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals("Can't delete ordered item with id: 6", message);
+    }
 }
