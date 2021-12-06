@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/api/orderedItem")
 public class OrderedItemController {
-
+    @Autowired
     private OrderedItemService orderedItemService;
 
     @Autowired

@@ -17,7 +17,7 @@ public class Waiter extends Employee{
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<RestaurantTable> tables;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL)
     private List<Notification> notifications;
 
     public List<Notification> getNotifications() {

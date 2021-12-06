@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public class OrderedItemService {
-
+    @Autowired
     private OrderedItemRepository orderedItemRepository;
 
     @Autowired
@@ -20,7 +20,12 @@ public class OrderedItemService {
     }
 
     public String acceptOrderedItem(long id) { //setovati i uloge todo
-        Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
+        for(OrderedItem it: this.orderedItemRepository.findAll()){
+            System.out.println(it.getId());
+            System.out.println(it.getStatus());
+        }
+
+        Optional<OrderedItem> item = this.orderedItemRepository.findWithId(id);
         if (item.isPresent()){
           if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){
               return "You can't accept order if it is not in status ordered.";

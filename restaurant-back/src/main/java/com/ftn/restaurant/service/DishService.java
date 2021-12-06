@@ -18,6 +18,7 @@ import java.util.Optional;
 @Service
 public class DishService {
 
+    @Autowired
     private DishRepository dishRepository;
 
     @Autowired
@@ -26,6 +27,9 @@ public class DishService {
     }
 
     public Dish addDish(NewDishDTO dishDTO) {
+
+        if(dishDTO == null)
+            throw new ForbiddenException("Dish must have some values.");
 
         if (dishDTO.getName().isEmpty() || dishDTO.getImage().isEmpty())
             throw new ForbiddenException("Dish must have a name and image");

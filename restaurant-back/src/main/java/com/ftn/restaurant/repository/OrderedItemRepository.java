@@ -5,11 +5,14 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+@Repository
 public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> {
+
 
     Optional<OrderedItem> findById(@Param("id") long id);
 
@@ -23,4 +26,7 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
             "(o.date between :dateFrom AND :dateTo) AND" +
             "((o.date between mip.dateFrom AND mip.dateTo) OR (o.date >= mip.dateFrom AND mip.dateTo IS NULL))")
     double sumPreparationCostsByOrderedItemStatusNotOrderedAndOrderDateBetween(@Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
+
+    @Query("SELECT i from OrderedItem i where i.id = :id")
+    Optional<OrderedItem> findWithId(long id);
 }

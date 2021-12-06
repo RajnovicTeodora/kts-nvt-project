@@ -1,17 +1,16 @@
 package com.ftn.restaurant.model;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.ftn.restaurant.model.enums.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 import static javax.persistence.InheritanceType.JOINED;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "system_user")
@@ -35,7 +34,8 @@ public abstract class User implements UserDetails {
     @Column(name = "loggedFirstTime", unique=false, nullable=false)
     private boolean loggedFirstTime;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     // @JoinTable(name = "user_role",
     //         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -112,7 +112,7 @@ public abstract class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList<Authority> authorities = new ArrayList<Authority>();
         authorities.add(new Authority("ROLE_USER"));
-        
+
         if(!this.loggedFirstTime){
             authorities.add(new Authority("ROLE_" + this.role.getName()));
         }

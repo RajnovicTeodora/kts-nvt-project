@@ -36,9 +36,9 @@ public class DrinkService {
     }
 
     public DrinkDTO getDrink(long id) {
-        Drink drink = this.drinkRepository.getById(id);
-        if(drink != null){
-            DrinkDTO dto = new DrinkDTO(drink);
+        Optional<Drink> drink = this.drinkRepository.findById(id);
+        if(drink.isPresent()){
+            DrinkDTO dto = new DrinkDTO(drink.get());
             return dto;
         }
         return null;
@@ -52,7 +52,6 @@ public class DrinkService {
             Ingredient newIngredient = new Ingredient(ingredient);
             drink.getIngredients().add(newIngredient);
         }
-
         return drinkRepository.save(drink);
     }
 

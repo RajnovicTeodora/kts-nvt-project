@@ -22,10 +22,12 @@ public class NewDrinkDTO {
         this.containerType = containerType;
     }
 
-    public NewDrinkDTO(String name, String image, ArrayList<IngredientDTO> ingredients) {
+    public NewDrinkDTO(String name, String image, DrinkType type, ContainerType containerType, ArrayList<IngredientDTO> ingredients) {
         this.name = name;
         this.image = image;
         this.ingredients = ingredients;
+        this.type = type;
+        this.containerType = containerType;
     }
 
     public String getName() {

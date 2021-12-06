@@ -1,24 +1,15 @@
-INSERT INTO role_table (id, name) VALUES (1, 'ADMIN'); 
-INSERT INTO role_table (id, name) VALUES (2, 'MANAGER'); 
-INSERT INTO role_table (id, name) VALUES (3, 'HEAD_CHEF'); 
-INSERT INTO role_table (id, name) VALUES (4, 'CHEF'); 
-INSERT INTO role_table (id, name) VALUES (5, 'BARTENDER'); 
-INSERT INTO role_table (id, name) VALUES (6, 'WAITER'); 
-
--- LOZINKE SVIH KORISNIKA SU 'test' :)
-
-insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('admin', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False', 1);
+insert into system_user (username, password, deleted, loggedFirstTime) values ('admin', 'admin', 'False', 'True');
 insert into admin (id) values (1);
 
-insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('chef', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False', 4);
+insert into system_user (username, password, deleted, loggedFirstTime) values ('chef', 'chef', 'False', 'False');
 insert into employees (id, name, surname, image, telephone) values (2, 'Chef', 'Chefic', 'nesto', '123456');
 insert into chef (id) values (2);
 
-insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('manager', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False', 2);
+insert into system_user (username, password, deleted, loggedFirstTime) values ('manager', 'manager', 'False', 'False');
 insert into employees (id, name, surname, image, telephone) values (3, 'Manager', 'Manageric', 'nestodr', '654321');
 insert into manager (id) values (3);
 
-insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('waiter', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False',  6);
+insert into system_user (username, password, deleted, loggedFirstTime) values ('waiter', 'waiter', 'False', 'False');
 insert into employees (id, name, surname, image, telephone) values (4, 'Waiter', 'Waiterric', 'nestodrr', '123654');
 insert into waiter (id) values (4);
 
@@ -37,7 +28,7 @@ INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Chicken soup', '
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Sprite', 'todo',            true, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Nes Coffee', 'todo',        false, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Hot chocolate', 'todo',     true, true);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'todo',              false, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Ovdeeeee', 'todo',              false, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'todo',              true, false);
 
 INSERT INTO dish(id, dish_type) VALUES (1, 'MAIN_DISH');
@@ -67,20 +58,17 @@ INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, 
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2021-06-20', null, 10, 15, true, 9);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2021-06-20', null, 10, 15, false, 11);
 
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4);
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4);
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-11', 'x', '18:18', 4);
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-22', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-22', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-11', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-08-11', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-08-11', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-12-11', 'x', '18:18');
 
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 2, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('DELIVERED', 1, 5, 3, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 4, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 5, false, 2, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 6, false, 2, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 5, 1, false, 2, 4);
-
-
-
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 2, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('DELIVERED', 1, 5, 3, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 4, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 5, false, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 6, false, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 5, 1, false, 2);

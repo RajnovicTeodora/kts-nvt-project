@@ -41,7 +41,7 @@ public class OrderedItem {
     private boolean deleted;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "employ_id", nullable = false) todo proveri
+    //@JoinColumn(name = "employ_id", nullable = false) todo proveri, i dodaj u servis
     private Employee whoPreapiring;
 
     @ManyToOne(fetch=FetchType.EAGER)

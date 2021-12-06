@@ -13,6 +13,8 @@ public class DrinkDTO extends MenuItemDTO {
         this.container = drink.getContainerType().toString();
     }
 
+    public DrinkDTO() {super();}
+
     public String getDrinkType() {
         return drinkType;
     }
