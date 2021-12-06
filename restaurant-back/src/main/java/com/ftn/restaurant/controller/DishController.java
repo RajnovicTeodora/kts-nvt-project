@@ -23,9 +23,9 @@ public class DishController {
 
     @ResponseBody
     @PostMapping(path = "/addDish")
-    @PreAuthorize("hasAnyRole('MANAGER', 'HEAD_CHEF')")
+    //@PreAuthorize("hasAnyRole('MANAGER', 'HEAD_CHEF')")//@AuthenticationPrincipal User user,
     @ResponseStatus(HttpStatus.CREATED)
-    public DishDTO addDish(@AuthenticationPrincipal User user, @RequestBody NewDishDTO dishDTO){
+    public DishDTO addDish( @RequestBody NewDishDTO dishDTO){
         return new DishDTO(dishService.addDish(dishDTO));
     }
 }

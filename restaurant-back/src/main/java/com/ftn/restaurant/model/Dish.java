@@ -20,6 +20,11 @@ public class Dish extends MenuItem{
 
     public Dish(){}
 
+    public Dish(String name, String image, boolean b, boolean b1, ArrayList<MenuItemPrice> menuItemPrices, ArrayList<Ingredient> ingredients, DishType type) {
+        super(name, image, b, b1, menuItemPrices, ingredients);
+        this.dishType = type;
+    }
+
     public DishType getDishType() {
         return dishType;
     }

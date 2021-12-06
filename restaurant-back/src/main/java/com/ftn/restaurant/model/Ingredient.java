@@ -29,6 +29,11 @@ public class Ingredient {
     public Ingredient() {
     }
 
+    public Ingredient(String name, boolean b) {
+        this.name = name;
+        this.isAlergen = b;
+    }
+
     public Long getId() {
         return id;
     }

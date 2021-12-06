@@ -57,9 +57,9 @@ public class DrinkController {
 
     @ResponseBody
     @PostMapping(path = "/addDrink")
-    @PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public DrinkDTO addDrink(@AuthenticationPrincipal User user, @RequestBody NewDrinkDTO drinkDTO){
+    //@PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
+    @ResponseStatus(HttpStatus.CREATED)//@AuthenticationPrincipal User user,
+    public DrinkDTO addDrink( @RequestBody NewDrinkDTO drinkDTO){
         return new DrinkDTO(drinkService.addDrinkByBartender(drinkDTO)); 
     }
 
