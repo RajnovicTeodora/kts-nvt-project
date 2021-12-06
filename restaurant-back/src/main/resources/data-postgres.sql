@@ -1,9 +1,9 @@
-INSERT INTO role_table (id, name) VALUES (1, 'ADMIN'); 
-INSERT INTO role_table (id, name) VALUES (2, 'MANAGER'); 
-INSERT INTO role_table (id, name) VALUES (3, 'HEAD_CHEF'); 
-INSERT INTO role_table (id, name) VALUES (4, 'CHEF'); 
-INSERT INTO role_table (id, name) VALUES (5, 'BARTENDER'); 
-INSERT INTO role_table (id, name) VALUES (6, 'WAITER'); 
+INSERT INTO role_table (id, name) VALUES (1, 'ADMIN');
+INSERT INTO role_table (id, name) VALUES (2, 'MANAGER');
+INSERT INTO role_table (id, name) VALUES (3, 'HEAD_CHEF');
+INSERT INTO role_table (id, name) VALUES (4, 'CHEF');
+INSERT INTO role_table (id, name) VALUES (5, 'BARTENDER');
+INSERT INTO role_table (id, name) VALUES (6, 'WAITER');
 
 -- LOZINKE SVIH KORISNIKA SU 'test' :)
 
@@ -81,6 +81,5 @@ INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_i
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 5, false, 2, 4);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 6, false, 2, 4);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 5, 1, false, 2, 4);
-
 
 
