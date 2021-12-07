@@ -1,5 +1,8 @@
 package com.ftn.restaurant.repository;
 
+import static com.ftn.restaurant.constants.MenuItemPriceConstants.*;
+import static com.ftn.restaurant.constants.DateTimeConstants.*;
+
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.MenuItemPrice;
 import org.junit.Before;
@@ -15,6 +18,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -30,13 +34,14 @@ public class MenuItemPriceRepositoryTest {
     @Autowired
     private MenuItemRepository menuItemRepository;
 
-    //TODO: add menu item without any prices, replace with constants
+    //TODO: add menu item without any prices
     @Before
     public void setUp() {
-        MenuItemPrice menuItemPrice1 = new MenuItemPrice(LocalDate.now().minusDays(2), LocalDate.now().minusDays(1), 5, false, 3.5, null);
-        MenuItemPrice menuItemPrice2 = new MenuItemPrice(LocalDate.now(), null, 15, true, 5.5, null);
-        menuItemPrice1.setItem(menuItemRepository.findByIdAndDeletedFalse(2).get());
-        menuItemPrice2.setItem(menuItemRepository.findByIdAndDeletedFalse(2).get());
+        MenuItemPrice menuItemPrice1 = new MenuItemPrice(TWO_DAYS_AGO, YESTERDAY, 5, false, 3.5, null);
+        MenuItemPrice menuItemPrice2 = new MenuItemPrice(TODAY, null, 15, true, 5.5, null);
+
+        menuItemPrice1.setItem(menuItemRepository.findByIdAndDeletedFalse(DB_MENU_ITEM_ID).get());
+        menuItemPrice2.setItem(menuItemRepository.findByIdAndDeletedFalse(DB_MENU_ITEM_ID).get());
 
         entityManager.persist(menuItemPrice1);
         entityManager.persist(menuItemPrice2);
