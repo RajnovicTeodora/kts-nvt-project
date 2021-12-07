@@ -1,9 +1,9 @@
-INSERT INTO role_table (id, name) VALUES (1, 'ADMIN'); 
-INSERT INTO role_table (id, name) VALUES (2, 'MANAGER'); 
-INSERT INTO role_table (id, name) VALUES (3, 'HEAD_CHEF'); 
-INSERT INTO role_table (id, name) VALUES (4, 'CHEF'); 
-INSERT INTO role_table (id, name) VALUES (5, 'BARTENDER'); 
-INSERT INTO role_table (id, name) VALUES (6, 'WAITER'); 
+INSERT INTO role_table (id, name) VALUES (1, 'ADMIN');
+INSERT INTO role_table (id, name) VALUES (2, 'MANAGER');
+INSERT INTO role_table (id, name) VALUES (3, 'HEAD_CHEF');
+INSERT INTO role_table (id, name) VALUES (4, 'CHEF');
+INSERT INTO role_table (id, name) VALUES (5, 'BARTENDER');
+INSERT INTO role_table (id, name) VALUES (6, 'WAITER');
 
 -- LOZINKE SVIH KORISNIKA SU 'test' :)
 

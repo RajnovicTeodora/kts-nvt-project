@@ -8,7 +8,9 @@ import com.ftn.restaurant.model.RestaurantTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface TableRepository extends JpaRepository<RestaurantTable, Long> {
 
     @Query("select o from RestaurantTable o where o.id = ?1")

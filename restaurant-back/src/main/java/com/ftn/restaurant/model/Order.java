@@ -37,6 +37,19 @@ public class Order {
     @ManyToOne(fetch=FetchType.EAGER, optional = true)
     private Waiter waiter;
 
+    public Order() {
+    }
+
+    public Order(boolean isPaid, double totalPrice, LocalDate date, String note, LocalTime time, List<OrderedItem> orderedItems, Waiter waiter) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.note = note;
+        this.time = time;
+        this.orderedItems = orderedItems;
+        this.waiter = waiter;
+    }
+
     public void addOrderedItem(OrderedItem orderItem) {
         if (orderItem == null)
             return;

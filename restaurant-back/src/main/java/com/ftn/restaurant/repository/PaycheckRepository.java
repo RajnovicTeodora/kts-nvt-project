@@ -4,10 +4,11 @@ import com.ftn.restaurant.model.Paychecks;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
+@Repository
 public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
 
     @Query("SELECT distinct  p FROM Paychecks p WHERE (p.employee.username = :username AND p.employee.deleted = false)" +
