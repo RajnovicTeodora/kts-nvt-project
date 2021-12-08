@@ -55,6 +55,7 @@ public class MenuItemPriceService {
             menuItemPriceRepository.save(newPrice);
             return newPrice;
         } else {
+            oldPrice.getItem().setPriceList(menuItemPriceRepository.findByItemId(maybeItem.get().getId()));
             LocalDate dateFrom = oldPrice.getDateFrom();
 
             if (!dateFrom.equals(LocalDate.now())) {
