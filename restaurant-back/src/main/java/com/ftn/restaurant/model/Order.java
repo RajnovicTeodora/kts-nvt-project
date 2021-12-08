@@ -50,6 +50,15 @@ public class Order {
         this.waiter = waiter;
     }
 
+    public Order(boolean isPaid, double totalPrice, LocalDate date, String note, LocalTime time, List<OrderedItem> orderedItems) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.note = note;
+        this.time = time;
+        this.orderedItems = orderedItems;
+    }
+
     public void addOrderedItem(OrderedItem orderItem) {
         if (orderItem == null)
             return;

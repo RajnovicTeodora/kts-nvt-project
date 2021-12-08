@@ -2,6 +2,7 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.repository.DrinkRepository;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -21,7 +23,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class DrinkServiceIntegrationTest {
 
     @Autowired
@@ -32,7 +34,7 @@ public class DrinkServiceIntegrationTest {
         NewDrinkDTO newDrinkDTO = NEW_DRINK_DTO_1;
         Drink created = drinkService.addDrinkByBartender(newDrinkDTO);
 
-
+        assertThrows(DrinkExistsException.class, () -> {drinkService.addDrinkByBartender(newDrinkDTO);});
         assertEquals(newDrinkDTO.getName(), created.getName());
     }
     @Test
