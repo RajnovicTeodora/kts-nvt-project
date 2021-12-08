@@ -34,6 +34,15 @@ public class DrinkControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(NEW_DRINK_DTO_1.getName(), drink.getName());
 
+
+        responseEntity = restTemplate
+                .postForEntity("/api/drink/addDrink", NEW_DRINK_DTO_1, DrinkDTO.class);
+
+        drink = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        Assert.assertNull(drink.getName());
+
     }
 
     @Test

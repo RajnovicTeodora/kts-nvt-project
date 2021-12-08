@@ -2,6 +2,7 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.repository.DrinkRepository;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class DrinkServiceIntegrationTest {
         NewDrinkDTO newDrinkDTO = NEW_DRINK_DTO_1;
         Drink created = drinkService.addDrinkByBartender(newDrinkDTO);
 
-
+        assertThrows(DrinkExistsException.class, () -> {drinkService.addDrinkByBartender(newDrinkDTO);});
         assertEquals(newDrinkDTO.getName(), created.getName());
     }
     @Test

@@ -34,6 +34,15 @@ public class DishControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(NEW_DISH_DTO_1.getName(), dish.getName());
 
+
+        responseEntity = restTemplate
+                .postForEntity("/api/dish/addDish", NEW_DISH_DTO_1, DishDTO.class);
+
+        dish = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        Assert.assertNull(dish.getName());
+
     }
 
     @Test

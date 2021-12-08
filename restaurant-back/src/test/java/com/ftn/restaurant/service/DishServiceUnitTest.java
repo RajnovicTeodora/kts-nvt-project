@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static com.ftn.restaurant.constants.DishConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
 import static org.mockito.BDDMockito.given;
