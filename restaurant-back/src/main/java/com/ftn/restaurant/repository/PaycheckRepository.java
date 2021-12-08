@@ -13,7 +13,7 @@ public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
 
     @Query("SELECT distinct  p FROM Paychecks p WHERE (p.employee.username = :username AND p.employee.deleted = false)" +
             " AND p.dateTo IS NULL")
-    Optional<Paychecks> findByEmployeeUsernameAndEmployeeDeletedAndDateToIsNull(
+    Optional<Paychecks> findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(
             @Param("username") String username);
 
     @Query("SELECT COALESCE(SUM(p.paycheck), 0) FROM Paychecks p WHERE " +
@@ -22,5 +22,4 @@ public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
 
     Optional<Paychecks> findTopByOrderByDateFromAsc();
 
-    Optional<Paychecks> findTopByOrderByDateFromDesc();
 }

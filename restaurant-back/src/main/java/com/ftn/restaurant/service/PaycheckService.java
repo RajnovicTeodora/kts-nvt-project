@@ -27,7 +27,7 @@ public class PaycheckService {
 
     public Employee updatePaycheck(UpdatePaycheckDTO updatePaycheckDTO) {
         Optional<Paychecks> maybeEmployeePaycheck = paycheckRepository
-                .findByEmployeeUsernameAndEmployeeDeletedAndDateToIsNull(updatePaycheckDTO.getUsername());
+                .findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(updatePaycheckDTO.getUsername());
 
         if (updatePaycheckDTO.getNewSalary() <= 0)
             throw new ForbiddenException("New salary must be a positive value");
