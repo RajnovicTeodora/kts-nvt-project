@@ -97,8 +97,11 @@ public class TableService {
 
     public RestaurantTable deleteTable(Long tableId){
         Optional<RestaurantTable> optTable = tableRepository.findById(tableId);
-        if(!optTable.isPresent()) 
-            throw new TableNotFoundException("Table not found!");
+        if(!optTable.isPresent()) {
+            // throw new TableNotFoundException("Table not found!");
+            return null;
+        }
+            
         tableRepository.delete(optTable.get());
         return optTable.get();
     }

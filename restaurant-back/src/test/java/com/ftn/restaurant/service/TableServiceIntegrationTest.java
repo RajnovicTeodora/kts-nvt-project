@@ -1,5 +1,7 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.constants.NewTableDTOConstants;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,5 +44,17 @@ public class TableServiceIntegrationTest {
         Assert.assertEquals("Successfully left table with id: 6",tableService.leaveTable("waiter", 6));
         Assert.assertEquals("Can't leave table while its occupied",tableService.leaveTable("waiter", 2));
         Assert.assertEquals("Couldn't find table with id: 1000",tableService.leaveTable("waiter", 1000));
+    }
+
+    @Test
+    public void addTableTest() {
+        Assert.assertEquals(20, tableService.addTable(NewTableDTOConstants.NEW_TABLE_1).getPositionX());
+        Assert.assertNull(tableService.addTable(NewTableDTOConstants.NEW_TABLE_1));
+    }
+
+    @Test
+    public void deleteTableTest() {
+        Assert.assertEquals(5, tableService.deleteTable(1L).getPositionX());
+       Assert.assertNull(tableService.deleteTable(88L));
     }
 }
