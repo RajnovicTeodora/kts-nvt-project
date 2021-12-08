@@ -27,8 +27,12 @@ public class MenuItemService {
         this.drinkRepository = drinkRepository;
     }
 
-    public MenuItem findOne(Long id) {
-        return menuItemRepository.findById(id).orElseGet(null);
+    public Optional<MenuItem> findByMenuItemId(long id) {
+        return menuItemRepository.findByMenuItemId(id);
+    }
+
+    public Optional<MenuItem> findByMenuItemNameAndImage(String name, String img) {
+        return menuItemRepository.findByMenuItemNameAndImage(name, img);
     }
 
     public MenuItem deleteMenuItem(Long id) {

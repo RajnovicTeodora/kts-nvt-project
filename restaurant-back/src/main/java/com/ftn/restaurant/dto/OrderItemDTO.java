@@ -12,8 +12,9 @@ import java.util.List;
 public class OrderItemDTO {
 
     private Long id;
-    private OrderedItemStatus status;
+    private String status;
     private int priority;
+    private int quantity;
     private boolean deleted;
     private MenuItemDTO menuItem;
     private List<IngredientDTO> activeIngredients;
@@ -23,11 +24,30 @@ public class OrderItemDTO {
 
     public OrderItemDTO(OrderedItem oi){
         this.id = oi.getId();
-        this.status = oi.getStatus();
+        this.status = oi.getStatus().toString();
         this.priority = oi.getPriority();
+        this.quantity = oi.getQuantity();
         this.deleted = oi.isDeleted();
         this.menuItem = new MenuItemDTO(oi.getMenuItem());
         fillActiveIngredients(oi.getActiveIngredients());
+    }
+
+    public OrderItemDTO(String status, int priority, int quantity, boolean deleted, MenuItemDTO menuItem, List<IngredientDTO> activeIngredients) {
+        this.status = status;
+        this.priority = priority;
+        this.quantity = quantity;
+        this.deleted = deleted;
+        this.menuItem = menuItem;
+        this.activeIngredients = activeIngredients;
+    }
+
+    public OrderItemDTO(OrderedItemStatus status, int priority, int quantity, boolean deleted, MenuItemDTO menuItem, List<IngredientDTO> activeIngredients) {
+        this.status = status.toString();
+        this.priority = priority;
+        this.quantity = quantity;
+        this.deleted = deleted;
+        this.menuItem = menuItem;
+        this.activeIngredients = activeIngredients;
     }
 
     private void fillActiveIngredients(List<Ingredient> ingredients) {
@@ -46,11 +66,11 @@ public class OrderItemDTO {
     }
 
     public OrderedItemStatus getStatus() {
-        return status;
+        return OrderedItemStatus.valueOf(status);
     }
 
     public void setStatus(OrderedItemStatus status) {
-        this.status = status;
+        this.status = status.toString();
     }
 
     public int getPriority() {
@@ -83,5 +103,13 @@ public class OrderItemDTO {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

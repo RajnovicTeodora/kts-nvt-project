@@ -1,5 +1,7 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.OrderDTO;
+import com.ftn.restaurant.dto.OrderItemDTO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static com.ftn.restaurant.constants.OrderDTOConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -133,6 +137,50 @@ public class OrderedItemControllerIntegrationTest {
         message = responseEntity.getBody();
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Can't delete ordered item with id: 6", message);
+        Assert.assertEquals("Can't delete ordered item with status!=ORDERED and id: 6", message);
+    }
+
+    @Test
+    public void updateOrderedItemTest(){
+        ResponseEntity<Object> responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/updateOrderedItem/8", ORDER_ITEM_DTO_1, Object.class);
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+        //"Can't change order that is already paid."
+        ////////////////////////////////////////////////////
+
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/updateOrderedItem/5", ORDER_ITEM_DTO_1, Object.class);
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+        //"Can't change ordered item in preparation."
+        ///////////////////////////////////////////////////
+
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/updateOrderedItem/9", ORDER_ITEM_DTO_1, Object.class);
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        //Successful
+    }
+
+    @Test
+    public void addOrderItemToOrderTest(){
+        ResponseEntity<OrderItemDTO> responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/addOrderItemToOrder/7", ORDER_ITEM_DTO_1, OrderItemDTO.class);
+
+        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+
+        //Successful
+        ////////////////////////////////////////////////////
+
+        responseEntity = restTemplate
+                .postForEntity("/api/orderedItem/addOrderItemToOrder/6", ORDER_ITEM_DTO_1, OrderItemDTO.class);
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+
+        //"Can't add order items to order that is already paid."
     }
 }

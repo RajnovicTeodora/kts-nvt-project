@@ -24,6 +24,11 @@ public class MenuItemDTO {
         this.image = image;
     }
 
+    public MenuItemDTO(String name, String image) {
+        this.name = name;
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }

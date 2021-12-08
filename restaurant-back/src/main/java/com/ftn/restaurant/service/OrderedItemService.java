@@ -1,5 +1,8 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.dto.IngredientDTO;
+import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
@@ -7,12 +10,23 @@ import com.ftn.restaurant.repository.OrderedItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class OrderedItemService {
     @Autowired
     private OrderedItemRepository orderedItemRepository;
+
+    @Autowired
+    private IngredientService ingredientService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private MenuItemService menuItemService;
 
     @Autowired
     public OrderedItemService(OrderedItemRepository orderedItemRepository) {
@@ -64,6 +78,14 @@ public class OrderedItemService {
         return item.orElse(null);
     }
 
+    public List<OrderedItem> findAllByOrderId(long id){
+        return orderedItemRepository.findAllByOrderId(id);
+    }
+
+    public Order findOrderByOrderedItemId(long id){
+        return orderedItemRepository.findOrderByOrderedItemId(id);
+    }
+
     public String confirmPickup(long id){
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
 
@@ -90,6 +112,51 @@ public class OrderedItemService {
             return  "You deleted ordered item with id: "+ id;
         }
         return "Ordered item doesn't exists";
+    }
+
+    public OrderedItem updateOrderedItem(long id, OrderItemDTO orderItemDTO){
+        Order order = findOrderByOrderedItemId(id);
+        if(order.isPaid()){
+            throw new ForbiddenException("Can't change order that is already paid.");
+        }
+        OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
+        if (orderItemDTO.isDeleted() || orderItemDTO.getStatus() != OrderedItemStatus.ORDERED) {
+            throw new ForbiddenException("Can't change ordered item in preparation.");
+        }
+        //TODO allow menuitem change?
+        orderItem.setQuantity(orderItemDTO.getQuantity());
+        orderItem.setPriority(orderItemDTO.getPriority());
+        orderItem.setActiveIngredients(new ArrayList<>());
+        for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
+            Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
+            i.ifPresent(orderItem::addActiveIngredients);
+        }
+        save(orderItem);
+        return orderItem;
+    }
+
+    public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
+        Order order = orderService.findOneWithOrderItems(id);
+        if(order.isPaid()){
+            throw new ForbiddenException("Can't add order items to order that is already paid.");
+        }
+        OrderedItem orderItem = new OrderedItem();
+        orderItem.setQuantity(orderItemDTO.getQuantity());
+        orderItem.setPriority(orderItemDTO.getPriority());
+        Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDTO.getMenuItem().getName(), orderItemDTO.getMenuItem().getImage());
+        menuItem.ifPresent(orderItem::setMenuItem);
+        orderItem.setDeleted(false);
+        orderItem.setStatus(OrderedItemStatus.ORDERED);
+        orderItem.setActiveIngredients(new ArrayList<>());
+        for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
+            Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
+            orderItem.addActiveIngredients(i.get());
+        }
+        order.addOrderedItem(orderItem);
+        orderService.save(order);
+        save(orderItem);
+
+        return orderItem;
     }
 
 }

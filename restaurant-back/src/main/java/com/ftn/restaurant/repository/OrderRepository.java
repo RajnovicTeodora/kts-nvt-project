@@ -15,7 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     public Order findByOrderId(Long id);
 
     @Query("select ord from Order ord left join fetch ord.orderedItems e where ord.id =?1")
-    public Order findOneWithOrderItems(Long id);
+    Order findOneWithOrderItems(long id);
 
     Optional<Order> findTopByIsPaidTrueOrderByDateAsc();
 

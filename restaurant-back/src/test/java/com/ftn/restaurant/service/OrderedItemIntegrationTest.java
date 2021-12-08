@@ -8,11 +8,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class OrderedItemIntegrationTest {
     @Autowired
     private OrderedItemService orderedItemService;
@@ -42,7 +43,7 @@ public class OrderedItemIntegrationTest {
     @Test
     public void confirmPickupTest(){
         Assert.assertEquals("You delivered ordered item with id: 2",orderedItemService.confirmPickup(2));
-        Assert.assertEquals("Ordered item doesn't exists",orderedItemService.finishOrderedItem(10000000));
+        Assert.assertEquals("Ordered item doesn't exists",orderedItemService.confirmPickup(10000000));
     }
 
     @Test
