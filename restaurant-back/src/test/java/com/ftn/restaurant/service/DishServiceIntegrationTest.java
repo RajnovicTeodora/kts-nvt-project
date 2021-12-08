@@ -7,13 +7,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.ftn.restaurant.constants.NewDishDTOConstants.NEW_DISH_DTO_1;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class DishServiceIntegrationTest {
 
     @Autowired

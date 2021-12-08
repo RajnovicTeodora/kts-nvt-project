@@ -17,7 +17,7 @@ import static com.ftn.restaurant.constants.NewDrinkDTOConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class DrinkControllerIntegrationTest {
 
     @Autowired
