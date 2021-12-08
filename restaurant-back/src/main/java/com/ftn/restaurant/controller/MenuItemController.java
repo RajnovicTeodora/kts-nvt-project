@@ -2,6 +2,7 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.*;
 import com.ftn.restaurant.model.User;
+import com.ftn.restaurant.service.DrinkService;
 import com.ftn.restaurant.service.MenuItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +19,19 @@ public class MenuItemController {
     private static final Logger LOG = LoggerFactory.getLogger(MenuItemController.class);
 
     private final MenuItemService menuItemService;
+    private final DrinkService drinkService;
 
     @Autowired
-    public MenuItemController(MenuItemService menuItemService) {
+    public MenuItemController(MenuItemService menuItemService, DrinkService drinkService) {
         this.menuItemService = menuItemService;
+        this.drinkService = drinkService;
     }
 
     @ResponseBody
     @GetMapping(path = "/deleteMenuItem")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public MenuItemDTO deleteMenuItem(@AuthenticationPrincipal User user, @RequestParam Long id) {
+    public MenuItemDTO deleteMenuItem(@RequestParam Long id) {
         LOG.info("Deleting menu item price...");
         return new MenuItemDTO(menuItemService.deleteMenuItem(id));
     }
@@ -37,8 +40,8 @@ public class MenuItemController {
     @PostMapping(path = "/addDrink")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public DrinkDTO addDrink(@AuthenticationPrincipal User user, @RequestBody NewDrinkDTO drinkDTO){
+    public DrinkDTO addDrink(@RequestBody NewDrinkDTO drinkDTO){
         LOG.info("Add new drink...");
-        return new DrinkDTO(menuItemService.addDrink(drinkDTO));
+        return new DrinkDTO(drinkService.addDrinkByManager(drinkDTO));
     }
 }
