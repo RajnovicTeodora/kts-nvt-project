@@ -3,6 +3,8 @@ package com.ftn.restaurant.service;
 import static com.ftn.restaurant.constants.MenuConstants.*;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.model.MenuItemPrice;
+
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,15 @@ public class MenuServiceIntegrationTest {
         List<MenuItemPrice> menuItemPriceList = menuService.defineActiveMenuItem(selectedMenuItemsDTO);
         assertEquals(1, menuItemPriceList.size());
         
+    }
+    
+    @Test 
+    public void searchMenuItemsTest() {
+    	Assert.assertEquals(3, menuService.searchMenuItems("...", "...").size());
+    	Assert.assertEquals(2, menuService.searchMenuItems("dish", "...").size());
+    	Assert.assertEquals(1, menuService.searchMenuItems("drink", "...").size());
+    	Assert.assertEquals(2, menuService.searchMenuItems("...", "sP").size());
+    	Assert.assertEquals(0, menuService.searchMenuItems("...", "xxx").size());
     }
 
 }
