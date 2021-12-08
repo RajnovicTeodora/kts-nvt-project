@@ -59,7 +59,7 @@ public class ReportService {
                 IncomeReportDTO report = new IncomeReportDTO(0, 0, YearMonth.of(date.getYear(), date.getMonthValue()).toString());
 
                 report.setEarnings(orderRepository.sumTotalPriceByIsPaidAndDateBetween(date, date.plusMonths(1).minusDays(1)));
-                report.setTotalSoldItems(orderedItemRepository.sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusMonths(1).minusDays(1)));
+                report.setTotalSoldItems(orderedItemRepository.sumQuantityByOrderIsPaidAndOrderDateBetween(date, date.plusMonths(1).minusDays(1)));
                 incomeAndSold.add(report);
             }
         } else if (type == 1) {
@@ -76,7 +76,7 @@ public class ReportService {
                     sumEarnings += orderRepository
                             .sumTotalPriceByIsPaidAndDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
                     sumSold += orderedItemRepository
-                            .sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
+                            .sumQuantityByOrderIsPaidAndOrderDateBetween(date.plusMonths(i), date.plusMonths(i + 1).minusDays(1));
                 }
                 report.setEarnings(sumEarnings);
                 report.setTotalSoldItems(sumSold);
@@ -87,7 +87,7 @@ public class ReportService {
                 IncomeReportDTO report = new IncomeReportDTO(0, 0, Integer.toString(date.getYear()));
 
                 report.setEarnings(orderRepository.sumTotalPriceByIsPaidAndDateBetween(date, date.plusYears(1).minusDays(1)));
-                report.setTotalSoldItems(orderedItemRepository.sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(date, date.plusYears(1).minusDays(1)));
+                report.setTotalSoldItems(orderedItemRepository.sumQuantityByOrderIsPaidAndOrderDateBetween(date, date.plusYears(1).minusDays(1)));
                 incomeAndSold.add(report);
             }
         }
