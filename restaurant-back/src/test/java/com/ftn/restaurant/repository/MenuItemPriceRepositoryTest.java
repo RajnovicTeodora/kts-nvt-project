@@ -35,6 +35,7 @@ public class MenuItemPriceRepositoryTest {
     private MenuItemRepository menuItemRepository;
 
     //TODO: add menu item without any prices
+    //TODO T
     @Before
     public void setUp() {
         MenuItemPrice menuItemPrice1 = new MenuItemPrice(TWO_DAYS_AGO, YESTERDAY, 5, false, 3.5, null);
@@ -47,13 +48,14 @@ public class MenuItemPriceRepositoryTest {
         entityManager.persist(menuItemPrice2);
     }
 
+    //TODO T
     @Test
     public void testFindByMenuItemIdAndDeletedNotAndApprovedAndHasPrice() {
         Optional<MenuItemPrice> found = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(2, LocalDate.now());
         assertEquals(15.0, found.get().getPrice(), 0);
     }
 
-
+    //TODO T
     @Test
     public void testFindByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull() {
         Optional<MenuItemPrice> found = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(2);

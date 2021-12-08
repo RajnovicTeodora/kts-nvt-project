@@ -34,7 +34,7 @@ public class OrderedItemRepositoryTest {
     @Autowired
     private OrderedItemRepository orderedItemRepository;
 
-    //TODO: add menu item without any prices, replace with constants
+    //TODO add menu item without any prices, replace with constants
     @Before
     public void setUp() {
         OrderedItem orderedItem = new OrderedItem(OrderedItemStatus.DELIVERED, 2, 5, null, null, new ArrayList<>(), false, null, null);
@@ -52,13 +52,15 @@ public class OrderedItemRepositoryTest {
         entityManager.persist(menuItemPrice);
     }
 
+    //TODO T
     @Test
-    public void testSumQuantityByMenuItemIsPaidAndMenuItemDateBetween() {
-        int sum = orderedItemRepository.sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(LocalDate.now().minusDays(1), LocalDate.now());
+    public void testSumQuantityByOrderIsPaidAndOrderDateBetween() {
+        int sum = orderedItemRepository.sumQuantityByOrderIsPaidAndOrderDateBetween(LocalDate.now().minusDays(1), LocalDate.now());
         assertEquals(5, sum);
     }
 
 
+    //TODO T
     @Test
     public void tesSumPreparationCostsByOrderedItemStatusNotOrderedAndOrderDateBetween() {
         double sum = orderedItemRepository.sumPreparationCostsByOrderedItemStatusNotOrderedAndOrderDateBetween(LocalDate.now().minusDays(1), LocalDate.now());
