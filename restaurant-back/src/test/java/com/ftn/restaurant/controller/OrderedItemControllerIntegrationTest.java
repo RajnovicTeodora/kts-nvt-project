@@ -138,7 +138,7 @@ public class OrderedItemControllerIntegrationTest {
         message = responseEntity.getBody();
 
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Can't delete ordered item with status!=ORDERED and id: 6", message);
+        Assert.assertEquals("Can't delete ordered item with id: 6", message);
     }
 
     @Test
