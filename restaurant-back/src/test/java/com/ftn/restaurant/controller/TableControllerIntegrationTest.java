@@ -1,15 +1,24 @@
 package com.ftn.restaurant.controller;
 
+import java.net.URI;
+import java.net.URL;
+import java.util.HashMap;
+
+import org.hibernate.mapping.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.ftn.restaurant.constants.NewTableDTOConstants;
+import com.ftn.restaurant.dto.RestaurantTableDTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -134,5 +143,25 @@ public class TableControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assert.assertEquals("Couldn't find table with id: 1000", message);
     }
+    
+    @Test
+    public void addTableTest() {
+    	ResponseEntity<RestaurantTableDTO> responseEntity = restTemplate
+                .postForEntity("/api/table/addTable",NewTableDTOConstants.NEW_TABLE_1, RestaurantTableDTO.class);
+
+    	RestaurantTableDTO table = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(20, table.getX());
+        
+        ResponseEntity<RestaurantTableDTO> responseEntity2 = restTemplate
+                .postForEntity("/api/table/addTable",NewTableDTOConstants.NEW_TABLE_2, RestaurantTableDTO.class);
+
+    	RestaurantTableDTO table2 = responseEntity2.getBody();
+
+        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity2.getStatusCode());
+        Assert.assertEquals(0, table2.getX());
+    }
+    
 
 }

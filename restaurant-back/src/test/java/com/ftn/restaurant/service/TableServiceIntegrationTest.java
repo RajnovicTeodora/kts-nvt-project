@@ -55,6 +55,7 @@ public class TableServiceIntegrationTest {
     @Test
     public void deleteTableTest() {
         Assert.assertEquals(5, tableService.deleteTable(1L).getPositionX());
-       Assert.assertNull(tableService.deleteTable(88L));
+        Assert.assertNull(tableService.deleteTable(88L));
     }
+    
 }
