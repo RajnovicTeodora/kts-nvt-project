@@ -1,27 +1,28 @@
 package com.ftn.restaurant.service;
 
+import static com.ftn.restaurant.constants.DrinkConstants.*;
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.model.Drink;
-import com.ftn.restaurant.repository.DrinkRepository;
+import com.ftn.restaurant.model.enums.ContainerType;
+import com.ftn.restaurant.model.enums.DrinkType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
 import static com.ftn.restaurant.constants.NumbersOfItemsConstant.*;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class DrinkServiceIntegrationTest {
 
     @Autowired
@@ -50,5 +51,13 @@ public class DrinkServiceIntegrationTest {
         List<DrinkDTO> foundDrinks = drinkService.getDrinks();
         assertNotNull(foundDrinks);
         assertEquals(NUMBER_OF_DRINKS, foundDrinks.size());
+    }
+
+    // TODO T
+    @Test
+    public void testAddDrink(){
+        NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
+        Drink created = drinkService.addDrink(drinkDTO);
+        assertEquals(NEW_DRINK_NAME, created.getName());
     }
 }
