@@ -73,6 +73,7 @@ INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id)
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (false, 1, '2021-12-11', 'x', '18:18', 4);
 
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1, 4);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 2, false, 1, 4);
@@ -81,5 +82,17 @@ INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_i
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 5, false, 2, 4);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 6, false, 2, 4);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 5, 1, false, 2, 4);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 3, 1, true, 1, 4);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 1, 7, false, 1, 4);
 
+INSERT INTO area (name) VALUES ('First');
+INSERT INTO area (name) VALUES ('Second');
 
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (5, 5, 4, false, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (6, 6, 4, true, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (8, 8, null, false, 1);
+
+INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
+INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);
+INSERT INTO ingredient (name, alergen) VALUES ('mleko', false);
+INSERT INTO ingredient (name, alergen) VALUES ('cokolada', false);

@@ -1,5 +1,8 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.OrderDTO;
+import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,25 +38,42 @@ public class OrderedItemController {
         return this.orderedItemService.finishOrderedItem(id);
     }
 
-    @GetMapping(value = "/confirmPickup")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> confirmPickup(@AuthenticationPrincipal User user, @RequestParam Long id){
-        orderedItemService.confirmPickup(id);
-        return new ResponseEntity<>( HttpStatus.OK);
+    @ResponseBody
+    @PostMapping(value = "/confirmPickup/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String confirmPickup(@PathVariable long id){ return orderedItemService.confirmPickup(id);   }
+
+    @ResponseBody
+    @PostMapping(value = "/setDeleted/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String deleteOrderedItem( @PathVariable long id) { return orderedItemService.deleteOrderedItem(id);  }
+
+    /*@ResponseBody
+    @PostMapping(value = "/updateOrderedItem/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderItemDTO updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
+        return new OrderItemDTO(orderedItemService.updateOrderedItem(id, orderItemDTO));
+    }*/
+    @ResponseBody
+    @PostMapping(value = "/updateOrderedItem/{id}")
+    public ResponseEntity<?> updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
+        try {
+            return new ResponseEntity(new OrderItemDTO(orderedItemService.updateOrderedItem(id, orderItemDTO)), HttpStatus.OK);
+        } catch (ForbiddenException e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
     }
 
-    @PutMapping(value = "/setDeleted/{id}", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> deleteOrderedItem(@AuthenticationPrincipal User user, @PathVariable Long id) {
-
-        OrderedItem orderedItem = orderedItemService.findOne(id);
-
-        if (orderedItem != null) {
-            orderedItem.setDeleted(true);   //TODO: remove from order?
-            orderedItemService.save(orderedItem);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @ResponseBody
+    @PostMapping(value = "/addOrderItemToOrder/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<OrderItemDTO> addOrderItemToOrder(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
+        try {
+            return new ResponseEntity(new OrderItemDTO(orderedItemService.addOrderItemToOrder(id, orderItemDTO)), HttpStatus.CREATED);
+        }catch (ForbiddenException e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
+
     }
 }

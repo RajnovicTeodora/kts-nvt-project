@@ -7,6 +7,8 @@ import com.ftn.restaurant.repository.MenuItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class IngredientService {
 
@@ -15,5 +17,9 @@ public class IngredientService {
 
     public Ingredient findOne(Long id) {
         return ingredientRepository.findById(id).orElseGet(null);
+    }
+
+    public Optional<Ingredient> findByIngredientNameAndIsAlergen(String name, boolean b){
+        return ingredientRepository.findByIngredientNameAndIsAlergen(name, b);
     }
 }

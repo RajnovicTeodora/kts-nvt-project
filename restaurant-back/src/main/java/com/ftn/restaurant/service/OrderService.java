@@ -3,6 +3,7 @@ package com.ftn.restaurant.service;
 import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.Order;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -31,6 +35,9 @@ public class OrderService {
     @Autowired
     private OrderedItemService orderedItemService;
 
+    @Autowired
+    private MenuItemPriceService menuItemPriceService;
+
     public Order save(Order order) {
         return orderRepository.save(order);
     }
@@ -39,62 +46,74 @@ public class OrderService {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public Order findOneWithOrderItems(Long id) {
+    public Order findOneWithOrderItems(long id) {
         return orderRepository.findOneWithOrderItems(id);
     }
 
     public Order createOrder(OrderDTO ordDTO) {
         Order o = new Order();
+
+        if(ordDTO.getOrderItems().isEmpty()){
+            throw new ForbiddenException("Order has to contain ordered items.");
+        }
         o.setDate(LocalDate.parse(ordDTO.getDate()));
         o.setNote(ordDTO.getNote());
         o.setPaid(ordDTO.isPaid());
-        o.setTime(ordDTO.getTime());
+        o.setTime(LocalTime.now());
         o.setTotalPrice(ordDTO.getTotalPrice());
         save(o);
 
-        createAndAddOrderItems(ordDTO, o);
+        for (OrderItemDTO orderItemDto : ordDTO.getOrderItems()) {
+            OrderedItem orderItem = new OrderedItem();
+
+            Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDto.getMenuItem().getName(), orderItemDto.getMenuItem().getImage());
+            if(menuItem.isPresent()) {
+                orderItem.setMenuItem(menuItem.get());
+                orderItem.setPriority(orderItemDto.getPriority());
+                orderItem.setStatus(OrderedItemStatus.ORDERED);
+                for (IngredientDTO acIngr : orderItemDto.getActiveIngredients()) {
+                    Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(acIngr.getName(), acIngr.isAlergen());
+                    orderItem.addActiveIngredients(i.get());
+                }
+                o.addOrderedItem(orderItem);
+                orderedItemService.save(orderItem);
+                save(o);
+            }
+        }
 
         return o;
     }
 
-    public void createAndAddOrderItems(OrderDTO orderDTO, Order o){
-        for (OrderItemDTO orderItemDto : orderDTO.getOrderItems()) {
-            OrderedItem orderItem = new OrderedItem();
 
-            MenuItem menuItem = menuItemService.findOne(orderItemDto.getMenuItem().getId());
-            orderItem.setMenuItem(menuItem);
-            orderItem.setPriority(orderItemDto.getPriority());
-            orderItem.setStatus(OrderedItemStatus.ORDERED);
-            for (IngredientDTO acIngr: orderItemDto.getActiveIngredients()) {
-                Ingredient i = ingredientService.findOne(acIngr.getId());
-                orderItem.addActiveIngredients(i);
-            }
-            orderedItemService.save(orderItem);
-            o.addOrderedItem(orderItem);
+    public Order updateOrder(long id, OrderDTO ordDTO){
+        Order order = findOneWithOrderItems(id);
+
+        if(order.isPaid()){
+            throw new ForbiddenException("Can't change order that is already paid.");
         }
-    }
-
-    public Order updateOrder(OrderDTO ordDTO){
-        Order order = findOne(ordDTO.getId());
 
         order.setNote(ordDTO.getNote());
         save(order);
 
-        for (OrderItemDTO orderItemDTO : ordDTO.getOrderItems()) {
-            OrderedItem orderItem = orderedItemService.findOne(orderItemDTO.getId());
-            if(orderItemDTO.getStatus() == OrderedItemStatus.ORDERED && !orderItemDTO.isDeleted()) {
-                orderItem.setActiveIngredients(new ArrayList<>());
-                for(IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()){
-                    Ingredient i = ingredientService.findOne(ingredientDTO.getId());
-                    orderItem.addActiveIngredients(i);
-                }
-                orderItem.setPriority(orderItemDTO.getPriority());
-                orderedItemService.save(orderItem);
-            }
-        }
-        order = findOneWithOrderItems(ordDTO.getId());
         return order;
     }
 
+    public String setTotalPriceAndPay(long id){
+        Order order = findOneWithOrderItems(id);
+        if(order != null) {
+            if(order.isPaid()){
+                return "Order with id " + id + " is already paid.";
+            }
+            double totalprice = 0;
+            for (OrderedItem oi : order.getOrderedItems()) {
+                totalprice += menuItemPriceService.findCurrentPriceForMenuItemById(oi.getMenuItem().getId());
+            }
+            order.setTotalPrice(totalprice);
+            order.setPaid(true);
+            save(order);
+            return "Successfully paid order with id: " + id;
+        }
+        return "Couldn't find order with id: "+ id;
+    }
 
 }

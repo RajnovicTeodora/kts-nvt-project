@@ -1,11 +1,8 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
-import com.ftn.restaurant.model.RestaurantTable;
 import com.ftn.restaurant.model.User;
-import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.service.TableService;
-import com.ftn.restaurant.service.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,56 +17,32 @@ public class TableController {
     @Autowired
     private TableService tableService;
 
-    @Autowired
-    private WaiterService waiterService;
-
-    @PutMapping(value = "/occupyTable", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> occupyTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
-        RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
-        if (rt != null) {
-            tableService.occupyTable(tableId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ResponseBody
+    @GetMapping(value = "/{id}/occupyTable/{waiter}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String occupyTable(@PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+        return tableService.occupyTable(waiter, id);
     }
 
-    @PutMapping(value = "/clearTable", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> clearTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
-        RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
-        if (rt != null) {
-            tableService.clearTable(tableId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ResponseBody
+    @GetMapping(value = "/{id}/clearTable/{waiter}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String clearTable(@PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+        return tableService.clearTable(waiter,id);
     }
 
-    @PutMapping(value = "/claimTable", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> claimTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
-        RestaurantTable rt = tableService.findOneWithoutWaiter(tableId);
-        Waiter waiter = waiterService.findByUsername(waiterUsername);
-        if (rt != null && waiter!=null && rt.getWaiter()== null) {
-            tableService.claimTable(tableId, waiterUsername);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ResponseBody
+    @GetMapping(value = "/{id}/claimTable/{waiter}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String claimTable( @PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+        return tableService.claimTable(waiter,id);
     }
 
-    @PutMapping(value = "/leaveTable", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> leaveTable(@AuthenticationPrincipal User user, @RequestParam String waiterUsername, @RequestParam Long tableId) {
-        RestaurantTable rt = tableService.findOneWithWaiter(tableId, waiterUsername);
-        if (rt != null ) {
-            tableService.leaveTable(tableId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ResponseBody
+    @GetMapping(value = "/{id}/leaveTable/{waiter}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String leaveTable( @PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+        return tableService.leaveTable(waiter, id);
     }
 
     @ResponseBody

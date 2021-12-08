@@ -4,6 +4,8 @@ import com.ftn.restaurant.dto.IngredientDTO;
 
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -21,9 +23,13 @@ public class Ingredient {
     @Column(name = "alergen", nullable=false)
     private boolean isAlergen;
 
+    @ManyToMany(mappedBy = "activeIngredients")
+    private List<OrderedItem> orderedItems;
+
     public Ingredient(IngredientDTO ingredient) {
         this.name = ingredient.getName();
         this.isAlergen = ingredient.isAlergen();
+        this.orderedItems = new ArrayList<>();
     }
 
     public Ingredient() {
@@ -32,6 +38,7 @@ public class Ingredient {
     public Ingredient(String name, boolean b) {
         this.name = name;
         this.isAlergen = b;
+        this.orderedItems = new ArrayList<>();
     }
 
     public Long getId() {

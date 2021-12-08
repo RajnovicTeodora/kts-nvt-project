@@ -13,6 +13,8 @@ import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,38 +37,62 @@ public class TableService {
         return tableRepository.save(restaurantTable);
     }
 
-    public void occupyTable(Long id){
-        RestaurantTable rt = tableRepository.findByTableId(id);
-        rt.setOccupied(true);
-        save(rt);
+    public String occupyTable(String waiter, long id){
+        RestaurantTable rt = findOneWithWaiter(id, waiter);
+        if (rt != null) {
+            if(rt.isOccupied()){
+                return "Table is already occupied";
+            }
+            rt.setOccupied(true);
+            save(rt);
+            return "Successfully occupied table with id: " + id;
+        }
+        return "Couldn't find table with id: " + id;
     }
 
-    public void clearTable(Long id){
-        RestaurantTable rt = tableRepository.findByTableId(id);
-        rt.setOccupied(false);
-        save(rt);
+    public String clearTable(String waiter, long id){
+        RestaurantTable rt = findOneWithWaiter(id, waiter);
+        if (rt != null) {
+            if(!rt.isOccupied()){
+                return "Table is already cleared";
+            }
+            rt.setOccupied(false);
+            save(rt);
+            return "Successfully cleared table with id: " + id;
+        }
+        return "Couldn't find table with id: " + id;
     }
 
-    public void claimTable(Long id, String waiterUsername){
-        RestaurantTable rt = tableRepository.findByTableId(id);
+    public String claimTable(String waiterUsername, long id){
+        RestaurantTable rt = findOne(id);
         Waiter waiter = waiterService.findByUsername(waiterUsername);
-        rt.setWaiter(waiter);
-        save(rt);
+        if (rt != null && waiter!=null) {
+            if(rt.getWaiter()!= null){
+                return "Table is already claimed";
+            }
+            rt.setWaiter(waiter);
+            save(rt);
+            return "Successfully claimed table with id: " + id;
+        }
+        return "Couldn't find table with id: " + id;
     }
 
-    public void leaveTable(Long id){
-        RestaurantTable rt = tableRepository.findByTableId(id);
-        rt.setWaiter(null);
-        save(rt);
-    }
+    public String leaveTable( String waiterUsername, long id){
+        RestaurantTable rt = findOneWithWaiter(id, waiterUsername);
+        if (rt != null ) {
+            if(rt.isOccupied()){
+                return "Can't leave table while its occupied";
+            }
+            rt.setWaiter(null);
+            save(rt);
+            return "Successfully left table with id: " + id;
+        }
+        return "Couldn't find table with id: " + id;
 
+    }
 
     public RestaurantTable findOneWithWaiter(Long tableId, String waiterUsername) {
         return tableRepository.findOneWithWaiter(tableId, waiterUsername);
-    }
-
-    public RestaurantTable findOneWithoutWaiter(Long tableId) {
-        return tableRepository.findOneWithoutWaiter(tableId);
     }
 
     public RestaurantTable deleteTable(Long tableId){

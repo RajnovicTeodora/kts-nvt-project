@@ -12,44 +12,32 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
-    @PostMapping(value = "/createOrder", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<OrderDTO> saveOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
-        Order order = orderService.createOrder(orderDTO);
-        return new ResponseEntity<>(new OrderDTO(order), HttpStatus.CREATED);
+    @ResponseBody
+    @PostMapping(value = "/createOrder")
+    //@PreAuthorize("hasRole('WAITER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDTO createOrder( @RequestBody OrderDTO orderDTO) {
+        return new OrderDTO(orderService.createOrder(orderDTO));
     }
 
-    @PutMapping(value = "/updateOrder", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<OrderDTO> updateOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
-
-        Order order = orderService.findOne(orderDTO.getId());
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else
-            return new ResponseEntity<>(new OrderDTO(orderService.updateOrder(orderDTO)), HttpStatus.OK);
-
+    @ResponseBody
+    @PostMapping(value = "/updateOrder/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    @ResponseStatus(HttpStatus.OK)
+    public OrderDTO updateOrder(@PathVariable("id") long id, @RequestBody OrderDTO orderDTO) {
+        return new OrderDTO(orderService.updateOrder(id, orderDTO));
     }
 
-    @PutMapping(value = "/pay", consumes = "application/json")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<Void> payOrder(@AuthenticationPrincipal User user, @RequestBody OrderDTO orderDTO) {
-
-        Order order = orderService.findOne(orderDTO.getId());
-        if (order == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else
-            order.setPaid(true);
-            orderService.save(order);
-            return new ResponseEntity<>( HttpStatus.OK);
-
+    @ResponseBody
+    @GetMapping(value = "/payOrder/{id}")
+    //@PreAuthorize("hasRole('WAITER')")
+    public String payOrder(@PathVariable("id") long id) {
+        return orderService.setTotalPriceAndPay(id);
     }
 }
