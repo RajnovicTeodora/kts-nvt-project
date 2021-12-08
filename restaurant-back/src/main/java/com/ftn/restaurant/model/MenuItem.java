@@ -35,6 +35,9 @@ public abstract class MenuItem {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OrderedItem> orderedItems;
+
     public MenuItem() {
     }
 
@@ -45,6 +48,7 @@ public abstract class MenuItem {
         this.deleted = deleted;
         this.priceList = priceList;
         this.ingredients = new ArrayList<>();
+        this.orderedItems = new ArrayList<>();
     }
 
     public MenuItem(String name, String image, boolean approved, boolean deleted, List<MenuItemPrice> priceList, ArrayList<Ingredient> ingredients) {
@@ -54,6 +58,7 @@ public abstract class MenuItem {
         this.deleted = deleted;
         this.priceList = priceList;
         this.ingredients = ingredients;
+        this.orderedItems = new ArrayList<>();
     }
 
     public List<MenuItemPrice> getPriceList() {
@@ -111,4 +116,8 @@ public abstract class MenuItem {
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public List<OrderedItem> getOrderedItems() {return orderedItems;    }
+
+    public void setOrderedItems(List<OrderedItem> orderedItems) {  this.orderedItems = orderedItems;    }
 }

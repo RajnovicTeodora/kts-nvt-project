@@ -1,5 +1,8 @@
 package com.ftn.restaurant.repository;
 
+import java.util.List;
+
+import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +32,13 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
 
     @Query("SELECT i from OrderedItem i where i.id = :id")
     Optional<OrderedItem> findWithId(long id);
+
+    @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id")
+    List<OrderedItem> findAllByOrderId(long id);
+
+    @Query("select ord from OrderedItem ord left join fetch ord.activeIngredients e where ord.id =?1")
+    OrderedItem findOneWithActiveIngredients(long id);
+
+    @Query("select ord.order from OrderedItem ord where ord.id =?1")
+    Order findOrderByOrderedItemId(long id);
 }

@@ -67,4 +67,8 @@ public class MenuItemPriceService {
             }
         }
     }
+
+    public double findCurrentPriceForMenuItemById(long id){
+        return menuItemPriceRepository.findCurrentPriceForMenuItemById(id);
+    }
 }

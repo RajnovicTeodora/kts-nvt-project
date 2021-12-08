@@ -14,8 +14,7 @@ public class OrderDTO {
     private double totalPrice;
     private String date;
     private String note;
-    private LocalTime time;
-    private boolean deleted;
+    private String time;
     private List<OrderItemDTO> orderItems;
 
     public OrderDTO() {
@@ -28,7 +27,7 @@ public class OrderDTO {
         this.totalPrice = o.getTotalPrice();
         this.date = (o.getDate() == null) ? null : o.getDate().toString();
         this.note = o.getNote();
-        this.time = o.getTime();
+        this.time = o.getTime().toString();
         fillOrderItems(o.getOrderedItems());
     }
 
@@ -38,6 +37,15 @@ public class OrderDTO {
         for (OrderedItem oItem : orderItems)
             this.orderItems.add(new OrderItemDTO(oItem));
 
+    }
+
+    public OrderDTO(boolean isPaid, double totalPrice, String date, String note, String time, List<OrderItemDTO> orderItems) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.note = note;
+        this.time = time;
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -80,20 +88,12 @@ public class OrderDTO {
         this.note = note;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 
     public List<OrderItemDTO> getOrderItems() {
