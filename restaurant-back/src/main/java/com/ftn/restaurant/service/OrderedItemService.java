@@ -105,7 +105,7 @@ public class OrderedItemService {
                 return  "Already deleted ordered item with id: "+ id;
             }
             else if(item.get().getStatus() != OrderedItemStatus.ORDERED){
-                return  "Can't delete ordered item with status!=ORDERED and id: "+ id;
+                return  "Can't delete ordered item with id: "+ id;
             }
             item.get().setDeleted(true);
             orderedItemRepository.save(item.get());

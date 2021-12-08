@@ -58,13 +58,14 @@ INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, 
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2021-06-20', null, 10, 15, true, 9);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2021-06-20', null, 10, 15, false, 11);
 
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-22', 'x', '18:18');
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-22', 'x', '18:18');
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-10-11', 'x', '18:18');
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-08-11', 'x', '18:18');
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-08-11', 'x', '18:18');
-INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (true, 1, '2021-12-11', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-10-11', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-08-11', 'x', '18:18', 4);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (false, 1, '2021-12-11', 'x', '18:18');
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time) VALUES (false, 1, '2021-12-11', 'x', '11:11');
 
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 2, false, 1);
@@ -75,6 +76,7 @@ INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_i
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 5, 1, false, 2);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 3, 1, true, 1);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 7, true, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 2, 8, true, 1);
 
 INSERT INTO area (name) VALUES ('First');
 INSERT INTO area (name) VALUES ('Second');
@@ -82,6 +84,9 @@ INSERT INTO area (name) VALUES ('Second');
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (5, 5, 4, false, 1);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (6, 6, 4, true, 1);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (8, 8, null, false, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (9, 9, 4, false, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (7, 7, 4, true, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (3, 3, 4, false, 1);
 
 INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
 INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);

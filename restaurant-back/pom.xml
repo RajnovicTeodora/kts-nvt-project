@@ -20,7 +20,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
-			<version>2.2.5.RELEASE</version>
+<!--			<version>2.2.5.RELEASE</version>-->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
 
 		<dependency>
@@ -44,6 +49,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- ukljucena podrska za Spring Security -->
@@ -81,6 +87,9 @@
 			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+<!--			<version>1.4.200</version>-->
+<!--			<scope>test</scope>-->
 
 		<dependency>
 
