@@ -27,7 +27,8 @@ public class AreaService {
 
     public Area addArea(String name){
         if(areaRepository.findByName(name).isPresent()){
-            throw new AreaAlreadyExistsException("Area with that name already exists!");
+            //throw new AreaAlreadyExistsException("Area with that name already exists!");
+            return null;
         }
         Area newArea = new Area(name);
         areaRepository.saveAndFlush(newArea);
@@ -37,7 +38,8 @@ public class AreaService {
     public Area deleteArea(Long id){
         Optional<Area> optArea = areaRepository.findById(id);
         if(!optArea.isPresent()){
-            throw new AreaNotFoundException("Area not found!");
+            //throw new AreaNotFoundException("Area not found!");
+            return null;
         }
         areaRepository.deleteById(id);
         return optArea.get();
