@@ -21,7 +21,7 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
 
   @Query("SELECT COALESCE(SUM(oi.quantity), 0) FROM OrderedItem oi WHERE  " +
       "(oi.order.isPaid = true AND oi.order.date between :from AND :to)")
-  int sumQuantityByMenuItemIsPaidAndMenuItemDateBetween(@Param("from") LocalDate from, @Param("to") LocalDate to);
+  int sumQuantityByOrderIsPaidAndOrderDateBetween(@Param("from") LocalDate from, @Param("to") LocalDate to);
 
   @Query("SELECT COALESCE(SUM(mip.purchasePrice * oi.quantity), 0) FROM OrderedItem oi " +
       "INNER JOIN MenuItemPrice mip ON mip.item.id = oi.menuItem.id INNER JOIN Order o ON oi.order.id = o.id WHERE" +

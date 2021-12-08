@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@ActiveProfiles({"test"})
+@ActiveProfiles("test")
 public class DrinkRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
@@ -31,12 +31,13 @@ public class DrinkRepositoryTest {
 
     @Before
     public void setUp() {
-        this.entityManager.persist(new Drink(NEW_DRINK_NAME, "", true, false, new ArrayList<>(), DrinkType.HOT_DRINK, ContainerType.GLASS));
+        this.entityManager.persist(new Drink(NEW_DRINK_NAME, "", true, false, new ArrayList<>(), NEW_DRINK_TYPE, NEW_CONTAINER_TYPE));
     }
 
+    //TODO T
     @Test
     public void testFindByNameAndDrinkTypeAndContainerType() {
-        Optional<Drink> found = this.drinkRepository.findByNameAndDrinkTypeAndContainerType(NEW_DRINK_NAME, DrinkType.HOT_DRINK, ContainerType.GLASS);
+        Optional<Drink> found = this.drinkRepository.findByNameAndDrinkTypeAndContainerType(NEW_DRINK_NAME, NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
         Assert.assertTrue(found.isPresent());
         Assert.assertEquals(NEW_DRINK_NAME, found.get().getName());
     }

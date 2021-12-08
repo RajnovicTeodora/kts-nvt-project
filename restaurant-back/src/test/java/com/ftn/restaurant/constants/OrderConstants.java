@@ -13,7 +13,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.time.LocalDate;
+
 public class OrderConstants {
+    public static LocalDate DB_DATE_FROM = LocalDate.of(2021, 10,22);
+    public static LocalDate DB_DATE_TO = LocalDate.of(2021, 12, 6);
+    public static double DB_SUM_TOTAL_PRICE = 2;
     public static final Ingredient INGREDIENT_55 = new Ingredient("sladoled", true);
     public static final Ingredient INGREDIENT_66 = new Ingredient("plazma", false);
     public static final Ingredient INGREDIENT_77 = new Ingredient("mleko", false);

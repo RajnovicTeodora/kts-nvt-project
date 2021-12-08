@@ -67,4 +67,10 @@ public class DrinkServiceUnitTest {
         //assertEquals(newDrinkDTO.getName(), created.getName());
 
     }
+
+    // TODO T
+    @Test
+    public void testAddDrink(){
+
+    }
 }

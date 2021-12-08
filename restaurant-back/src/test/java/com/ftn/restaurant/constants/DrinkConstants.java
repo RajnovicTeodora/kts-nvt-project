@@ -28,5 +28,7 @@ public class DrinkConstants {
             INGREDIENTS_1);
 
     public static final String NEW_DRINK_NAME = "Hot dark chocolate";
+    public static final DrinkType NEW_DRINK_TYPE = DrinkType.HOT_DRINK;
+    public static final ContainerType NEW_CONTAINER_TYPE = ContainerType.GLASS;
 
 }

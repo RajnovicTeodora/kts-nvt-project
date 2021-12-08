@@ -23,4 +23,6 @@ public interface MenuItemPriceRepository extends JpaRepository<MenuItemPrice, Lo
 
     @Query("SELECT mip.price from MenuItemPrice mip where mip.item = :id and mip.active = true")
     double findCurrentPriceForMenuItemById(long id);
+
+    List<MenuItemPrice> findByItemId(@Param("id") Long id);
 }

@@ -33,7 +33,7 @@ public class MenuController {
     @PutMapping(path = "/activateItems")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> setActiveMenuItems(@AuthenticationPrincipal User user, @RequestBody SelectedMenuItemsDTO selectedMenuItemsDTO) {
+    public List<MenuItemPriceDTO> setActiveMenuItems(@RequestBody SelectedMenuItemsDTO selectedMenuItemsDTO) {
         LOG.info("Updating active menu items...");
         List<MenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
 

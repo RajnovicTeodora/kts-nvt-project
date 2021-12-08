@@ -33,7 +33,7 @@ public class PaycheckController {
     @ResponseStatus(HttpStatus.OK)
     public UserPaycheckDTO changePaycheck(@AuthenticationPrincipal User user, @RequestBody UpdatePaycheckDTO updatePaycheckDTO) {
         LOG.info("Updating paycheck...");
-        return new UserPaycheckDTO(paycheckService.updatePaycheck(updatePaycheckDTO), updatePaycheckDTO.getNewSalary());
+        return new UserPaycheckDTO(paycheckService.updatePaycheck(updatePaycheckDTO).getEmployee(), updatePaycheckDTO.getNewSalary());
     }
 
 }

@@ -40,6 +40,7 @@ public class OrderRepositoryTest {
 
     }
 
+    //TODO T
     @Test
     public void testSumTotalPriceByIsPaidAndDateBetween() {
         double sum = orderRepository.sumTotalPriceByIsPaidAndDateBetween(LocalDate.now().minusDays(6), LocalDate.now());
