@@ -25,31 +25,31 @@ public class AreaController {
 
     @ResponseBody
     @PostMapping(path = "/addArea")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")  // @AuthenticationPrincipal User user, 
     @ResponseStatus(HttpStatus.CREATED)
-    public AreaDTO addArea(@AuthenticationPrincipal User user, @RequestBody String name){
+    public AreaDTO addArea(@RequestBody String name){
         return new AreaDTO(areaService.addArea(name));
     }
 
     @ResponseBody
     @DeleteMapping(path = "/deleteArea/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO deleteArea(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
+    public AreaDTO deleteArea(@PathVariable(value = "id") Long id){
         return new AreaDTO(areaService.deleteArea(id));
     }
 
     @ResponseBody
     @PutMapping(path = "/editTables")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO editTables(@AuthenticationPrincipal User user, @RequestBody AreaDTO area){
+    public AreaDTO editTables(@RequestBody AreaDTO area){
         return new AreaDTO(areaService.editTables(area));
     }
 
     @ResponseBody
     @GetMapping(path = "/getAllAreas")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<AreaDTO> getAllAreas(@AuthenticationPrincipal User user){
         return areaService.getAllAreas();
@@ -57,9 +57,9 @@ public class AreaController {
     
     @ResponseBody
     @GetMapping(path = "/getById/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO getById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
+    public AreaDTO getById(@PathVariable(value = "id") Long id){
         return new AreaDTO(areaService.findByID(id));
     }
     

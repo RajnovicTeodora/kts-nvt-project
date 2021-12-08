@@ -47,15 +47,15 @@ public class TableController {
 
     @ResponseBody
     @PostMapping(path = "/addTable")
-    @PreAuthorize("hasRole('ADMIN')")
-    public RestaurantTableDTO addTable(@AuthenticationPrincipal User user, @RequestBody RestaurantTableDTO tableDTO){
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RestaurantTableDTO addTable(@RequestBody RestaurantTableDTO tableDTO){
         return new RestaurantTableDTO(tableService.addTable(tableDTO));
     }
 
     @ResponseBody
     @DeleteMapping(path = "/deleteTable/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public RestaurantTableDTO deleteTable(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
+    //@PreAuthorize("hasRole('ADMIN')")
+    public RestaurantTableDTO deleteTable(@PathVariable(value = "id") Long id){
         return new RestaurantTableDTO(tableService.deleteTable(id));
     }
 
