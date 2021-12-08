@@ -12,4 +12,6 @@ public class PaycheckConstants {
     public static double SUM_PAYCHECKS1 = 30;
 
     public static String DB_EMPLOYEE_USERNAME = "manager";
+
+    public static double NEW_PAYCHECK = 500;
 }

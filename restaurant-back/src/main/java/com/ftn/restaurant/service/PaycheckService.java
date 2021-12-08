@@ -25,7 +25,7 @@ public class PaycheckService {
         this.paycheckRepository = paycheckRepository;
     }
 
-    public Employee updatePaycheck(UpdatePaycheckDTO updatePaycheckDTO) {
+    public Paychecks updatePaycheck(UpdatePaycheckDTO updatePaycheckDTO) {
         Optional<Paychecks> maybeEmployeePaycheck = paycheckRepository
                 .findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(updatePaycheckDTO.getUsername());
 
@@ -39,20 +39,19 @@ public class PaycheckService {
 
         // paycheck has lasted more than 1 month
         if (!dateFrom.getMonth().equals(LocalDate.now().getMonth())) {
-
+            employee.setPaychecksList(paycheckRepository.findByEmployeeUsername(employee.getUsername()));
             LocalDate lastDayPreviousMonth = YearMonth.now().minusMonths(1).atEndOfMonth();
             LocalDate firstDayThisMonth = YearMonth.now().atDay(1);
 
             maybeEmployeePaycheck.get().setDateTo(lastDayPreviousMonth);
             Paychecks newPaycheck = new Paychecks(firstDayThisMonth, null, updatePaycheckDTO.getNewSalary(), employee);
             employee.getPaychecksList().add(newPaycheck);
-            paycheckRepository.save(newPaycheck);
+            return paycheckRepository.save(newPaycheck);
         } else { // paycheck hasn't lasted for a month
             maybeEmployeePaycheck.get().setPaycheck(updatePaycheckDTO.getNewSalary());
         }
         paycheckRepository.save(maybeEmployeePaycheck.get());
 
-
-        return employee;
+        return paycheckRepository.save(maybeEmployeePaycheck.get());
     }
 }
