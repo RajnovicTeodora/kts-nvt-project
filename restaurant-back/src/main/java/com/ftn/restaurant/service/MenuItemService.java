@@ -19,12 +19,11 @@ import java.util.Optional;
 public class MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
-    private final DrinkRepository drinkRepository;
+
 
     @Autowired
-    public MenuItemService(MenuItemRepository menuItemRepository, DrinkRepository drinkRepository) {
+    public MenuItemService(MenuItemRepository menuItemRepository) {
         this.menuItemRepository = menuItemRepository;
-        this.drinkRepository = drinkRepository;
     }
 
     public Optional<MenuItem> findByMenuItemId(long id) {
@@ -43,16 +42,4 @@ public class MenuItemService {
         return menuItemRepository.save(maybeItem.get());
     }
 
-    public Drink addDrink(NewDrinkDTO drinkDTO) {
-
-        if (drinkDTO.getName().isEmpty() || drinkDTO.getImage().isEmpty())
-            throw new ForbiddenException("Drink must have a name and image");
-
-        Optional<Drink> maybeDrink = drinkRepository.findByNameAndDrinkTypeAndContainerType(drinkDTO.getName(), drinkDTO.getType(), drinkDTO.getContainerType());
-        if (maybeDrink.isPresent())
-            throw new DrinkExistsException("Drink already exists!");
-
-        Drink drink = new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<MenuItemPrice>(), drinkDTO.getType(), drinkDTO.getContainerType());
-        return drinkRepository.save(drink);
-    }
 }
