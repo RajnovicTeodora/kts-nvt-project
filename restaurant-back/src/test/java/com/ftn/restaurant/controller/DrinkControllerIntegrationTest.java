@@ -34,7 +34,7 @@ public class DrinkControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(NEW_DRINK_DTO_1.getName(), drink.getName());
 
-
+        //trying already exists
         responseEntity = restTemplate
                 .postForEntity("/api/drink/addDrink", NEW_DRINK_DTO_1, DrinkDTO.class);
 
@@ -46,7 +46,7 @@ public class DrinkControllerIntegrationTest {
     }
 
     @Test
-    public void addDrinkFalse(){
+    public void addDrinkEmptyNameTest(){
 
         ResponseEntity<DrinkDTO> responseEntity = restTemplate
                 .postForEntity("/api/drink/addDrink", NEW_DRINK_DTO_2, DrinkDTO.class);
@@ -56,14 +56,7 @@ public class DrinkControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
         Assert.assertNull(drink.getName());
 
-        ///
-//        responseEntity = restTemplate
-//                .postForEntity("/api/drink/addDrink", NEW_DRINK_DTO_3, DrinkDTO.class);
-//
-//        drink = responseEntity.getBody();
-//
-//        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-//        Assert.assertNull(drink.getName());
+        Assert.assertNull(drink.getName());
 
 
     }

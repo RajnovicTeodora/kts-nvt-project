@@ -34,11 +34,6 @@ public class OrderedItemService {
     }
 
     public String acceptOrderedItem(long id) { //setovati i uloge todo
-        for(OrderedItem it: this.orderedItemRepository.findAll()){
-            System.out.println(it.getId());
-            System.out.println(it.getStatus());
-        }
-
         Optional<OrderedItem> item = this.orderedItemRepository.findWithId(id);
         if (item.isPresent()){
           if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){

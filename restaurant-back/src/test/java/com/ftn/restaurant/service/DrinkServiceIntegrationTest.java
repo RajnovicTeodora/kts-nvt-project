@@ -3,6 +3,7 @@ package com.ftn.restaurant.service;
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.exception.DrinkExistsException;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.repository.DrinkRepository;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
+import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_2;
 import static com.ftn.restaurant.constants.NumbersOfItemsConstant.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
@@ -33,10 +35,16 @@ public class DrinkServiceIntegrationTest {
     public void addDrinkByBartenderTest(){
         NewDrinkDTO newDrinkDTO = NEW_DRINK_DTO_1;
         Drink created = drinkService.addDrinkByBartender(newDrinkDTO);
-
-        assertThrows(DrinkExistsException.class, () -> {drinkService.addDrinkByBartender(newDrinkDTO);});
         assertEquals(newDrinkDTO.getName(), created.getName());
+        //Already exist
+        assertThrows(DrinkExistsException.class, () -> {drinkService.addDrinkByBartender(newDrinkDTO);});
     }
+
+    @Test
+    public void addDrinkByBartenderEmptyNameTest(){
+        assertThrows(ForbiddenException.class, () -> {drinkService.addDrinkByBartender(NEW_DRINK_DTO_2);});
+    }
+
     @Test
     public void getDrinkTest(){
         DrinkDTO foundDrink = drinkService.getDrink(7);

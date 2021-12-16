@@ -24,7 +24,7 @@ public class DishControllerIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void addDishTest(){
+    public void addDishTestOk(){
 
         ResponseEntity<DishDTO> responseEntity = restTemplate
                 .postForEntity("/api/dish/addDish", NEW_DISH_DTO_1, DishDTO.class);
@@ -34,7 +34,7 @@ public class DishControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(NEW_DISH_DTO_1.getName(), dish.getName());
 
-
+        //trying that already exist
         responseEntity = restTemplate
                 .postForEntity("/api/dish/addDish", NEW_DISH_DTO_1, DishDTO.class);
 
@@ -46,7 +46,7 @@ public class DishControllerIntegrationTest {
     }
 
     @Test
-    public void addDishTestNull(){
+    public void addDishTestNameEmpty(){
         ResponseEntity<DishDTO> responseEntity = restTemplate
                 .postForEntity("/api/dish/addDish", NEW_DISH_DTO_2, DishDTO.class);
 
@@ -54,12 +54,15 @@ public class DishControllerIntegrationTest {
         Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
         Assert.assertNull(dish.getName());
 
-        //// todo da li je ok da mi vrati 415 za null?
-//        responseEntity = restTemplate
-//                .postForEntity("/api/dish/addDish", NEW_DISH_DTO_3, DishDTO.class);
-//
-//        dish = responseEntity.getBody();
-//        Assert.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
-//        Assert.assertNull(dish.getName());
+
     }
+
+    @Test
+    public void addDishTestNull(){
+        ResponseEntity<DishDTO> responseEntity = restTemplate
+                .postForEntity("/api/dish/addDish", NEW_DISH_DTO_3, DishDTO.class);
+
+        DishDTO dish = responseEntity.getBody();
+        Assert.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE, responseEntity.getStatusCode());
+        Assert.assertNull(dish.getName());}
 }
