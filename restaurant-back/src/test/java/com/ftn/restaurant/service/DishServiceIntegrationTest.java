@@ -18,7 +18,7 @@ import static com.ftn.restaurant.constants.NewDishDTOConstants.NEW_DISH_DTO_2;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class DishServiceIntegrationTest {
+public class DishServiceIntegrationTest { //TODO ovo je prava grana gde sve radi
 
     @Autowired
     private DishService dishService;
