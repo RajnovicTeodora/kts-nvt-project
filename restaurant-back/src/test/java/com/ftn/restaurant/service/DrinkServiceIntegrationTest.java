@@ -56,16 +56,16 @@ public class DrinkServiceIntegrationTest {
 
     // TODO T
     @Test
-    public void testAddDrink(){
+    public void testAddDrinkByManager(){
         NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
-        Drink created = drinkService.addDrink(drinkDTO);
+        Drink created = drinkService.addDrinkByManager(drinkDTO);
         assertEquals(NEW_DRINK_NAME, created.getName());
     }
 
     // TODO T
     @Test(expected = DrinkExistsException.class)
-    public void testAddDrinkAndExpectDrinkExistsException(){
+    public void testAddDrinkByManagerAndExpectDrinkExistsException(){
         NewDrinkDTO drinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
-        drinkService.addDrink(drinkDTO);
+        drinkService.addDrinkByManager(drinkDTO);
     }
 }
