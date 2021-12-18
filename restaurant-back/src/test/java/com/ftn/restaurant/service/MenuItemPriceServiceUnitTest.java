@@ -51,6 +51,9 @@ public class MenuItemPriceServiceUnitTest {
         dish.setPriceList(new ArrayList<>());
 
         MenuItemPrice existingMenuItemPrice = new MenuItemPrice(TWO_DAYS_AGO, null, OLD_PRICE, true, OLD_PURCHASE_PRICE, dish);
+        MenuItemPrice saveExistingMenuItemPrice = new MenuItemPrice(TWO_DAYS_AGO, TODAY, OLD_PRICE, true, OLD_PURCHASE_PRICE, dish);
+        MenuItemPrice updatedMenuItemPrice = new MenuItemPrice(TOMORROW, null, UPDATE_PRICE, true, UPDATE_PURCHASE_PRICE, dish);
+        MenuItemPrice savedUpdatedMenuItemPrice = new MenuItemPrice(TOMORROW, null, UPDATE_PRICE, true, UPDATE_PURCHASE_PRICE, dish);
 
         ArrayList<MenuItemPrice> menuItemPrices = new ArrayList<>();
         menuItemPrices.add(existingMenuItemPrice);
@@ -58,6 +61,9 @@ public class MenuItemPriceServiceUnitTest {
         given(menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(NEW_DISH_ID)).willReturn(Optional.of(existingMenuItemPrice));
         given(menuItemRepository.findByIdAndDeletedFalse(NEW_DISH_ID)).willReturn(Optional.of(dish));
         given(menuItemPriceRepository.findByItemId(NEW_DISH_ID)).willReturn(menuItemPrices);
+
+        given(menuItemPriceRepository.save(existingMenuItemPrice)).willReturn(saveExistingMenuItemPrice);
+        given(menuItemPriceRepository.save(updatedMenuItemPrice)).willReturn(savedUpdatedMenuItemPrice);
 
         // Updated price
         MenuItemPrice menuItemPrice = new MenuItemPrice(TODAY, null, UPDATE_PRICE, true, UPDATE_PURCHASE_PRICE, dish);
@@ -73,7 +79,7 @@ public class MenuItemPriceServiceUnitTest {
         given(menuItemRepository.findByIdAndDeletedFalse(NEW_DISH_ID1)).willReturn(Optional.of(dish1));
 
         // Non existent menu item in db
-        given(menuItemRepository.findByIdAndDeletedFalse(NON_EXISTENT_MENU_ITEM_ID)).willThrow(MenuItemNotFoundException.class);
+        given(menuItemRepository.findByIdAndDeletedFalse(NON_EXISTENT_MENU_ITEM_ID)).willReturn(Optional.empty());
     }
 
     // TODO t
