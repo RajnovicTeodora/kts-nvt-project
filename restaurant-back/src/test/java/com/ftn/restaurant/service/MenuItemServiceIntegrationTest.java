@@ -2,6 +2,7 @@ package com.ftn.restaurant.service;
 
 import static com.ftn.restaurant.constants.MenuItemConstants.*;
 
+import com.ftn.restaurant.exception.MenuItemNotFoundException;
 import com.ftn.restaurant.model.MenuItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,11 @@ public class MenuItemServiceIntegrationTest {
 
     @Autowired
     private MenuItemService menuItemService;
+
+    @Test(expected = MenuItemNotFoundException.class)
+    public void testDeleteMenuItemAndExpectMenuItemNotFoundExceptionWhenMenuItemNotFound(){
+        menuItemService.deleteMenuItem(NON_EXISTENT_MENU_ITEM_ID);
+    }
 
     @Test
     public void testDeleteMenuItem(){
