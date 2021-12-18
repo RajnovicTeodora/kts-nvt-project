@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class MenuItemServiceUnitTest {
 
     @Autowired
