@@ -17,6 +17,8 @@ public class MenuItemPriceConstants {
     public static final long DB_MENU_ITEM_ID2 = 3;
 
     public static final long UPDATE_ID = 1;
+    public static final double OLD_PRICE = 20;
+    public static final double OLD_PURCHASE_PRICE = 7;
     public static final double UPDATE_PRICE = 10;
     public static final double UPDATE_PURCHASE_PRICE = 5;
 
@@ -27,4 +29,6 @@ public class MenuItemPriceConstants {
     public static final long NEW_DISH_ID1 = 16;
     public static final String NEW_DISH_NAME1 = "French fries";
     public static final DishType NEW_DISH_TYPE1 = DishType.ENTREE;
+
+    public static final long NON_EXISTENT_MENU_ITEM_ID = 22;
 }

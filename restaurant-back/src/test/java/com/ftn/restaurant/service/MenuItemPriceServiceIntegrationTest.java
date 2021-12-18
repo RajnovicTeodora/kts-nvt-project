@@ -2,6 +2,8 @@ package com.ftn.restaurant.service;
 
 import static com.ftn.restaurant.constants.MenuItemPriceConstants.*;
 import com.ftn.restaurant.dto.UpdateMenuItemPriceDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.MenuItemNotFoundException;
 import com.ftn.restaurant.model.MenuItemPrice;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +23,21 @@ public class MenuItemPriceServiceIntegrationTest {
     @Autowired
     private MenuItemPriceService menuItemPriceService;
 
+    // TODO t
+    @Test(expected = ForbiddenException.class)
+    public void testUpdateMenuItemPriceAndExpectForbiddenExceptionWhenPriceIsInvalid(){
+        UpdateMenuItemPriceDTO menuItemPriceDTO = new UpdateMenuItemPriceDTO(UPDATE_ID, -1, UPDATE_PURCHASE_PRICE);
+        menuItemPriceService.updateMenuItemPrice(menuItemPriceDTO);
+    }
+
+    // TODO t
+    @Test(expected = MenuItemNotFoundException.class)
+    public void testUpdateMenuItemPriceAndMenuItemNotFoundExceptionWhenMenuItemIsNotPresent(){
+        UpdateMenuItemPriceDTO menuItemPriceDTO = new UpdateMenuItemPriceDTO(NON_EXISTENT_MENU_ITEM_ID, UPDATE_PRICE, UPDATE_PURCHASE_PRICE);
+        menuItemPriceService.updateMenuItemPrice(menuItemPriceDTO);
+    }
+
+    // TODO t
     @Test
     public void testUpdateMenuItemPrice(){
         MenuItemPrice oldMenuItemPrice = menuItemPriceService.findLastPrice(UPDATE_ID);
