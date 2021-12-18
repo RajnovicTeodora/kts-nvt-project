@@ -34,7 +34,7 @@ public class PaycheckRepositoryTest {
 
     @Before
     public void setUp() {
-        Paychecks paycheck = new Paychecks(FIRST_DAY_OF_THE_MONTH,null, 55, null);
+        Paychecks paycheck = new Paychecks(FIRST_DAY_OF_LAST_MONTH,null, 55, null);
         paycheck.setEmployee(employeeRepository.getById(DB_EMPLOYEE_ID));
         entityManager.persist(paycheck);
 
@@ -43,7 +43,7 @@ public class PaycheckRepositoryTest {
     //TODO T
     @Test
     public void testSumTotalPaychecksAndDateBetween() {
-        double sum = paycheckRepository.sumTotalPaychecksAndDateBetween(FIRST_DAY_OF_THE_MONTH, TODAY);
+        double sum = paycheckRepository.sumTotalPaychecksAndDateBetween(FIRST_DAY_OF_LAST_MONTH, TODAY);
         assertEquals(SUM_PAYCHECKS1, sum, 0);
     }
 
