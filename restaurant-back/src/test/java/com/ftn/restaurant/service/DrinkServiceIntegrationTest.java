@@ -3,6 +3,7 @@ package com.ftn.restaurant.service;
 import static com.ftn.restaurant.constants.DrinkConstants.*;
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
@@ -59,5 +60,12 @@ public class DrinkServiceIntegrationTest {
         NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
         Drink created = drinkService.addDrink(drinkDTO);
         assertEquals(NEW_DRINK_NAME, created.getName());
+    }
+
+    // TODO T
+    @Test(expected = DrinkExistsException.class)
+    public void testAddDrinkAndExpectDrinkExistsException(){
+        NewDrinkDTO drinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
+        drinkService.addDrink(drinkDTO);
     }
 }

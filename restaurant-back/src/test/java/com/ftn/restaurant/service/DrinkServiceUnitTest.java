@@ -2,8 +2,11 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.RestaurantApplication;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.exception.DrinkExistsException;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Dish;
 import com.ftn.restaurant.model.Drink;
+import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DishType;
 import com.ftn.restaurant.model.enums.DrinkType;
@@ -11,6 +14,7 @@ import com.ftn.restaurant.repository.DrinkRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,6 +28,7 @@ import java.util.Optional;
 import static com.ftn.restaurant.constants.DrinkConstants.*;
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -69,8 +74,26 @@ public class DrinkServiceUnitTest {
     }
 
     // TODO T
-    @Test
-    public void testAddDrink(){
+    @Test(expected = DrinkExistsException.class)
+    public void testAddDrinkAndExpectDrinkExistsExceptionWhenDrinkAlreadyExists(){
+        NewDrinkDTO existingDrinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
 
+        given(drinkRepository.findByNameAndDrinkTypeAndContainerType(EXISTING_DRINK_NAME, EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE)).willThrow(DrinkExistsException.class);
+
+        drinkService.addDrink(existingDrinkDTO);
+    }
+
+    // TODO T
+    @Test
+    public void testAddDrink()
+    {
+        NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
+        given(drinkRepository.findByNameAndDrinkTypeAndContainerType(NEW_DRINK_NAME, NEW_DRINK_TYPE, NEW_CONTAINER_TYPE)).willReturn(Optional.empty());
+
+        Drink drink = drinkService.addDrink(drinkDTO);
+
+        verify(drinkRepository, times(1)).findByNameAndDrinkTypeAndContainerType(NEW_DRINK_NAME, NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
+        assertNotNull(drink);
+        assertEquals(NEW_DRINK_NAME, drink.getName());
     }
 }
