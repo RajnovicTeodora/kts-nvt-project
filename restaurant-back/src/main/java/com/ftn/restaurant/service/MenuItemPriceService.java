@@ -69,6 +69,8 @@ public class MenuItemPriceService {
                 oldPrice.setDateTo(LocalDate.now());
                 oldPrice.setActive(false);
                 oldPrice.getItem().getPriceList().add(newPrice);
+
+                menuItemPriceRepository.save(oldPrice);
                 menuItemPriceRepository.save(newPrice);
                 return newPrice;
             } else {
