@@ -29,7 +29,7 @@ insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Pizza', 'todo', true, false);
 INSERT INTO dish(id, dish_type) VALUES (1, 'MAIN_DISH');
 
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Spaghetti', 'todo', true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Ice Latte', 'todo', true, false);
 INSERT INTO drink (id, drink_type, container_type) VALUES (2, 'COLD_DRINK', 'BOTTLE');
 
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-08-02', '2020-10-10', 10, 16, false, 1);
