@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElse(null);
     }
 
     public void save(User user) {
@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
     }
     
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElse(null);
         if (user == null){
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
         }
