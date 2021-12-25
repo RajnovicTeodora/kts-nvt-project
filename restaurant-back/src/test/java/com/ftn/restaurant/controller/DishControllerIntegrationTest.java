@@ -10,13 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.ftn.restaurant.constants.NewDishDTOConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@TestPropertySource("classpath:application-test.properties")
+@TestPropertySource("classpath:application-test.properties")
 public class DishControllerIntegrationTest {
 
     @Autowired
@@ -32,6 +33,15 @@ public class DishControllerIntegrationTest {
 
         Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         Assert.assertEquals(NEW_DISH_DTO_1.getName(), dish.getName());
+
+
+        responseEntity = restTemplate
+                .postForEntity("/api/dish/addDish", NEW_DISH_DTO_1, DishDTO.class);
+
+        dish = responseEntity.getBody();
+
+        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        Assert.assertNull(dish.getName());
 
     }
 

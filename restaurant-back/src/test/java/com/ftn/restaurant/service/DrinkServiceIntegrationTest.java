@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,7 +35,7 @@ public class DrinkServiceIntegrationTest {
         NewDrinkDTO newDrinkDTO = NEW_DRINK_DTO_1;
         Drink created = drinkService.addDrinkByBartender(newDrinkDTO);
 
-
+        assertThrows(DrinkExistsException.class, () -> {drinkService.addDrinkByBartender(newDrinkDTO);});
         assertEquals(newDrinkDTO.getName(), created.getName());
     }
     @Test
