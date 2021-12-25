@@ -34,7 +34,7 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping("/login") 
+    /*@PostMapping("/login")
     public void login(@RequestBody LoginDTO loginRequest, HttpServletResponse response) {
         
         LOG.info("Received request for login");
@@ -54,7 +54,7 @@ public class UserController {
 
         LOG.info("Login done :)");
 
-    }
+    }*/
 
     @PostMapping("/logout")
 	public void logout(HttpServletResponse response) {
