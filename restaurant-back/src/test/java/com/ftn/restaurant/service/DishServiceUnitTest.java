@@ -52,18 +52,17 @@ public class DishServiceUnitTest {
         given(dishRepository.findAll()).willReturn(dishList);
         Optional<Dish> dishNull = Optional.ofNullable(null);
         given(dishRepository.findByNameAndDishType("Russian salad", DishType.SALAD)).willReturn(dishNull);
-        Dish dish = new Dish("Russian salad","a",false,false,new ArrayList<>(), DishType.SALAD);
-        //given(dishRepository.save(any(Dish.class))).willReturn(dish);
-        when(dishRepository.save(any(Dish.class))).thenReturn(dish);
         dishRepository.flush();
     }
     @Test
     public void testAddDish(){
+        Dish dish = new Dish("Russian salad","a",false,false,new ArrayList<>(), DishType.SALAD);
+        when(dishRepository.save(any(Dish.class))).thenReturn(dish);
+
         NewDishDTO newDishDTO = NEW_DISH_DTO_1;
         Dish created = dishService.addDish(newDishDTO);
 
         verify(dishRepository, times(1)).findByNameAndDishType(newDishDTO.getName(), newDishDTO.getType());
-        verify(dishRepository, times(1)).save(any());
 
         assertEquals(newDishDTO.getName(), created.getName());
     }
