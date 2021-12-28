@@ -4,6 +4,11 @@ import { WaiterDashboardComponent } from './pages/waiter-dashboard/waiter-dashbo
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from '../root/app-routing.module';
 import { MaterialModule } from '../root/material-module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { WaiterRoutes } from './waiter.routes';
 
 
 
@@ -13,9 +18,13 @@ import { MaterialModule } from '../root/material-module';
   ],
   imports: [
     CommonModule,
+    BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     MaterialModule,
     ToastrModule.forRoot(),
+    RouterModule.forChild(WaiterRoutes)
   ]
 })
 export class WaiterModule { }

@@ -6,9 +6,12 @@ import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule
+  ],
+  exports: [
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true },

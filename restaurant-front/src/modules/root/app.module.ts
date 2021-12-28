@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
+import { WaiterModule } from '../waiter/waiter.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { AuthModule } from '../auth/auth.module';
     ReactiveFormsModule,
     FlexLayoutModule ,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    WaiterModule
   ],
   providers: [],
   bootstrap: [AppComponent]
