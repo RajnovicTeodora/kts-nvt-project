@@ -2,7 +2,10 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.NotFoundException;
+import com.ftn.restaurant.exception.OrderAlreadyPaidException;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
@@ -92,9 +95,9 @@ public class OrderedItemService {
         if(item.isPresent() && item.get().getStatus() == OrderedItemStatus.READY && !item.get().isDeleted()){
             item.get().setStatus(OrderedItemStatus.DELIVERED);
             orderedItemRepository.save(item.get());
-            return  "You delivered ordered item with id: "+ id;
+            return  "Successfully delivered ordered item with id: "+ id;
         }
-        return "Ordered item doesn't exists";
+        throw new NotFoundException("Couldn't find ordered item.");
     }
 
     public String deleteOrderedItem(long id){
@@ -102,25 +105,25 @@ public class OrderedItemService {
 
         if(item.isPresent()){
             if(item.get().isDeleted()){
-                return  "Already deleted ordered item with id: "+ id;
+                throw new BadRequestException("Already deleted ordered item with id: "+ id);
             }
             else if(item.get().getStatus() != OrderedItemStatus.ORDERED){
-                return  "Can't delete ordered item with id: "+ id;
+                throw new ForbiddenException("Can't delete ordered item with id: "+ id);
             }
             item.get().setDeleted(true);
             orderedItemRepository.save(item.get());
-            return  "You deleted ordered item with id: "+ id;
+            return  "Successfully deleted ordered item with id: "+ id;
         }
-        return "Ordered item doesn't exists";
+        throw new NotFoundException("Couldn't find ordered item.");
     }
 
     public OrderedItem updateOrderedItem(long id, OrderItemDTO orderItemDTO){
         Order order = findOrderByOrderedItemId(id);
         if(order.isPaid()){
-            throw new ForbiddenException("Can't change order that is already paid.");
+            throw new OrderAlreadyPaidException("Can't change order that is already paid.");
         }
         OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
-        if (orderItemDTO.isDeleted() || orderItemDTO.getStatus() != OrderedItemStatus.ORDERED) {
+        if (orderItem.isDeleted() || orderItem.getStatus() != OrderedItemStatus.ORDERED) {
             throw new ForbiddenException("Can't change ordered item in preparation.");
         }
         //TODO allow menuitem change?
@@ -138,7 +141,7 @@ public class OrderedItemService {
     public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
         Order order = orderService.findOneWithOrderItems(id);
         if(order.isPaid()){
-            throw new ForbiddenException("Can't add order items to order that is already paid.");
+            throw new OrderAlreadyPaidException("Can't add order items to order that is already paid.");
         }
         OrderedItem orderItem = new OrderedItem();
         orderItem.setQuantity(orderItemDTO.getQuantity());

@@ -33,7 +33,7 @@ public class OrderServiceIntegrationTest {
     @Test
     public void updateOrderTest(){
         OrderDTO orderDTO = ORDER_DTO_1;
-        Order order = orderService.updateOrder(8, orderDTO);
+        Order order = orderService.updateOrder(4, orderDTO);
 
         assertEquals(orderDTO.getDate(), order.getDate().toString());
         assertEquals(orderDTO.getNote(), order.getNote());
@@ -41,8 +41,8 @@ public class OrderServiceIntegrationTest {
 
     @Test
     public void setTotalPriceAndPayTest(){
-        Assert.assertEquals("Successfully paid order with id: 7",orderService.setTotalPriceAndPay(7));
-        Assert.assertEquals("Order with id 6 is already paid.",orderService.setTotalPriceAndPay(6));
+        Assert.assertEquals("Successfully paid order with id: 3",orderService.setTotalPriceAndPay(3));
+        Assert.assertEquals("Order with id 5 is already paid.",orderService.setTotalPriceAndPay(5));
         Assert.assertEquals("Couldn't find order with id: 1000",orderService.setTotalPriceAndPay(1000));
     }
 }
