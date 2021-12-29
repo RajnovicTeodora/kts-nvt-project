@@ -59,7 +59,7 @@ public class OrderServiceUnitTest {
         OrderDTO orderDTO = ORDER_DTO_1;
         Order created = orderService.createOrder(orderDTO);
 
-        verify(orderRepository, times(3)).save(any());
+        verify(orderRepository, times(2)).save(any());
         Assert.assertEquals(orderDTO.getNote(), created.getNote());
     }
 

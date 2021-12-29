@@ -9,4 +9,11 @@ public class MenuConstants {
             add(1L);
         }
     };
+    public static final List<Long> INVALID_ITEM_ID_LIST = new ArrayList<Long>(){
+        {
+            add(16L);
+        }
+    };
+
+    public static final List<Long> EMPTY_ITEM_ID_LIST = new ArrayList<>();
 }

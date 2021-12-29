@@ -1,24 +1,54 @@
 package com.ftn.restaurant.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.TestAnnotationUtils;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static com.ftn.restaurant.constants.OrderDTOConstants.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(username="waiter", roles= {"WAITER"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class OrderedItemControllerIntegrationTest {
+
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+    private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -84,104 +114,90 @@ public class OrderedItemControllerIntegrationTest {
     }
 
     @Test
-    public void confirmPickupTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/confirmPickup/2", 2,String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("You delivered ordered item with id: 2", message);
+    public void confirmPickupTest() throws Exception {
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully delivered ordered item with id: 2"));
 
         //////////////////
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/confirmPickup/-1", -1,String.class);
 
-        message = responseEntity.getBody();
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/-1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find ordered item."));
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Ordered item doesn't exists", message);
     }
 
     @Test
-    public void deleteOrderedItemTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/setDeleted/7", 7,String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("You deleted ordered item with id: 7", message);
+    public void deleteOrderedItemTest() throws Exception {
+        mockMvc.perform(get("/api/orderedItem/setDeleted/5"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully deleted ordered item with id: 5"));
 
         //////////////////
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/setDeleted/-1", -1,String.class);
 
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Ordered item doesn't exists", message);
+        mockMvc.perform(get("/api/orderedItem/setDeleted/-1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find ordered item."));
 
         //////////////////
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/setDeleted/8", 8,String.class);
 
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Already deleted ordered item with id: 8", message);
+        mockMvc.perform(get("/api/orderedItem/setDeleted/6"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Already deleted ordered item with id: 6"));
 
         //////////////////
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/setDeleted/6", 6,String.class);
 
-        message = responseEntity.getBody();
+        mockMvc.perform(get("/api/orderedItem/setDeleted/4"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't delete ordered item with id: 4"));
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Can't delete ordered item with id: 6", message);
     }
 
     @Test
-    public void updateOrderedItemTest(){
-        ResponseEntity<Object> responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/updateOrderedItem/8", ORDER_ITEM_DTO_1, Object.class);
+    public void updateOrderedItemTest() throws Exception {
+        String dto = json(ORDER_ITEM_DTO_1);
 
-        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/6")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't change order that is already paid."));
 
-        //"Can't change order that is already paid."
         ////////////////////////////////////////////////////
 
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/updateOrderedItem/5", ORDER_ITEM_DTO_1, Object.class);
+        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/3")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't change ordered item in preparation."));
 
-        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
-
-        //"Can't change ordered item in preparation."
         ///////////////////////////////////////////////////
 
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/updateOrderedItem/9", ORDER_ITEM_DTO_1, Object.class);
+        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/7")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isOk());
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        //Successful
     }
 
     @Test
-    public void addOrderItemToOrderTest(){
-        ResponseEntity<OrderItemDTO> responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/addOrderItemToOrder/7", ORDER_ITEM_DTO_1, OrderItemDTO.class);
+    public void addOrderItemToOrderTest() throws Exception {
+        String dto = json(ORDER_ITEM_DTO_1);
 
-        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/5")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't add order items to order that is already paid."));
 
-        //Successful
         ////////////////////////////////////////////////////
 
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/addOrderItemToOrder/6", ORDER_ITEM_DTO_1, OrderItemDTO.class);
+        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/4")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isCreated());
 
-        Assert.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode());
+    }
 
-        //"Can't add order items to order that is already paid."
+    public static String json(Object object) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        return mapper.writeValueAsString(object);
     }
 }

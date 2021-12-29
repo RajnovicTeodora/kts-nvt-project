@@ -2,6 +2,7 @@ package com.ftn.restaurant.service;
 
 import static com.ftn.restaurant.constants.MenuConstants.*;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.MenuItemPrice;
 
 import org.junit.Assert;
@@ -39,6 +40,12 @@ public class MenuServiceIntegrationTest {
     	Assert.assertEquals(1, menuService.searchMenuItems("drink", "...").size());
     	Assert.assertEquals(2, menuService.searchMenuItems("...", "sP").size());
     	Assert.assertEquals(0, menuService.searchMenuItems("...", "xxx").size());
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testDefineActiveMenuItemAndExpectForbiddenException(){
+        SelectedMenuItemsDTO selectedMenuItemsDTO = new SelectedMenuItemsDTO(INVALID_ITEM_ID_LIST);
+        menuService.defineActiveMenuItem(selectedMenuItemsDTO);
     }
 
 }

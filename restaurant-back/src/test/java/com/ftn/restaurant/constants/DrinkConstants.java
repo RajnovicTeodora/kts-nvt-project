@@ -31,4 +31,8 @@ public class DrinkConstants {
     public static final DrinkType NEW_DRINK_TYPE = DrinkType.HOT_DRINK;
     public static final ContainerType NEW_CONTAINER_TYPE = ContainerType.GLASS;
 
+    public static final String EXISTING_DRINK_NAME = "Ice Latte";
+    public static final DrinkType EXISTING_DRINK_TYPE = DrinkType.COLD_DRINK;
+    public static final ContainerType EXISTING_CONTAINER_TYPE = ContainerType.BOTTLE;
+
 }

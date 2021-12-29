@@ -48,9 +48,9 @@ public class OrderedItemIntegrationTest {
 
     @Test
     public void deleteOrderedItemTest(){
-        Assert.assertEquals("You deleted ordered item with id: 7",orderedItemService.deleteOrderedItem(7));
+        Assert.assertEquals("You deleted ordered item with id: 5",orderedItemService.deleteOrderedItem(5));
         Assert.assertEquals("Ordered item doesn't exists",orderedItemService.deleteOrderedItem(10000000));
-        Assert.assertEquals("Already deleted ordered item with id: 8",orderedItemService.deleteOrderedItem(8));
-        Assert.assertEquals("Can't delete ordered item with id: 6",orderedItemService.deleteOrderedItem(6));
+        Assert.assertEquals("Already deleted ordered item with id: 6",orderedItemService.deleteOrderedItem(6));
+        Assert.assertEquals("Can't delete ordered item with id: 4",orderedItemService.deleteOrderedItem(4));
     }
 }

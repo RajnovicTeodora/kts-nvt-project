@@ -26,32 +26,33 @@ public class PaycheckService {
     }
 
     public Paychecks updatePaycheck(UpdatePaycheckDTO updatePaycheckDTO) {
+        if (updatePaycheckDTO.getNewSalary() <= 0)
+            throw new ForbiddenException("New salary must be a positive value");
+
         Optional<Paychecks> maybeEmployeePaycheck = paycheckRepository
                 .findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(updatePaycheckDTO.getUsername());
 
-        if (updatePaycheckDTO.getNewSalary() <= 0)
-            throw new ForbiddenException("New salary must be a positive value");
         if (!maybeEmployeePaycheck.isPresent())
             throw new EmployeeNotFoundException("Employee " + updatePaycheckDTO.getUsername() + " not found");
 
-        Employee employee = maybeEmployeePaycheck.get().getEmployee();
-        LocalDate dateFrom = maybeEmployeePaycheck.get().getDateFrom();
+        Paychecks employeePaychecks = maybeEmployeePaycheck.get();
+        LocalDate dateFrom = employeePaychecks.getDateFrom();
 
         // paycheck has lasted more than 1 month
         if (!dateFrom.getMonth().equals(LocalDate.now().getMonth())) {
+            Employee employee = employeePaychecks.getEmployee();
+
             employee.setPaychecksList(paycheckRepository.findByEmployeeUsername(employee.getUsername()));
             LocalDate lastDayPreviousMonth = YearMonth.now().minusMonths(1).atEndOfMonth();
             LocalDate firstDayThisMonth = YearMonth.now().atDay(1);
 
-            maybeEmployeePaycheck.get().setDateTo(lastDayPreviousMonth);
+            employeePaychecks.setDateTo(lastDayPreviousMonth);
             Paychecks newPaycheck = new Paychecks(firstDayThisMonth, null, updatePaycheckDTO.getNewSalary(), employee);
             employee.getPaychecksList().add(newPaycheck);
             return paycheckRepository.save(newPaycheck);
-        } else { // paycheck hasn't lasted for a month
-            maybeEmployeePaycheck.get().setPaycheck(updatePaycheckDTO.getNewSalary());
         }
-        paycheckRepository.save(maybeEmployeePaycheck.get());
-
-        return paycheckRepository.save(maybeEmployeePaycheck.get());
+        // paycheck hasn't lasted for a month
+        employeePaychecks.setPaycheck(updatePaycheckDTO.getNewSalary());
+        return paycheckRepository.save(employeePaychecks);
     }
 }

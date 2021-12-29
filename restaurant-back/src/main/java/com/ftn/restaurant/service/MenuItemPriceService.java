@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -52,6 +54,9 @@ public class MenuItemPriceService {
             newPrice = new MenuItemPrice(
                     LocalDate.now().plusDays(1), null, updateMenuItemPriceDTO.getNewPrice(), false,
                     updateMenuItemPriceDTO.getNewPurchasePrice(), maybeItem.get());
+            List<MenuItemPrice> menuItemPriceList = new ArrayList<>();
+            menuItemPriceList.add(newPrice);
+            newPrice.getItem().setPriceList(menuItemPriceList);
             menuItemPriceRepository.save(newPrice);
             return newPrice;
         } else {
@@ -64,6 +69,8 @@ public class MenuItemPriceService {
                 oldPrice.setDateTo(LocalDate.now());
                 oldPrice.setActive(false);
                 oldPrice.getItem().getPriceList().add(newPrice);
+
+                menuItemPriceRepository.save(oldPrice);
                 menuItemPriceRepository.save(newPrice);
                 return newPrice;
             } else {
@@ -78,4 +85,5 @@ public class MenuItemPriceService {
     public double findCurrentPriceForMenuItemById(long id){
         return menuItemPriceRepository.findCurrentPriceForMenuItemById(id);
     }
+
 }
