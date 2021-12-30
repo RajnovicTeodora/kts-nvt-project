@@ -1,1 +1,51 @@
-<p>add-drink works!</p>
+<div id="container-div">
+  <div id="img-div">
+    <img
+      src="https://media.giphy.com/media/JrNJ7nwRenWeHLcnzX/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+  </div>
+  <div id="form-holder-div">
+    <h3>Form for adding drinks</h3>
+    <form class="example-form" [formGroup]="addDrinkForm">
+      <mat-card-content>
+        <mat-form-field class="example-full-width" id="name-field">
+          <input
+            matInput
+            class="form-control"
+            type="text"
+            formControlName="name"
+            id="name"
+            name="name"
+            required
+            placeholder="Inut name of drink"
+          />
+        </mat-form-field>
+
+      
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
+              {{drinkType.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Container</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let container of containers" [value]="container.value">
+              {{container.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+  </div>
+</div> 
+
+<!--https://media.giphy.com/media/3ksxSUTN3I6KaNo8bV/giphy.gif-->
+<!--https://media.giphy.com/media/EZROws4uYJiocAdqBx/giphy.gif-->
+

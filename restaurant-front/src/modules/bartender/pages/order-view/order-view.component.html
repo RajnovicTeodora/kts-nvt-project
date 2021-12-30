@@ -1,0 +1,22 @@
+ <div id="container-div">
+    <h3>View orders in progress</h3>
+     <table mat-table [dataSource] ="items" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+      </ng-container><!--todo proveri da li ovde treba ingredients?, mozda kao pomoc ali generalno nema potrebe-->
+      
+       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table> 
+    <br/>
+    <textarea matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize">{{note}}</textarea>
+</div>
