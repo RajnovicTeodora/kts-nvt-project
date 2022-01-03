@@ -1,16 +1,14 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
-import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.TableService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -82,15 +80,15 @@ public class TableController {
 
     @ResponseBody
     @PostMapping(path = "/addTable")
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public RestaurantTableDTO addTable(@RequestBody RestaurantTableDTO tableDTO){
         return new RestaurantTableDTO(tableService.addTable(tableDTO));
     }
 
     @ResponseBody
     @DeleteMapping(path = "/deleteTable/{id}")
-    //@PreAuthorize("hasRole('ADMIN')")
-    public RestaurantTableDTO deleteTable(@PathVariable(value = "id") Long id){
+    @PreAuthorize("hasRole('ADMIN')")
+    public RestaurantTableDTO deleteTable(@PathVariable("id") Long id) throws Exception{
         return new RestaurantTableDTO(tableService.deleteTable(id));
     }
 

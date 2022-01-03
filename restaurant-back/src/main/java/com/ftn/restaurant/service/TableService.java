@@ -2,8 +2,6 @@ package com.ftn.restaurant.service;
 
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
-
 import com.ftn.restaurant.dto.RestaurantTableDTO;
 import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.Area;
@@ -12,8 +10,6 @@ import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -94,11 +90,14 @@ public class TableService {
         return tableRepository.findOneWithWaiter(tableId, waiterUsername);
     }
 
-    public RestaurantTable deleteTable(Long tableId){
+    public RestaurantTable deleteTable(Long tableId) throws Exception{
         Optional<RestaurantTable> optTable = tableRepository.findById(tableId);
         if(!optTable.isPresent()) {
-            // throw new TableNotFoundException("Table not found!");
-            return null;
+            throw new TableNotFoundException("Table not found!");
+        }
+        
+        if(optTable.get().isOccupied()) {
+        	throw new TableOccupiedException("Table is occupied!");
         }
             
         tableRepository.delete(optTable.get());

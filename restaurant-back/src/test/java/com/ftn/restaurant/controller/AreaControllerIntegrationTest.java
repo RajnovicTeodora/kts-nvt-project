@@ -1,48 +1,75 @@
 package com.ftn.restaurant.controller;
 
-import java.util.List;
-import java.util.Map;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Assert;
+import java.nio.charset.Charset;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.ftn.restaurant.dto.AreaDTO;
-import com.ftn.restaurant.dto.MenuItemPriceDTO;
-import com.ftn.restaurant.model.Area;
-
+@WithMockUser(username="admin", roles= {"ADMIN"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class AreaControllerIntegrationTest {
     
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+    private MockMvc mockMvc;
+
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext webApplicationContext;
+    
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
 
     @Test
-    public void addAreaTest(){
-        
-        ResponseEntity<AreaDTO> responseEntity = restTemplate.postForEntity("/api/area/addArea", "Garden", AreaDTO.class);
-        AreaDTO area = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        Assert.assertEquals("Garden", area.getName());                     
+    public void addAreaTest() throws Exception{
+        	
+		mockMvc.perform(post("/api/area/addArea").content("Roof").contentType(contentType)).andExpect(status().isOk());
+    	                   
     }
     
     @Test
-    public void addAreaTestNull() {
-    	ResponseEntity<AreaDTO> responseEntity = restTemplate.postForEntity("/api/area/addArea", "First", AreaDTO.class);
-        AreaDTO area = responseEntity.getBody();
-
-        Assert.assertNull(area.getName()); 
+    public void addAreaTest_Area_Already_Exists() throws Exception {
+    	
+    	mockMvc.perform(post("/api/area/addArea").content("First floor").contentType(contentType)).andExpect(status().isBadRequest());
+    	
     }
+    
+    @Test
+    public void deleteArea_Success() throws Exception {
 
+    	mockMvc.perform(delete("/api/area/deleteArea/3")).andExpect(status().isOk());
+    	
+    }
+    
+    @Test
+    public void deleteArea_Area_Not_Found_Exception() throws Exception {
+
+    	mockMvc.perform(delete("/api/area/deleteArea/6")).andExpect(status().isNotFound());
+    	
+    }
+    
+    @Test
+    public void deleteArea_Tables_Occupied_Exception() throws Exception {
+
+    	mockMvc.perform(delete("/api/area/deleteArea/1")).andExpect(status().isForbidden());
+    	
+    }
     
 }

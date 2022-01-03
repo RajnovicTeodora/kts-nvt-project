@@ -43,8 +43,15 @@ public class RestaurantTable {
         this.positionY = table.getY();
         this.occupied = false;
     }
+    
+    public RestaurantTable(int positionX, int positionY, Area area) {
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.area = area;
+	}
 
-    public void setId(Long id) {
+
+	public void setId(Long id) {
         this.id = id;
     }
 

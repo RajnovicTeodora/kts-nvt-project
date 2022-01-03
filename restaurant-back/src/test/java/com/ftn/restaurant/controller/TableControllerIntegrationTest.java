@@ -1,39 +1,30 @@
 package com.ftn.restaurant.controller;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.HashMap;
-
-import org.hibernate.mapping.Map;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 
-import com.ftn.restaurant.constants.NewTableDTOConstants;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.restaurant.dto.RestaurantTableDTO;
 
-@WithMockUser(username="waiter", roles= {"WAITER"})
+@WithMockUser(username="waiter", roles= {"WAITER", "ADMIN"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
@@ -46,6 +37,7 @@ public class TableControllerIntegrationTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+    
 
     @Before
     public void setup() {
@@ -133,23 +125,47 @@ public class TableControllerIntegrationTest {
     }
     
     @Test
-    public void addTableTest() {
-    	ResponseEntity<RestaurantTableDTO> responseEntity = restTemplate
-                .postForEntity("/api/table/addTable",NewTableDTOConstants.NEW_TABLE_1, RestaurantTableDTO.class);
-
-    	RestaurantTableDTO table = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals(20, table.getX());
-        
-        ResponseEntity<RestaurantTableDTO> responseEntity2 = restTemplate
-                .postForEntity("/api/table/addTable",NewTableDTOConstants.NEW_TABLE_2, RestaurantTableDTO.class);
-
-    	RestaurantTableDTO table2 = responseEntity2.getBody();
-
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity2.getStatusCode());
-        Assert.assertEquals(0, table2.getX());
+    public void addTableTest_Success() throws Exception{
+    	
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 1);
+    	
+    	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isOk());
+    	
     }
     
+    @Test
+    public void addTable_Area_Not_Found_Exception() throws Exception {
+    	
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 13);
+    	
+    	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isNotFound());
+    	
+    }
+    
+    @Test
+    public void deleteTable_Success() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/3")).andExpect(status().isOk());
+    
+    }
+    
+    @Test
+    public void deleteTable_Table_Is_Occupied_Exception() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/2")).andExpect(status().isForbidden());
+    }
+    
+    @Test
+    public void deleteTable_Table_Not_Found_Exception() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/123")).andExpect(status().isNotFound());
+    }
+    
+    private static String json(Object object) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        
+        return mapper.writeValueAsString(object);
+    }
 
 }

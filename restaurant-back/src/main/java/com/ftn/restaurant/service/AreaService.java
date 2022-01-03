@@ -24,23 +24,30 @@ public class AreaService {
 
     @Autowired
     private TableRepository tableRepository;
+    
+    @Autowired
+    private TableService tableService;
 
-    public Area addArea(String name){
+    public Area addArea(String name) throws AreaAlreadyExistsException{
         if(areaRepository.findByName(name).isPresent()){
-            //throw new AreaAlreadyExistsException("Area with that name already exists!");
-            return null;
+            throw new AreaAlreadyExistsException("Area with that name already exists!");
         }
         Area newArea = new Area(name);
         areaRepository.saveAndFlush(newArea);
         return newArea;
     }
 
-    public Area deleteArea(Long id){
+    public Area deleteArea(Long id) throws Exception{
         Optional<Area> optArea = areaRepository.findById(id);
         if(!optArea.isPresent()){
-            //throw new AreaNotFoundException("Area not found!");
-            return null;
+            throw new AreaNotFoundException("Area not found!");
         }
+        
+        List<RestaurantTable> tables = tableRepository.findByAreaId(id);
+        for(int i = 0; i < tables.size(); i++) {
+        	tableService.deleteTable(tables.get(i).getId());
+        }
+        
         areaRepository.deleteById(id);
         return optArea.get();
     }

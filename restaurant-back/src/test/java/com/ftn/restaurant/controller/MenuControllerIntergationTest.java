@@ -1,86 +1,74 @@
 package com.ftn.restaurant.controller;
 
-import java.util.List;
-import java.util.Map;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
 
+import java.nio.charset.Charset;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.ftn.restaurant.dto.AreaDTO;
-import com.ftn.restaurant.dto.MenuItemPriceDTO;
-import com.ftn.restaurant.model.Area;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class MenuControllerIntergationTest {
     
-    @Autowired
-    private TestRestTemplate restTemplate;
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
+    private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
     
     @Test
-    public void searchMenuItemsTest() {
-    	ResponseEntity<List> responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/.../...", List.class);
+    public void searchMenuItemsTest_Success() throws Exception {
     	
-    	List<MenuItemPriceDTO> items = responseEntity.getBody();
+    	mockMvc.perform(get("/api/menu/searchMenuItems/.../...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(3,  items.size());
     	
-    	//----------------------------------//
-    	responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/drink/...", List.class);
+    	mockMvc.perform(get("/api/menu/searchMenuItems/drink/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
-    	items = responseEntity.getBody();
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(1,  items.size());
+    	mockMvc.perform(get("/api/menu/searchMenuItems/dish/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
-    	//----------------------------------//
-    	responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/dish/...", List.class);
     	
-    	items = responseEntity.getBody();
+    	mockMvc.perform(get("/api/menu/searchMenuItems/MAIN_DISH/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(2,  items.size());
     	
-    	//----------------------------------//
-    	responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/COLD_DRINK/...", List.class);
+    	mockMvc.perform(get("/api/menu/searchMenuItems/COLD_DRINK/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
-    	items = responseEntity.getBody();
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(1,  items.size());
-
-    	//----------------------------------//
-    	responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/MAIN_DISH/...", List.class);
+    	mockMvc.perform(get("/api/menu/searchMenuItems/MAIN_DISH/Burger")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(0)));
     	
-    	items = responseEntity.getBody();
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(2,  items.size());
+    	mockMvc.perform(get("/api/menu/searchMenuItems/MAIN_DISH/ll")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
-    	//----------------------------------//
-    	responseEntity = restTemplate
-                .getForEntity("/api/menu/searchMenuItems/.../Sp", List.class);
     	
-    	items = responseEntity.getBody();
+    	mockMvc.perform(get("/api/menu/searchMenuItems/.../a")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     	
-    	Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    	Assert.assertEquals(2,  items.size());
+    }
+    
+    @Test
+    public void searchMenuItems_Invalid_Menu_Item_Group_Exception() throws Exception {
+    	
+    	mockMvc.perform(get("/api/menu/searchMenuItems/CAJEVI/...")).andExpect(status().isNotFound());
     	
     }
     
