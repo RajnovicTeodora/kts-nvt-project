@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -127,7 +126,7 @@ public class TableControllerIntegrationTest {
     @Test
     public void addTableTest_Success() throws Exception{
     	
-    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 1);
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 1L);
     	
     	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isOk());
     	
@@ -136,7 +135,7 @@ public class TableControllerIntegrationTest {
     @Test
     public void addTable_Area_Not_Found_Exception() throws Exception {
     	
-    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 13);
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 13L);
     	
     	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isNotFound());
     	

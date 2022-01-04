@@ -98,6 +98,10 @@ public class AreaService {
     }
 
     public Area findByID(Long id){
-        return areaRepository.getById(id);
+    	Optional<Area> optArea = areaRepository.findById(id);
+    	if(optArea.isEmpty()) {
+    		throw new AreaNotFoundException("Area not found!");
+    	}
+        return optArea.get();
     }
 }

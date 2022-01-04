@@ -1,10 +1,12 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.constants.NewTableDTOConstants;
-
-import com.ftn.restaurant.exception.BadRequestException;
+import com.ftn.restaurant.dto.RestaurantTableDTO;
+import com.ftn.restaurant.exception.AreaNotFoundException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
+import com.ftn.restaurant.exception.TableNotFoundException;
+import com.ftn.restaurant.exception.TableOccupiedException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -53,13 +55,28 @@ public class TableServiceIntegrationTest {
     @Test
     public void addTableTest() {
         Assert.assertEquals(20, tableService.addTable(NewTableDTOConstants.NEW_TABLE_1).getPositionX());
-        Assert.assertNull(tableService.addTable(NewTableDTOConstants.NEW_TABLE_1));
+    }
+    
+    @Test(expected = AreaNotFoundException.class )
+    public void addTableTest_Area_Not_Found_Exception() {
+    	tableService.addTable(new RestaurantTableDTO(33, 33, 123L));
+    }
+    
+    @Test
+    public void deleteTable_Success() throws Exception {
+    	Assert.assertEquals(8, tableService.deleteTable(3L).getPositionX());
+        
+    }
+    
+    @Test(expected = TableNotFoundException.class )
+    public void deleteTable_TableNotFoundException() throws Exception {
+    	tableService.deleteTable(112L);
+    }
+    
+    @Test(expected = TableOccupiedException.class )
+    public void deleteTable_TableOccupiedException() throws Exception {
+    	tableService.deleteTable(2L);
     }
 
-    @Test
-    public void deleteTableTest() {
-        Assert.assertEquals(5, tableService.deleteTable(1L).getPositionX());
-        Assert.assertNull(tableService.deleteTable(88L));
-    }
     
 }
