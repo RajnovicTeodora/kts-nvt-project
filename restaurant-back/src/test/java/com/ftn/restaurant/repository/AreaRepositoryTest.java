@@ -27,9 +27,9 @@ public class AreaRepositoryTest {
 
     @Test
     public void testFindByName() {
-        Optional<Area> optionalArea = areaRepository.findByName("First");
+        Optional<Area> optionalArea = areaRepository.findByName("First floor");
         Assert.assertTrue(optionalArea.isPresent());
-        assertEquals("First", optionalArea.get().getName());
+        assertEquals("First floor", optionalArea.get().getName());
         
         Optional<Area> optionalArea2 = areaRepository.findByName("abc");
         Assert.assertFalse(optionalArea2.isPresent());
