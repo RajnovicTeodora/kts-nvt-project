@@ -92,7 +92,13 @@ public class OrderedItemService {
     public String confirmPickup(long id){
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
 
-        if(item.isPresent() && item.get().getStatus() == OrderedItemStatus.READY && !item.get().isDeleted()){
+        if(item.isPresent()){
+            if(item.get().isDeleted()){
+                throw new BadRequestException("Can't deliver DELETED ordered item.");
+            }
+            else if(item.get().getStatus() != OrderedItemStatus.READY ){
+                throw new ForbiddenException("Can't deliver ordered item when status is not READY.");
+            }
             item.get().setStatus(OrderedItemStatus.DELIVERED);
             orderedItemRepository.save(item.get());
             return  "Successfully delivered ordered item with id: "+ id;
@@ -119,47 +125,55 @@ public class OrderedItemService {
 
     public OrderedItem updateOrderedItem(long id, OrderItemDTO orderItemDTO){
         Order order = findOrderByOrderedItemId(id);
-        if(order.isPaid()){
-            throw new OrderAlreadyPaidException("Can't change order that is already paid.");
+        if(order != null) {
+            if (order.isPaid()) {
+                throw new OrderAlreadyPaidException("Can't change order that is already paid.");
+            }
+            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
+            if (orderItem.isDeleted()) {
+                throw new BadRequestException("Can't update deleted ordered item with id: " + id);
+            }
+            if (orderItem.getStatus() != OrderedItemStatus.ORDERED) {
+                throw new ForbiddenException("Can't change ordered item in preparation.");
+            }
+            orderItem.setQuantity(orderItemDTO.getQuantity());
+            orderItem.setPriority(orderItemDTO.getPriority());
+            orderItem.setActiveIngredients(new ArrayList<>());
+            for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
+                Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
+                i.ifPresent(orderItem::addActiveIngredients);
+            }
+            save(orderItem);
+            return orderItem;
         }
-        OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
-        if (orderItem.isDeleted() || orderItem.getStatus() != OrderedItemStatus.ORDERED) {
-            throw new ForbiddenException("Can't change ordered item in preparation.");
-        }
-        //TODO allow menuitem change?
-        orderItem.setQuantity(orderItemDTO.getQuantity());
-        orderItem.setPriority(orderItemDTO.getPriority());
-        orderItem.setActiveIngredients(new ArrayList<>());
-        for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-            Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
-            i.ifPresent(orderItem::addActiveIngredients);
-        }
-        save(orderItem);
-        return orderItem;
+        throw new NotFoundException("Couldn't find order.");
     }
 
     public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
         Order order = orderService.findOneWithOrderItems(id);
-        if(order.isPaid()){
-            throw new OrderAlreadyPaidException("Can't add order items to order that is already paid.");
-        }
-        OrderedItem orderItem = new OrderedItem();
-        orderItem.setQuantity(orderItemDTO.getQuantity());
-        orderItem.setPriority(orderItemDTO.getPriority());
-        Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDTO.getMenuItem().getName(), orderItemDTO.getMenuItem().getImage());
-        menuItem.ifPresent(orderItem::setMenuItem);
-        orderItem.setDeleted(false);
-        orderItem.setStatus(OrderedItemStatus.ORDERED);
-        orderItem.setActiveIngredients(new ArrayList<>());
-        for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-            Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
-            orderItem.addActiveIngredients(i.get());
-        }
-        order.addOrderedItem(orderItem);
-        orderService.save(order);
-        save(orderItem);
+        if(order != null) {
+            if (order.isPaid()) {
+                throw new OrderAlreadyPaidException("Can't add order items to order that is already paid.");
+            }
+            OrderedItem orderItem = new OrderedItem();
+            orderItem.setQuantity(orderItemDTO.getQuantity());
+            orderItem.setPriority(orderItemDTO.getPriority());
+            Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDTO.getMenuItem().getName(), orderItemDTO.getMenuItem().getImage());
+            menuItem.ifPresent(orderItem::setMenuItem);
+            orderItem.setDeleted(false);
+            orderItem.setStatus(OrderedItemStatus.ORDERED);
+            orderItem.setActiveIngredients(new ArrayList<>());
+            for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
+                Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
+                orderItem.addActiveIngredients(i.get());
+            }
+            order.addOrderedItem(orderItem);
+            orderService.save(order);
+            save(orderItem);
 
-        return orderItem;
+            return orderItem;
+        }
+        throw new NotFoundException("Couldn't find order.");
     }
 
 }

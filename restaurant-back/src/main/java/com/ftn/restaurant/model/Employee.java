@@ -87,4 +87,8 @@ public abstract class Employee extends User {
         this.image = employeeDTO.getImage();
         this.telephone = employeeDTO.getTelephone();
     }
+
+    public Employee(String username, String password, boolean deleted) {
+        super(username, password, deleted);
+    }
 }

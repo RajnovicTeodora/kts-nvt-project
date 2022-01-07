@@ -59,7 +59,7 @@ public class TableService {
     }
 
     public String claimTable(String waiterUsername, long id){
-        RestaurantTable rt = findOne(id);
+        RestaurantTable rt = tableRepository.findByTableId(id);
         Waiter waiter = waiterService.findByUsername(waiterUsername);
         if (rt != null && waiter!=null) {
             if(rt.getWaiter()!= null){

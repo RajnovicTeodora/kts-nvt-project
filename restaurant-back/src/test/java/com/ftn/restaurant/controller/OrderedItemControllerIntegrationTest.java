@@ -2,8 +2,6 @@ package com.ftn.restaurant.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftn.restaurant.dto.OrderDTO;
-import com.ftn.restaurant.dto.OrderItemDTO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -125,6 +123,17 @@ public class OrderedItemControllerIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Couldn't find ordered item."));
 
+        //////////////////
+
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/3"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't deliver ordered item when status is not READY."));
+
+        //////////////////
+
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/6"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Can't deliver DELETED ordered item."));
     }
 
     @Test
@@ -157,6 +166,20 @@ public class OrderedItemControllerIntegrationTest {
     public void updateOrderedItemTest() throws Exception {
         String dto = json(ORDER_ITEM_DTO_1);
 
+        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/8")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Can't update deleted ordered item with id: 8"));
+
+        ////////////////////////////////////////////////////
+
+        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/-1")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find order."));
+
+        ////////////////////////////////////////////////////
+
         this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/6")
                 .contentType(contentType).content(dto))
                 .andExpect(status().isForbidden())
@@ -180,6 +203,13 @@ public class OrderedItemControllerIntegrationTest {
     @Test
     public void addOrderItemToOrderTest() throws Exception {
         String dto = json(ORDER_ITEM_DTO_1);
+
+        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/-1")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find order."));
+
+        ////////////////////////////////////////////////////
 
         this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/5")
                 .contentType(contentType).content(dto))

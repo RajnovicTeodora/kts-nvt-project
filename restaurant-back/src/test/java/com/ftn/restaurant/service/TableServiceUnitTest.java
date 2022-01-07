@@ -1,16 +1,17 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
-import com.ftn.restaurant.exception.AreaNotFoundException;
-import com.ftn.restaurant.exception.TableNotFoundException;
-import com.ftn.restaurant.exception.TableOccupiedException;
+import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.Area;
 import com.ftn.restaurant.model.RestaurantTable;
+import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
+import com.ftn.restaurant.repository.WaiterRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,41 +33,125 @@ public class TableServiceUnitTest {
 
     @MockBean
     private TableRepository tableRepository;
+
+    @MockBean
+    private WaiterRepository waiterRepository;
     
     @MockBean
     private AreaRepository areaRepository;
 
-    @BeforeAll
-    public void setup() {
+    @Test(expected = ForbiddenException.class )
+    public void occupyTable_ThrowForbiddenExceptionWhenTableIsOccupied(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setWaiter(new Waiter());
+        table.setOccupied(true);
 
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
+        tableService.occupyTable("waiter", 1L);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void occupyTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(null);
+        tableService.occupyTable("waiter", 1L);
     }
 
     @Test
-    public void occupyTableTest(){
-        Assert.assertEquals("Successfully occupied table with id: 1",tableService.occupyTable("waiter", 1));
-        Assert.assertEquals("Table is already occupied",tableService.occupyTable("waiter", 2));
-        Assert.assertEquals("Couldn't find table with id: 1000",tableService.occupyTable("waiter", 1000));
+    public void occupyTable_ReturnStringWhenAllOk(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setWaiter(new Waiter());
+
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully occupied table with id: 1", tableService.occupyTable("waiter", 1L));
+        Assert.assertTrue(table.isOccupied());
+    }
+
+    @Test(expected = ForbiddenException.class )
+    public void clearTable_ThrowForbiddenExceptionWhenTableIsNotOccupied(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setWaiter(new Waiter());
+
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
+        tableService.clearTable("waiter", 1L);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void clearTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(null);
+        tableService.clearTable("waiter", 1L);
     }
 
     @Test
-    public void clearTableTest(){
-        Assert.assertEquals("Successfully cleared table with id: 5",tableService.clearTable("waiter", 5));
-        Assert.assertEquals("Table is already cleared",tableService.clearTable("waiter", 4));
-        Assert.assertEquals("Couldn't find table with id: 1000",tableService.clearTable("waiter", 1000));
+    public void clearTable_ReturnStringWhenAllOk(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setWaiter(new Waiter());
+        table.setOccupied(true);
+
+        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully cleared table with id: 1", tableService.clearTable("waiter", 1L));
+        Assert.assertFalse(table.isOccupied());
+    }
+
+    @Test(expected = ForbiddenException.class )
+    public void claimTable_ThrowForbiddenExceptionWhenTableIsClaimed(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        Waiter waiter = new Waiter("waiter", "waiter", false);
+        table.setWaiter(new Waiter());
+
+        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
+        Mockito.when(waiterRepository.findByUsername(waiter.getUsername())).thenReturn(waiter);
+        tableService.claimTable(waiter.getUsername(),1L);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void claimTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
+        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(null);
+        tableService.claimTable("waiter", 1L);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void claimTable_ThrowNotFoundExceptionWhenWaiterIsNonExisting(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
+        Mockito.when(waiterRepository.findByUsername("waiter")).thenReturn(null);
+        tableService.claimTable("waiter", 1L);
     }
 
     @Test
-    public void claimTableTest(){
-        Assert.assertEquals("Successfully claimed table with id: 3",tableService.claimTable("waiter", 3));
-        Assert.assertEquals("Table is already claimed",tableService.claimTable("waiter", 2));
-        Assert.assertEquals("Couldn't find table with id: 1000",tableService.claimTable("waiter", 1000));
+    public void claimTable_ReturnStringWhenAllOk(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        Waiter waiter = new Waiter("waiter", "waiter", false);
+
+        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
+        Mockito.when(waiterRepository.findByUsername(waiter.getUsername())).thenReturn(waiter);
+        Assert.assertEquals( "Successfully claimed table with id: 1", tableService.claimTable(waiter.getUsername(),1L));
+        Assert.assertNotNull(table.getWaiter());
+    }
+
+    @Test(expected = ForbiddenException.class )
+    public void leaveTable_ThrowForbiddenExceptionWhenTableIsOccupied(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setOccupied(true);
+
+        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(table);
+        tableService.leaveTable("waiter",1L);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void leaveTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
+        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(null);
+        tableService.claimTable("waiter", 1L);
     }
 
     @Test
-    public void leaveTableTest(){
-        Assert.assertEquals("Successfully left table with id: 6",tableService.leaveTable("waiter", 6));
-        Assert.assertEquals("Can't leave table while its occupied",tableService.leaveTable("waiter", 2));
-        Assert.assertEquals("Couldn't find table with id: 1000",tableService.leaveTable("waiter", 1000));
+    public void leaveTable_ReturnStringWhenAllOk(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        Waiter waiter = new Waiter("waiter", "waiter", false);
+        table.setWaiter(waiter);
+
+        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully left table with id: 1", tableService.leaveTable(waiter.getUsername(),1L));
+        Assert.assertNull(table.getWaiter());
     }
     
     @Test

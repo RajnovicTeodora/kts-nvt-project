@@ -56,6 +56,7 @@ INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_i
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 5, 1, false, 2);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 3, 1, true, 1);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 3, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 3, true, 1);
 
 INSERT INTO area (id, name) VALUES (1, 'First floor');
 INSERT INTO area (id, name) VALUES (2, 'Second floor');

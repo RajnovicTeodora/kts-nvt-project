@@ -1,6 +1,9 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
+import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
@@ -20,24 +23,36 @@ public class OrderController {
 
     @ResponseBody
     @PostMapping(value = "/createOrder")
-    //@PreAuthorize("hasRole('WAITER')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO createOrder( @RequestBody OrderDTO orderDTO) {
-        return new OrderDTO(orderService.createOrder(orderDTO));
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> createOrder( @RequestBody OrderDTO orderDTO) {
+        try {
+            return new ResponseEntity(new OrderDTO(orderService.createOrder(orderDTO)), HttpStatus.CREATED);
+        } catch (ForbiddenException e){
+            return new ResponseEntity("Order has to contain ordered items.", HttpStatus.FORBIDDEN);
+        }
     }
 
     @ResponseBody
     @PostMapping(value = "/updateOrder/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
-    @ResponseStatus(HttpStatus.OK)
-    public OrderDTO updateOrder(@PathVariable("id") long id, @RequestBody OrderDTO orderDTO) {
-        return new OrderDTO(orderService.updateOrder(id, orderDTO));
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> updateOrder(@PathVariable("id") long id, @RequestBody OrderDTO orderDTO) {
+        try {
+            return new ResponseEntity(new OrderDTO(orderService.updateOrder(id, orderDTO)), HttpStatus.OK);
+        } catch (ForbiddenException e){
+            return new ResponseEntity("Can't change order that is already paid.", HttpStatus.FORBIDDEN);
+        }
     }
 
     @ResponseBody
     @GetMapping(value = "/payOrder/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
-    public String payOrder(@PathVariable("id") long id) {
-        return orderService.setTotalPriceAndPay(id);
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?>  payOrder(@PathVariable("id") long id) {
+        try {
+            return new ResponseEntity(orderService.setTotalPriceAndPay(id), HttpStatus.OK);
+        } catch (ForbiddenException e){
+            return new ResponseEntity("Order with id " + id + " is already paid.", HttpStatus.FORBIDDEN);
+        } catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order with id: "+ id, HttpStatus.NOT_FOUND);
+        }
     }
 }

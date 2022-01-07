@@ -4,6 +4,7 @@ import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.Order;
@@ -102,7 +103,7 @@ public class OrderService {
         Order order = findOneWithOrderItems(id);
         if(order != null) {
             if(order.isPaid()){
-                return "Order with id " + id + " is already paid.";
+                throw new ForbiddenException("Order with id " + id + " is already paid.");
             }
             double totalprice = 0;
             for (OrderedItem oi : order.getOrderedItems()) {
@@ -113,7 +114,8 @@ public class OrderService {
             save(order);
             return "Successfully paid order with id: " + id;
         }
-        return "Couldn't find order with id: "+ id;
+
+        throw new NotFoundException("Couldn't find order with id: "+ id);
     }
 
 }

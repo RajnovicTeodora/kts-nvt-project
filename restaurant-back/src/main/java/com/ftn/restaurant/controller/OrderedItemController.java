@@ -49,6 +49,10 @@ public class OrderedItemController {
             return new ResponseEntity(orderedItemService.confirmPickup(id), HttpStatus.OK);
         }catch (NotFoundException e){
             return new ResponseEntity("Couldn't find ordered item.", HttpStatus.NOT_FOUND);
+        }catch (ForbiddenException e){
+            return new ResponseEntity("Can't deliver ordered item when status is not READY.", HttpStatus.FORBIDDEN);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Can't deliver DELETED ordered item.", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -77,6 +81,10 @@ public class OrderedItemController {
             return new ResponseEntity("Can't change ordered item in preparation.", HttpStatus.FORBIDDEN);
         } catch (OrderAlreadyPaidException e){
             return new ResponseEntity("Can't change order that is already paid.", HttpStatus.FORBIDDEN);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Can't update deleted ordered item with id: " + id, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -88,6 +96,8 @@ public class OrderedItemController {
             return new ResponseEntity(new OrderItemDTO(orderedItemService.addOrderItemToOrder(id, orderItemDTO)), HttpStatus.CREATED);
         }catch (OrderAlreadyPaidException e){
             return new ResponseEntity("Can't add order items to order that is already paid.", HttpStatus.FORBIDDEN);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
         }
 
     }

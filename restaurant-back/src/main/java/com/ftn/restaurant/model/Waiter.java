@@ -45,5 +45,7 @@ public class Waiter extends Employee{
         this.setRole(new UserRole("WAITER"));
     }
 
-
+    public Waiter(String username, String password, boolean deleted) {
+        super(username, password, deleted);
+    }
 }
