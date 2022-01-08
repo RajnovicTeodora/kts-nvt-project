@@ -1,5 +1,7 @@
 export interface Drink {
     name: string,
     type: string,
-    price: number
+    price?: number,
+    container?: string,
+    image?: string
 }

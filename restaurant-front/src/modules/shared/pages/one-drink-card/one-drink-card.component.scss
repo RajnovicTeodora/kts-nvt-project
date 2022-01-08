@@ -12,37 +12,28 @@
     background-color:  #424242;
     width: 500px;
     margin: auto;
-    margin-top: -80px;
+    //margin-top: -80px;
     /*height: 300px;*/
-    text-align: center;
+    text-align: left;
     padding: 30px;
     border-radius: 10px;
     margin-bottom: 10.5vh;
     padding-bottom: 20px;
 }
 
-h3 {
+h2 {
     color: white;
+    font-size: 40;
+    text-align: center;
 }
 
 mat-form-field {
     width: 400px;
 }
 
-input {
+mat-label {
     color: white;
-}
-
-.submit-button {
-    border: 1.5px solid dimgray;
-    margin-top: 20px;
-    width: 400px;
-}
-
-.submit-button:hover {
-    border: 1.5px solid rgb(194, 24, 91);
-    background-color: rgb(180, 23, 86);
-    color: white;
+    font-size: large;
 }
 
 a {
@@ -58,11 +49,11 @@ a:hover {
 }
 
 #img-div {
-    text-align: center;
+    text-align: left;
 }
 
 img {
-    height: 200px;
+    height: 100px;
 }
 
 mat-pass-toggle-visibility {
@@ -78,16 +69,11 @@ mat-pass-toggle-visibility {
 .btn-link:hover {
     color: rgb(245, 89, 151);
 }
-
-mat-option {
-    background-color: #303030;
+table {
     color: white;
+    border: 1px solid white;
+    width:100%;
 }
-
-mat-option:hover {
-    color: rgb(194, 24, 91);
-}
-
-.table-wrapper {
-    display:inline-flex;
-}
+td{
+    border-bottom: 1px solid white;
+  }

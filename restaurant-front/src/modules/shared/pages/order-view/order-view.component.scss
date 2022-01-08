@@ -1,3 +1,22 @@
+table {
+    width: 100%;
+    background-color: #424242;
+    border-bottom: white;
+    color: white;
+  }
+table {
+    border-top: white;
+}  
+td, th{
+    border-bottom: white;
+    color: white;
+}
+textarea {
+    background-color: #303030;
+    border: white;
+    color: white; 
+    font-size: medium;
+}
 #container-div {
     background-color: #303030;
     /*position: absolute;*/
@@ -10,24 +29,18 @@
 
 #form-holder-div {
     background-color:  #424242;
-    
+    width: 500px;
+    margin: auto;
+    margin-top: -80px;
+    /*height: 300px;*/
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 10.5vh;
+    padding-bottom: 20px;
 }
 
 h3 {
-    color: white;
-}
-
-table {
-    width: 100%;
-    background-color: #424242;
-    border-bottom: white;
-    color: white;
-  }
-table {
-    border-top: white;
-}  
-td, th{
-    border-bottom: white;
     color: white;
 }
 
@@ -84,20 +97,8 @@ mat-pass-toggle-visibility {
 .btn-link:hover {
     color: rgb(245, 89, 151);
 }
-table {
-    width: 100%;
-  }
-  .example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-  }
-  
-  .example-full-width {
-    width: 40%;
-    margin: 3px;
-  }
-  mat-option {
+
+mat-option {
     background-color: #303030;
     color: white;
 }
@@ -105,3 +106,4 @@ table {
 mat-option:hover {
     color: rgb(194, 24, 91);
 }
+

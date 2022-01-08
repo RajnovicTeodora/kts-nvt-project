@@ -13,9 +13,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { OrderViewComponent } from './pages/order-view/order-view.component';
 import { DrinkCardComponent } from './pages/drink-card/drink-card.component';
 import { OneDrinkCardComponent } from './pages/one-drink-card/one-drink-card.component';
+import { MainPageBartenderComponent } from './pages/main-page-bartender/main-page-bartender.component';
 
 @NgModule({
-  declarations: [AddDrinkComponent, OrderViewComponent, DrinkCardComponent, OneDrinkCardComponent],
+  declarations: [AddDrinkComponent, OrderViewComponent, DrinkCardComponent, OneDrinkCardComponent, MainPageBartenderComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
