@@ -3,6 +3,9 @@ package com.ftn.restaurant.controller;
 import java.util.List;
 
 import com.ftn.restaurant.dto.AreaDTO;
+import com.ftn.restaurant.exception.AreaAlreadyExistsException;
+import com.ftn.restaurant.exception.TableOccupiedException;
+import com.ftn.restaurant.model.Area;
 import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.AreaService;
 
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,17 +29,16 @@ public class AreaController {
 
     @ResponseBody
     @PostMapping(path = "/addArea")
-    @PreAuthorize("hasRole('ADMIN')")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AreaDTO addArea(@AuthenticationPrincipal User user, @RequestBody String name){
-        return new AreaDTO(areaService.addArea(name));
+   @PreAuthorize("hasRole('ADMIN')")
+    public AreaDTO addArea(@RequestBody String name) throws Exception{
+    	return new AreaDTO(areaService.addArea(name));
     }
 
     @ResponseBody
     @DeleteMapping(path = "/deleteArea/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO deleteArea(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
+    public AreaDTO deleteArea(@PathVariable(value = "id") Long id) throws Exception{
         return new AreaDTO(areaService.deleteArea(id));
     }
 
@@ -43,7 +46,7 @@ public class AreaController {
     @PutMapping(path = "/editTables")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO editTables(@AuthenticationPrincipal User user, @RequestBody AreaDTO area){
+    public AreaDTO editTables(@RequestBody AreaDTO area){
         return new AreaDTO(areaService.editTables(area));
     }
 
@@ -51,7 +54,7 @@ public class AreaController {
     @GetMapping(path = "/getAllAreas")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public List<AreaDTO> getAllAreas(@AuthenticationPrincipal User user){
+    public List<AreaDTO> getAllAreas(){
         return areaService.getAllAreas();
     }
     
@@ -59,7 +62,7 @@ public class AreaController {
     @GetMapping(path = "/getById/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public AreaDTO getById(@AuthenticationPrincipal User user, @PathVariable(value = "id") Long id){
+    public AreaDTO getById(@PathVariable(value = "id") Long id){
         return new AreaDTO(areaService.findByID(id));
     }
     

@@ -16,7 +16,7 @@ public class Area {
     @Column(name = "name", nullable=false)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade= CascadeType.ALL) //fetch = FetchType.LAZY, 
     private List<RestaurantTable> tables;
 
 

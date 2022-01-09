@@ -1,138 +1,170 @@
 package com.ftn.restaurant.controller;
 
-import org.junit.Assert;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
+import java.nio.charset.Charset;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ftn.restaurant.dto.RestaurantTableDTO;
+
+@WithMockUser(username="waiter", roles= {"WAITER", "ADMIN"})
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
 public class TableControllerIntegrationTest {
 
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+
+    private MockMvc mockMvc;
+
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WebApplicationContext webApplicationContext;
+    
 
-    @Test
-    public void occupyTableTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/api/table/1/occupyTable/waiter", String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Successfully occupied table with id: 1", message);
-
-        //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/2/occupyTable/waiter", String.class);
-
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Table is already occupied", message);
-
-        //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/3/occupyTable/waiter", String.class);
-
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Couldn't find table with id: 3", message);
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void clearTableTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/api/table/2/clearTable/waiter", String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Successfully cleared table with id: 2", message);
+    public void occupyTableTest() throws Exception {
+        mockMvc.perform(get("/api/table/1/occupyTable/waiter"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully occupied table with id: 1"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/1/clearTable/waiter", String.class);
 
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Table is already cleared", message);
+        mockMvc.perform(get("/api/table/2/occupyTable/waiter"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Table is already occupied"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/3/clearTable/waiter", String.class);
 
-        message = responseEntity.getBody();
+        mockMvc.perform(get("/api/table/1000/occupyTable/waiter"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find table with id: 1000"));
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Couldn't find table with id: 3", message);
     }
 
     @Test
-    public void claimTableTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/api/table/3/claimTable/waiter", String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Successfully claimed table with id: 3", message);
+    public void clearTableTest() throws Exception {
+        mockMvc.perform(get("/api/table/5/clearTable/waiter"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully cleared table with id: 5"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/1/claimTable/waiter", String.class);
 
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Table is already claimed", message);
+        mockMvc.perform(get("/api/table/4/clearTable/waiter"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Table is already cleared"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/1000/claimTable/waiter", String.class);
 
-        message = responseEntity.getBody();
+        mockMvc.perform(get("/api/table/1000/clearTable/waiter"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find table with id: 1000"));
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Couldn't find table with id: 1000", message);
     }
 
     @Test
-    public void leaveTableTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/api/table/1/leaveTable/waiter", String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Successfully left table with id: 1", message);
+    public void claimTableTest() throws Exception {
+        mockMvc.perform(get("/api/table/3/claimTable/waiter"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully claimed table with id: 3"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/2/leaveTable/waiter", String.class);
 
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Can't leave table while its occupied", message);
+        mockMvc.perform(get("/api/table/2/claimTable/waiter"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Table is already claimed"));
 
         //////////////////////////////
-        responseEntity = restTemplate
-                .getForEntity("/api/table/1000/leaveTable/waiter", String.class);
 
-        message = responseEntity.getBody();
+        mockMvc.perform(get("/api/table/1000/claimTable/waiter"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find table with id: 1000"));
 
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Couldn't find table with id: 1000", message);
+    }
+
+    @Test
+    public void leaveTableTest() throws Exception {
+        mockMvc.perform(get("/api/table/6/leaveTable/waiter"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Successfully left table with id: 6"));
+
+        //////////////////////////////
+
+        mockMvc.perform(get("/api/table/2/leaveTable/waiter"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't leave table while its occupied"));
+
+        //////////////////////////////
+
+        mockMvc.perform(get("/api/table/1000/leaveTable/waiter"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find table with id: 1000"));
+
+    }
+    
+    @Test
+    public void addTableTest_Success() throws Exception{
+    	
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 1L);
+    	
+    	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isOk());
+    	
+    }
+    
+    @Test
+    public void addTable_Area_Not_Found_Exception() throws Exception {
+    	
+    	RestaurantTableDTO table = new RestaurantTableDTO(12, 12, 13L);
+    	
+    	mockMvc.perform(post("/api/table/addTable").content(json(table)).contentType(contentType)).andExpect(status().isNotFound());
+    	
+    }
+    
+    @Test
+    public void deleteTable_Success() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/3")).andExpect(status().isOk());
+    
+    }
+    
+    @Test
+    public void deleteTable_Table_Is_Occupied_Exception() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/2")).andExpect(status().isForbidden());
+    }
+    
+    @Test
+    public void deleteTable_Table_Not_Found_Exception() throws Exception {
+    	
+    	mockMvc.perform(delete("/api/table/deleteTable/123")).andExpect(status().isNotFound());
+    }
+    
+    private static String json(Object object) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        
+        return mapper.writeValueAsString(object);
     }
 
 }

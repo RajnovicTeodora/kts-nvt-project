@@ -3,7 +3,6 @@ package com.ftn.restaurant.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.RestaurantTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

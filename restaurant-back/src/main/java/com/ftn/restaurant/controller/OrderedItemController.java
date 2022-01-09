@@ -2,7 +2,10 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
+import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.NotFoundException;
+import com.ftn.restaurant.exception.OrderAlreadyPaidException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,40 +42,62 @@ public class OrderedItemController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/confirmPickup/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
-    public String confirmPickup(@PathVariable long id){ return orderedItemService.confirmPickup(id);   }
+    @GetMapping(value = "/confirmPickup/{id}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> confirmPickup(@PathVariable long id){
+        try {
+            return new ResponseEntity(orderedItemService.confirmPickup(id), HttpStatus.OK);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find ordered item.", HttpStatus.NOT_FOUND);
+        }catch (ForbiddenException e){
+            return new ResponseEntity("Can't deliver ordered item when status is not READY.", HttpStatus.FORBIDDEN);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Can't deliver DELETED ordered item.", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @ResponseBody
-    @PostMapping(value = "/setDeleted/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
-    public String deleteOrderedItem( @PathVariable long id) { return orderedItemService.deleteOrderedItem(id);  }
+    @GetMapping(value = "/setDeleted/{id}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> deleteOrderedItem( @PathVariable long id) {
+        try {
+            return new ResponseEntity(orderedItemService.deleteOrderedItem(id), HttpStatus.OK);
+        } catch (ForbiddenException e){
+            return new ResponseEntity("Can't delete ordered item with id: "+ id, HttpStatus.FORBIDDEN);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Already deleted ordered item with id: "+ id, HttpStatus.BAD_REQUEST);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find ordered item.", HttpStatus.NOT_FOUND);
+        }
+    }
 
-    /*@ResponseBody
-    @PostMapping(value = "/updateOrderedItem/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
-    @ResponseStatus(HttpStatus.OK)
-    public OrderItemDTO updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
-        return new OrderItemDTO(orderedItemService.updateOrderedItem(id, orderItemDTO));
-    }*/
     @ResponseBody
     @PostMapping(value = "/updateOrderedItem/{id}")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<?> updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
         try {
             return new ResponseEntity(new OrderItemDTO(orderedItemService.updateOrderedItem(id, orderItemDTO)), HttpStatus.OK);
         } catch (ForbiddenException e){
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity("Can't change ordered item in preparation.", HttpStatus.FORBIDDEN);
+        } catch (OrderAlreadyPaidException e){
+            return new ResponseEntity("Can't change order that is already paid.", HttpStatus.FORBIDDEN);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Can't update deleted ordered item with id: " + id, HttpStatus.BAD_REQUEST);
         }
     }
 
     @ResponseBody
     @PostMapping(value = "/addOrderItemToOrder/{id}")
-    //@PreAuthorize("hasRole('WAITER')")
+    @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<OrderItemDTO> addOrderItemToOrder(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
         try {
             return new ResponseEntity(new OrderItemDTO(orderedItemService.addOrderItemToOrder(id, orderItemDTO)), HttpStatus.CREATED);
-        }catch (ForbiddenException e){
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }catch (OrderAlreadyPaidException e){
+            return new ResponseEntity("Can't add order items to order that is already paid.", HttpStatus.FORBIDDEN);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
         }
 
     }
