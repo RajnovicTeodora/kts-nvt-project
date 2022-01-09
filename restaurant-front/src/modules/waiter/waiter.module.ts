@@ -24,7 +24,11 @@ import { SharedModule } from '../shared/shared.module';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
     RouterModule.forChild(WaiterRoutes),
     SharedModule
   ]

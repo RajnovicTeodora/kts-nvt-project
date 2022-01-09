@@ -26,7 +26,7 @@ export class AuthenticationService {
   }
 
   logout(): Observable<string> {
-    return this.http.get("api/logout", {
+    return this.http.get('http://localhost:8080/logout', {
       headers: this.headers,
       responseType: "text",
     });

@@ -48,24 +48,22 @@ h3 {
     color: white;
 }
 
-mat-form-field {
-    width: 400px;
-}
-
-input {
-    color: white;
-}
-
-.submit-button {
+.btn {
     border: 1.5px solid dimgray;
     margin-top: 20px;
-    width: 400px;
+    width: 200px;
     color: white;
 }
 
-.submit-button:hover {
+.btn-danger:hover {
     border: 1.5px solid rgb(194, 24, 91);
     background-color: rgb(180, 23, 86);
+    color: white;
+}
+
+.btn-primary:hover {
+    border: 1.5px solid rgb(13, 16, 196);
+    background-color: rgb(11, 13, 182);
     color: white;
 }
 
@@ -87,8 +85,4 @@ a:hover {
 
 img {
     height: 200px;
-}
-
-mat-pass-toggle-visibility {
-    color: dimgray;
 }

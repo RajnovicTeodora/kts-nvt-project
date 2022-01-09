@@ -10,14 +10,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '../root/app-routing.module';
 import { MaterialModule } from '../root/material-module';
 import { ToastrModule } from 'ngx-toastr';
-
-
+import { LogoutComponent } from './components/logout/logout.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
-  declarations: [
-  
-    ChangePasswordComponent
-  ],
+  declarations: [ChangePasswordComponent, LogoutComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -26,13 +23,20 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
+    AuthModule,
   ],
-  exports: [
-    ChangePasswordComponent
-  ],
+  exports: [ChangePasswordComponent, LogoutComponent],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorInterceptor,
+      multi: true,
+    },
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

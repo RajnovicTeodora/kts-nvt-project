@@ -2,10 +2,13 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.LoginDTO;
 import com.ftn.restaurant.dto.UserDTO;
+import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.BadUserRoleException;
+import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.exception.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -140,14 +143,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public User login( LoginDTO loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = (User) authentication.getPrincipal();
-        return user;
-    }
-
     public List<UserDTO> getAllUsers(){
         List<UserDTO> users = new ArrayList<UserDTO>();
         userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
@@ -156,5 +151,22 @@ public class UserService implements UserDetailsService {
 
     public boolean findIsLoggedInFirstTimeByUsername(String username){
         return userRepository.findIsLoggedInFirstTimeByUsername(username);
+    }
+
+    public String switchToActiveAccount(LoginDTO loginDTO){
+        Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
+        if(!user.isPresent()){
+            throw new NotFoundException("User with username "+ loginDTO.getUsername() + " not found!");
+        }
+        SecurityContextHolder.clearContext();
+        final Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDTO.getUsername(), loginDTO.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException("Your credentials are bad. Please, try again");
+        }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "Successfully switched accounts!";
     }
 }

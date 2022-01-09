@@ -46,11 +46,8 @@
       <mat-icon>settings</mat-icon>
       <span>Change password</span>
     </button>
-    <!--<button mat-button class="menu-button">
-      <mat-icon>border_color</mat-icon>
-      <span>Change password</span>
-    </button>-->
-    <button mat-button class="menu-button">
+
+    <button mat-button class="menu-button" (click)="logoutButtonClicked()" >
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -59,36 +56,15 @@
 
     <p class="designation">Active accounts</p>
 
-    <mat-action-list class="custom-scroll-bar">
-      <button mat-list-item (click)="changeAccount()" 
+    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList.list">
+      <button mat-list-item (click)="changeAccount(waiter.username)" 
       matTooltip="Change account">
         <mat-icon matBadge="8" matBadgeColor="primary" matBadgePosition="before"
           >notifications</mat-icon
         >
-        <span>Boban</span>
+        <span>{{waiter.username}}</span>
       </button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">
-        <mat-icon matBadge="2" matBadgeColor="primary" matBadgePosition="before"
-          >notifications</mat-icon
-        >
-        <span>Boban</span>
-      </button>
-      <button mat-list-item (click)="changeAccount()">Boban</button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">Dragan</button>
-      <button mat-list-item (click)="changeAccount()">Boban</button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">Dragan</button>
-      <button mat-list-item (click)="changeAccount()">Boban</button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">Dragan</button>
-      <button mat-list-item (click)="changeAccount()">Boban</button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">Dragan</button>
-      <button mat-list-item (click)="changeAccount()">Boban</button>
-      <button mat-list-item (click)="changeAccount()">Zoran</button>
-      <button mat-list-item (click)="changeAccount()">Dragan</button>
+      
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -112,4 +88,5 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-change-password *ngIf="this.user.loggedInFirstTime" (onClose)="modalClosed()"></app-change-password>
+<app-change-password *ngIf="this.showModalFirstPasswordChange" (onClose)='onFirstPasswordChangeClose($event)' ></app-change-password>
+<app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
