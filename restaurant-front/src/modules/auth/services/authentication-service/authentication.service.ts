@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthenticationService {
 
+  loggedUser = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+
   private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private http: HttpClient) {}
@@ -31,7 +33,7 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    if (!localStorage.getItem("user")) {
+    if (!localStorage.getItem("currentUser")) {
       return false;
     }
     return true;

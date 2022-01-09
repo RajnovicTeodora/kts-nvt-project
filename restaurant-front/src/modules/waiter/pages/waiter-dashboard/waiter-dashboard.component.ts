@@ -2,6 +2,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
+import { ChangePasswordComponent } from 'src/modules/shared/components/change-password/change-password.component';
+import { UserWithToken } from 'src/modules/shared/models/user-with-token';
+import { UserService } from 'src/modules/shared/services/user-service/user.service';
 
 @Component({
   selector: 'app-waiter-dashboard',
@@ -11,10 +14,13 @@ import { Router } from '@angular/router';
 export class WaiterDashboardComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
+  @ViewChild(ChangePasswordComponent)
+  changePasswordCmp!: ChangePasswordComponent;
   pageSize: number;
   currentPage: number;
   data : any[];
   imagePath : string;
+  user : UserWithToken;
 
   data2 = [ 
     {id:1, url:
@@ -28,6 +34,7 @@ export class WaiterDashboardComponent implements OnInit {
     this.currentPage = 0;
     this.data = [];
     this.imagePath = 'assets/images/floor3.png';
+    this.user = UserService.getLoggedIn();
   }
 
   ngOnInit() {
@@ -55,6 +62,10 @@ export class WaiterDashboardComponent implements OnInit {
         this.sidenav.open();
       }
     });
+  }
+
+  modalClosed() {
+    this.user.setLoggedFirstTimeFalse;
   }
 
   changeAccount(){}

@@ -43,7 +43,7 @@ export class LoginFormComponent implements OnInit {
       this.authService.login(loggedUser).subscribe(
         (result) => {
           this.toastr.success("Successful login!");
-          localStorage.setItem("user", JSON.stringify(result));
+          localStorage.setItem("currentUser", JSON.stringify(result));
           this.loginForm.reset();
           if(result.userType === "ADMIN") {
             this.router.navigate(['/admin-dashboard']);

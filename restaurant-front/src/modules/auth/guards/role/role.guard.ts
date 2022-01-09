@@ -16,7 +16,7 @@ export class RoleGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole: string = route.data['expectedRoles'];
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('currentUser');
 
     if (!token) {
       this.router.navigate(['/login']);
@@ -24,9 +24,9 @@ export class RoleGuard implements CanActivate {
     }
 
     const user: {
-      accessToken: string;
+      token: string;
       expiresIn: number;
-      userId: number;
+      username: string;
       userType: string;
     } = JSON.parse(token);
     const userType = user.userType;

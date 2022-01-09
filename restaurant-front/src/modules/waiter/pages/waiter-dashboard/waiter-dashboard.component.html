@@ -30,7 +30,7 @@
       (click)="this.router.navigate([''])"
     />
 
-    <h4 class="name">John Smith</h4>
+    <h4 class="name">{{this.user.username}}</h4>
     <!--<p class="designation">Software Engineer</p>
 
     <mat-divider></mat-divider>-->
@@ -112,3 +112,4 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+<app-change-password *ngIf="this.user.loggedInFirstTime" (onClose)="modalClosed()"></app-change-password>

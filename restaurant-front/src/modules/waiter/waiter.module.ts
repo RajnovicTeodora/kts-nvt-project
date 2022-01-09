@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { WaiterRoutes } from './waiter.routes';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -24,7 +25,8 @@ import { WaiterRoutes } from './waiter.routes';
     HttpClientModule,
     MaterialModule,
     ToastrModule.forRoot(),
-    RouterModule.forChild(WaiterRoutes)
+    RouterModule.forChild(WaiterRoutes),
+    SharedModule
   ]
 })
 export class WaiterModule { }

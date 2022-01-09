@@ -43,6 +43,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -114,11 +115,12 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void loggedFirstTime(LoginDTO loginDTO){
+    public boolean loggedFirstTime(LoginDTO loginDTO){
         User user = findByUsername(loginDTO.getUsername());
         user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
-        user.setLoggedFirstTime(true);
+        user.setLoggedFirstTime(false);
         save(user);
+        return true;
     }
 
     public boolean tryChangePassword(String username, String oldPassword,String newPassword){
@@ -150,5 +152,9 @@ public class UserService implements UserDetailsService {
         List<UserDTO> users = new ArrayList<UserDTO>();
         userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
         return users;
+    }
+
+    public boolean findIsLoggedInFirstTimeByUsername(String username){
+        return userRepository.findIsLoggedInFirstTimeByUsername(username);
     }
 }
