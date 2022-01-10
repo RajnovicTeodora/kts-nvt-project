@@ -33,11 +33,15 @@ export class LogoutComponent implements OnInit {
     this.authService.logout().subscribe(
       (result) => {
         const currentUser = this.userService.getLoggedIn();
-        if (currentUser.userType === 'WAITER') {
+        if (['WAITER', 'BARTENDER','CHEF','HEAD_CHEF'].includes(currentUser.userType)) {
           //TODO check which other userTypes to add to 'if'
+          let listName = currentUser.userType + '_LIST';
+          if(currentUser.userType === 'HEAD_CHEF'){
+            listName = 'CHEF_LIST';
+          }
           this.removeUserFromUserList(
             currentUser,
-            currentUser.userType + '_LIST'
+            listName
           );
         }
         localStorage.removeItem('currentUser');

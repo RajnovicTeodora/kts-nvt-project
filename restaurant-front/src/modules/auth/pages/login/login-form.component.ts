@@ -72,12 +72,24 @@ export class LoginFormComponent implements OnInit {
             this.router.navigate(['/manager-dashboard']);
           } else if (result.userType === 'HEAD_CHEF') {
             this.addUserToUserList(user, "CHEF_LIST");
-            this.router.navigate(['/headChef-dashboard']);
+            this.onLoginClose.emit(true);
+            if(this.router.url ==='/chef-dashboard'){
+              window.location.reload()
+            }
+            this.router.navigate(['/chef-dashboard']);
           } else if (result.userType === 'CHEF') {
             this.addUserToUserList(user, user.userType+"_LIST");
+            this.onLoginClose.emit(true);
+            if(this.router.url ==='/chef-dashboard'){
+              window.location.reload()
+            }
             this.router.navigate(['/chef-dashboard']);
           } else if (result.userType === 'BARTENDER') {
             this.addUserToUserList(user, user.userType+"_LIST");
+            this.onLoginClose.emit(true);
+            if(this.router.url ==='/bartender-dashboard'){
+              window.location.reload()
+            }
             this.router.navigate(['/bartender-dashboard']);
           } else if (result.userType === 'WAITER') {
             this.addUserToUserList(user, user.userType+"_LIST");
