@@ -2,10 +2,13 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.LoginDTO;
 import com.ftn.restaurant.dto.UserDTO;
+import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.BadUserRoleException;
+import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.exception.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -43,6 +46,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -114,41 +118,69 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void loggedFirstTime(LoginDTO loginDTO){
-        User user = findByUsername(loginDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(loginDTO.getPassword()));
-        user.setLoggedFirstTime(true);
-        save(user);
-    }
-
-    public boolean tryChangePassword(String username, String oldPassword,String newPassword){
-        User user = findByUsername(username);
-        if (user == null) {
-            return false;
+    public String loggedFirstTime(LoginDTO loginDTO){
+        Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
+        if(!user.isPresent()){
+            throw new NotFoundException("User with username "+ loginDTO.getUsername() + " not found!");
         }
+        SecurityContextHolder.clearContext();
+        Authentication authentication;
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    username, oldPassword));
-            user.setPassword(passwordEncoder.encode(newPassword));
-            save(user);
-        }catch (AuthenticationException e) {
-            return false;
+            user.get().setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+            user.get().setLoggedFirstTime(false);
+            save(user.get());
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDTO.getUsername(), loginDTO.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException("Your credentials are bad. Please, try again");
         }
-
-        return true;
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "Successfully changed password!";
     }
 
-    public User login( LoginDTO loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginRequest.getUsername(), loginRequest.getPassword()));
+    public String changePassword(LoginDTO loginDTO){
+        Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
+        if(!user.isPresent()){
+            throw new NotFoundException("User with username "+ loginDTO.getUsername() + " not found!");
+        }
+        SecurityContextHolder.clearContext();
+        Authentication authentication;
+        try {
+            user.get().setPassword(passwordEncoder.encode(loginDTO.getPassword()));
+            save(user.get());
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDTO.getUsername(), loginDTO.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException("Your credentials are bad. Please, try again");
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = (User) authentication.getPrincipal();
-        return user;
+        return "Successfully changed password!";
     }
 
     public List<UserDTO> getAllUsers(){
         List<UserDTO> users = new ArrayList<UserDTO>();
         userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
         return users;
+    }
+
+    public boolean findIsLoggedInFirstTimeByUsername(String username){
+        return userRepository.findIsLoggedInFirstTimeByUsername(username);
+    }
+
+    public String switchToActiveAccount(LoginDTO loginDTO){
+        Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
+        if(!user.isPresent()){
+            throw new NotFoundException("User with username "+ loginDTO.getUsername() + " not found!");
+        }
+        SecurityContextHolder.clearContext();
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDTO.getUsername(), loginDTO.getPassword()));
+        } catch (BadCredentialsException e) {
+            throw new BadRequestException("Your credentials are bad. Please, try again");
+        }
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "Successfully switched accounts!";
     }
 }

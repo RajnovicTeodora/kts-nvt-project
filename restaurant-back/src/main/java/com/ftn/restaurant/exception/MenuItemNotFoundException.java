@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class MenuItemNotFoundException extends RuntimeException {
 
-    public MenuItemNotFoundException() {
+	private static final long serialVersionUID = 1L;
+
+	public MenuItemNotFoundException() {
         super();
     }
 

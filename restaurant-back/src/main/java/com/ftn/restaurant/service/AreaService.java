@@ -24,8 +24,11 @@ public class AreaService {
 
     @Autowired
     private TableRepository tableRepository;
+    
+    @Autowired
+    private TableService tableService;
 
-    public Area addArea(String name){
+    public Area addArea(String name) throws AreaAlreadyExistsException{
         if(areaRepository.findByName(name).isPresent()){
             throw new AreaAlreadyExistsException("Area with that name already exists!");
         }
@@ -34,11 +37,17 @@ public class AreaService {
         return newArea;
     }
 
-    public Area deleteArea(Long id){
+    public Area deleteArea(Long id) throws Exception{
         Optional<Area> optArea = areaRepository.findById(id);
         if(!optArea.isPresent()){
             throw new AreaNotFoundException("Area not found!");
         }
+        
+        List<RestaurantTable> tables = tableRepository.findByAreaId(id);
+        for(int i = 0; i < tables.size(); i++) {
+        	tableService.deleteTable(tables.get(i).getId());
+        }
+        
         areaRepository.deleteById(id);
         return optArea.get();
     }
@@ -89,6 +98,10 @@ public class AreaService {
     }
 
     public Area findByID(Long id){
-        return areaRepository.getById(id);
+    	Optional<Area> optArea = areaRepository.findById(id);
+    	if(!optArea.isPresent()) {
+    		throw new AreaNotFoundException("Area not found!");
+    	}
+        return optArea.get();
     }
 }

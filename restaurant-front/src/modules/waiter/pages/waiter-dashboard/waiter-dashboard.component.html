@@ -1,1 +1,97 @@
-<p>waiter-dashboard works!</p>
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+    <button mat-button class="menu-button" (click)="onOtherAccountsButtonClicked()">
+      <mat-icon>login</mat-icon>
+      <span>Other account</span>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img
+      class="avatar mat-elevation-z8"
+      src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+
+    <h4 class="name">{{this.user.username}}</h4>
+    <!--<p class="designation">Software Engineer</p>
+
+    <mat-divider></mat-divider>-->
+
+    <button mat-button class="menu-button">
+      <mat-icon matBadge="5" matBadgeColor="accent" matBadgePosition="before"
+        >notifications</mat-icon
+      >
+      <span>Notifications</span>
+    </button>
+
+    <button mat-button class="menu-button" (click)="onPasswordChangeButtonClicked()">
+      <mat-icon>settings</mat-icon>
+      <span>Change password</span>
+    </button>
+
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <p class="designation">Active accounts</p>
+
+    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList.list">
+      <button mat-list-item (click)="changeAccount(waiter.username)" 
+      matTooltip="Change account">
+        <mat-icon matBadge="8" matBadgeColor="primary" matBadgePosition="before"
+          >notifications</mat-icon
+        >
+        <span>{{waiter.username}}</span>
+        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.username === this.user.username"
+          >check</mat-icon
+        >
+      </button>
+      
+    </mat-action-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <div class="row">
+        <div class="col">
+          <div fxLayout="row wrap">
+            <ng-container *ngFor="let image of data">
+              <img [src]="image.url" />
+            </ng-container>
+          </div>
+          <mat-paginator
+            [length]="data2.length"
+            [pageSize]="pageSize"
+            [pageIndex]="currentPage"
+            (page)="getData($event)"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
+<app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
+<app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
+<app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>

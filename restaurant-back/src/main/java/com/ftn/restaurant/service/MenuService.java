@@ -85,7 +85,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("...")){
             List<MenuItem> all = menuItemRepository.findAll();
             for (MenuItem item : all) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -97,7 +97,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("drink")){
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -109,7 +109,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("dish")){
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -122,7 +122,7 @@ public class MenuService {
         if (groupIndex != -1) {
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
+                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -135,7 +135,7 @@ public class MenuService {
         if (groupIndex != -1) {
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
+                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }

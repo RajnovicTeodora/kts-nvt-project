@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-da
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
+import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
   },
+  {
+    path: 'after-logout',
+    pathMatch: 'full',
+    component: AfterLogoutComponent
+  }
 ];
 
 @NgModule({

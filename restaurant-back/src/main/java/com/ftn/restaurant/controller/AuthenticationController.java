@@ -31,6 +31,9 @@ public class AuthenticationController {
     private TokenUtils tokenUtils;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     public AuthenticationController(
             AuthenticationManager authenticationManager,
             UserDetailsService userDetailsService,
@@ -63,12 +66,21 @@ public class AuthenticationController {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(login.getUsername());
             String tokenValue = this.tokenUtils.generateToken(userDetails);
             token.setToken(tokenValue);
-            token.setPassword(userDetails.getPassword());
-            token.setUsername(login.getPassword());
+            token.setExpiresIn(this.tokenUtils.getExpiration());
+            token.setUsername(login.getUsername());
             token.setUserType(this.userDetailsService.findRoleByUsername(login.getUsername()));
+            token.setLoggedInFirstTime(userService.findIsLoggedInFirstTimeByUsername(login.getUsername()));
+            token.setPassword(login.getPassword());
 
-            Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
+            //Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 
+            final Authentication authentication;
+            try {
+                authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                        login.getUsername(), login.getPassword()));
+            } catch (BadCredentialsException e) {
+                throw new BadRequestException("Your credentials are bad. Please, try again");
+            }
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             return new ResponseEntity<>(token, HttpStatus.OK);

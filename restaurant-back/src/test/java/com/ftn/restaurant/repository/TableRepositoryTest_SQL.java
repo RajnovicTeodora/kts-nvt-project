@@ -1,5 +1,9 @@
 package com.ftn.restaurant.repository;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.ftn.restaurant.model.RestaurantTable;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,5 +29,24 @@ public class TableRepositoryTest_SQL {
         Assert.assertNull(rt);
         rt = tableRepository.findOneWithWaiter(1000L, "waiter");
         Assert.assertNull(rt);
+    }
+
+    @Test
+    public void findByAreaIdTest(){
+        List<RestaurantTable> areaTables = tableRepository.findByAreaId(1L);
+        Assert.assertEquals(3, areaTables.size());
+        
+        List<RestaurantTable> areaTables2 = tableRepository.findByAreaId(100L);
+        Assert.assertEquals(0, areaTables2.size());
+    }
+    
+    @Test
+    public void findByPositionXAndPositionYTest() {
+    	Optional<RestaurantTable> optionalTable1 = tableRepository.findByPositionXAndPositionY(5, 5);
+    	Assert.assertTrue(optionalTable1.isPresent());
+    	assertEquals(1L, optionalTable1.get().getId());
+    	
+    	Optional<RestaurantTable> optionalTable2 = tableRepository.findByPositionXAndPositionY(100, 100);
+    	Assert.assertFalse(optionalTable2.isPresent());
     }
 }

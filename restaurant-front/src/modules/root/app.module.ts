@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
 import { ManagerModule } from '../manager/manager.module';
+import { WaiterModule } from '../waiter/waiter.module';
+import { SharedModule } from '../shared/shared.module';
+import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
+import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AfterLogoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -25,7 +29,13 @@ import { ManagerModule } from '../manager/manager.module';
     AuthModule,
     ManagerModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

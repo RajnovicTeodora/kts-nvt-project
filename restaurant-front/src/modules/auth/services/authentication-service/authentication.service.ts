@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthenticationService {
 
+  loggedUser = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+
   private headers = new HttpHeaders({ "Content-Type": "application/json" });
 
   constructor(private http: HttpClient) {}
@@ -24,14 +26,14 @@ export class AuthenticationService {
   }
 
   logout(): Observable<string> {
-    return this.http.get("api/logout", {
+    return this.http.get('http://localhost:8080/logout', {
       headers: this.headers,
       responseType: "text",
     });
   }
 
   isLoggedIn(): boolean {
-    if (!localStorage.getItem("user")) {
+    if (!localStorage.getItem("currentUser")) {
       return false;
     }
     return true;

@@ -13,7 +13,7 @@ export class InterceptorInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const item = localStorage.getItem("user");
+    const item = localStorage.getItem("currentUser");
     const decodedItem = JSON.parse(item!);
 
     if (item) {

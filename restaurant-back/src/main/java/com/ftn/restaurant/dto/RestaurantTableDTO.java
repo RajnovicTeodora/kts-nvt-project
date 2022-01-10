@@ -13,6 +13,7 @@ public class RestaurantTableDTO {
     public RestaurantTableDTO() {
     }
 
+
     public RestaurantTableDTO(long id, int x, int y) {
         this.id = id;
         this.x = x;
@@ -25,6 +26,14 @@ public class RestaurantTableDTO {
         this.y = table.getPositionY();
         this.areaId = table.getArea().getId();
     }
+
+
+    public RestaurantTableDTO(int x, int y, long areaId) {
+        this.x = x;
+        this.y = y;
+        this.areaId = areaId;
+    }
+
 
     public long getId() {
         return this.id;
