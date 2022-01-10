@@ -9,11 +9,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
+import { ManagerModule } from '../manager/manager.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,11 +20,12 @@ import { AuthModule } from '../auth/auth.module';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule ,
+    FlexLayoutModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    ManagerModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
