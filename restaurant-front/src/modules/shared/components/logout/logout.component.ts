@@ -19,7 +19,8 @@ export class LogoutComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private toastr: ToastrService,
-    public router: Router
+    public router: Router,
+    private userService : UserService
   ) {}
 
   ngOnInit(): void {}
@@ -31,7 +32,7 @@ export class LogoutComponent implements OnInit {
   confirm() {
     this.authService.logout().subscribe(
       (result) => {
-        const currentUser = UserService.getLoggedIn();
+        const currentUser = this.userService.getLoggedIn();
         if (currentUser.userType === 'WAITER') {
           //TODO check which other userTypes to add to 'if'
           this.removeUserFromUserList(
@@ -41,8 +42,9 @@ export class LogoutComponent implements OnInit {
         }
         localStorage.removeItem('currentUser');
         this.toastr.success('Successfully logged out!');
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
         //TODO show active user list window
+        this.router.navigate(['/after-logout']);
       },
       (error) => {
         this.toastr.error(error.error);

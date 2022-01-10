@@ -7,7 +7,7 @@ public class TokenDTO {
     private Long expiresIn;
     private String userType;
     private boolean loggedInFirstTime;
-    private String dontlook;
+    private String password;
 
     public TokenDTO() {}
 
@@ -17,7 +17,7 @@ public class TokenDTO {
         this.setExpiresIn(expiresIn);
         this.setUserType(userType);
         this.loggedInFirstTime = loggedInFirstTime;
-        this.dontlook = dontlook;
+        this.password = dontlook;
     }
 
     public String getToken() {
@@ -60,7 +60,9 @@ public class TokenDTO {
         this.loggedInFirstTime = loggedInFirstTime;
     }
 
-    public void setDontlook(String dontlook) {
-        this.dontlook = dontlook;
+    public void setPassword(String password) {
+        this.password = password;
     }
+
+    public String getPassword(){ return this.password;}
 }

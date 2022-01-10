@@ -14,7 +14,7 @@
     fxLayout="row"
     fxLayoutAlign="space-between center"
   >
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="onOtherAccountsButtonClicked()">
       <mat-icon>login</mat-icon>
       <span>Other account</span>
     </button>
@@ -42,12 +42,12 @@
       <span>Notifications</span>
     </button>
 
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="onPasswordChangeButtonClicked()">
       <mat-icon>settings</mat-icon>
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="logoutButtonClicked()" >
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -63,6 +63,9 @@
           >notifications</mat-icon
         >
         <span>{{waiter.username}}</span>
+        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.username === this.user.username"
+          >check</mat-icon
+        >
       </button>
       
     </mat-action-list>
@@ -88,5 +91,7 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-change-password *ngIf="this.showModalFirstPasswordChange" (onClose)='onFirstPasswordChangeClose($event)' ></app-change-password>
+<app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
 <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
+<app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
+<app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>

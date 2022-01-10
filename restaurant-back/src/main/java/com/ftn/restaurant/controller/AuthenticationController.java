@@ -70,7 +70,7 @@ public class AuthenticationController {
             token.setUsername(login.getUsername());
             token.setUserType(this.userDetailsService.findRoleByUsername(login.getUsername()));
             token.setLoggedInFirstTime(userService.findIsLoggedInFirstTimeByUsername(login.getUsername()));
-            token.setDontlook(login.getPassword());
+            token.setPassword(login.getPassword());
 
             //Authentication authentication = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 

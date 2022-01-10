@@ -48,25 +48,9 @@ h3 {
     color: white;
 }
 
-mat-form-field {
-    width: 400px;
-}
-
-input {
-    color: white;
-}
-
-.submit-button {
-    border: 1.5px solid dimgray;
-    margin-top: 20px;
-    width: 400px;
-}
-
-.submit-button:hover {
-    border: 1.5px solid rgb(194, 24, 91);
-    background-color: rgb(180, 23, 86);
-    color: white;
-}
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+    color:#fafafa;
+    }
 
 .btn {
     border: 1.5px solid dimgray;
@@ -79,6 +63,11 @@ input {
     border: 1.5px solid rgb(194, 24, 91);
     background-color: rgb(180, 23, 86);
     color: white;
+}
+
+.btn-primary{
+    left: 10px;
+    width: 100px;
 }
 
 .btn-primary:hover {
@@ -107,16 +96,15 @@ img {
     height: 200px;
 }
 
-mat-pass-toggle-visibility {
-    color: dimgray;
+mat-action-list {
+    max-height: 300px;
+    overflow: auto;
+  }
+
+.custom-scroll-bar::-webkit-scrollbar{
+    width: 5px;
 }
 
-.btn-link {
-    background-color: transparent;
-    border: none;
-    color: rgb(194, 24, 91);
-}
-
-.btn-link:hover {
-    color: rgb(245, 89, 151);
+.custom-scroll-bar::-webkit-scrollbar-thumb{
+    background: rgba(0,0,0,.26);
 }

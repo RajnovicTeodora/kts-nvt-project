@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  static getLoggedIn(): UserWithToken {
+  getLoggedIn(): UserWithToken {
     const token: {
       token: string;
       expiresIn: number;
@@ -51,10 +51,11 @@ export class UserService {
     return new UserWithToken('', 0, '', '', false, '');
   }
 
-  changePassword(data: UserLogin): Observable<Boolean> {
-    return this.http.post<Boolean>(
+  changePasswordFirst(data: UserLogin): Observable<string> {
+    return this.http.post(
       'http://localhost:8080/auth/firstTimeChangePassword',
-      data
+      data,
+      { responseType: 'text' }
     );
   }
 
@@ -62,6 +63,14 @@ export class UserService {
     return this.http.post(
       'http://localhost:8080/auth/switchToActiveAccount',
       user,
+      { responseType: 'text' }
+    );
+  }
+
+  changePassword(data: UserLogin): Observable<string> {
+    return this.http.post(
+      'http://localhost:8080/auth/changePassword',
+      data,
       { responseType: 'text' }
     );
   }

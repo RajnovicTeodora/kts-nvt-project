@@ -38,16 +38,25 @@ public class UserController {
     @PostMapping(value = "/firstTimeChangePassword", consumes = "application/json")
     public ResponseEntity<?> loggedFirstTime(@RequestBody LoginDTO loginDTO)
     {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return new ResponseEntity(userService.loggedFirstTime(loginDTO), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(userService.loggedFirstTime(loginDTO), HttpStatus.OK);
+        }catch (BadCredentialsException e){
+            return new ResponseEntity<>("Your credentials are bad. Please, try again", HttpStatus.BAD_REQUEST);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>("User with username "+ loginDTO.getUsername() + " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
-    @GetMapping(value = "/tryChangePassword")
-    public ResponseEntity<Boolean> tryChangePassword(@RequestParam("username") String username, @RequestParam("oldPassword") String oldPassword,
-                                                     @RequestParam("newPassword") String newPassword) {
-        return new ResponseEntity<>(userService.tryChangePassword(username, oldPassword, newPassword), HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER', 'MANAGER')")
+    @PostMapping(value = "/changePassword", consumes = "application/json")
+    public ResponseEntity<?> tryChangePassword(@RequestBody LoginDTO loginDTO) {
+        try {
+            return new ResponseEntity<>(userService.changePassword(loginDTO), HttpStatus.OK);
+        }catch (BadCredentialsException e){
+            return new ResponseEntity<>("Your credentials are bad. Please, try again", HttpStatus.BAD_REQUEST);
+        }catch (NotFoundException e){
+            return new ResponseEntity<>("User with username "+ loginDTO.getUsername() + " not found!", HttpStatus.NOT_FOUND);
+        }
     }
 
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER')")

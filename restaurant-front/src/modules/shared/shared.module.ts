@@ -12,9 +12,10 @@ import { MaterialModule } from '../root/material-module';
 import { ToastrModule } from 'ngx-toastr';
 import { LogoutComponent } from './components/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
+import { OtherAccountsComponent } from './components/other-accounts/other-accounts.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -30,7 +31,7 @@ import { AuthModule } from '../auth/auth.module';
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

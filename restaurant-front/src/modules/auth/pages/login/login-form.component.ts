@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormGroup,
@@ -20,6 +20,8 @@ import { UserList } from 'src/modules/shared/models/user-list';
 })
 export class LoginFormComponent implements OnInit {
   loginForm: FormGroup;
+  showOnlyLoginButton: boolean;
+  @Output() onLoginClose = new EventEmitter();
 
   hide = true;
 
@@ -33,6 +35,8 @@ export class LoginFormComponent implements OnInit {
       username: [null, Validators.required],
       password: [null, Validators.required],
     });
+    const loggedUser = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.showOnlyLoginButton = (loggedUser.value === null ? true : false);
   }
 
   ngOnInit() {}
@@ -67,14 +71,22 @@ export class LoginFormComponent implements OnInit {
           } else if (result.userType === 'MANAGER') {
             this.router.navigate(['/manager-dashboard']);
           } else if (result.userType === 'HEAD_CHEF') {
+            this.addUserToUserList(user, "CHEF_LIST");
             this.router.navigate(['/headChef-dashboard']);
           } else if (result.userType === 'CHEF') {
+            this.addUserToUserList(user, user.userType+"_LIST");
             this.router.navigate(['/chef-dashboard']);
           } else if (result.userType === 'BARTENDER') {
+            this.addUserToUserList(user, user.userType+"_LIST");
             this.router.navigate(['/bartender-dashboard']);
           } else if (result.userType === 'WAITER') {
             this.addUserToUserList(user, user.userType+"_LIST");
+            this.onLoginClose.emit(true);
+            if(this.router.url ==='/waiter-dashboard'){
+              window.location.reload()
+            }
             this.router.navigate(['/waiter-dashboard']);
+            
           }
         },
         (error) => {
@@ -99,5 +111,9 @@ export class LoginFormComponent implements OnInit {
       //users.value.addUserToList(user);
       localStorage.setItem(listName, JSON.stringify(users.value));
     }
+  }
+
+  cancel(){
+    this.onLoginClose.emit(true);
   }
 }

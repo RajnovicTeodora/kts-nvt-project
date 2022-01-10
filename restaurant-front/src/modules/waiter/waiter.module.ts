@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { WaiterRoutes } from './waiter.routes';
 import { SharedModule } from '../shared/shared.module';
+import { AuthModule } from '../auth/auth.module';
 
 
 
@@ -30,7 +31,8 @@ import { SharedModule } from '../shared/shared.module';
       preventDuplicates: true,
     }),
     RouterModule.forChild(WaiterRoutes),
-    SharedModule
+    SharedModule,
+    AuthModule
   ]
 })
 export class WaiterModule { }

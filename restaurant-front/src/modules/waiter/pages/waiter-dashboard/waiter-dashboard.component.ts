@@ -28,9 +28,11 @@ export class WaiterDashboardComponent implements OnInit {
   data: any[];
   imagePath: string;
   user: UserWithToken;
-  showModalFirstPasswordChange: boolean;
+  showModalPasswordChange: boolean;
   showModalLogout: boolean;
   waiterList: UserList;
+  showModalOtherAccounts: boolean;
+  showModalLogin: boolean;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -47,13 +49,16 @@ export class WaiterDashboardComponent implements OnInit {
     this.currentPage = 0;
     this.data = [];
     this.imagePath = 'assets/images/floor3.png';
-    this.user = UserService.getLoggedIn();
-    this.showModalFirstPasswordChange = this.user.loggedInFirstTime;
+    const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.user = temp.value;
+    this.showModalPasswordChange = this.user.loggedInFirstTime;
     this.showModalLogout = false;
     let users = new BehaviorSubject<UserList>(
       JSON.parse(localStorage.getItem('WAITER_LIST')!)
     );
     this.waiterList = users.value;
+    this.showModalOtherAccounts = false;
+    this.showModalLogin = false;
   }
 
   ngOnInit() {
@@ -83,24 +88,39 @@ export class WaiterDashboardComponent implements OnInit {
     });
   }
 
-  onFirstPasswordChangeClose(item: boolean) {
-    this.user = new UserWithToken(
-      this.user.token,
-      this.user.expiresIn,
-      this.user.username,
-      this.user.userType,
-      false,
-      this.user.dontlook
-    );
-    this.showModalFirstPasswordChange = false;
+  onPasswordChangeClose(item: boolean) {
+    const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+    this.user = temp.value;
+    this.showModalPasswordChange = false;
   }
 
-  logoutButtonClicked() {
+  onLogoutButtonClicked() {
     this.showModalLogout = true;
   }
 
   onLogoutCloseClicked(item: boolean) {
     this.showModalLogout = false;
+  }
+
+  onOtherAccountsButtonClicked(){
+    this.showModalOtherAccounts = true;
+  }
+
+  onOtherAccountsCloseClicked(item: boolean){
+    this.showModalOtherAccounts = false;
+  }
+
+  onLoginOpenClicked(item: boolean){
+    this.showModalLogin = true;
+    this.showModalOtherAccounts = false;
+  }
+
+  onLoginCloseClicked(item: boolean){
+    this.showModalLogin = false;
+  }
+
+  onPasswordChangeButtonClicked(){
+    this.showModalPasswordChange = true;
   }
 
   changeAccount(username: string) {
@@ -114,7 +134,7 @@ export class WaiterDashboardComponent implements OnInit {
       this.userService
         .switchToActiveAccount({
           username: data.username,
-          password: data.dontlook,
+          password: data.password,
         })
         .subscribe(
           (result) => {
@@ -127,13 +147,13 @@ export class WaiterDashboardComponent implements OnInit {
                 data.username,
                 data.userType,
                 data.loggedInFirstTime,
-                data.dontlook
+                data.password
               );
               localStorage.setItem('currentUser', JSON.stringify(newUser));
               //this.router.navigate(['/waiter-dashboard']);
               //window.location.reload()
               this.user = newUser;
-              this.showModalFirstPasswordChange = this.user.loggedInFirstTime;
+              this.showModalPasswordChange = this.user.loggedInFirstTime;
               let users = new BehaviorSubject<UserList>(
                 JSON.parse(localStorage.getItem('WAITER_LIST')!)
               );
