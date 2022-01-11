@@ -13,9 +13,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { LogoutComponent } from './components/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
 import { OtherAccountsComponent } from './components/other-accounts/other-accounts.component';
+import { DrinkCardComponent } from './components/drink-card/drink-card.component';
+import { OneDrinkCardComponent } from './components/one-drink-card/one-drink-card.component';
+import { OrderViewComponent } from './components/order-view/order-view.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,7 +34,7 @@ import { OtherAccountsComponent } from './components/other-accounts/other-accoun
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

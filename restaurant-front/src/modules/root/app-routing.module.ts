@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
+import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
+import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
@@ -35,6 +38,21 @@ const routes: Routes = [
     path: 'after-logout',
     pathMatch: 'full',
     component: AfterLogoutComponent
+  },
+  {
+    path: 'view-drinks',
+    pathMatch: 'full',
+    component: ViewDrinksComponent
+  },
+  {
+    path: 'view-one-drink',
+    pathMatch: 'full',
+    component: ViewOneDrinkComponent
+  },
+  {
+    path: 'add-drink',
+    pathMatch: 'full',
+    component: AddDrinkComponent
   }
 ];
 

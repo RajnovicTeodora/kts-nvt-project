@@ -1,0 +1,42 @@
+<div id="container-div">
+    <h3>Drink card</h3>
+    
+    <div id="form-holder-div">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search">
+      </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Filter</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
+              {{drinkType.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <br/>
+    <div>
+        <table mat-table [dataSource] ="items" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef> Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.type}} </td><!--todo image i dugme-->
+            </ng-container><!--todo proveri da li ovde treba ingredients?, mozda kao pomoc ali generalno nema potrebe-->
+            
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.price}} </td> 
+              </ng-container>
+
+             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table> 
+    </div>
+
+</div>

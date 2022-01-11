@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
 import { WaiterModule } from '../waiter/waiter.module';
+import { BartenderModule } from '../bartender/bartender.module';
 import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
@@ -30,7 +31,8 @@ import { AfterLogoutComponent } from './pages/after-logout/after-logout.componen
     HttpClientModule,
     AuthModule,
     WaiterModule,
-    SharedModule
+    SharedModule,
+    BartenderModule
   ],
   providers: [
     {
