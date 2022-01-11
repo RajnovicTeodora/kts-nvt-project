@@ -12,7 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { UserList } from 'src/modules/shared/models/user-list';
 import { UserLogin } from 'src/modules/shared/models/user-login';
+import { UserWithBadgeNum } from 'src/modules/shared/models/user-with-badgenum';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
+import { NotificationService } from 'src/modules/shared/services/notification-service/notification.service';
 import { UserService } from 'src/modules/shared/services/user-service/user.service';
 
 @Component({
@@ -30,9 +32,10 @@ export class WaiterDashboardComponent implements OnInit {
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
-  waiterList: UserList;
+  waiterList: Array<UserWithBadgeNum>;
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
+  currentBadgeContent: number;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -43,7 +46,8 @@ export class WaiterDashboardComponent implements OnInit {
     private observer: BreakpointObserver,
     public router: Router,
     private toastr: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    private notifService: NotificationService
   ) {
     this.pageSize = 1;
     this.currentPage = 0;
@@ -52,17 +56,46 @@ export class WaiterDashboardComponent implements OnInit {
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
-    this.showModalLogout = false;
-    let users = new BehaviorSubject<UserList>(
-      JSON.parse(localStorage.getItem('WAITER_LIST')!)
-    );
-    this.waiterList = users.value;
+    this.showModalLogout = false;    
+    this.waiterList = new Array;    
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
+    this.currentBadgeContent = 0;
   }
 
   ngOnInit() {
     this.getData({ pageIndex: this.currentPage, pageSize: this.pageSize });
+    this.setBadgeValues();
+  }
+
+  setBadgeValues(){
+    this.waiterList = new Array;    
+    this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
+      {
+        next: (result) => {
+          this.currentBadgeContent = result.length;
+        },
+        error: data => {
+            this.toastr.error(data.error);          
+        }
+      }
+    );
+    const users = new BehaviorSubject<UserList>(
+      JSON.parse(localStorage.getItem('WAITER_LIST')!)
+    );
+    users.value.list.forEach((value, index) => {
+      this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
+        {
+          next: (result) => {
+            let badgeNum = result.length;
+            this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
+          },
+          error: data => {
+              this.toastr.error(data.error);            
+          }
+        }
+      );      
+    });
   }
 
   getData(obj: { pageIndex: any; pageSize: any }) {
@@ -154,10 +187,7 @@ export class WaiterDashboardComponent implements OnInit {
               //window.location.reload()
               this.user = newUser;
               this.showModalPasswordChange = this.user.loggedInFirstTime;
-              let users = new BehaviorSubject<UserList>(
-                JSON.parse(localStorage.getItem('WAITER_LIST')!)
-              );
-              this.waiterList = users.value;
+              this.setBadgeValues();
             } else {
               this.toastr.error(
                 'User with username ' + username + ' not found!'

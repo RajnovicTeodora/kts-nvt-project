@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select user.loggedFirstTime from User user where user.username =?1")
     boolean findIsLoggedInFirstTimeByUsername(String username);
+
+    @Query("select user.id from User user where user.username =?1")
+    long findUserIdByUsername(String username);
 }

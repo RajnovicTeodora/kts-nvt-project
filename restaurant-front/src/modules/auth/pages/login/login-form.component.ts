@@ -117,7 +117,7 @@ export class LoginFormComponent implements OnInit {
       list.push(user);
       const userList = new UserList(list);
       localStorage.setItem(listName, JSON.stringify(userList));
-    } else {
+    } else if(!this.checkIfUserInList(users.value.list, user.username)) {
       users.value.list.push(user);
       users.value.numberOfUsers++;
       //users.value.addUserToList(user);
@@ -128,4 +128,13 @@ export class LoginFormComponent implements OnInit {
   cancel(){
     this.onLoginClose.emit(true);
   }
-}
+
+  checkIfUserInList(userList: Array<UserWithToken>, username: string): boolean{
+    let temp = false;
+    userList.forEach((value) => {
+      if (value.username === username) temp = true;
+    });
+    return temp;
+  }
+
+ }
