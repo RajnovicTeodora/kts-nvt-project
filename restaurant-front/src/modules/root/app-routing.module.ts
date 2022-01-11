@@ -5,6 +5,7 @@ import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-da
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
 import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
+import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
 import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
 import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
@@ -53,6 +54,11 @@ const routes: Routes = [
     path: 'add-drink',
     pathMatch: 'full',
     component: AddDrinkComponent
+  },
+  {
+    path: 'new-orders',
+    pathMatch: 'full',
+    component: NewOrdersComponent
   }
 ];
 

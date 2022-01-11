@@ -14,11 +14,13 @@ import { BartenderRoutes } from './bartender.routes';
 import { ViewOneDrinkComponent } from './pages/view-one-drink/view-one-drink.component';
 import { AddDrinkComponent } from './pages/add-drink/add-drink.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NewOrdersComponent } from './pages/new-orders/new-orders.component';
+import { AcceptedOrdersComponent } from './pages/accepted-orders/accepted-orders.component';
 //import { AuthRoutes } from './auth.routes';
 
 @NgModule({
   declarations: [
-    ViewDrinksComponent, ViewOneDrinkComponent, AddDrinkComponent
+    ViewDrinksComponent, ViewOneDrinkComponent, AddDrinkComponent, NewOrdersComponent, AcceptedOrdersComponent
   ],
   imports: [
     CommonModule,
@@ -34,6 +36,5 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     AuthModule
   ],
-  //exports:[AddDrinkComponent]
 })
 export class BartenderModule { }

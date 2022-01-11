@@ -1,3 +1,6 @@
+#page{
+    background-color: #424242;
+}
 table {
     width: 100%;
     background-color: #424242;
@@ -90,6 +93,7 @@ mat-pass-toggle-visibility {
 
 .btn-link {
     background-color: transparent;
+    margin: 3;
     border: none;
     color: rgb(194, 24, 91);
 }

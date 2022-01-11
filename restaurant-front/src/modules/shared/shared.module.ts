@@ -18,7 +18,7 @@ import { OneDrinkCardComponent } from './components/one-drink-card/one-drink-car
 import { OrderViewComponent } from './components/order-view/order-view.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent, OrderViewComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,7 +34,7 @@ import { OrderViewComponent } from './components/order-view/order-view.component
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, OrderViewComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
