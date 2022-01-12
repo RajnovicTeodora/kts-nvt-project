@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ItemService } from '../../services/item-service/item.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Item } from 'src/modules/shared/models/item';
+import { ItemService } from '../../services/item-service/item.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-table',
@@ -13,16 +14,18 @@ import { Item } from 'src/modules/shared/models/item';
 })
 export class ItemTableComponent implements OnInit {
   dataSource: MatTableDataSource<Item>;
-  displayedColumns: string[] = ['name'];
+  displayedColumns: string[] = ['name', 'view']; // TODO add image
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private itemSevice: ItemService) {}
+  constructor(private itemService: ItemService) {}
 
   ngOnInit(): void {
-    this.itemSevice.getAll().subscribe((response) => {
+    this.itemService.getAll().subscribe((response) => {
       this.dataSource = new MatTableDataSource<Item>(response);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
     });
   }
 
