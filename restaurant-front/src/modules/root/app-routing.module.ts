@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
+import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
+import { ViewItemComponent } from '../manager/pages/view-item/view-item.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
@@ -34,8 +37,30 @@ const routes: Routes = [
   {
     path: 'after-logout',
     pathMatch: 'full',
-    component: AfterLogoutComponent
-  }
+    component: AfterLogoutComponent,
+  },
+  {
+    path: 'manager-dashboard',
+    pathMatch: 'full',
+    component: ManagerDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+    children: [{ path: 'items', component: ItemTableComponent }],
+  },
+  {
+    path: 'item-table',
+    pathMatch: 'full',
+    component: ItemTableComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+  },
+  {
+    path: 'view-item/:id',
+    pathMatch: 'full',
+    component: ViewItemComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+  },
 ];
 
 @NgModule({
