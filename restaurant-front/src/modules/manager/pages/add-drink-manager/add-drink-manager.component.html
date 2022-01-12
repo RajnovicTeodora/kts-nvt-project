@@ -1,0 +1,85 @@
+<h2 mat-dialog-title>Add new drink</h2>
+<mat-dialog-content [formGroup]="addDrinkForm" style="white-space: pre-line">
+  <mat-grid-list cols="2" rowHeight="3:1">
+    <mat-grid-tile rowspan="2">
+      <div class="img-space">
+        <ng-container *ngIf="isImageSaved; else elseTemplate">
+          <img [src]="url" />
+        </ng-container>
+        <ng-template #elseTemplate>
+          <img src="assets/images/1176381.png" class="img-responsive" />
+        </ng-template>
+      </div>
+      <!--<img
+        style="max-width: 50%; max-height: 50%"
+        src="assets/images/1176381.png"
+        alt="Default image"
+      />-->
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field id="name">
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+          id="name"
+          required
+          placeholder="Name"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let drinkType of drinkTypes"
+            [value]="drinkType.value"
+          >
+            {{ drinkType.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <input type="file" (change)="onFileSelected($event)" />
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Container</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let container of containers"
+            [value]="container.value"
+          >
+            {{ container.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="saveDrink()"
+    id="submit-button"
+  >
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="saveDrink()"
+    id="submit-button"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

@@ -17,6 +17,7 @@ import { ManagerRoutes } from './manager.routes';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ItemTableComponent } from './pages/item-table/item-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MenuTableComponent,
     ItemCardComponent,
     ItemTableComponent,
+    AddDrinkManagerComponent,
   ],
   imports: [
     CommonModule,

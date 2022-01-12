@@ -7,6 +7,8 @@ import { ItemService } from '../../services/item-service/item.service';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddDrinkManagerComponent } from '../add-drink-manager/add-drink-manager.component';
 
 @Component({
   selector: 'app-item-table',
@@ -25,7 +27,8 @@ export class ItemTableComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog
   ) {
     this.searchForm = this.fb.group({
       search: [null],
@@ -89,5 +92,20 @@ export class ItemTableComponent implements OnInit {
     this.dataSource.data = this.dataSource.data.filter(
       (item) => item.id !== id
     );
+  }
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '50%';
+    dialogConfig.height = '50%';
+
+    const dialogRef = this.dialog.open(AddDrinkManagerComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
