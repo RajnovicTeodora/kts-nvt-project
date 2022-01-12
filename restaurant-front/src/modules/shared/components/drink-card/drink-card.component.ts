@@ -4,10 +4,11 @@ import {MatTableModule} from "@angular/material/table"
 import { Drink } from 'src/modules/shared/models/drink';
 import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
+import { DrinksService } from '../../services/drinks/drinks.service';
 
 const ELEMENT_DATA: Drink[] = [
-  {name: "blue lagun", type: "a", price: 1000},
-  {name: "blue lagun2",  type: "b", price: 1000}
+  {name: "blue lagun", drinkType: "a", price: 1000, containerType: ""},
+  {name: "blue lagun2",  drinkType: "b", price: 1000, containerType: ""}
 ];
 
 @Component({
@@ -19,8 +20,8 @@ export class DrinkCardComponent implements OnInit {
 
   displayedColumns: string[] = ['name', "type","price"];
   items: Drink[] =  [
-    {name: "blue lagun", type: "a", price: 1000},
-    {name: "blue lagun2",  type: "b", price: 1000}
+    {name: "blue lagun", drinkType: "a", price: 1000, containerType: ""},
+    {name: "blue lagun2",  drinkType: "b", price: 1000, containerType: ""}
   ];
 
   drinkTypes: DrinkType[] = [
@@ -30,7 +31,7 @@ export class DrinkCardComponent implements OnInit {
       {value: 'alcoholic', viewValue: 'Alcoholic'},
   ];
   constructor(
-    //private drinkService: DrinkCardService,
+    private drinkService: DrinksService,
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class DrinkCardComponent implements OnInit {
     if(user!=null){
       const token = user.split('":"')[1].split('",')[0]
       console.log(token)
-      //this.drinkService.getDrinks(user).subscribe((result) => {console.log("res", result)});
+      this.drinkService.getDrinks(user).subscribe((result) => {console.log("res", result); this.items = result;});
     }
   }
 }

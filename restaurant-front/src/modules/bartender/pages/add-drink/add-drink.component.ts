@@ -8,6 +8,7 @@ import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { Container } from 'src/modules/shared/models/drink-container';
 import { Drink } from 'src/modules/shared/models/drink';
 import { HttpClient } from '@angular/common/http';
+import { AddDrinkService } from '../../service/add-drink.service';
 
 @Component({
   selector: 'app-add-drink',
@@ -22,26 +23,31 @@ export class AddDrinkComponent implements OnInit {
   hide = true; 
   fileName = '';
   drinkTypes: DrinkType[] = [
-    {value: 'coffee', viewValue: 'coffee'},
-    {value: 'cold drink', viewValue: 'cold drink'},
-    {value: 'hot drink', viewValue: 'Hot drink'},
-    {value: 'alcoholic', viewValue: 'Alcoholic'},
+    {value: 'COFFEE', viewValue: 'coffee'},
+    {value: 'COLD_DRINK', viewValue: 'cold drink'},
+    {value: 'HOT_DRINK', viewValue: 'Hot drink'},
+    {value: 'ALCOHOLIC', viewValue: 'Alcoholic'},
   ];
   containers: Container[] = [
-    {value: 'bottle', viewValue: 'Bottle'},
-    {value: 'glass', viewValue: 'Glass'},
-    {value: 'pitcher', viewValue: 'Pitcher'}
+    {value: 'BOTTLE', viewValue: 'Bottle'},
+    {value: 'GLASS', viewValue: 'Glass'},
+    {value: 'PITCHER', viewValue: 'Pitcher'}
   ];
 
-  selectedType = "";
-  selectedContainer = "";
+  
+  selectedContainer: string;
+  selectedValue: string;
+  
 
   constructor(
     private fb: FormBuilder,
     public router: Router,
     private toastr: ToastrService,
-    private http: HttpClient
+    private http: HttpClient,
+    private drinkService: AddDrinkService
     ) {
+      this.selectedValue ="";
+      this.selectedContainer ="";
     this.addDrinkForm = this.fb.group({
       name: [null, Validators.required],
       container: [null, Validators.required],
@@ -53,18 +59,18 @@ export class AddDrinkComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  changeType(value: string|null){
-    if(value !=null){
-    this.selectedType = value//(<HTMLInputElement>event.target).value;
-    console.log(this.selectedType, "type")}
-  }
+  // changeType(value: string|null){
+  //   if(value !=null){
+  //   this.selectedType = value//(<HTMLInputElement>event.target).value;
+  //   console.log(this.selectedType, "type")}
+  // }
 
-  changeContainer(value: string|null){
-    if(value !=null){
-    console.log("uslo")
-    this.selectedContainer = value;//(<HTMLInputElement>event.target).value;
-    console.log(this.selectedContainer, "ccc")}
-  }
+  // changeContainer(value: string|null){
+  //   if(value !=null){
+  //   console.log("uslo")
+  //   this.selectedContainer = value;//(<HTMLInputElement>event.target).value;
+  //   console.log(this.selectedContainer, "ccc")}
+  // }
   
   onFileSelected(event: any) {
     console.log(typeof(event));
@@ -82,19 +88,22 @@ export class AddDrinkComponent implements OnInit {
   }
 
   saveDrink(){
+    console.log(this.selectedValue+" aaa")
     
-    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedType === ""){ //todo ovde mozda i nije null za check box
+    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){ //todo ovde mozda i nije null za check box
       this.toastr.error("All fields must be filled in!");
       console.log(this.addDrinkForm.value.name );
       console.log(this.selectedContainer );
-      console.log( this.selectedType );
+      console.log( this.selectedValue );
     }else{
       const newDrink:  Drink = {
         name: this.addDrinkForm.value.name,
-        type: this.addDrinkForm.value.drinkType,
-        container: this.addDrinkForm.value.container,
-        image: "aaa" 
+        drinkType: this.selectedValue,
+        containerType: this.selectedContainer,
+        image: "aaa",
+        price: 0
       }
+       this.drinkService.addDrink(newDrink).subscribe((result)=>{console.log("vratilo se", result);});
        console.log("super", newDrink);
       }
 

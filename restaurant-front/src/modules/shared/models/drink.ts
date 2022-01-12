@@ -1,7 +1,10 @@
+import { Ingredient } from "./ingredient";
+
 export interface Drink {
     name: string,
-    type: string,
-    price?: number,
-    container?: string,
-    image?: string
+    drinkType: string,
+    price: number,
+    containerType: string,
+    image?: string,
+    ingredients?: Ingredient[]
 }

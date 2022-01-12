@@ -27,7 +27,7 @@
         
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Type</mat-label>
-            <mat-select>
+            <mat-select [(value)]="selectedValue">
               <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
                 {{drinkType.viewValue}}
               </mat-option>
@@ -36,16 +36,16 @@
   
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Container</mat-label>
-            <mat-select>
+            <mat-select [(value)]="selectedContainer">
               <mat-option *ngFor="let container of containers" [value]="container.value">
                 {{container.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          
+         
   
           <input type="file" class="file-input"
-         (change)="onFileSelected($event)" #fileUpload>
+         (change)="onFileSelected($event)" #fileUpload/>
   
           <div class="file-upload">
   
@@ -60,7 +60,7 @@
         </mat-card-content>
         </div>
         <div>
-          <table><th>aa</th><th>aa</th></table>
+          <app-ingredients-table></app-ingredients-table>
         </div>
         <div id="button-div">
           <button

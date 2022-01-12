@@ -16,9 +16,11 @@ import { OtherAccountsComponent } from './components/other-accounts/other-accoun
 import { DrinkCardComponent } from './components/drink-card/drink-card.component';
 import { OneDrinkCardComponent } from './components/one-drink-card/one-drink-card.component';
 import { OrderViewComponent } from './components/order-view/order-view.component';
+import { FinishDialogComponent } from './components/finish-dialog/finish-dialog.component';
+import { IngredientsTableComponent } from './components/ingredients-table/ingredients-table.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent, OrderViewComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent, OrderViewComponent, FinishDialogComponent, FinishDialogComponent, IngredientsTableComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,7 +36,7 @@ import { OrderViewComponent } from './components/order-view/order-view.component
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, OrderViewComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, OrderViewComponent, FinishDialogComponent, IngredientsTableComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

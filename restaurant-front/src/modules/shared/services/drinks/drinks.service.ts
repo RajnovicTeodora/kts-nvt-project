@@ -1,23 +1,31 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Drink } from 'src/modules/shared/models/drink';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AddDrinkService {
+export class DrinksService {
 
   private headers = new HttpHeaders({ "Content-Type": "application/json"});
 
   constructor(private http: HttpClient) {}
 
-  addDrink(drink: Drink):Observable<any>{
-    const res = this.http.post<Drink>("http://localhost:8080/api/drink/addDrink", drink, { //promeni na 1
+  getDrinks(token: string):Observable<any>{ //todo proveri za null
+    const res = this.http.get("http://localhost:8080/api/drink/getDrinks", {
         headers: this.headers,
         responseType: "json",
       });
       console.log(res);
       return res;
   }
+
+  getDrink(id:number):Observable<any>{
+    const res = this.http.get("http://localhost:8080/api/drink/getDrink/8", { //promeni na 1
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
+
 }

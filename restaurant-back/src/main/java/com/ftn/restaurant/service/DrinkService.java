@@ -48,10 +48,15 @@ public class DrinkService {
         Drink drink = addDrink(drinkDTO);
         drink.setApproved(false);
 
+        if(drinkDTO.getIngredients() != null){
         for (IngredientDTO ingredient : drinkDTO.getIngredients()){
             Ingredient newIngredient = new Ingredient(ingredient);
             drink.getIngredients().add(newIngredient);
+            }
         }
+        System.out.println(drink.getName() );
+        System.out.println(drinkDTO.getDrinkType());
+        System.out.println(drinkDTO.getContainerType());
         return drinkRepository.save(drink);
     }
 
@@ -65,11 +70,11 @@ public class DrinkService {
         if (drinkDTO.getName().isEmpty() || drinkDTO.getImage().isEmpty())
             throw new ForbiddenException("Drink must have a name and image");
 
-        Optional<Drink> maybeDrink = drinkRepository.findByNameAndDrinkTypeAndContainerType(drinkDTO.getName(), drinkDTO.getType(), drinkDTO.getContainerType());
+        Optional<Drink> maybeDrink = drinkRepository.findByNameAndDrinkTypeAndContainerType(drinkDTO.getName(), drinkDTO.getDrinkType(), drinkDTO.getContainerType());
         if (maybeDrink.isPresent())
             throw new DrinkExistsException("Drink already exists!");
 
-        Drink drink = new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<MenuItemPrice>(), drinkDTO.getType(), drinkDTO.getContainerType());
+        Drink drink = new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<MenuItemPrice>(), drinkDTO.getDrinkType(), drinkDTO.getContainerType());
         return drink;
     }
 }

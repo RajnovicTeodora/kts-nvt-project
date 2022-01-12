@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Order } from '../../models/order';
 import { OrderedItem } from '../../models/orderedItem';
-
-
+import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component';
 
 const ELEMENT_DATA: Order[] = [
   {note: "Note1", status: true, orderedItems: [{name:"item1", quantity: 3}]},
@@ -16,13 +16,32 @@ const ELEMENT_DATA: Order[] = [
 })
 export class OrderViewComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', "quantity"];
-   items: OrderedItem[] = ELEMENT_DATA[1].orderedItems;
-   note:string = ELEMENT_DATA[1].note;
-  constructor() 
+  @Input() typeBtn: string="";
+
+  displayedColumns: string[] = ['name', "quantity","actions"];
+  items: OrderedItem[] = ELEMENT_DATA[1].orderedItems;
+  note:string = ELEMENT_DATA[1].note;
+  buttonName = "accept"
+  isFinished = false;
+  constructor(public dialog: MatDialog) 
   {
     this.note= ELEMENT_DATA[1].note
     
+  }
+
+  openDialog(): void {
+
+    this.isFinished = false;
+    const dialogRef = this.dialog.open(FinishDialogComponent, {
+      width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.isFinished = result;
+      console.log(result)
+  
+    });
   }
 
   ngOnInit() {}

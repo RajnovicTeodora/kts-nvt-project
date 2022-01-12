@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+import { AcceptedOrdersComponent } from '../bartender/pages/accepted-orders/accepted-orders.component';
 import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
 import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
 import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
@@ -59,6 +60,11 @@ const routes: Routes = [
     path: 'new-orders',
     pathMatch: 'full',
     component: NewOrdersComponent
+  },
+  {
+    path: 'accepted-orders',
+    pathMatch: 'full',
+    component: AcceptedOrdersComponent
   }
 ];
 

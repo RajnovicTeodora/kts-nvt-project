@@ -27,30 +27,30 @@ public class DrinkController {
         this.drinkService = drinkService;
     }
 
-    @ResponseBody
+    @ResponseBody //todo autorizacija, i ono nesto sa ing
     @GetMapping(path = "/getDrinks")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public List<DrinkDTO> getDrinks(){
         return this.drinkService.getDrinks(); //fali price todo
     }
 
     @ResponseBody
     @GetMapping(path = "/getDrinkTypes")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public List<DrinkType> getDrinkTypes(){
         return Arrays.asList(DrinkType.values());
     }
 
     @ResponseBody
     @GetMapping(path = "/getDrinkContainers")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public List<ContainerType> getDrinkContainers(){
         return Arrays.asList(ContainerType.values());
     }
 
     @ResponseBody
     @GetMapping(path = "/getDrink/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public DrinkDTO getDrink(@PathVariable long id){
         return this.drinkService.getDrink(id); //fali price todo
     }

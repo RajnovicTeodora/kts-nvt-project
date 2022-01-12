@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Drink } from 'src/modules/shared/models/drink';
-//import { DrinkCardService } from '../../services/drinks/drink-card.service';
+import { DrinksService } from '../../services/drinks/drinks.service';
 
 @Component({
   selector: 'app-one-drink-card',
   templateUrl: './one-drink-card.component.html',
   styleUrls: ['./one-drink-card.component.scss']
 })
-export class OneDrinkCardComponent implements OnInit {
+export class OneDrinkCardComponent implements OnInit { //todo proslediti id da bi moglo da se pronadje
 
+  drink: Drink ={name: "blue lagun", drinkType: "a", price: 1000, containerType: "hh"}
   
-  name:string="aaa";
-  container:string="ggg";
-  price:number =145;
-  avilable:boolean=true;
   constructor(
-    //private drinkService: DrinkCardService
+    private drinkService: DrinksService
   ) { }
 
   ngOnInit(): void {
@@ -23,11 +20,11 @@ export class OneDrinkCardComponent implements OnInit {
   }
 
   getDrink(){
-    // const drink = this.drinkService.getDrink(1).subscribe((res) => {
-    //   this.name = res.name;
-    //   this.container = res.container; 
-    //   this.price = res.price;
-    //   this.avilable = res.avilable;
-    // } )
+    const drink = this.drinkService.getDrink(1).subscribe((res) => {
+      this.drink = res;
+      console.log(res)
+      console.log(this.drink);
+      
+    } )
   }
 }
