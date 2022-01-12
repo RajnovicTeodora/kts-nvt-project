@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
 import { AddManagerDrink } from 'src/modules/shared/models/item-models/add-manager-drink';
 import { Select } from 'src/modules/shared/models/select';
+import { ItemService } from '../../services/item-service/item.service';
 
 @Component({
   selector: 'app-add-drink-manager',
@@ -13,65 +14,26 @@ import { Select } from 'src/modules/shared/models/select';
 })
 export class AddDrinkManagerComponent implements OnInit {
   addDrinkForm: FormGroup;
-  hide = true;
-  file: File | undefined;
-  image: string | undefined;
-  imageError: string;
-  isImageSaved: boolean;
+  isImageSaved: boolean = false;
   url: any;
 
-  fileChangeEvent(event: any) {
-    if (!event.target.files[0] || event.target.files[0].length == 0) {
-      return;
-    }
-
-    var mimeType = event.target.files[0].type;
-
-    if (mimeType.match(/image\/*/) == null) {
-      return;
-    }
-
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-
-    reader.onload = (_event) => {
-      this.url = reader.result;
-    };
-  }
-
-  onFileSelected(event: any) {
-    console.log(typeof event);
-    const file: File = event.target.files[0];
-
-    if (file) {
-      //this.fileToUpload = file.name;
-
-      const formData = new FormData();
-
-      formData.append('thumbnail', file);
-      console.log(file);
-    }
-  }
-
   drinkTypes: Select[] = [
-    { value: 'coffee', viewValue: 'Coffee' },
-    { value: 'cold drink', viewValue: 'Cold drink' },
-    { value: 'hot drink', viewValue: 'Hot drink' },
-    { value: 'alcoholic', viewValue: 'Alcoholic' },
+    { value: 'COFFEE', viewValue: 'Coffee' },
+    { value: 'COLD_DRINK', viewValue: 'Cold drink' },
+    { value: 'HOT_DRINK', viewValue: 'Hot drink' },
+    { value: 'ALCOHOLIC', viewValue: 'Alcoholic' },
   ];
   containers: Select[] = [
-    { value: 'bottle', viewValue: 'Bottle' },
-    { value: 'glass', viewValue: 'Glass' },
-    { value: 'pitcher', viewValue: 'Pitcher' },
+    { value: 'BOTTLE', viewValue: 'Bottle' },
+    { value: 'GLASS', viewValue: 'Glass' },
+    { value: 'PITCHER', viewValue: 'Pitcher' },
   ];
-
-  selectedType = '';
-  selectedContainer = '';
 
   constructor(
     private fb: FormBuilder,
-    public router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private itemService: ItemService,
+    private dialogRef: MatDialogRef<AddDrinkManagerComponent>
   ) {
     this.addDrinkForm = this.fb.group({
       name: [null, Validators.required],
@@ -82,41 +44,50 @@ export class AddDrinkManagerComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  changeType(value: string | null) {
-    if (value != null) {
-      this.selectedType = value; //(<HTMLInputElement>event.target).value;
-      console.log(this.selectedType, 'type');
-    }
-  }
-
-  changeContainer(value: string | null) {
-    if (value != null) {
-      console.log('uslo');
-      this.selectedContainer = value; //(<HTMLInputElement>event.target).value;
-      console.log(this.selectedContainer, 'ccc');
+  fileChangeEvent(event: any) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.url = reader.result;
+        this.isImageSaved = true;
+      };
     }
   }
 
   saveDrink() {
     if (
       this.addDrinkForm.value.name === null ||
-      this.selectedContainer === '' ||
-      this.selectedType === ''
+      this.addDrinkForm.get('container')?.value === '' ||
+      this.addDrinkForm.get('drinkType')?.value === '' ||
+      this.isImageSaved == false
     ) {
-      //todo ovde mozda i nije null za check box
       this.toastr.error('All fields must be filled in!');
-      console.log(this.addDrinkForm.value.name);
-      console.log(this.selectedContainer);
-      console.log(this.selectedType);
     } else {
       const newDrink: AddManagerDrink = {
         name: this.addDrinkForm.value.name,
-        image: '',
+        image: this.url.split(',')[1],
         type: this.addDrinkForm.value.drinkType,
         containerType: this.addDrinkForm.value.container,
         ingredients: new Array<Ingredient>(),
       };
-      console.log('super', newDrink);
+      this.itemService.saveMenuItem(newDrink).subscribe({
+        next: (success) => {
+          this.toastr.success(
+            'Successfully added and approved ' + success.name
+          );
+          this.dialogRef.close();
+        },
+        error: (error) => {
+          this.toastr.error('Unable to add new item');
+          console.log(error);
+        },
+      });
     }
+  }
+
+  cancel() {
+    this.dialogRef.close();
   }
 }

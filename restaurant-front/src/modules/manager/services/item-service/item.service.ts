@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClientModule,
-  HttpParams,
-  HttpClient,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AddManagerDrink } from 'src/modules/shared/models/item-models/add-manager-drink';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +58,17 @@ export class ItemService {
     return this.http.get(
       'http://localhost:8080/api/menuItem/approveMenuItem/' + id,
       { headers: this.headers, responseType: 'json' }
+    );
+  }
+
+  saveMenuItem(data: AddManagerDrink): Observable<any> {
+    return this.http.post<AddManagerDrink>(
+      'http://localhost:8080/api/menuItem/addDrink',
+      data,
+      {
+        headers: this.headers,
+        responseType: 'json',
+      }
     );
   }
 }

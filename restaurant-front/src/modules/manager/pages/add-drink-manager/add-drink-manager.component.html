@@ -4,17 +4,28 @@
     <mat-grid-tile rowspan="2">
       <div class="img-space">
         <ng-container *ngIf="isImageSaved; else elseTemplate">
-          <img [src]="url" />
+          <img
+            style="max-width: 60%; max-height: 60%"
+            [src]="url"
+            alt="Image"
+          />
         </ng-container>
         <ng-template #elseTemplate>
-          <img src="assets/images/1176381.png" class="img-responsive" />
+          <img
+            style="max-width: 60%; max-height: 60%"
+            src="assets/images/1176381.png"
+            class="img-responsive"
+            alt="Default image"
+          />
         </ng-template>
+        <input
+          accept=".png, .jpg"
+          style="display: none"
+          type="file"
+          (change)="fileChangeEvent($event)"
+          #fileInput
+        />
       </div>
-      <!--<img
-        style="max-width: 50%; max-height: 50%"
-        src="assets/images/1176381.png"
-        alt="Default image"
-      />-->
     </mat-grid-tile>
     <mat-grid-tile>
       <mat-form-field id="name">
@@ -31,7 +42,7 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Type</mat-label>
-        <mat-select>
+        <mat-select formControlName="drinkType">
           <mat-option
             *ngFor="let drinkType of drinkTypes"
             [value]="drinkType.value"
@@ -42,13 +53,15 @@
       </mat-form-field>
     </mat-grid-tile>
     <mat-grid-tile>
-      <input type="file" (change)="onFileSelected($event)" />
+      <button mat-flat-button color="accent" (click)="fileInput.click()">
+        <mat-icon>add_a_photo</mat-icon>
+      </button>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Container</mat-label>
-        <mat-select>
+        <mat-select formControlName="container">
           <mat-option
             *ngFor="let container of containers"
             [value]="container.value"
@@ -67,7 +80,7 @@
     color="accent"
     type="submit"
     class="submit-button"
-    (click)="saveDrink()"
+    (click)="cancel()"
     id="submit-button"
   >
     Cancel
@@ -78,6 +91,7 @@
     type="submit"
     class="submit-button"
     (click)="saveDrink()"
+    [disabled]="addDrinkForm.invalid || !this.isImageSaved"
     id="submit-button"
   >
     Save
