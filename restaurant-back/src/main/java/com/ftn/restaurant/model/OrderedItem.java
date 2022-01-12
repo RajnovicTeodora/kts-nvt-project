@@ -50,6 +50,9 @@ public class OrderedItem {
     @ManyToOne(fetch=FetchType.EAGER)
     private Employee employee;
 
+    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
+    private List<Notification> notificationList;
+
     public void addActiveIngredients(Ingredient ingredient) {
         if (ingredient == null)
             return;

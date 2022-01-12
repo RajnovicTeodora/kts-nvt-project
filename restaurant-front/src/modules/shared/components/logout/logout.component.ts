@@ -48,7 +48,12 @@ export class LogoutComponent implements OnInit {
         this.toastr.success('Successfully logged out!');
         //this.router.navigate(['/login']);
         //TODO show active user list window
-        this.router.navigate(['/after-logout']);
+        if(this.checkIfActiveAccountsExist()){
+          this.router.navigate(['/after-logout']);
+        }else{
+          this.router.navigate(['/login']);
+        }
+        
       },
       (error) => {
         this.toastr.error(error.error);
@@ -69,5 +74,19 @@ export class LogoutComponent implements OnInit {
       });
       localStorage.setItem(listName, JSON.stringify(users.value));
     }
+  }
+
+  checkIfActiveAccountsExist(): boolean{
+    const listNames = ['WAITER_LIST', 'BARTENDER_LIST', 'CHEF_LIST'];
+    let exists = false;
+    for (const i in listNames) {
+      let users = new BehaviorSubject<UserList>(
+        JSON.parse(localStorage.getItem(listNames[i])!)
+      );
+      if (users.value != null) {
+        exists = true;        
+      }
+    }
+    return exists;
   }
 }

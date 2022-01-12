@@ -13,9 +13,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { LogoutComponent } from './components/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
 import { OtherAccountsComponent } from './components/other-accounts/other-accounts.component';
+import { BadgeComponent } from './components/badge/badge.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, BadgeComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,7 +32,7 @@ import { OtherAccountsComponent } from './components/other-accounts/other-accoun
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, BadgeComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

@@ -31,14 +31,9 @@
     />
 
     <h4 class="name">{{this.user.username}}</h4>
-    <!--<p class="designation">Software Engineer</p>
-
-    <mat-divider></mat-divider>-->
 
     <button mat-button class="menu-button">
-      <mat-icon matBadge="5" matBadgeColor="accent" matBadgePosition="before"
-        >notifications</mat-icon
-      >
+      <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
 
@@ -56,14 +51,12 @@
 
     <p class="designation">Active accounts</p>
 
-    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList.list">
-      <button mat-list-item (click)="changeAccount(waiter.username)" 
+    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList">
+      <button mat-list-item (click)="changeAccount(waiter.user.username)" 
       matTooltip="Change account">
-        <mat-icon matBadge="8" matBadgeColor="primary" matBadgePosition="before"
-          >notifications</mat-icon
-        >
-        <span>{{waiter.username}}</span>
-        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.username === this.user.username"
+        <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
+        <span>{{waiter.user.username}}</span>
+        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.user.username === this.user.username"
           >check</mat-icon
         >
       </button>

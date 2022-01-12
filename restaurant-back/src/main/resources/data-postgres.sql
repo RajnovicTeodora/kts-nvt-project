@@ -100,3 +100,7 @@ INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
 INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);
 INSERT INTO ingredient (name, alergen) VALUES ('mleko', false);
 INSERT INTO ingredient (name, alergen) VALUES ('cokolada', false);
+
+INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je gotova!', 2, 4);
+INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Spagete su gotove!', 6, 4);
+INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je zapoceta!', 1, 4);

@@ -12,7 +12,7 @@
       <mat-icon matBadgeColor="primary" matBadgePosition="before"
         >information</mat-icon
       >
-      <span>If account is not listed then continue to login</span>
+      <span >If account is not listed then continue to login</span>
       <button
         mat-flat-button
         type="button"
@@ -24,7 +24,7 @@
       </button>
     </div>
     <mat-tab-group>
-      <mat-tab>
+      <mat-tab *ngIf="waiterList != null ">
         <ng-template mat-tab-label> Waiters </ng-template>
         <mat-action-list
           class="custom-scroll-bar"
@@ -35,12 +35,6 @@
             (click)="changeAccount(waiter.username, 'WAITER_LIST')"
             matTooltip="Change account"
           >
-            <mat-icon
-              matBadge="8"
-              matBadgeColor="primary"
-              matBadgePosition="before"
-              >notifications</mat-icon
-            >
             <span>{{ waiter.username }}</span>
             <mat-icon
               matBadgePosition="after"
@@ -51,7 +45,7 @@
           </button>
         </mat-action-list>
       </mat-tab>
-      <mat-tab>
+      <mat-tab *ngIf="bartenderList != null ">
         <ng-template mat-tab-label> Bartenders </ng-template>
         <mat-action-list
           class="custom-scroll-bar"
@@ -62,12 +56,6 @@
             (click)="changeAccount(barmen.username, 'BARTENDER_LIST')"
             matTooltip="Change account"
           >
-            <mat-icon
-              matBadge="8"
-              matBadgeColor="primary"
-              matBadgePosition="before"
-              >notifications</mat-icon
-            >
             <span>{{ barmen.username }}</span>
             <mat-icon
               matBadgePosition="after"
@@ -78,7 +66,7 @@
           </button>
         </mat-action-list>
       </mat-tab>
-      <mat-tab>
+      <mat-tab *ngIf="chefList != null ">
         <ng-template mat-tab-label> Chefs </ng-template>
         <mat-action-list
           class="custom-scroll-bar"
@@ -86,7 +74,7 @@
         >
           <button
             mat-list-item
-            (click)="changeAccount(chef.username, 'BARTENDER_LIST')"
+            (click)="changeAccount(chef.username, 'CHEF_LIST')"
             matTooltip="Change account"
           >
             <mat-icon
