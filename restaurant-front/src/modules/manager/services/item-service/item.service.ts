@@ -11,7 +11,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ItemService {
-  private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
 
   constructor(private http: HttpClient) {}
   getAll(): Observable<any> {
@@ -26,39 +28,23 @@ export class ItemService {
   }
 
   getById(id: string): Observable<any> {
-    let queryParams = {};
-
-    queryParams = {
+    return this.http.get('http://localhost:8080/api/menuItem/getById/' + id, {
       headers: this.headers,
-      observe: 'response',
-    };
-
-    return this.http.get('http://localhost:8080/api/menuItem/getById/' + id);
+      responseType: 'json',
+    });
   }
 
   deleteMenuItem(id: string): Observable<any> {
-    let queryParams = {};
-
-    queryParams = {
-      headers: this.headers,
-      observe: 'response',
-    };
-
-    return this.http.get(
-      'http://localhost:8080/api/menuItem/deleteMenuItem/' + id
+    return this.http.delete(
+      'http://localhost:8080/api/menuItem/deleteMenuItem/' + id,
+      { headers: this.headers, responseType: 'json' }
     );
   }
 
   approveMenuItem(id: string): Observable<any> {
-    let queryParams = {};
-
-    queryParams = {
-      headers: this.headers,
-      observe: 'response',
-    };
-
     return this.http.get(
-      'http://localhost:8080/api/menuItem/approveMenuItem/' + id
+      'http://localhost:8080/api/menuItem/approveMenuItem/' + id,
+      { headers: this.headers, responseType: 'json' }
     );
   }
 }

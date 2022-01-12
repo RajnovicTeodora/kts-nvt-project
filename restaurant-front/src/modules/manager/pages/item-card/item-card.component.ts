@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Dish } from 'src/modules/shared/models/dish';
 import { Drink } from 'src/modules/shared/models/drink';
 import { ItemService } from '../../services/item-service/item.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-view-item',
-  templateUrl: './view-item.component.html',
-  styleUrls: ['./view-item.component.scss'],
+  selector: 'app-item-card',
+  templateUrl: './item-card.component.html',
+  styleUrls: ['./item-card.component.scss'],
 })
-export class ViewItemComponent implements OnInit {
-  item: Drink | Dish;
+export class ItemCardComponent implements OnInit {
+  @Input()
   itemId: string;
+  item: Drink | Dish;
   itemType: string;
   image: SafeUrl;
 
+  @Output() approveClicked = new EventEmitter();
+  @Output() deleteClicked = new EventEmitter();
+
   constructor(
     private itemService: ItemService,
-    private route: ActivatedRoute,
     private domSanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
-    this.itemId = this.route.snapshot.paramMap.get('id') || '';
     this.getItem();
   }
 
@@ -49,6 +50,11 @@ export class ViewItemComponent implements OnInit {
   getDrink(item: Dish | Drink): Drink {
     return item as Drink;
   }
-  openDeleteDialog() {}
-  openApproveDialog() {}
+
+  approveItem(id: string) {
+    this.approveClicked.emit(id);
+  }
+  deleteItem(id: string) {
+    this.deleteClicked.emit(id);
+  }
 }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ManagerDashboardComponent } from './pages/manager-dashboard/manager-dashboard.component';
 import { MatTableModule } from '@angular/material/table';
 import { MenuTableComponent } from './pages/menu-table/menu-table.component';
-import { ViewItemComponent } from './pages/view-item/view-item.component';
+import { ItemCardComponent } from './pages/item-card/item-card.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from '../root/app-routing.module';
 import { MaterialModule } from '../root/material-module';
@@ -21,7 +21,7 @@ import { ItemTableComponent } from './pages/item-table/item-table.component';
   declarations: [
     ManagerDashboardComponent,
     MenuTableComponent,
-    ViewItemComponent,
+    ItemCardComponent,
     ItemTableComponent,
   ],
   imports: [
