@@ -16,6 +16,7 @@ import { AuthModule } from '../auth/auth.module';
 import { ManagerRoutes } from './manager.routes';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ItemTableComponent } from './pages/item-table/item-table.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ItemTableComponent } from './pages/item-table/item-table.component';
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',

@@ -6,6 +6,7 @@ import { Item } from 'src/modules/shared/models/item';
 import { ItemService } from '../../services/item-service/item.service';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-item-table',
@@ -14,49 +15,74 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ItemTableComponent implements OnInit {
   dataSource: MatTableDataSource<Item>;
-  obs: Observable<any>;
+  observable: Observable<any>;
+  searchForm: FormGroup;
+  searchSting: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private itemService: ItemService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private fb: FormBuilder
+  ) {
+    this.searchForm = this.fb.group({
+      search: [null],
+    });
+  }
+
   ngOnInit(): void {
     this.itemService.getAll().subscribe((response) => {
-      this.dataSource = new MatTableDataSource<Item>(response);
-      this.dataSource.paginator = this.paginator;
-      this.obs = this.dataSource.connect();
-      console.log(this.dataSource);
+      this.setData(response);
     });
+  }
+
+  setData(data: Item[]) {
+    this.dataSource = new MatTableDataSource<Item>(data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.observable = this.dataSource.connect();
+  }
+
+  search() {
+    this.searchSting = this.searchForm.value.search;
+
+    this.itemService
+      .getAllBySearchCriteria(this.searchSting)
+      .subscribe((response) => {
+        console.log(response.body);
+        this.dataSource.data = response.body;
+      });
   }
 
   onApproved(id: string) {
     console.log(id);
-    this.itemService.approveMenuItem(id).subscribe(
-      (success) => {
-        console.log(success);
-        this.toastr.success('Successfully approved ');
+    this.itemService.approveMenuItem(id).subscribe({
+      next: (success) => {
+        console.log(success.name);
+        this.toastr.success('Successfully approved ' + success.name);
         this.filterData(id);
       },
-      (error) => {
-        this.toastr.error('Unable to approve ');
-      }
-    );
+      error: (error) => {
+        this.toastr.error('Unable to approve item');
+        console.log(error);
+      },
+    });
   }
 
   onDeleted(id: string) {
     console.log(id);
-    this.itemService.deleteMenuItem(id).subscribe(
-      (success) => {
-        this.toastr.success('Successfully deleted');
+    this.itemService.deleteMenuItem(id).subscribe({
+      next: (success) => {
+        this.toastr.success('Successfully deleted ' + success.name);
         this.filterData(id);
       },
-      (error) => {
-        this.toastr.error('Unable to delete ');
-      }
-    );
+      error: (error) => {
+        this.toastr.error('Unable to delete item');
+        console.log(error);
+      },
+    });
   }
 
   filterData(id: string) {

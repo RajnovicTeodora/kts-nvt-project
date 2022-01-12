@@ -27,6 +27,23 @@ export class ItemService {
     return this.http.get('http://localhost:8080/api/menuItem/getAll');
   }
 
+  getAllBySearchCriteria(name: string): Observable<any> {
+    let param = { searchName: name };
+
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: 'response',
+      params: param,
+    };
+
+    return this.http.get(
+      'http://localhost:8080/api/menuItem/getAll',
+      queryParams
+    );
+  }
+
   getById(id: string): Observable<any> {
     return this.http.get('http://localhost:8080/api/menuItem/getById/' + id, {
       headers: this.headers,
