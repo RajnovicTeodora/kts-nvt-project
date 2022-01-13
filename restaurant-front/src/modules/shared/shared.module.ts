@@ -4,7 +4,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorInterceptor } from './interceptors/interceptor.interceptor';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from '../root/app-routing.module';
@@ -16,7 +15,12 @@ import { OtherAccountsComponent } from './components/other-accounts/other-accoun
 import { BadgeComponent } from './components/badge/badge.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, BadgeComponent],
+  declarations: [
+    ChangePasswordComponent,
+    LogoutComponent,
+    OtherAccountsComponent,
+    BadgeComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -32,7 +36,12 @@ import { BadgeComponent } from './components/badge/badge.component';
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, BadgeComponent],
+  exports: [
+    ChangePasswordComponent,
+    LogoutComponent,
+    OtherAccountsComponent,
+    BadgeComponent,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

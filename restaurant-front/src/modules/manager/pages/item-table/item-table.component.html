@@ -1,0 +1,42 @@
+<form class="example-form" [formGroup]="searchForm">
+  <mat-form-field class="example-full-width">
+    <span matPrefix> </span>
+    <input
+      matInput
+      class="form-control"
+      type="text"
+      placeholder="Search..."
+      formControlName="search"
+      id="itemSearch"
+      name="itemSearch"
+    />
+    <button
+      color="accent"
+      type="submit"
+      class="submit-button"
+      (click)="search()"
+      id="submit-button"
+      matSuffix
+      mat-button
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
+
+<button mat-button (click)="openDialog()">
+  Add Drink <mat-icon>plus</mat-icon>
+</button>
+
+<div class="card-deck">
+  <mat-list class="example-card" *ngFor="let item of observable | async">
+    <app-item-card
+      id="{{ item.id }}"
+      [itemId]="item.id"
+      (approveClicked)="onApproved($event)"
+      (deleteClicked)="onDeleted($event)"
+    >
+    </app-item-card>
+  </mat-list>
+</div>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
