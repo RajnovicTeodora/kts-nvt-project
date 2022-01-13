@@ -1,0 +1,48 @@
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+
+  <!-- lista jela u porudzbini -->
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <span class="span">Order</span>
+    <mat-divider></mat-divider>
+  </mat-sidenav>
+
+  <!-- dugmici za filtriranje -->
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <div class="row">
+        <button mat-fab class="dugmic-back">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-form-field class="example-container" id="search-field">
+          <input matInput placeholder="Search..." #searchInput>
+        </mat-form-field>
+        <button mat-fab class="dugmic-search" (click)="onSearchClicked(searchInput.value)">
+          <mat-icon>search</mat-icon>
+        </button>
+        
+      </div>
+    </div>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
+
