@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Dish } from 'src/modules/shared/models/dish';
 import { Drink } from 'src/modules/shared/models/drink';
 import { ItemService } from '../../services/item-service/item.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
+import { HelperService } from 'src/modules/shared/services/helper/helper.service';
 
 @Component({
   selector: 'app-item-card',
@@ -21,7 +22,7 @@ export class ItemCardComponent implements OnInit {
 
   constructor(
     private itemService: ItemService,
-    private domSanitizer: DomSanitizer
+    private helperService: HelperService
   ) {}
 
   ngOnInit() {
@@ -37,9 +38,7 @@ export class ItemCardComponent implements OnInit {
         this.itemType = 'Drink';
       }
 
-      this.image = this.domSanitizer.bypassSecurityTrustResourceUrl(
-        'data:image/jpg;base64,' + response.image
-      );
+      this.image = this.helperService.bypassUrlSecurity(response.image);
     });
   }
 
