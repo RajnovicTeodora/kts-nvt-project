@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+import { SelectMenuItemsComponent } from '../waiter/pages/select-menu-items/select-menu-items.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
@@ -35,6 +36,13 @@ const routes: Routes = [
     path: 'after-logout',
     pathMatch: 'full',
     component: AfterLogoutComponent
+  },
+  {
+    path: 'select-menu-items',
+    pathMatch: 'full',
+    component: SelectMenuItemsComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'WAITER' },
   }
 ];
 

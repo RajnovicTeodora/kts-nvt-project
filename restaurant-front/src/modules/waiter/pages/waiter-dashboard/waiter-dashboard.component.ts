@@ -128,7 +128,8 @@ export class WaiterDashboardComponent implements OnInit {
   }
 
   onLogoutButtonClicked() {
-    this.showModalLogout = true;
+    // this.showModalLogout = true;
+    this.router.navigate(['/select-menu-items']);
   }
 
   onLogoutCloseClicked(item: boolean) {
