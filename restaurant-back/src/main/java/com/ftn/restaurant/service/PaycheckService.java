@@ -1,6 +1,7 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.UpdatePaycheckDTO;
+import com.ftn.restaurant.dto.UserPaycheckDTO;
 import com.ftn.restaurant.exception.EmployeeNotFoundException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Employee;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -49,10 +51,15 @@ public class PaycheckService {
             employeePaychecks.setDateTo(lastDayPreviousMonth);
             Paychecks newPaycheck = new Paychecks(firstDayThisMonth, null, updatePaycheckDTO.getNewSalary(), employee);
             employee.getPaychecksList().add(newPaycheck);
+            paycheckRepository.save(employeePaychecks);
             return paycheckRepository.save(newPaycheck);
         }
         // paycheck hasn't lasted for a month
         employeePaychecks.setPaycheck(updatePaycheckDTO.getNewSalary());
         return paycheckRepository.save(employeePaychecks);
+    }
+
+    public List<Paychecks> getCurrentPaychecks(String username, String search, String filter) {
+        return paycheckRepository.findAllByEmployeeUsernameNotAndDateToIsNullAndEmployeeTypeAndSearchCriteria(username, search, filter);
     }
 }
