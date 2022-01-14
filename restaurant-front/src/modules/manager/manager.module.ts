@@ -19,6 +19,7 @@ import { ItemTableComponent } from './pages/item-table/item-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
 import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
+import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-paycheck-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.co
     ItemTableComponent,
     AddDrinkManagerComponent,
     PaycheckTableComponent,
+    EditPaycheckDialogComponent,
   ],
   imports: [
     CommonModule,

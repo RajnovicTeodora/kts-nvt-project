@@ -112,41 +112,15 @@
       <th mat-header-cell *matHeaderCellDef>Edit paycheck</th>
       <td mat-cell *matCellDef="let element; let i = index">
         <button
-          *ngIf="enableEdit && enableEditIndex == i"
-          (click)="enableEdit = false"
-          class="btn page-secondary-action-btn"
-          ng-click="cancel()"
-        >
-          Cancel
-        </button>
-        <button
-          *ngIf="enableEdit && enableEditIndex == i"
-          id="saveBtn"
-          class="btn page-primary-action-btn"
-          (click)="editPrice(element.username)"
-          type="submit"
-        >
-          Save
-        </button>
-        <a
-          href="#"
-          class="table-row-action edit-action"
-          *ngIf="!enableEdit"
-          (click)="enableEditMethod($event, i)"
-        >
-          edit</a
-        >
-      </td>
-      <!--<td mat-cell *matCellDef="let element">
-        <button
           mat-button
           color="accent"
           type="submit"
           class="submit-button"
-          (click)="editPrice(element.username)"
+          (click)="openDialog(element)"
         >
-          Edit
-        </button></td>-->
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

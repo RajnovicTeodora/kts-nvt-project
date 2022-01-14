@@ -1,13 +1,16 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Select } from 'src/modules/shared/models/select';
-import { UserWithPaycheck } from 'src/modules/shared/models/user-models/user-with-paycheck';
+import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user-with-paycheck';
 import { PaycheckService } from '../../services/paycheck-service/paycheck.service';
+import { EditPaycheckDialogComponent } from '../edit-paycheck-dialog/edit-paycheck-dialog.component';
+import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
 
 @Component({
   selector: 'app-paycheck-table',
@@ -47,7 +50,8 @@ export class PaycheckTableComponent implements OnInit {
     private paycheckService: PaycheckService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    private liveAnnouncer: LiveAnnouncer
+    private liveAnnouncer: LiveAnnouncer,
+    private dialog: MatDialog
   ) {
     this.searchForm = this.fb.group({
       search: [null],
@@ -83,10 +87,6 @@ export class PaycheckTableComponent implements OnInit {
   }
 
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
@@ -94,11 +94,39 @@ export class PaycheckTableComponent implements OnInit {
     }
   }
 
-  enableEditMethod(e: any, i: any) {
-    this.enableEdit = true;
-    this.enableEditIndex = i;
-    console.log(i, e);
-    e.preventDefault();
+  openDialog(element: any) {
+    const dialogRef = this.dialog.open(EditPaycheckDialogComponent, {
+      width: '300px',
+      data: element.paycheck,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === undefined) {
+        return;
+      }
+
+      this.dataSource.data = this.dataSource.data.filter((value) => {
+        if (value.username == element.username) {
+          value.paycheck = result.data;
+        }
+        return true;
+      });
+
+      const editPaycheck: EditPaycheck = {
+        username: element.username,
+        newSalary: result.data,
+      };
+
+      this.paycheckService.updatePaycheck(editPaycheck).subscribe({
+        next: (success) => {
+          this.toastr.success(
+            'Successfully edited ' + element.username + "'s salary"
+          );
+        },
+        error: (error) => {
+          this.toastr.error('Unable to edit user paycheck');
+        },
+      });
+    });
   }
-  editPrice(username: string) {}
 }
