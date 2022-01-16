@@ -1,6 +1,6 @@
 <div id="container-div">
     <h3>Ingredients</h3>
-    <button> <mat-icon>add</mat-icon></button>
+    <button (click)="openDialog()"> <mat-icon>add</mat-icon></button>
      <table mat-table [dataSource] ="items" class="mat-elevation-z8">
 
       <ng-container matColumnDef="name">

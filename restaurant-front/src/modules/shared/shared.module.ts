@@ -18,9 +18,10 @@ import { OneDrinkCardComponent } from './components/one-drink-card/one-drink-car
 import { OrderViewComponent } from './components/order-view/order-view.component';
 import { FinishDialogComponent } from './components/finish-dialog/finish-dialog.component';
 import { IngredientsTableComponent } from './components/ingredients-table/ingredients-table.component';
+import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 
 @NgModule({
-  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent, OrderViewComponent, FinishDialogComponent, FinishDialogComponent, IngredientsTableComponent],
+  declarations: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, DrinkCardComponent, OrderViewComponent, OrderViewComponent, FinishDialogComponent, FinishDialogComponent, IngredientsTableComponent, InputIngredientDialogComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,7 +37,7 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
     }),
     AuthModule,
   ],
-  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, OrderViewComponent, FinishDialogComponent, IngredientsTableComponent],
+  exports: [ChangePasswordComponent, LogoutComponent, OtherAccountsComponent, DrinkCardComponent, OneDrinkCardComponent, OrderViewComponent, FinishDialogComponent, IngredientsTableComponent, InputIngredientDialogComponent],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

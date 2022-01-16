@@ -48,7 +48,7 @@ export class AddDrinkComponent implements OnInit {
     ) {
       this.selectedValue ="";
       this.selectedContainer ="";
-    this.addDrinkForm = this.fb.group({
+    this.addDrinkForm = this.fb.group({ //todo izbaci nepotrebnoo, pobrisi komentare
       name: [null, Validators.required],
       container: [null, Validators.required],
       ingrediants: [null],
@@ -92,9 +92,6 @@ export class AddDrinkComponent implements OnInit {
     
     if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){ //todo ovde mozda i nije null za check box
       this.toastr.error("All fields must be filled in!");
-      console.log(this.addDrinkForm.value.name );
-      console.log(this.selectedContainer );
-      console.log( this.selectedValue );
     }else{
       const newDrink:  Drink = {
         name: this.addDrinkForm.value.name,
