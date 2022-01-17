@@ -32,17 +32,28 @@ insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-09-01', '2021-10-31', 10, 4);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-11-01', null, 10, 4);
 
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Pizza', 'todo',             true, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Spaghetti', 'todo',         true, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Vanilla ice cream', 'todo', true, true);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Cheese platter', 'todo',    false, true);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Caesar salad', 'todo',      false, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Chicken soup', 'todo',      true, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Sprite', 'todo',            true, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Nes Coffee', 'todo',        false, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Hot chocolate', 'todo',     true, true);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'todo',              false, false);
-INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'todo',              true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Pizza', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',             true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Spaghetti', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',         true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Vanilla ice cream', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==', true, true);
+INSERT INTO menu_item (name, image, approved, deleted)
+VALUES ('Cheese platter', 'todo', false, true);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Caesar salad', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',      false, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Chicken soup', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',      true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Sprite', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',            true, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Nes Coffee', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',        false, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Hot chocolate', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',     true, true);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',              false, false);
+INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Wine', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',              true, false);
 
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Cockta', 'todo',            true, false);
 INSERT INTO menu_item (name, image, approved, deleted) VALUES ('Lemonade', 'todo',          true, false);
@@ -118,6 +129,10 @@ INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
 INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);
 INSERT INTO ingredient (name, alergen) VALUES ('mleko', false);
 INSERT INTO ingredient (name, alergen) VALUES ('cokolada', false);
+
+INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 1 );
+INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 2 );
+INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 3 );
 
 INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je gotova!', 2, 4);
 INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Spagete su gotove!', 6, 4);

@@ -13,12 +13,10 @@ import { WaiterModule } from '../waiter/waiter.module';
 import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
+import { ManagerModule } from '../manager/manager.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AfterLogoutComponent
-  ],
+  declarations: [AppComponent, AfterLogoutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,19 +24,20 @@ import { AfterLogoutComponent } from './pages/after-logout/after-logout.componen
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule ,
+    FlexLayoutModule,
     HttpClientModule,
     AuthModule,
     WaiterModule,
-    SharedModule
+    SharedModule,
+    ManagerModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: InterceptorInterceptor,
-      multi: true
+      multi: true,
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
