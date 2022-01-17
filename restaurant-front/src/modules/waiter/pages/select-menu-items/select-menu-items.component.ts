@@ -3,7 +3,7 @@ import {
   Component,
   OnInit,
   Output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatSidenav } from '@angular/material/sidenav';
@@ -29,6 +29,11 @@ export class SelectMenuItemsComponent implements OnInit {
   filterGroup: string;
   menuItems: any[];
   searchName : string;
+  groups: any[];
+  drinkTypes: any[];
+  dishTypes: any[];
+  tableId: number;
+  item: any;
 
   constructor(
     private fb: FormBuilder,
@@ -46,10 +51,17 @@ export class SelectMenuItemsComponent implements OnInit {
     this.filterGroup = '...';
     this.searchName = "...";
     this.menuItems = [];
+    this.groups = ["drink", "dish"];
+    this.drinkTypes = [];
+    this.dishTypes = [];
+    this.tableId = -1;
+    this.item = "";
   }
 
   ngOnInit() {
     this.search();
+    this.getDrinkTypes();
+    this.getDishTypes();
     }
 
   search() {
@@ -57,13 +69,34 @@ export class SelectMenuItemsComponent implements OnInit {
       {
         next: (result) => {
           this.menuItems = result;
-          console.log(this.menuItems)
         },
         error: data => {
           this.toastr.error(data.error);       
         }
       }
     );
+  }
+
+  getDrinkTypes() {
+    this.searchMenuItemsService.getDrinkTypes().subscribe({
+      next: (result) => {
+        this.drinkTypes = result;
+      },
+      error: data => {
+        this.toastr.error(data.error);       
+      }
+    })
+  }
+
+  getDishTypes() {
+    this.searchMenuItemsService.getDishTypes().subscribe({
+      next: (result) => {
+        this.dishTypes = result;
+      },
+      error: data => {
+        this.toastr.error(data.error);       
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -78,6 +111,15 @@ export class SelectMenuItemsComponent implements OnInit {
     });
   }
 
+  editGroupName(group: string){
+    group = group.toLowerCase();
+    var firstLetter = group.charAt(0).toUpperCase();
+
+    group = firstLetter + group.substring(1);
+    group = group.replace('_', ' ');
+    return group;
+  }
+
   onPasswordChangeClose(item: boolean) {
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
@@ -85,13 +127,36 @@ export class SelectMenuItemsComponent implements OnInit {
 
 
   onSearchClicked(input:string){
-    console.log(input);
-    this.searchName = input;
+    if(input !== ""){
+      this.searchName = input;
+    }
+    else this.searchName = "...";
+
     this.search();
+
 
   }
 
   onFilterClick(group:string){
+    this.filterGroup = group;
+    this.searchName = "...";
+    this.search();
+  }
 
+  onBackClick() {
+    if(this.searchName !== "..."){
+      this.searchName = "...";
+    }
+    else if(this.filterGroup === "drink" || this.filterGroup === "dish"){
+      this.filterGroup = "...";
+    }
+    else if(this.drinkTypes.includes(this.filterGroup)) {
+      this.filterGroup = "drink";
+    }
+    else if(this.dishTypes.includes(this.filterGroup)) {
+      this.filterGroup = "dish";
+    }
+
+    this.search();
   }
 }
