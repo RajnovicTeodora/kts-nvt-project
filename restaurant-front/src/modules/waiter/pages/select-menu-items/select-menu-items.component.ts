@@ -34,6 +34,7 @@ export class SelectMenuItemsComponent implements OnInit {
   dishTypes: any[];
   tableId: number;
   item: any;
+  searchInput: string;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +57,7 @@ export class SelectMenuItemsComponent implements OnInit {
     this.dishTypes = [];
     this.tableId = -1;
     this.item = "";
+    this.searchInput = "";
   }
 
   ngOnInit() {
@@ -129,9 +131,12 @@ export class SelectMenuItemsComponent implements OnInit {
   onSearchClicked(input:string){
     if(input !== ""){
       this.searchName = input;
+      this.searchInput = input;
     }
-    else this.searchName = "...";
-
+    else {
+      this.searchName = "...";
+      this.searchInput = "";
+    }
     this.search();
 
 
@@ -140,6 +145,7 @@ export class SelectMenuItemsComponent implements OnInit {
   onFilterClick(group:string){
     this.filterGroup = group;
     this.searchName = "...";
+    this.searchInput = "";
     this.search();
   }
 
@@ -156,7 +162,9 @@ export class SelectMenuItemsComponent implements OnInit {
     else if(this.dishTypes.includes(this.filterGroup)) {
       this.filterGroup = "dish";
     }
-
+    if(this.searchInput !== "") {
+      this.searchInput = "";
+    }
     this.search();
   }
 }

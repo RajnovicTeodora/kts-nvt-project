@@ -34,14 +34,14 @@
           <mat-icon>arrow_back</mat-icon>
         </button>
         <mat-form-field class="example-container" id="search-field">
-          <input matInput placeholder="Search..." #searchInput>
+          <input matInput placeholder="Search..." #searchInputField [value]="searchInput">
         </mat-form-field>
-        <button mat-fab class="dugmic-search" (click)="onSearchClicked(searchInput.value)">
+        <button mat-fab class="dugmic-search" (click)="onSearchClicked(searchInputField.value)">
           <mat-icon>search</mat-icon>
         </button> 
 
         <div class="buttons">
-          <div *ngIf="searchName !== '...' ">
+          <div *ngIf="searchName !== '...'; else notSearch ">
             <div *ngIf="menuItems.length !== 0; else noSearchResults ">
               <button mat-button class="dugmic-item" name="menuItem" *ngFor="let item of menuItems">{{item.menuItem.name}}</button>
             </div>
@@ -50,7 +50,6 @@
             </ng-template>
           </div>
           <div *ngIf="searchName === '...' ">
-
             <div *ngIf="filterGroup === '...'; else category ">
               <button mat-button class="dugmic-item" (click)="onFilterClick('dish')"><mat-icon> fastfood</mat-icon>  Dishes</button>
               <button mat-button class="dugmic-item" (click)="onFilterClick('drink')"><mat-icon>free_breakfast</mat-icon>  Drinks</button>
@@ -75,11 +74,7 @@
                 </ng-template>
               </ng-template>
             </ng-template>
-            
-
           </div>
-         
-
         </div>
        
       </div>
