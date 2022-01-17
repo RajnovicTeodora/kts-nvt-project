@@ -1,12 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Order } from '../../models/order';
 import { OrderedItem } from '../../models/orderedItem';
 import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component';
 
 const ELEMENT_DATA: Order[] = [
-  {note: "Note1", status: true, orderedItems: [{name:"item1", quantity: 3}]},
-  {note: "Note2", status: true, orderedItems: [{name:"item3", quantity: 5}, {name:"item3", quantity: 5}]},
+  {note: "Note1", status: true, orderedItems: [{id:1,name:"item1", quantity: 3, status:"acc"}]},
+  {note: "Note2", status: true, orderedItems: [{id:2,name:"item3", quantity: 5, status:"acc"}, {id:3,name:"item3", quantity: 5, status:"acc"}]},
 ];
 
 @Component({
@@ -17,6 +17,8 @@ const ELEMENT_DATA: Order[] = [
 export class OrderViewComponent implements OnInit {
 
   @Input() typeBtn: string="";
+  @Output() finishClicked = new EventEmitter();
+  @Output() acceptClicked = new EventEmitter();
 
   displayedColumns: string[] = ['name', "quantity","actions"];
   items: OrderedItem[] = ELEMENT_DATA[1].orderedItems;
@@ -29,18 +31,24 @@ export class OrderViewComponent implements OnInit {
     
   }
 
-  openDialog(): void {
-
+  openDialog(id: string): void {
     this.isFinished = false;
+    const title = this.typeBtn === "accept" ? "Do you want to accept this order?" : "Do you want to finish this order?"
     const dialogRef = this.dialog.open(FinishDialogComponent, {
-      width: '250px',
+      width: '250px', data: {title: title},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.isFinished = result;
       console.log(result)
-  
+      if(result){
+        if(this.typeBtn === "accept"){
+          this.acceptClicked.emit(id);
+        }else{
+          this.finishClicked.emit(id);
+        }
+      }
     });
   }
 

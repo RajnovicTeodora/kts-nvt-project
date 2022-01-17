@@ -1,8 +1,8 @@
 
 <div mat-dialog-content>
-  <p>Do you want to finish order?</p>
+  <p>{{this.data.title}}</p>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button (click)="onNoClick()">Finish</button>
+  <button mat-button (click)="onYessClick()">Yess</button>
 </div>

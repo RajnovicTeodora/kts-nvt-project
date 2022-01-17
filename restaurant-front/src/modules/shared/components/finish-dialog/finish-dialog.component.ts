@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-finish-dialog',
@@ -7,14 +8,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./finish-dialog.component.scss']
 })
 export class FinishDialogComponent implements OnInit {
-
+ 
   constructor(
-    public dialogRef: MatDialogRef<FinishDialogComponent>,
+    public dialogRef: MatDialogRef<FinishDialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: {title:String},
 
   ) {}
 
+  onYessClick(): void {
+    console.log(this.data.title)
+    this.dialogRef.close(true); 
+  }
   onNoClick(): void {
-    this.dialogRef.close(true); //ovde vacam da li je tru ili false
+    this.dialogRef.close(false); 
   }
 
   ngOnInit(): void {
