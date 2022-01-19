@@ -41,7 +41,7 @@
         </button> 
 
         <div class="buttons">
-          <div *ngIf="searchName !== '...'; else notSearch ">
+          <div *ngIf="searchName !== '...'">
             <div *ngIf="menuItems.length !== 0; else noSearchResults ">
               <button mat-button class="dugmic-item" name="menuItem" *ngFor="let item of menuItems">{{item.menuItem.name}}</button>
             </div>
