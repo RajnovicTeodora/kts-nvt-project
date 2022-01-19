@@ -4,10 +4,6 @@ import { Order } from '../../models/order';
 import { OrderedItem } from '../../models/orderedItem';
 import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component';
 
-const ELEMENT_DATA: Order[] = [
-  {note: "Note1", status: true, orderedItems: [{id:1,name:"item1", quantity: 3, status:"acc"}]},
-  {note: "Note2", status: true, orderedItems: [{id:2,name:"item3", quantity: 5, status:"acc"}, {id:3,name:"item3", quantity: 5, status:"acc"}]},
-];
 
 @Component({
   selector: 'app-order-view',
@@ -15,21 +11,18 @@ const ELEMENT_DATA: Order[] = [
   styleUrls: ['./order-view.component.scss']
 })
 export class OrderViewComponent implements OnInit {
-
+  
   @Input() typeBtn: string="";
+  @Input() items:  OrderedItem[] =[];
   @Output() finishClicked = new EventEmitter();
   @Output() acceptClicked = new EventEmitter();
+  
 
-  displayedColumns: string[] = ['name', "quantity","actions"];
-  items: OrderedItem[] = ELEMENT_DATA[1].orderedItems;
-  note:string = ELEMENT_DATA[1].note;
-  buttonName = "accept"
+  displayedColumns: string[] = ['name', "quantity","actions", "priority"];
+  note:string = "";
   isFinished = false;
   constructor(public dialog: MatDialog) 
-  {
-    this.note= ELEMENT_DATA[1].note
-    
-  }
+  {}
 
   openDialog(id: string): void {
     this.isFinished = false;
@@ -39,9 +32,7 @@ export class OrderViewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.isFinished = result;
-      console.log(result)
       if(result){
         if(this.typeBtn === "accept"){
           this.acceptClicked.emit(id);

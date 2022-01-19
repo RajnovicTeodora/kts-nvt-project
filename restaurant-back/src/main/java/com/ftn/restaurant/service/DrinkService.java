@@ -29,7 +29,7 @@ public class DrinkService {
         ArrayList<Drink> drinks = (ArrayList<Drink>) this.drinkRepository.getApprovedDrinks();
         ArrayList<DrinkDTO> drinksDTO = new ArrayList<>();
         for (Drink drink : drinks) {
-            DrinkDTO dto = new DrinkDTO(drink);
+            DrinkDTO dto = new DrinkDTO(drink, "");
             drinksDTO.add(dto);
         }
         return drinksDTO;
@@ -38,7 +38,7 @@ public class DrinkService {
     public DrinkDTO getDrink(long id) {
         Optional<Drink> drink = this.drinkRepository.findById(id);
         if(drink.isPresent()){
-            DrinkDTO dto = new DrinkDTO(drink.get());
+            DrinkDTO dto = new DrinkDTO(drink.get(), "");
             return dto;
         }
         return null;

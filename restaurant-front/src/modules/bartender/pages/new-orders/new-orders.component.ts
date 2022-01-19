@@ -17,7 +17,8 @@ export class NewOrdersComponent implements OnInit {
     private toastr: ToastrService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.ordersService.getNewOrderedItems("","1").subscribe((result) => {this.newItems = result;});
   }
 
   onAccept(id: string) {
@@ -27,13 +28,17 @@ export class NewOrdersComponent implements OnInit {
       this.filterData();
     },
     error: (error) => {
-      this.toastr.error('Unable to accept item');
-      console.log(error);
+      console.log(error.error.text);
+      if(error.error.text.includes("You accepted order with id")){ //todo resonsetype umesto json text
+        this.toastr.success(error.error.text);
+      }else{
+        this.toastr.error('Unable to accept item');
+      }
     }},);
 }
   onFinish(id: string) {}
 
-  filterData() {//uradi get ili promeni item,, razmisli
+  filterData() {
     this.newItems= this.newItems.filter(
       (item) => item.status === "ORDERED"
     );

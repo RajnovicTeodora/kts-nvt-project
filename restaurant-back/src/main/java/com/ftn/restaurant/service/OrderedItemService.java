@@ -49,7 +49,7 @@ public class OrderedItemService {
           }
           item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
           this.orderedItemRepository.save(item.get());
-          return  "You accepted order with id: "+ id;
+          return  "You accepted order with id "+ id;
         }
         return "Order doesn't exists";
     }
@@ -67,7 +67,7 @@ public class OrderedItemService {
             Notification n = new Notification(item.get(), message);
             item.get().getOrder().getWaiter().getNotifications().add(n);
             this.orderedItemRepository.save(item.get());
-            return  "You finished order with id: "+ id;
+            return  "You finished order with id "+ id;
         }
         return "Order doesn't exists";
     }
@@ -176,4 +176,12 @@ public class OrderedItemService {
         throw new NotFoundException("Couldn't find order.");
     }
 
+    public List<OrderItemDTO> findAllByOrderIdDTO(long id){
+        List<OrderItemDTO> listItems = new ArrayList<>();
+        for(OrderedItem item : orderedItemRepository.findAllByOrderIdNotDeletedAndNew(id)){//findAllByOrderId(id)){//
+            OrderItemDTO dto = new OrderItemDTO(item,""); //todo ovo promeni, jer izlazi neki load exc
+            listItems.add(dto);
+        }
+        return listItems;
+    }
 }

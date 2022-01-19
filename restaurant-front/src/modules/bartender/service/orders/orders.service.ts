@@ -16,7 +16,6 @@ export class OrdersService {
         headers: this.headers,
         responseType: "json",
       });
-      console.log(res);
       return res;
   }
 
@@ -28,5 +27,20 @@ export class OrdersService {
       console.log(res);
       return res;
   }
-  //get
+
+  getNewOrderedItems(token: string, orderId: string):Observable<any>{ 
+    const res = this.http.get("http://localhost:8080/api/orderedItem/itemsOfOrder/"+orderId, {
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
+
+  getAcceptedrderedItems(token: string, orderId: string):Observable<any>{ //todo ovo pazi jer ti trebaju od bartendera stvari
+    const res = this.http.get("http://localhost:8080/api/orderedItem/itemsOfOrder/"+orderId, {
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
 }

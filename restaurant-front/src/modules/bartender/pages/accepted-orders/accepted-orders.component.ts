@@ -17,8 +17,8 @@ export class AcceptedOrdersComponent implements OnInit {
     private toastr: ToastrService,
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+
   onAccept(id: string) {}
 
   onFinish(id: string) {
@@ -29,10 +29,8 @@ export class AcceptedOrdersComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error('Unable to finish item');
-        console.log(error);
       }},);
-  
-  }//mozda da rename komponentu u items
+  }
 
   filterData() {
     this.acceptedItems= this.acceptedItems.filter(

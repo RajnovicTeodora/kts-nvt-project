@@ -13,11 +13,10 @@ export class AddDrinkService {
   constructor(private http: HttpClient) {}
 
   addDrink(drink: Drink):Observable<any>{
-    const res = this.http.post<Drink>("http://localhost:8080/api/drink/addDrink", drink, { //promeni na 1
+    const res = this.http.post<Drink>("http://localhost:8080/api/drink/addDrink", drink, {
         headers: this.headers,
         responseType: "json",
       });
-      console.log(res);
       return res;
   }
 }

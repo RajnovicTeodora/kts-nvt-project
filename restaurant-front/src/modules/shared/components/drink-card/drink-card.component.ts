@@ -6,10 +6,6 @@ import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { DrinksService } from '../../services/drinks/drinks.service';
 
-const ELEMENT_DATA: Drink[] = [
-  {name: "blue lagun", drinkType: "a", price: 1000, containerType: ""},
-  {name: "blue lagun2",  drinkType: "b", price: 1000, containerType: ""}
-];
 
 @Component({
   selector: 'app-drink-card',
@@ -19,10 +15,7 @@ const ELEMENT_DATA: Drink[] = [
 export class DrinkCardComponent implements OnInit {
 
   displayedColumns: string[] = ['name', "type","price"];
-  items: Drink[] =  [
-    {name: "blue lagun", drinkType: "a", price: 1000, containerType: ""},
-    {name: "blue lagun2",  drinkType: "b", price: 1000, containerType: ""}
-  ];
+  items: Drink[] =  [];
 
   drinkTypes: DrinkType[] = [
       {value: 'coffee', viewValue: 'coffee'},
@@ -38,14 +31,11 @@ export class DrinkCardComponent implements OnInit {
     this.getDrinks();
   }
 
-  getDrinks():void{ //todo try catch
-    console.log("get")
+  getDrinks():void{
     const user = localStorage.getItem("user");
-    //console.log(user);
     if(user!=null){
       const token = user.split('":"')[1].split('",')[0]
-      console.log(token)
-      this.drinkService.getDrinks(user).subscribe((result) => {console.log("res", result); this.items = result;});
+      this.drinkService.getDrinks(user).subscribe((result) => {this.items = result;});
     }
   }
 }

@@ -11,17 +11,16 @@ export class DrinksService {
 
   constructor(private http: HttpClient) {}
 
-  getDrinks(token: string):Observable<any>{ //todo proveri za null
+  getDrinks(token: string):Observable<any>{ 
     const res = this.http.get("http://localhost:8080/api/drink/getDrinks", {
         headers: this.headers,
         responseType: "json",
       });
-      console.log(res);
       return res;
   }
 
   getDrink(id:number):Observable<any>{
-    const res = this.http.get("http://localhost:8080/api/drink/getDrink/8", { //promeni na 1
+    const res = this.http.get("http://localhost:8080/api/drink/getDrink/"+id, { 
         headers: this.headers,
         responseType: "json",
       });

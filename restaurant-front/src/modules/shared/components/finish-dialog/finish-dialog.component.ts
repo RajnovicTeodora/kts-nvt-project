@@ -16,7 +16,6 @@ export class FinishDialogComponent implements OnInit {
   ) {}
 
   onYessClick(): void {
-    console.log(this.data.title)
     this.dialogRef.close(true); 
   }
   onNoClick(): void {

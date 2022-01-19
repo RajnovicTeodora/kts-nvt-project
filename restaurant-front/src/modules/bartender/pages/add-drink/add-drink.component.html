@@ -60,17 +60,19 @@
         </mat-card-content>
         </div>
         <div>
-          <app-ingredients-table></app-ingredients-table>
-        </div>
+          <app-ingredients-table
+           (addedIngredient)="onaddIngredient($event)"
+            [items] = "this.listIngredients"
+            ></app-ingredients-table>
+        </div> 
         <div id="button-div">
           <button
             mat-flat-button
-            color="accent"
+            color="accent" 
             type="submit"
             class="submit-button"
             (click)="saveDrink()"
-            id="submit-button"
-            
+            id="submit-button" 
           >
             Save drink
           </button>
@@ -78,8 +80,6 @@
       </form>
     </div>
   </div> 
-  
-  <!--https://media.giphy.com/media/3ksxSUTN3I6KaNo8bV/giphy.gif-->
-  <!--https://media.giphy.com/media/EZROws4uYJiocAdqBx/giphy.gif-->
+
   
   

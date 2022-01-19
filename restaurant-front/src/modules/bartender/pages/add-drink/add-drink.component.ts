@@ -8,7 +8,8 @@ import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { Container } from 'src/modules/shared/models/drink-container';
 import { Drink } from 'src/modules/shared/models/drink';
 import { HttpClient } from '@angular/common/http';
-import { AddDrinkService } from '../../service/add-drink.service';
+import { AddDrinkService } from '../../service/drinks/add-drink.service';
+import { Ingredient } from 'src/modules/shared/models/ingredient';
 
 @Component({
   selector: 'app-add-drink',
@@ -19,26 +20,26 @@ import { AddDrinkService } from '../../service/add-drink.service';
 export class AddDrinkComponent implements OnInit {
   
   addDrinkForm: FormGroup ;
-
+  listIngredients: Ingredient[] = []
   hide = true; 
   fileName = '';
+
   drinkTypes: DrinkType[] = [
     {value: 'COFFEE', viewValue: 'coffee'},
     {value: 'COLD_DRINK', viewValue: 'cold drink'},
     {value: 'HOT_DRINK', viewValue: 'Hot drink'},
     {value: 'ALCOHOLIC', viewValue: 'Alcoholic'},
   ];
+
   containers: Container[] = [
     {value: 'BOTTLE', viewValue: 'Bottle'},
     {value: 'GLASS', viewValue: 'Glass'},
     {value: 'PITCHER', viewValue: 'Pitcher'}
   ];
 
-  
   selectedContainer: string;
   selectedValue: string;
   
-
   constructor(
     private fb: FormBuilder,
     public router: Router,
@@ -48,63 +49,42 @@ export class AddDrinkComponent implements OnInit {
     ) {
       this.selectedValue ="";
       this.selectedContainer ="";
-    this.addDrinkForm = this.fb.group({ //todo izbaci nepotrebnoo, pobrisi komentare
+      this.addDrinkForm = this.fb.group({ 
       name: [null, Validators.required],
-      container: [null, Validators.required],
       ingrediants: [null],
-      type: [null, Validators.required],
     });
    }
 
   ngOnInit(): void {
   }
 
-  // changeType(value: string|null){
-  //   if(value !=null){
-  //   this.selectedType = value//(<HTMLInputElement>event.target).value;
-  //   console.log(this.selectedType, "type")}
-  // }
-
-  // changeContainer(value: string|null){
-  //   if(value !=null){
-  //   console.log("uslo")
-  //   this.selectedContainer = value;//(<HTMLInputElement>event.target).value;
-  //   console.log(this.selectedContainer, "ccc")}
-  // }
-  
   onFileSelected(event: any) {
-    console.log(typeof(event));
     const file:File = event.target.files[0];
 
     if (file) {
-
         this.fileName = file.name;
-
         const formData = new FormData();
-
         formData.append("thumbnail", file);
-        console.log(file)
     }
   }
 
+  onaddIngredient(ingredient: Ingredient){
+    this.listIngredients.push(ingredient);
+  }
+
   saveDrink(){
-    console.log(this.selectedValue+" aaa")
-    
-    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){ //todo ovde mozda i nije null za check box
+    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){
       this.toastr.error("All fields must be filled in!");
     }else{
       const newDrink:  Drink = {
         name: this.addDrinkForm.value.name,
         drinkType: this.selectedValue,
         containerType: this.selectedContainer,
-        image: "aaa",
-        price: 0
+        image: "aaa", //todo
+        price: 0,
+        ingredients: this.listIngredients
       }
-       this.drinkService.addDrink(newDrink).subscribe((result)=>{console.log("vratilo se", result);});
-       console.log("super", newDrink);
+      this.drinkService.addDrink(newDrink).subscribe((result)=>{console.log("uradi nesto pametno", result);});
       }
-
-
   }
-
 }

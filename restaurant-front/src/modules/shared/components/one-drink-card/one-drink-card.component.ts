@@ -9,7 +9,7 @@ import { DrinksService } from '../../services/drinks/drinks.service';
 })
 export class OneDrinkCardComponent implements OnInit { //todo proslediti id da bi moglo da se pronadje
 
-  drink: Drink ={name: "blue lagun", drinkType: "a", price: 1000, containerType: "hh"}
+  drink: Drink ={name: "", drinkType: "", price: 0, containerType: ""}
   
   constructor(
     private drinkService: DrinksService
@@ -20,11 +20,9 @@ export class OneDrinkCardComponent implements OnInit { //todo proslediti id da b
   }
 
   getDrink(){
-    const drink = this.drinkService.getDrink(1).subscribe((res) => {
+    const drink = this.drinkService.getDrink(8).subscribe((res) => {
       this.drink = res;
       console.log(res)
-      console.log(this.drink);
-      
     } )
   }
 }
