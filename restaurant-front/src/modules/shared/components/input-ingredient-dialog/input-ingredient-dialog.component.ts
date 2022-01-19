@@ -22,7 +22,7 @@ export class InputIngredientDialogComponent implements OnInit {
     if(this.name === "" || this.isAlergen ===""){
       this.toastr.error("All fields must be filled in!");
     }else{
-    const newIngredient: Ingredient = {name: this.name, isAlergen: this.isAlergen === "1" ? true :false}
+    const newIngredient: Ingredient = {id: 0, name: this.name, isAlergen: this.isAlergen === "1" ? true :false}
     this.dialogRef.close(newIngredient); }
   }
 

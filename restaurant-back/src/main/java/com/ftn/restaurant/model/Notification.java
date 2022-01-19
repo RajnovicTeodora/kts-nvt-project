@@ -17,8 +17,13 @@ public class Notification {
     @Column(name = "text", nullable=false)
     private String text;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id")
     private OrderedItem item;  //neka za sada bude item, ako bude potrebe promenicemo u order, ali obavestite natasu u tom slucaju
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "waiter_id", referencedColumnName = "id")
+    private Waiter waiter;
 
     public Notification(OrderedItem orderedItem, String message) {
         this.item = orderedItem;

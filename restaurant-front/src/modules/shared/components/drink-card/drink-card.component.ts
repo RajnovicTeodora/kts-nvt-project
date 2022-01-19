@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {MatTableModule} from "@angular/material/table"
-import { Drink } from 'src/modules/shared/models/drink';
+import { Drink2 } from 'src/modules/shared/models/Drink2';
 import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { DrinksService } from '../../services/drinks/drinks.service';
@@ -15,7 +15,7 @@ import { DrinksService } from '../../services/drinks/drinks.service';
 export class DrinkCardComponent implements OnInit {
 
   displayedColumns: string[] = ['name', "type","price"];
-  items: Drink[] =  [];
+  items: Drink2[] =  [];
 
   drinkTypes: DrinkType[] = [
       {value: 'coffee', viewValue: 'coffee'},

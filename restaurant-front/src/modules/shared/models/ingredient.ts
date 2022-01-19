@@ -1,4 +1,5 @@
 export interface Ingredient {
-    name: string;
-    isAlergen: boolean;
-  }
+  id?: number;
+  name: string;
+  isAlergen: boolean;
+}

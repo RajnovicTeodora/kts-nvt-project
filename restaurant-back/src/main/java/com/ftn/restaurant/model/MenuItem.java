@@ -15,7 +15,7 @@ public abstract class MenuItem {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "image", nullable = false)
+    @Column(name = "image", nullable = false, columnDefinition="text", length=10485760)
     private String image;
 
     @Column(name = "approved", nullable = false)
@@ -33,6 +33,9 @@ public abstract class MenuItem {
     private List<MenuItemPrice> priceList;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "menu_item_ingredients",
+            joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
     private List<Ingredient> ingredients;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

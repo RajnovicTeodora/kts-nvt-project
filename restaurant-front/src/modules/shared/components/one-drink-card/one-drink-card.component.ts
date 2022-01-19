@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Drink } from 'src/modules/shared/models/drink';
+import { Drink2 } from 'src/modules/shared/models/Drink2';
 import { DrinksService } from '../../services/drinks/drinks.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { DrinksService } from '../../services/drinks/drinks.service';
 })
 export class OneDrinkCardComponent implements OnInit { //todo proslediti id da bi moglo da se pronadje
 
-  drink: Drink ={name: "", drinkType: "", price: 0, containerType: ""}
+  drink: Drink2 ={name: "", drinkType: "", price: 0, containerType: ""}
   
   constructor(
     private drinkService: DrinksService

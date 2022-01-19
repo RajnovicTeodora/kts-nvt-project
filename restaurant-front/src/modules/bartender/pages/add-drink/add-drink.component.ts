@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DrinkType } from 'src/modules/shared/models/drink-type';
 import { Container } from 'src/modules/shared/models/drink-container';
-import { Drink } from 'src/modules/shared/models/drink';
+import { Drink2 } from 'src/modules/shared/models/Drink2';
 import { HttpClient } from '@angular/common/http';
 import { AddDrinkService } from '../../service/drinks/add-drink.service';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
@@ -76,7 +76,7 @@ export class AddDrinkComponent implements OnInit {
     if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){
       this.toastr.error("All fields must be filled in!");
     }else{
-      const newDrink:  Drink = {
+      const newDrink:  Drink2 = {
         name: this.addDrinkForm.value.name,
         drinkType: this.selectedValue,
         containerType: this.selectedContainer,

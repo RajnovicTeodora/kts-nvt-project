@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WaiterDashboardComponent } from './pages/waiter-dashboard/waiter-dashboard.component';
+import { SelectMenuItemsComponent } from './pages/select-menu-items/select-menu-items.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from '../root/app-routing.module';
 import { MaterialModule } from '../root/material-module';
@@ -16,7 +17,8 @@ import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [
-    WaiterDashboardComponent
+    WaiterDashboardComponent,
+    SelectMenuItemsComponent
   ],
   imports: [
     CommonModule,

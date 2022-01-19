@@ -183,4 +183,8 @@ public class UserService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return "Successfully switched accounts!";
     }
+
+    public long findUserIdByUsername(String username){
+        return userRepository.findUserIdByUsername(username);
+    }
 }

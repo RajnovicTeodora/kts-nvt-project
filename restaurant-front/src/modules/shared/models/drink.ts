@@ -1,10 +1,6 @@
-import { Ingredient } from "./ingredient";
+import { Item } from './item';
 
-export interface Drink {
-    name: string,
-    drinkType: string,
-    price: number,
-    containerType: string,
-    image?: string,
-    ingredients?: Ingredient[]
+export interface Drink extends Item {
+  drinkType: string;
+  container: string;
 }

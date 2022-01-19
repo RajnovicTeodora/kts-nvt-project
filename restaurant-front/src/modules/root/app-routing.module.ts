@@ -9,6 +9,10 @@ import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.compon
 import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
 import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
 import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
+import { SelectMenuItemsComponent } from '../waiter/pages/select-menu-items/select-menu-items.component';
+import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
+import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
+import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 
@@ -65,6 +69,28 @@ const routes: Routes = [
     path: 'accepted-orders',
     pathMatch: 'full',
     component: AcceptedOrdersComponent
+  },
+  {
+    path: 'manager-dashboard',
+    pathMatch: 'full',
+    component: ManagerDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+    children: [{ path: 'items', component: ItemTableComponent }],
+  },
+  {
+    path: 'item-table',
+    pathMatch: 'full',
+    component: ItemTableComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+  },
+  {
+    path: 'select-menu-items',
+    pathMatch: 'full',
+    component: SelectMenuItemsComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'WAITER' },
   }
 ];
 
