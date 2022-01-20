@@ -22,8 +22,6 @@ export class PaycheckTableComponent implements OnInit {
   searchForm: FormGroup;
   searchSting: string;
   filterString: string;
-  enableEdit = false;
-  enableEditIndex = null;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
