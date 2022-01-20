@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+import { SelectMenuItemsComponent } from '../waiter/pages/select-menu-items/select-menu-items.component';
 import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
 import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
@@ -61,6 +62,13 @@ const routes: Routes = [
     component: PaycheckTableComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'MANAGER' },
+  },
+  {
+    path: 'select-menu-items',
+    pathMatch: 'full',
+    component: SelectMenuItemsComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'WAITER' },
   },
 ];
 
