@@ -1,10 +1,12 @@
 package com.ftn.restaurant.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
 import com.ftn.restaurant.dto.UserDTO;
 import com.ftn.restaurant.model.User;
+import com.ftn.restaurant.repository.EmployeeRepository;
 import com.ftn.restaurant.service.UserService;
 
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class EmployeeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
 
 
@@ -50,8 +55,9 @@ public class EmployeeController {
 
     @GetMapping(path = "/getAllEmployees")
     @ResponseBody
-    public List<UserDTO> getAllEmployees(){
-        LOG.info("hello");
-        return userService.getAllUsers();
+    public List<EmployeeDTO> getAllEmployees(){
+        List<EmployeeDTO> users = new ArrayList<EmployeeDTO>();
+        employeeRepository.findAll().forEach(item -> users.add(new EmployeeDTO(item)));
+        return users;
     }
 }
