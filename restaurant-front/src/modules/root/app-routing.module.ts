@@ -16,6 +16,7 @@ import { ItemCardComponent } from '../manager/pages/item-card/item-card.componen
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
+import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 
 const routes: Routes = [
   {
@@ -104,12 +105,19 @@ const routes: Routes = [
     data: { expectedRoles: 'MANAGER' },
   },
   {
+    path: 'paychecks',
+    pathMatch: 'full',
+    component: PaycheckTableComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+  },
+  {
     path: 'select-menu-items',
     pathMatch: 'full',
     component: SelectMenuItemsComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
-  }
+  },
 ];
 
 @NgModule({

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
 
@@ -24,4 +25,11 @@ public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
     Optional<Paychecks> findTopByOrderByDateFromAsc();
 
     List<Paychecks> findByEmployeeUsername(@Param("username") String username);
+
+    @Query("SELECT p FROM Paychecks p WHERE (p.employee.username != :username AND p.employee.deleted = false)" +
+            "AND ( lower(p.employee.name) like lower(concat('%', :searchName,'%')))" +
+            "AND ( lower(p.employee.username) like lower(concat('%', :searchName,'%')))" +
+            "AND ( lower(p.employee.surname) like lower(concat('%', :searchName,'%')))" +
+            "AND (p.employee.role.name = :filterName OR :filterName = '') AND (p.dateTo IS NULL)")
+    List<Paychecks> findAllByEmployeeUsernameNotAndDateToIsNullAndEmployeeTypeAndSearchCriteria(String username, String searchName, String filterName);
 }

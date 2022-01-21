@@ -19,7 +19,7 @@ import { FinishDialogComponent } from './components/finish-dialog/finish-dialog.
 import { IngredientsTableComponent } from './components/ingredients-table/ingredients-table.component';
 import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 import { BadgeComponent } from './components/badge/badge.component';
-
+import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
 @NgModule({
   declarations: [
     ChangePasswordComponent,
@@ -33,7 +33,8 @@ import { BadgeComponent } from './components/badge/badge.component';
     FinishDialogComponent, 
     FinishDialogComponent, 
     IngredientsTableComponent, 
-    InputIngredientDialogComponent
+    InputIngredientDialogComponent,
+    ReplaceUnderscorePipe,
   ],
   imports: [
     CommonModule,
@@ -60,7 +61,8 @@ import { BadgeComponent } from './components/badge/badge.component';
     OrderViewComponent, 
     FinishDialogComponent, 
     IngredientsTableComponent, 
-    InputIngredientDialogComponent
+    InputIngredientDialogComponent,
+    ReplaceUnderscorePipe,
   ],
   providers: [
     {
