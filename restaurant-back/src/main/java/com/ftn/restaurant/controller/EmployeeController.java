@@ -9,10 +9,8 @@ import com.ftn.restaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +29,7 @@ public class EmployeeController {
     @PostMapping(path = "/addUser")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeDTO addUser(@AuthenticationPrincipal User user, @RequestBody EmployeeDTO employeeDTO){
+    public EmployeeDTO addUser(@RequestBody EmployeeDTO employeeDTO){
         return (new EmployeeDTO(userService.addUser(employeeDTO)));
     }
 
@@ -39,7 +37,7 @@ public class EmployeeController {
     @PostMapping(path = "/editUser")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public EmployeeDTO editUser(@AuthenticationPrincipal User user, @RequestBody EmployeeDTO employeeDTO){
+    public EmployeeDTO editUser(@RequestBody EmployeeDTO employeeDTO){
         return (new EmployeeDTO(userService.editUser(employeeDTO)));
     }
 
