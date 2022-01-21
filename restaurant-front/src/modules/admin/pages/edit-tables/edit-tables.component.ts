@@ -14,11 +14,11 @@ import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { AdminService } from 'src/modules/admin/admin-service/admin.service';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss']
+  selector: 'app-edit-tables',
+  templateUrl: './edit-tables.component.html',
+  styleUrls: ['./edit-tables.component.scss']
 })
-export class AdminDashboardComponent implements OnInit {
+export class EditTablesComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   data: any[];
@@ -42,33 +42,4 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit() {
-    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
-      if (res.matches) {
-        this.sidenav.mode = 'over';
-        this.sidenav.close();
-      } else {
-        this.sidenav.mode = 'side';
-        this.sidenav.open();
-      }
-    });
-  }
-
-  onLogoutCloseClicked(item: boolean) {
-    this.showModalLogout = false;
-  }
-
-  onLogoutButtonClicked() {
-    this.showModalLogout = true;
-  }
-
-  onRestaurantTablesClicked(){
-    this.employeesWindowOpen = false;
-    this.tablesWindowOpen = true;
-  }
-
-  onEmployeesClicked(){
-    this.tablesWindowOpen = false;
-    this.employeesWindowOpen = true;
-  }
 }
