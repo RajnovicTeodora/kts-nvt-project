@@ -16,6 +16,8 @@ export class ManagerDashboardComponent implements OnInit {
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
+  paychecksWindowOpen: boolean;
+  itemsWindowOpen: boolean;
 
   constructor(private observer: BreakpointObserver, public router: Router) {
     const temp = new BehaviorSubject<UserWithToken>(
@@ -24,6 +26,8 @@ export class ManagerDashboardComponent implements OnInit {
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
     this.showModalLogout = false;
+    this.paychecksWindowOpen = false;
+    this.itemsWindowOpen = true;
   }
 
   ngOnInit() {}
@@ -60,7 +64,17 @@ export class ManagerDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  onItemTableClicked() {
-    this.router.navigate(['/item-table']);
+  // onItemTableClicked() {
+  //   this.router.navigate(['/item-table']);
+  // }
+
+  onPaychecksClicked(){
+    this.itemsWindowOpen = false;
+    this.paychecksWindowOpen = true;
+  }
+
+  onItemTableClicked(){
+    this.paychecksWindowOpen = false;
+    this.itemsWindowOpen = true;
   }
 }

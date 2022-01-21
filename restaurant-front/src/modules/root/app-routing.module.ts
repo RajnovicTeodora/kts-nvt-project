@@ -10,7 +10,6 @@ import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/ma
 import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
-import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 
 const routes: Routes = [
   {
@@ -53,13 +52,6 @@ const routes: Routes = [
     path: 'item-table',
     pathMatch: 'full',
     component: ItemTableComponent,
-    canActivate: [RoleGuard],
-    data: { expectedRoles: 'MANAGER' },
-  },
-  {
-    path: 'paychecks',
-    pathMatch: 'full',
-    component: PaycheckTableComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'MANAGER' },
   },

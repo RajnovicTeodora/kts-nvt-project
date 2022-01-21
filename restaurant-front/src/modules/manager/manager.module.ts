@@ -18,7 +18,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ItemTableComponent } from './pages/item-table/item-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
-import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
+// import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
+import { EmployeesComponent } from '../shared/components/employees/employees.component'; 
 import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-paycheck-dialog.component';
 
 @NgModule({
@@ -28,7 +29,7 @@ import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-p
     ItemCardComponent,
     ItemTableComponent,
     AddDrinkManagerComponent,
-    PaycheckTableComponent,
+    // PaycheckTableComponent,
     EditPaycheckDialogComponent,
   ],
   imports: [
