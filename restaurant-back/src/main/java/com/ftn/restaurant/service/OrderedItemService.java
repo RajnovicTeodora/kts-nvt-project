@@ -49,7 +49,7 @@ public class OrderedItemService {
           }
           item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
           this.orderedItemRepository.save(item.get());
-          return  "You accepted order with id "+ id;
+          return  "You accepted order "+ item.get().getMenuItem().getName();
         }
         return "Order doesn't exists";
     }
@@ -67,7 +67,7 @@ public class OrderedItemService {
             Notification n = new Notification(item.get(), message);
             item.get().getOrder().getWaiter().getNotifications().add(n);
             this.orderedItemRepository.save(item.get());
-            return  "You finished order with id "+ id;
+            return  "You finished order "+ item.get().getMenuItem().getName();
         }
         return "Order doesn't exists";
     }

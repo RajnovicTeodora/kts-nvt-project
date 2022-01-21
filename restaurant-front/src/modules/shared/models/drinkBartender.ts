@@ -1,6 +1,6 @@
 import { Ingredient } from "./ingredient";
 
-export interface Drink2{
+export interface DrinkBartender{
     name: string,
     drinkType: string,
     price: number,

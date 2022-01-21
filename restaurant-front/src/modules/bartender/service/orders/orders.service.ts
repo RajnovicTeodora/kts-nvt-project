@@ -11,21 +11,19 @@ export class OrdersService {
 
   constructor(private http: HttpClient) { }
 
-  finishOrderedItem(id: string):Observable<any>{
-    const res = this.http.post<String>("http://localhost:8080/api/orderedItem/finishOrderedItem/"+id,  {
+  finishOrderedItem(id: string):Observable<string>{
+    return this.http.post<string>("http://localhost:8080/api/orderedItem/finishOrderedItem/"+id,  {
         headers: this.headers,
-        responseType: "json",
+        responseType: "text",
       });
-      return res;
   }
 
-  acceptOrderedItem(id: string):Observable<any>{
-    const res = this.http.post<String>("http://localhost:8080/api/orderedItem/acceptOrderedItem/"+id,  {
+  acceptOrderedItem(id: string):Observable<string>{
+    return this.http.post<string>("http://localhost:8080/api/orderedItem/acceptOrderedItem/"+id,  {
         headers: this.headers,
-        responseType: "json",
+        responseType: "text",
       });
-      console.log(res);
-      return res;
+      
   }
 
   getNewOrderedItems(token: string, orderId: string):Observable<any>{ 
@@ -36,8 +34,8 @@ export class OrdersService {
       return res;
   }
 
-  getAcceptedrderedItems(token: string, orderId: string):Observable<any>{ //todo ovo pazi jer ti trebaju od bartendera stvari
-    const res = this.http.get("http://localhost:8080/api/orderedItem/itemsOfOrder/"+orderId, {
+  getAccepteOdrderedItems(token: string, orderId: string):Observable<any>{ 
+    const res = this.http.get("http://localhost:8080/api/orderedItem/getAdcepted/"+orderId, {
         headers: this.headers,
         responseType: "json",
       });

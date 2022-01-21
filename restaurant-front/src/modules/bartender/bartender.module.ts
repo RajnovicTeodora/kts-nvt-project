@@ -16,11 +16,12 @@ import { AddDrinkComponent } from './pages/add-drink/add-drink.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewOrdersComponent } from './pages/new-orders/new-orders.component';
 import { AcceptedOrdersComponent } from './pages/accepted-orders/accepted-orders.component';
+import { BartenderDashboardComponent } from './pages/bartender-dashboard/bartender-dashboard.component';
 //import { AuthRoutes } from './auth.routes';
 
 @NgModule({
   declarations: [
-    ViewDrinksComponent, ViewOneDrinkComponent, AddDrinkComponent, NewOrdersComponent, AcceptedOrdersComponent
+    ViewDrinksComponent, ViewOneDrinkComponent, AddDrinkComponent, NewOrdersComponent, AcceptedOrdersComponent, BartenderDashboardComponent
   ],
   imports: [
     CommonModule,

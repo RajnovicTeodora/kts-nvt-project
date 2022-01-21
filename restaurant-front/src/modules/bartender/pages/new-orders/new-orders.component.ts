@@ -24,13 +24,15 @@ export class NewOrdersComponent implements OnInit {
   onAccept(id: string) {
     this.ordersService.acceptOrderedItem(id).subscribe({
     next: (success) => {
-      this.toastr.success('Successfully accepted ordered item ' + id);
-      this.filterData();
+      this.toastr.success('Successfully accepted ordered item');
+      this.filterData(id);
     },
     error: (error) => {
       console.log(error.error.text);
-      if(error.error.text.includes("You accepted order with id")){ //todo resonsetype umesto json text
+      if(error.error.text.includes("You accepted order")){
         this.toastr.success(error.error.text);
+        this.filterData(id);
+        location.reload();
       }else{
         this.toastr.error('Unable to accept item');
       }
@@ -38,9 +40,10 @@ export class NewOrdersComponent implements OnInit {
 }
   onFinish(id: string) {}
 
-  filterData() {
-    this.newItems= this.newItems.filter(
-      (item) => item.status === "ORDERED"
+  filterData(id: string) {
+    this.newItems = this.newItems.filter(
+      (item) => item.status === "ORDERED" || item.id+"" != id
     );
   }
+
 }

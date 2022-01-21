@@ -2,11 +2,14 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
 import com.ftn.restaurant.service.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,9 +58,9 @@ public class DrinkController {
 
     @ResponseBody
     @PostMapping(path = "/addDrink")
-    //@PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
-    @ResponseStatus(HttpStatus.CREATED)//@AuthenticationPrincipal User user,
-    public DrinkDTO addDrink( @RequestBody NewDrinkDTO drinkDTO){
+    @PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public DrinkDTO addDrink( @RequestBody NewDrinkDTO drinkDTO,@AuthenticationPrincipal User user){
         return new DrinkDTO(drinkService.addDrinkByBartender(drinkDTO)); 
     }
 

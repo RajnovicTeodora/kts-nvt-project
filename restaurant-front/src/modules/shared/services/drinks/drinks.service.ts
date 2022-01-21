@@ -11,7 +11,7 @@ export class DrinksService {
 
   constructor(private http: HttpClient) {}
 
-  getDrinks(token: string):Observable<any>{ 
+  getDrinks():Observable<any>{ 
     const res = this.http.get("http://localhost:8080/api/drink/getDrinks", {
         headers: this.headers,
         responseType: "json",

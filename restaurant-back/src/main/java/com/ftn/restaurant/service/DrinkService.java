@@ -54,9 +54,6 @@ public class DrinkService {
             drink.getIngredients().add(newIngredient);
             }
         }
-        System.out.println(drink.getName() );
-        System.out.println(drinkDTO.getDrinkType());
-        System.out.println(drinkDTO.getContainerType());
         return drinkRepository.save(drink);
     }
 

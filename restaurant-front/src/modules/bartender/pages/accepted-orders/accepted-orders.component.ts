@@ -17,14 +17,16 @@ export class AcceptedOrdersComponent implements OnInit {
     private toastr: ToastrService,
   ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.ordersService.getAccepteOdrderedItems("","1").subscribe((result) => {this.acceptedItems = result;});
+  }
 
-  onAccept(id: string) {}
+  onAccept(orderedItemId: string) {}
 
-  onFinish(id: string) {
-    this.ordersService.finishOrderedItem(id).subscribe({
+  onFinish(orderedItemId: string) {
+    this.ordersService.finishOrderedItem(orderedItemId).subscribe({
       next: (success) => {
-        this.toastr.success('Successfully finished ordered item ' + id);
+        this.toastr.success('Successfully finished ordered item');
         this.filterData();
       },
       error: (error) => {

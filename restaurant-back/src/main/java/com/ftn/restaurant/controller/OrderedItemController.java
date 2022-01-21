@@ -32,22 +32,22 @@ public class OrderedItemController {
 
     @ResponseBody
     @PostMapping(path = "/acceptOrderedItem/{id}")
-    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")@AuthenticationPrincipal User user,
-    public String acceptOrderedItem( @PathVariable long id){
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public String acceptOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id){
         //kada bude autorizacija moci ce da se doda i ko ga priprema todo
         return this.orderedItemService.acceptOrderedItem(id);
     }
 
     @ResponseBody
     @GetMapping(path = "/itemsOfOrder/{id}")
-    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")@AuthenticationPrincipal User user,
-    public List<OrderItemDTO> getOrderedItemsFromTable(@PathVariable long id){
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<OrderItemDTO> getOrderedItemsFromTable(@AuthenticationPrincipal User user, @PathVariable long id){
         return this.orderedItemService.findAllByOrderIdDTO(id);//kada bude autorizacija moci ce da se doda i ko ga priprema todo
     }
     @ResponseBody
     @PostMapping(path = "/finishOrderedItem/{id}")
-    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")//@AuthenticationPrincipal User user
-    public String finishOrderedItem( @PathVariable long id){
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public String finishOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id){
         return this.orderedItemService.finishOrderedItem(id);
     }
 

@@ -18,7 +18,7 @@ export class OrderViewComponent implements OnInit {
   @Output() acceptClicked = new EventEmitter();
   
 
-  displayedColumns: string[] = ['name', "quantity","actions", "priority"];
+  displayedColumns: string[] = ['name', "quantity","priority","actions"];
   note:string = "";
   isFinished = false;
   constructor(public dialog: MatDialog) 

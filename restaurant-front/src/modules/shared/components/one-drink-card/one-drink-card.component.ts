@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Drink2 } from 'src/modules/shared/models/Drink2';
+import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
 import { DrinksService } from '../../services/drinks/drinks.service';
 
 @Component({
@@ -7,9 +7,9 @@ import { DrinksService } from '../../services/drinks/drinks.service';
   templateUrl: './one-drink-card.component.html',
   styleUrls: ['./one-drink-card.component.scss']
 })
-export class OneDrinkCardComponent implements OnInit { //todo proslediti id da bi moglo da se pronadje
+export class OneDrinkCardComponent implements OnInit {
 
-  drink: Drink2 ={name: "", drinkType: "", price: 0, containerType: ""}
+  drink: DrinkBartender ={name: "", drinkType: "", price: 0, containerType: ""}
   
   constructor(
     private drinkService: DrinksService
@@ -20,9 +20,8 @@ export class OneDrinkCardComponent implements OnInit { //todo proslediti id da b
   }
 
   getDrink(){
-    const drink = this.drinkService.getDrink(8).subscribe((res) => {
+    const drink = this.drinkService.getDrink(16).subscribe((res) => {
       this.drink = res;
-      console.log(res)
     } )
   }
 }

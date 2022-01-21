@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class IngredientsTableComponent implements OnInit {
 
-  @Output() addedIngredient = new EventEmitter();
+  @Output() onAddIngredient = new EventEmitter();
   @Input() items:  Ingredient[] = [];
   displayedColumns: string[] = ['name', "isAlergen","delete"];
   //items: Ingredient[] = [];
@@ -30,7 +30,7 @@ export class IngredientsTableComponent implements OnInit {
       if(result){
       const newIngredient = result;
       //this.items.push(newIngredient);
-      this.addedIngredient.emit(newIngredient);
+      this.onAddIngredient.emit(newIngredient);
       }
     });
   }

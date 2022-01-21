@@ -1,10 +1,7 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {MatTableModule} from "@angular/material/table"
-import { Drink2 } from 'src/modules/shared/models/Drink2';
-import { DrinkType } from 'src/modules/shared/models/drink-type';
-import { UserWithToken } from 'src/modules/shared/models/user-with-token';
+import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
 import { DrinksService } from '../../services/drinks/drinks.service';
+import { Select } from '../../models/select';
 
 
 @Component({
@@ -15,9 +12,9 @@ import { DrinksService } from '../../services/drinks/drinks.service';
 export class DrinkCardComponent implements OnInit {
 
   displayedColumns: string[] = ['name', "type","price"];
-  items: Drink2[] =  [];
+  items: DrinkBartender[] =  [];
 
-  drinkTypes: DrinkType[] = [
+  drinkTypes: Select[] = [
       {value: 'coffee', viewValue: 'coffee'},
       {value: 'cold drink', viewValue: 'cold drink'},
       {value: 'hot drink', viewValue: 'Hot drink'},
@@ -32,10 +29,6 @@ export class DrinkCardComponent implements OnInit {
   }
 
   getDrinks():void{
-    const user = localStorage.getItem("user");
-    if(user!=null){
-      const token = user.split('":"')[1].split('",')[0]
-      this.drinkService.getDrinks(user).subscribe((result) => {this.items = result;});
-    }
+      this.drinkService.getDrinks().subscribe((result) => {this.items = result;});
   }
 }

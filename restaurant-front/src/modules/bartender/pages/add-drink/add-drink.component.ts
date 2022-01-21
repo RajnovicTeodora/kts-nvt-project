@@ -1,15 +1,11 @@
 import { Component,  OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
+import { FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { DrinkType } from 'src/modules/shared/models/drink-type';
-import { Container } from 'src/modules/shared/models/drink-container';
-import { Drink2 } from 'src/modules/shared/models/Drink2';
-import { HttpClient } from '@angular/common/http';
+import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
 import { AddDrinkService } from '../../service/drinks/add-drink.service';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
+import { Select } from 'src/modules/shared/models/select';
 
 @Component({
   selector: 'app-add-drink',
@@ -23,15 +19,17 @@ export class AddDrinkComponent implements OnInit {
   listIngredients: Ingredient[] = []
   hide = true; 
   fileName = '';
+  url: any;
+  isImageSaved: boolean = false;
 
-  drinkTypes: DrinkType[] = [
+  drinkTypes: Select[] = [
     {value: 'COFFEE', viewValue: 'coffee'},
     {value: 'COLD_DRINK', viewValue: 'cold drink'},
     {value: 'HOT_DRINK', viewValue: 'Hot drink'},
     {value: 'ALCOHOLIC', viewValue: 'Alcoholic'},
   ];
 
-  containers: Container[] = [
+  containers: Select[] = [
     {value: 'BOTTLE', viewValue: 'Bottle'},
     {value: 'GLASS', viewValue: 'Glass'},
     {value: 'PITCHER', viewValue: 'Pitcher'}
@@ -44,7 +42,6 @@ export class AddDrinkComponent implements OnInit {
     private fb: FormBuilder,
     public router: Router,
     private toastr: ToastrService,
-    private http: HttpClient,
     private drinkService: AddDrinkService
     ) {
       this.selectedValue ="";
@@ -58,33 +55,42 @@ export class AddDrinkComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onFileSelected(event: any) {
-    const file:File = event.target.files[0];
 
-    if (file) {
-        this.fileName = file.name;
-        const formData = new FormData();
-        formData.append("thumbnail", file);
+  onFileSelected(event: any) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.url = reader.result;
+        this.isImageSaved = true;
+      };
     }
   }
 
-  onaddIngredient(ingredient: Ingredient){
-    this.listIngredients.push(ingredient);
+
+  onAddIngredient(ingredient: Ingredient){
+    console.log(ingredient)
+    this.listIngredients.push()
+    console.log(this.listIngredients)
   }
 
   saveDrink(){
-    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""){
+    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === "" || this.isImageSaved == false){
       this.toastr.error("All fields must be filled in!");
     }else{
-      const newDrink:  Drink2 = {
+      const newDrink:  DrinkBartender = {
         name: this.addDrinkForm.value.name,
         drinkType: this.selectedValue,
         containerType: this.selectedContainer,
-        image: "aaa", //todo
+        image: this.url.split(',')[1],
         price: 0,
         ingredients: this.listIngredients
       }
-      this.drinkService.addDrink(newDrink).subscribe((result)=>{console.log("uradi nesto pametno", result);});
+      this.drinkService.addDrink(newDrink).subscribe(
+        (result)=>{
+          this.toastr.success("You added drink!");
+      });
       }
   }
 }
