@@ -13,6 +13,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { AuthModule } from '../auth/auth.module';
 import { OtherAccountsComponent } from './components/other-accounts/other-accounts.component';
 import { BadgeComponent } from './components/badge/badge.component';
+import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { BadgeComponent } from './components/badge/badge.component';
     LogoutComponent,
     OtherAccountsComponent,
     BadgeComponent,
+    ReplaceUnderscorePipe,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { BadgeComponent } from './components/badge/badge.component';
     LogoutComponent,
     OtherAccountsComponent,
     BadgeComponent,
+    ReplaceUnderscorePipe,
   ],
   providers: [
     {
