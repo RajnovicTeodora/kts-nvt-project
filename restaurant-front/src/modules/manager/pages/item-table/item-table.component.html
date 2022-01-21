@@ -1,5 +1,5 @@
 <form class="example-form" [formGroup]="searchForm">
-  <mat-form-field class="example-full-width">
+  <mat-form-field class="example-container">
     <span matPrefix> </span>
     <input
       matInput
@@ -22,11 +22,10 @@
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
+  <button mat-stroked-button color="accent" class="addBttn" (click)="openDialog()"><mat-icon>add</mat-icon>
+    Add Drink 
+  </button>
 </form>
-
-<button mat-button (click)="openDialog()">
-  Add Drink <mat-icon>plus</mat-icon>
-</button>
 
 <div class="card-deck">
   <mat-list class="example-card" *ngFor="let item of observable | async">

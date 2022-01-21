@@ -1,18 +1,18 @@
-<h2 mat-dialog-title>Add new drink</h2>
+<h2 mat-dialog-title class="title">Add new drink</h2>
 <mat-dialog-content [formGroup]="addDrinkForm" style="white-space: pre-line">
-  <mat-grid-list cols="2" rowHeight="3:1">
+  <mat-grid-list cols="2" rowHeight="4:1">
     <mat-grid-tile rowspan="2">
       <div class="img-space">
         <ng-container *ngIf="isImageSaved; else elseTemplate">
           <img
-            style="max-width: 60%; max-height: 60%"
+            style="max-width: 50%; max-height: 50%"
             [src]="url"
             alt="Image"
           />
         </ng-container>
         <ng-template #elseTemplate>
           <img
-            style="max-width: 60%; max-height: 60%"
+            style="max-width: 50%; max-height: 50%"
             src="assets/images/1176381.png"
             class="img-responsive"
             alt="Default image"
@@ -28,7 +28,7 @@
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-form-field id="name">
+      <mat-form-field id="name" class="nameInput">
         <input
           matInput
           type="text"
@@ -40,7 +40,7 @@
       </mat-form-field>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-form-field>
+      <mat-form-field class="typeInput">
         <mat-label>Type</mat-label>
         <mat-select formControlName="drinkType">
           <mat-option
@@ -59,7 +59,7 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-      <mat-form-field>
+      <mat-form-field class="containerInput">
         <mat-label>Container</mat-label>
         <mat-select formControlName="container">
           <mat-option

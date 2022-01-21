@@ -64,10 +64,6 @@ export class ManagerDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  // onItemTableClicked() {
-  //   this.router.navigate(['/item-table']);
-  // }
-
   onPaychecksClicked(){
     this.itemsWindowOpen = false;
     this.paychecksWindowOpen = true;
