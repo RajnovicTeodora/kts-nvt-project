@@ -1,3 +1,3 @@
 <div id=page>
-    <app-order-view typeBtn="finish" (acceptClicked)="onAccept($event)" (finishClicked)="onFinish($event)"></app-order-view>
+    <app-order-view typeBtn="finish" [note]="this.note" (acceptClicked)="onAccept($event)" (finishClicked)="onFinish($event)"></app-order-view>
 </div>

@@ -28,7 +28,7 @@ insert into waiter (id) values (5);
 
 insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('misko', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'True',  5);
 insert into employees (id, name, surname, image, telephone) values (6, 'Mihajlo', 'Milosevic', 'fsgddgn', '456789');
-insert into waiter (id) values (6);
+insert into bartender (id) values (6);
 
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-11-01', null, 10, 2);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-09-01', '2021-09-30', 10, 3);

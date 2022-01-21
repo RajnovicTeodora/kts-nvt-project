@@ -9,8 +9,11 @@ import com.ftn.restaurant.exception.OrderAlreadyPaidException;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
+import com.ftn.restaurant.repository.BartenderRepository;
+import com.ftn.restaurant.repository.EmployeeRepository;
 import com.ftn.restaurant.repository.OrderedItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +26,9 @@ public class OrderedItemService {
     private OrderedItemRepository orderedItemRepository;
 
     @Autowired
+    private BartenderRepository bartenderRepository;
+
+    @Autowired
     private IngredientService ingredientService;
 
     @Autowired
@@ -32,11 +38,15 @@ public class OrderedItemService {
     private MenuItemService menuItemService;
 
     @Autowired
-    public OrderedItemService(OrderedItemRepository orderedItemRepository) {
+    private UserService userService;
+
+    @Autowired
+    public OrderedItemService(OrderedItemRepository orderedItemRepository, BartenderRepository bartenderRepository) {
         this.orderedItemRepository = orderedItemRepository;
+        this.bartenderRepository = bartenderRepository;
     }
 
-    public String acceptOrderedItem(long id) { //setovati i uloge todo
+    public String acceptOrderedItem(long id, String username) { //setovati i uloge todo
         for(OrderedItem it: this.orderedItemRepository.findAll()){
             System.out.println(it.getId());
             System.out.println(it.getStatus());
@@ -47,25 +57,29 @@ public class OrderedItemService {
           if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){
               return "You can't accept order if it is not in status ordered.";
           }
+          User bartender = userService.findByUsername(username); //mora da ostane user zbog sefa
+          ((Bartender)bartender).getOrderedItems().add(item.get());
+          item.get().setWhoPreapiring((Bartender)bartender);
           item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
           this.orderedItemRepository.save(item.get());
+          this.bartenderRepository.save((Bartender) bartender);
           return  "You accepted order "+ item.get().getMenuItem().getName();
         }
         return "Order doesn't exists";
     }
 
-    public String finishOrderedItem(long id) {
+    public String finishOrderedItem(long id) { //todo da li je izbrisana
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
 
         if (item.isPresent()){
             if(item.get().getStatus() != OrderedItemStatus.IN_PROGRESS && !item.get().isDeleted()){
                 return "You can't finish order if it is not in status in progres.";
             }
-
             item.get().setStatus(OrderedItemStatus.READY);
             String message = "Item " + item.get().getMenuItem().getName() + " is finished.";
             Notification n = new Notification(item.get(), message);
             item.get().getOrder().getWaiter().getNotifications().add(n);
+            ((Bartender)item.get().getWhoPreapiring()).getOrderedItems().remove(item); //Todo da li ovde ide save
             this.orderedItemRepository.save(item.get());
             return  "You finished order "+ item.get().getMenuItem().getName();
         }
@@ -184,4 +198,18 @@ public class OrderedItemService {
         }
         return listItems;
     }
+
+    public List<OrderItemDTO> findAllAcceptedByOrderIdDTO(long id, String username) {
+        List<OrderItemDTO> listItems = new ArrayList<>();
+        User bartender = userService.findByUsername(username);
+        List<OrderedItem> accepted = ((Bartender)bartender).getOrderedItems();
+        for(OrderedItem item : accepted){
+            if(item.getOrder().getId() == id){
+                OrderItemDTO dto = new OrderItemDTO(item,""); //todo ovo promeni, jer izlazi neki load exc
+                listItems.add(dto);
+            }
+        }
+        return listItems;
+    }
+
 }

@@ -1,4 +1,4 @@
 
 <div id=page>
-    <app-order-view typeBtn="accept" (acceptClicked)="onAccept($event)" (finishClicked)="onFinish($event)" [items] = "this.newItems"></app-order-view>
+    <app-order-view typeBtn="accept" [note]="this.note" (acceptClicked)="onAccept($event)" (finishClicked)="onFinish($event)" [items] = "this.newItems"></app-order-view>
 </div>

@@ -18,15 +18,22 @@ export class OrdersService {
       });
   }
 
-  acceptOrderedItem(id: string):Observable<string>{
-    return this.http.post<string>("http://localhost:8080/api/orderedItem/acceptOrderedItem/"+id,  {
+  acceptOrderedItem(username: string, id: string):Observable<string>{
+    const parameters = id + "/" + username;
+    return this.http.post<string>("http://localhost:8080/api/orderedItem/acceptOrderedItem/"+parameters,  {
         headers: this.headers,
         responseType: "text",
       });
       
   }
+  getNote(id: string):Observable<string>{
+    return this.http.get("http://localhost:8080/api/order/getNote/"+id,  {
+        headers: this.headers,
+        responseType: "text",
+      });
+  }
 
-  getNewOrderedItems(token: string, orderId: string):Observable<any>{ 
+  getNewOrderedItems(orderId: string):Observable<any>{ 
     const res = this.http.get("http://localhost:8080/api/orderedItem/itemsOfOrder/"+orderId, {
         headers: this.headers,
         responseType: "json",
@@ -34,8 +41,9 @@ export class OrdersService {
       return res;
   }
 
-  getAccepteOdrderedItems(token: string, orderId: string):Observable<any>{ 
-    const res = this.http.get("http://localhost:8080/api/orderedItem/getAdcepted/"+orderId, {
+  getAccepteOdrderedItems(username: string, orderId: string):Observable<any>{ 
+    const parameters = orderId + "/" +username;
+    const res = this.http.get("http://localhost:8080/api/orderedItem/getAccepted/"+parameters, {
         headers: this.headers,
         responseType: "json",
       });

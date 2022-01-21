@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject } from 'rxjs';
 import { OrderedItem } from 'src/modules/shared/models/orderedItem';
+import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrdersService } from '../../service/orders/orders.service';
 
 @Component({
@@ -11,6 +13,7 @@ import { OrdersService } from '../../service/orders/orders.service';
 export class AcceptedOrdersComponent implements OnInit {
 
   acceptedItems: OrderedItem[] = [];
+  note = "";
 
   constructor(
     private ordersService: OrdersService,
@@ -18,7 +21,13 @@ export class AcceptedOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ordersService.getAccepteOdrderedItems("","1").subscribe((result) => {this.acceptedItems = result;});
+    const loggedUser = localStorage.getItem('currentUser');
+    const username = loggedUser?.split('"username":"')[1].split('","')[0]
+    const stringUsername = username != null? username : "";
+    this.ordersService.getAccepteOdrderedItems(stringUsername,"1" ).subscribe(
+      (result) => {
+      this.acceptedItems = result;});
+    this.ordersService.getNote("1").subscribe((result) => { this.note = result;})
   }
 
   onAccept(orderedItemId: string) {}

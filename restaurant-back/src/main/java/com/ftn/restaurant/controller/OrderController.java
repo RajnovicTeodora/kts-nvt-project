@@ -55,4 +55,10 @@ public class OrderController {
             return new ResponseEntity("Couldn't find order with id: "+ id, HttpStatus.NOT_FOUND);
         }
     }
+    @ResponseBody
+    @GetMapping(value = "/getNote/{id}")
+    @PreAuthorize("hasRole('BARTENDER')")
+    public String getNote( @PathVariable long id){
+        return this.orderService.getNote(id);
+    }
 }

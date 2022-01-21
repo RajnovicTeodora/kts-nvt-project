@@ -31,11 +31,11 @@ public class OrderedItemController {
         this.orderedItemService = orderedItemService; }
 
     @ResponseBody
-    @PostMapping(path = "/acceptOrderedItem/{id}")
+    @PostMapping(path = "/acceptOrderedItem/{id}/{username}")
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
-    public String acceptOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id){
+    public String acceptOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id, @PathVariable String username){
         //kada bude autorizacija moci ce da se doda i ko ga priprema todo
-        return this.orderedItemService.acceptOrderedItem(id);
+        return this.orderedItemService.acceptOrderedItem(id, username);
     }
 
     @ResponseBody
@@ -50,7 +50,13 @@ public class OrderedItemController {
     public String finishOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id){
         return this.orderedItemService.finishOrderedItem(id);
     }
-
+    //getAccepted
+    @ResponseBody
+    @GetMapping(path = "//getAccepted/{id}/{username}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<OrderItemDTO> getAcceptedItemsFromTable(@AuthenticationPrincipal User user, @PathVariable long id, @PathVariable String username){
+        return this.orderedItemService.findAllAcceptedByOrderIdDTO(id, username);//kada bude autorizacija moci ce da se doda i ko ga priprema todo
+    }
     @ResponseBody
     @GetMapping(value = "/confirmPickup/{id}")
     @PreAuthorize("hasRole('WAITER')")
@@ -111,4 +117,6 @@ public class OrderedItemController {
         }
 
     }
+
+
 }

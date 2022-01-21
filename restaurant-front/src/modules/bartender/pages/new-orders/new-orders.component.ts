@@ -11,6 +11,7 @@ import { OrdersService } from '../../service/orders/orders.service';
 export class NewOrdersComponent implements OnInit {
 
   newItems: OrderedItem[] = [];
+  note = "";
 
   constructor(
     private ordersService: OrdersService,
@@ -18,11 +19,16 @@ export class NewOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    this.ordersService.getNewOrderedItems("","1").subscribe((result) => {this.newItems = result;});
+    this.ordersService.getNewOrderedItems("1").subscribe((result) => {this.newItems = result;});
+    this.ordersService.getNote("1").subscribe((result) => { this.note = result;})
+    console.log(this.note)
   }
 
   onAccept(id: string) {
-    this.ordersService.acceptOrderedItem(id).subscribe({
+    const loggedUser = localStorage.getItem('currentUser');
+    const username = loggedUser?.split('"username":"')[1].split('","')[0]
+    const stringUsername = username != null? username : "";
+    this.ordersService.acceptOrderedItem(stringUsername, id).subscribe({
     next: (success) => {
       this.toastr.success('Successfully accepted ordered item');
       this.filterData(id);
