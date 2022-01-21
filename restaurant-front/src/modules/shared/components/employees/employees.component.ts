@@ -22,7 +22,6 @@ import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user
 import { PaycheckService } from 'src/modules/manager/services/paycheck-service/paycheck.service';  
 import { EditPaycheckDialogComponent } from 'src/modules/manager/pages/edit-paycheck-dialog/edit-paycheck-dialog.component'; 
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
-import { Employee } from '../../models/employee';
 
 @Component({
   selector: 'app-employees',

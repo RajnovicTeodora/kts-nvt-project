@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MenuItemTypes } from '../../shared/models/menu-item-types';
 import { MenuItemPriceDTO } from '../../shared/models/menu-item-price';
-import { Employee } from 'src/modules/shared/models/employee';
+// import { Employee } from 'src/modules/shared/models/employee';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class AdminService {
       observe: 'response',
       params: param,
     };
-    return this.http.get<Array<Employee>>(
+    return this.http.get(
       `${environment.baseUrl}/api/employees/getAllEmployees`, queryParams
     );
   }
