@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -160,6 +159,12 @@ public class UserService implements UserDetailsService {
     public List<UserDTO> getAllUsers(){
         List<UserDTO> users = new ArrayList<UserDTO>();
         userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
+        return users;
+    }
+
+    public List<EmployeeDTO> searchAndFilterEmployees(String search, String filter) {
+        List<EmployeeDTO> users = new ArrayList<EmployeeDTO>();
+        employeeRepository.findBySearchCriteriaAndUserRole(search, filter).forEach(item -> users.add(new EmployeeDTO(item)));
         return users;
     }
 
