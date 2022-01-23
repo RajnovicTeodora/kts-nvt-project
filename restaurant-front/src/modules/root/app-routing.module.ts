@@ -9,7 +9,7 @@ import { ItemTableComponent } from '../manager/pages/item-table/item-table.compo
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
 import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
-import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
+import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 
 const routes: Routes = [

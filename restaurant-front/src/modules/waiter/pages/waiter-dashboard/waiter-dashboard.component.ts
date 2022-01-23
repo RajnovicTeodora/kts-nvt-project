@@ -36,6 +36,8 @@ export class WaiterDashboardComponent implements OnInit {
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
   currentBadgeContent: number;
+  ////////////////TODO
+  showModalRestauranttable: number;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -61,6 +63,7 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
+    this.showModalRestauranttable = -1;
   }
 
   ngOnInit() {
@@ -158,6 +161,14 @@ export class WaiterDashboardComponent implements OnInit {
 
   onPasswordChangeButtonClicked(){
     this.showModalPasswordChange = true;
+  }
+
+  onRestaurantTableShowClicked(tableNum: number){
+    this.showModalRestauranttable = tableNum;
+  }
+
+  onRestaurantTableCloseClicked(item: boolean){
+    this.showModalRestauranttable = -1;
   }
 
   changeAccount(username: string) {

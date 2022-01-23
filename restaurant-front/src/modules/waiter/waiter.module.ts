@@ -12,13 +12,15 @@ import { RouterModule } from '@angular/router';
 import { WaiterRoutes } from './waiter.routes';
 import { SharedModule } from '../shared/shared.module';
 import { AuthModule } from '../auth/auth.module';
+import { TableOptionsComponent } from './components/table-options/table-options.component';
 
 
 
 @NgModule({
   declarations: [
     WaiterDashboardComponent,
-    SelectMenuItemsComponent
+    SelectMenuItemsComponent,
+    TableOptionsComponent
   ],
   imports: [
     CommonModule,

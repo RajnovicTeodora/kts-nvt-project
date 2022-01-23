@@ -32,62 +32,62 @@ public class TableService {
         return tableRepository.save(restaurantTable);
     }
 
-    public String occupyTable(String waiter, long id){
-        RestaurantTable rt = findOneWithWaiter(id, waiter);
+    public String occupyTable(String waiter, int tableNum){
+        RestaurantTable rt = findOneWithWaiter(tableNum, waiter);
         if (rt != null) {
             if(rt.isOccupied()){
                 throw new ForbiddenException("Table is already occupied");
             }
             rt.setOccupied(true);
             save(rt);
-            return "Successfully occupied table with id: " + id;
+            return "Successfully occupied table with table number: " + tableNum;
         }
-        throw new NotFoundException("Couldn't find table with id: " + id);
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 
-    public String clearTable(String waiter, long id){
-        RestaurantTable rt = findOneWithWaiter(id, waiter);
+    public String clearTable(String waiter, int tableNum){//unoccupy
+        RestaurantTable rt = findOneWithWaiter(tableNum, waiter);
         if (rt != null) {
             if(!rt.isOccupied()){
                 throw new ForbiddenException("Table is already cleared");
             }
             rt.setOccupied(false);
             save(rt);
-            return "Successfully cleared table with id: " + id;
+            return "Successfully cleared table with table number: " + tableNum;
         }
-        throw new NotFoundException("Couldn't find table with id: " + id);
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 
-    public String claimTable(String waiterUsername, long id){
-        RestaurantTable rt = tableRepository.findByTableId(id);
+    public String claimTable(String waiterUsername, int tableNum){
+        Optional<RestaurantTable> rt = tableRepository.getTableByTableNumber(tableNum);
         Waiter waiter = waiterService.findByUsername(waiterUsername);
-        if (rt != null && waiter!=null) {
-            if(rt.getWaiter()!= null){
+        if (rt.isPresent() && waiter!=null) {
+            if(rt.get().getWaiter()!= null){
                 throw new ForbiddenException("Table is already claimed");
             }
-            rt.setWaiter(waiter);
-            save(rt);
-            return "Successfully claimed table with id: " + id;
+            rt.get().setWaiter(waiter);
+            save(rt.get());
+            return "Successfully claimed table with table number: " + tableNum;
         }
-        throw new NotFoundException("Couldn't find table with id: " + id);
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 
-    public String leaveTable( String waiterUsername, long id){
-        RestaurantTable rt = findOneWithWaiter(id, waiterUsername);
+    public String leaveTable( String waiterUsername, int tableNum){//unclaim
+        RestaurantTable rt = findOneWithWaiter(tableNum, waiterUsername);
         if (rt != null ) {
             if(rt.isOccupied()){
                 throw new ForbiddenException("Can't leave table while its occupied");
             }
             rt.setWaiter(null);
             save(rt);
-            return "Successfully left table with id: " + id;
+            return "Successfully left table with table number: " + tableNum;
         }
-        throw new NotFoundException("Couldn't find table with id: " + id);
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
 
     }
 
-    public RestaurantTable findOneWithWaiter(Long tableId, String waiterUsername) {
-        return tableRepository.findOneWithWaiter(tableId, waiterUsername);
+    public RestaurantTable findOneWithWaiter(int tableNum, String waiterUsername) {
+        return tableRepository.findOneWithWaiter(tableNum, waiterUsername);
     }
 
     public RestaurantTable deleteTable(Long tableId) throws Exception{
@@ -118,5 +118,24 @@ public class TableService {
         //areaRepository.saveAndFlush(area.get());
         tableRepository.saveAndFlush(newTable);
         return newTable;
+    }
+
+    public RestaurantTableDTO getTableByTableNumber(int tableNum){
+        Optional<RestaurantTable> table = tableRepository.getTableByTableNumber(tableNum);
+        if(table.isPresent()){
+            RestaurantTableDTO restaurantTableDTO = new RestaurantTableDTO();
+            restaurantTableDTO.setTableNum(table.get().getTableNum());
+            restaurantTableDTO.setX(table.get().getPositionX());
+            restaurantTableDTO.setY(table.get().getPositionY());
+            if(table.get().getWaiter() != null){
+                Optional<Waiter> waiter = waiterService.findById(table.get().getWaiter().getId());
+                waiter.ifPresent(value -> restaurantTableDTO.setWaiterUsername(value.getUsername()));
+            }else
+                restaurantTableDTO.setWaiterUsername("");
+            restaurantTableDTO.setAreaId(table.get().getArea().getId());
+            restaurantTableDTO.setOccupied(table.get().isOccupied());
+            return  restaurantTableDTO;
+        }
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 }
