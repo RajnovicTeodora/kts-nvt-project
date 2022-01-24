@@ -26,10 +26,6 @@
   margin-bottom: 10.5vh;
   padding-bottom: 20px;
   z-index: 1000;
-  color: #fafafaaf;
-  font-size: 1rem;
-  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
-  letter-spacing: normal;
 }
 
 .jw-modal-background {
@@ -42,45 +38,22 @@
 
   /* semi-transparent black  */
   background-color: #000;
-  opacity: 0.85;
+  opacity: 0.9;
 
   /* z-index must be below .jw-modal and above everything else  */
-  z-index: 200;
+  z-index: 100;
 }
 
-h1, h2, h3 {
-  margin-top: 10px;
-  color: white;
-}
-
-mat-form-field {
-  width: 400px;
-}
-
-input {
-  color: white;
-}
-
-.submit-button {
-  border: 1.5px solid dimgray;
-  margin-top: 20px;
-  width: 400px;
-  color: white;
-}
-
-.submit-button:hover {
-  border: 1.5px solid rgb(194, 24, 91);
-  background-color: rgb(180, 23, 86);
+h3, h4 {
   color: white;
 }
 
 .btn {
   border: 1.5px solid dimgray;
   margin-top: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
   width: 200px;
   color: white;
+  margin-right: 5px;
 }
 
 .btn-danger:hover {
@@ -115,20 +88,9 @@ img {
   height: 200px;
 }
 
-mat-pass-toggle-visibility {
-  color: dimgray;
-}
-
-mat-divider {
-  margin-top: 16px;
-  margin-bottom: 16px;
-  background-color: rgba(255, 255, 255, 0.308);
-}
-
-mat-selection-list {
-  max-height: 300px;
+mat-action-list {
+  max-height: 45%;
   overflow: auto;
-  padding-bottom: 1.34375em;
 }
 
 .custom-scroll-bar::-webkit-scrollbar {
@@ -139,12 +101,40 @@ mat-selection-list {
   background: rgba(0, 0, 0, 0.26);
 }
 
-.mat-list-base .mat-list-option {
-  color: #b3b3b3;
+.mat-table {
+  width: 100%;
+  background: #424242;
+  -webkit-text-fill-color: lightgrey;
 }
 
-
-::ng-deep .mat-select-value {
-  color: #fafafa !important;
+th.mat-header-cell {
+  text-align: center;
 }
 
+.details:hover {
+  background-color: #0f040457;
+  color: white;
+}
+
+.designation {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: lightgrey;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.span {
+  margin: auto;
+  font-family: Times, "Times New Roman", Georgia, serif;
+  font-size: 2rem;
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: normal;
+}

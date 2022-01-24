@@ -12,9 +12,7 @@ public class OrderDTO {
     private Long id;
     private boolean isPaid;
     private double totalPrice;
-    private String date;
     private String note;
-    private String time;
     private List<OrderItemDTO> orderItems;
 
     public OrderDTO() {
@@ -25,9 +23,7 @@ public class OrderDTO {
         this.id = o.getId();
         this.isPaid = o.isPaid();
         this.totalPrice = o.getTotalPrice();
-        this.date = (o.getDate() == null) ? null : o.getDate().toString();
         this.note = o.getNote();
-        this.time = o.getTime().toString();
         fillOrderItems(o.getOrderedItems());
     }
 
@@ -39,12 +35,10 @@ public class OrderDTO {
 
     }
 
-    public OrderDTO(boolean isPaid, double totalPrice, String date, String note, String time, List<OrderItemDTO> orderItems) {
+    public OrderDTO(boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems) {
         this.isPaid = isPaid;
         this.totalPrice = totalPrice;
-        this.date = date;
         this.note = note;
-        this.time = time;
         this.orderItems = orderItems;
     }
 
@@ -72,28 +66,12 @@ public class OrderDTO {
         this.totalPrice = totalPrice;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getNote() {
         return note;
     }
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public List<OrderItemDTO> getOrderItems() {

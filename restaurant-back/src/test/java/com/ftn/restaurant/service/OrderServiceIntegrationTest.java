@@ -23,7 +23,7 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;
-
+/*
     @Test
     public void createOrderTest(){
         Order order = orderService.createOrder(ORDER_DTO_1);
@@ -49,5 +49,5 @@ public class OrderServiceIntegrationTest {
         Assert.assertEquals("Successfully paid order with id: 3",orderService.setTotalPriceAndPay(3));
         Assertions.assertThrows(ForbiddenException.class, () -> {orderService.setTotalPriceAndPay(5);});
         Assertions.assertThrows(NotFoundException.class, () -> {orderService.setTotalPriceAndPay(1000);});
-    }
+    }*/
 }

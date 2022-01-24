@@ -80,7 +80,7 @@ public class MenuItemController {
     @ResponseBody
     @GetMapping(value = "/getWithIngredientsById/{id}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> getActiveNotificationsForWaiterUsername(@PathVariable("id") long id){
+    public ResponseEntity<?> getWithIngredientsById(@PathVariable("id") long id){
         try {
             return new ResponseEntity<>(menuItemService.getWithIngredientsById(id), HttpStatus.OK);
         }

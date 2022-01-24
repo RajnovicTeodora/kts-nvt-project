@@ -15,6 +15,8 @@ import { AuthModule } from '../auth/auth.module';
 import { TableOptionsComponent } from './components/table-options/table-options.component';
 import { CreateOrderComponent } from './pages/create-order/create-order.component';
 import { CustomizeOrderedItemComponent } from './components/customize-ordered-item/customize-ordered-item.component';
+import { AdditionalNotesComponent } from './components/additional-notes/additional-notes.component';
+import { PayOrderComponent } from './components/pay-order/pay-order.component';
 
 
 
@@ -24,7 +26,9 @@ import { CustomizeOrderedItemComponent } from './components/customize-ordered-it
     SelectMenuItemsComponent,
     TableOptionsComponent,
     CreateOrderComponent,
-    CustomizeOrderedItemComponent
+    CustomizeOrderedItemComponent,
+    AdditionalNotesComponent,
+    PayOrderComponent
   ],
   imports: [
     CommonModule,

@@ -3,6 +3,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
+import { Order } from 'src/modules/shared/models/order';
+import { OrderedItem } from 'src/modules/shared/models/ordered-item';
+import { OrderService } from 'src/modules/shared/services/order-service/order.service';
 import { PeriodicElement } from '../../models/PeriodicElement';
 
 @Component({
@@ -11,39 +16,33 @@ import { PeriodicElement } from '../../models/PeriodicElement';
   styleUrls: ['./create-order.component.scss'],
 })
 export class CreateOrderComponent implements OnInit {
-  @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
+  @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  @ViewChild(MatTable) table: MatTable<MenuItemWithIngredients>;
   totalCost: number;
-
-  ELEMENT_DATA: PeriodicElement[] = [
-    {
-      quantity: 1,
-      name: 'Shwarma',
-    },
-    { quantity: 2, name: 'Pizza' },
-    { quantity: 3, name: 'Soup' },
-    { quantity: 4, name: 'Soufle' },
-    { quantity: 5, name: 'Cake' },
-    { quantity: 6, name: 'Chicken' },
-    { quantity: 7, name: 'Nitrogen' },
-    { quantity: 8, name: 'Oxygen' },
-    { quantity: 9, name: 'Fluorine' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-    { quantity: 10, name: 'Neon' },
-  ];
-
-  displayedColumns: string[] = ['quantity', 'name', 'details'];
+  showOrderedItemDetails: boolean;
+  currentOrderedItemDetails: MenuItemWithIngredients;
+  showConfirmAction: boolean;
+  showAdditionalNotes: boolean;
+  showPaymentModal: boolean;
+  currentAdditionalNotes: string;
+  confirmActionTitleDelete: string;
+  ELEMENT_DATA: MenuItemWithIngredients[] = [];
+  displayedColumns: string[] = ['quantity', 'name', 'details', 'delete'];
   dataSource = [...this.ELEMENT_DATA];
+  createdOrderId : number;
 
-  @ViewChild(MatTable) table: MatTable<PeriodicElement>;
-
-  constructor(public router: Router, private observer: BreakpointObserver) {
+  constructor(
+    public router: Router,
+    private observer: BreakpointObserver,
+    private toastr: ToastrService,
+    private orderService: OrderService
+  ) {
     this.totalCost = 0;
+    this.showOrderedItemDetails = false;
+    this.showConfirmAction = false;
+    this.confirmActionTitleDelete = '';
+    this.currentAdditionalNotes = '';
+    this.showAdditionalNotes = false;
   }
 
   ngOnInit(): void {}
@@ -60,9 +59,113 @@ export class CreateOrderComponent implements OnInit {
     });
   }
 
-  viewOrderedItemDetails(element: PeriodicElement) {}
+  onAddToOrderForwardedClicked(item: MenuItemWithIngredients) {
+    this.totalCost += item.price * item.quantity;
+    this.ELEMENT_DATA.push(item);
+    this.dataSource.push(item);
+    this.table.renderRows();
+  }
 
-  confirm() {}
+  onCustomizeOrderedItemCloseClicked(item: any) {
+    this.showOrderedItemDetails = false;
+  }
 
-  cancel() {}
+  viewOrderedItemDetails(element: MenuItemWithIngredients) {
+    this.showOrderedItemDetails = true;
+    this.currentOrderedItemDetails = element;
+  }
+
+  onPaylaterClicked(item:boolean){
+    this.showPaymentModal = false;
+    this.router.navigate(['/waiter-dashboard']);
+  }
+
+  confirm() {
+    if (this.ELEMENT_DATA.length == 0) {
+      this.toastr.error("Can't make order with no ordered items.");
+    } else {
+      let orderItems = Array<OrderedItem>();
+      this.ELEMENT_DATA.forEach((value, index) => {
+        let orderitem = new OrderedItem(
+          value.priority,
+          value.quantity,
+          value.id,
+          value.ingredients
+        );
+        orderItems.push(orderitem);
+      });
+
+      let order = new Order(
+        false,
+        this.totalCost,
+        this.currentAdditionalNotes,
+        orderItems
+      );
+      this.orderService.createOrder(order).subscribe({
+        next: (result) => {
+          this.toastr.success("Succesfully added new order.");          
+          this.createdOrderId = result;          
+          this.showPaymentModal = true;
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
+    }
+  }
+
+  cancel() {
+    this.router.navigate(['/waiter-dashboard']);
+  }
+
+  onEditOrderedItemClicked(item: MenuItemWithIngredients) {
+    this.showOrderedItemDetails = false;
+    this.ELEMENT_DATA.forEach((value, index) => {
+      if (value == this.currentOrderedItemDetails) {
+        this.totalCost -= value.price * value.quantity;
+        this.ELEMENT_DATA[index] = item;
+        this.totalCost += item.price * item.quantity;
+        this.dataSource[index] = item;
+      }
+    });
+    this.table.renderRows();
+  }
+
+  onDeleteOrderedItemClicked(item: MenuItemWithIngredients) {
+    this.currentOrderedItemDetails = item;
+    this.confirmActionTitleDelete =
+      'Are you sure you want to delete ordered ' + item.name + '?';
+    this.showConfirmAction = true;
+  }
+
+  onConfirmActionCancelledClicked(item: boolean) {
+    this.showConfirmAction = false;
+    this.confirmActionTitleDelete = '';
+  }
+
+  onConfirmActionConfirmedClicked(item: boolean) {
+    this.showConfirmAction = false;
+    this.confirmActionTitleDelete = '';
+    this.ELEMENT_DATA.forEach((value, index) => {
+      if (value == this.currentOrderedItemDetails) {
+        this.totalCost -= value.price * value.quantity;
+        this.ELEMENT_DATA.splice(index, 1);
+        this.dataSource.splice(index, 1);
+      }
+    });
+    this.table.renderRows();
+  }
+
+  onAdditionalNotesClicked() {
+    this.showAdditionalNotes = true;
+  }
+
+  onAdditionalNotesCloseClicked(item: boolean) {
+    this.showAdditionalNotes = false;
+  }
+
+  onAdditionalNotesConfirmClicked(item: string) {
+    this.currentAdditionalNotes = item;
+    this.showAdditionalNotes = false;
+  }
 }

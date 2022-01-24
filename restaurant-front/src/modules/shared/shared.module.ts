@@ -15,6 +15,7 @@ import { OtherAccountsComponent } from './components/other-accounts/other-accoun
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
 import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
+import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AfterLogoutComponent } from './components/after-logout/after-logout.com
     BadgeComponent,
     ReplaceUnderscorePipe,
     AfterLogoutComponent,
+    ConfirmActionComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { AfterLogoutComponent } from './components/after-logout/after-logout.com
     BadgeComponent,
     ReplaceUnderscorePipe,
     AfterLogoutComponent,
+    ConfirmActionComponent,
   ],
   providers: [
     {

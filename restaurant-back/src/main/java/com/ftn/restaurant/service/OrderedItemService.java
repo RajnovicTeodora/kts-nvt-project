@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,9 @@ public class OrderedItemService {
 
     @Autowired
     private MenuItemService menuItemService;
+
+    @Autowired
+    private MenuItemPriceService menuItemPriceService;
 
     @Autowired
     public OrderedItemService(OrderedItemRepository orderedItemRepository) {
@@ -158,14 +162,20 @@ public class OrderedItemService {
             OrderedItem orderItem = new OrderedItem();
             orderItem.setQuantity(orderItemDTO.getQuantity());
             orderItem.setPriority(orderItemDTO.getPriority());
-            Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDTO.getMenuItem().getName(), orderItemDTO.getMenuItem().getImage());
+            Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDTO.getMenuItemId());
+            if(!menuItem.isPresent()){
+                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDTO.getMenuItemId());
+            }
             menuItem.ifPresent(orderItem::setMenuItem);
             orderItem.setDeleted(false);
             orderItem.setStatus(OrderedItemStatus.ORDERED);
             orderItem.setActiveIngredients(new ArrayList<>());
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-                Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
-                orderItem.addActiveIngredients(i.get());
+                Ingredient i = ingredientService.findOne(ingredientDTO.getId());
+                if(i == null){
+                    throw new NotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
+                }
+                orderItem.addActiveIngredients(i);
             }
             order.addOrderedItem(orderItem);
             orderService.save(order);
@@ -173,6 +183,31 @@ public class OrderedItemService {
 
             return orderItem;
         }
+        throw new NotFoundException("Couldn't find order.");
+    }
+
+    public List<OrderItemDTO> getOrderedItemsForOrderId(long id){
+        List<OrderItemDTO> orderItemDTOList = new ArrayList<>();
+        Order order = orderService.findOneWithOrderItems(id);
+
+        if(order != null){
+            for (OrderedItem orderedItem: order.getOrderedItems()) {
+                List<Ingredient> ingredients = ingredientService.findByOrderedItemId(orderedItem.getId());
+                orderedItem.setActiveIngredients(ingredients);
+                OrderItemDTO orderItemDTO = new OrderItemDTO(orderedItem);
+                /*orderItemDTO.setId(orderedItem.getId());
+                orderItemDTO.setMenuItemId(orderedItem.getMenuItem().getId());
+                orderItemDTO.setMenuItemName(orderedItem.getMenuItem().getName());
+                orderItemDTO.setPriority(orderedItem.getPriority());
+                orderItemDTO.setStatus(orderedItem.getStatus().name().toUpperCase(Locale.ROOT));
+                orderItemDTO.setQuantity(orderedItem.getQuantity());*/
+                double price = menuItemPriceService.findCurrentPriceForMenuItemById(orderedItem.getMenuItem().getId());
+                orderItemDTO.setPrice(price);
+                orderItemDTOList.add(orderItemDTO);
+            }
+            return orderItemDTOList;
+        }
+
         throw new NotFoundException("Couldn't find order.");
     }
 

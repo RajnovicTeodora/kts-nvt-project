@@ -51,13 +51,13 @@ public class OrderService {
         return orderRepository.findOneWithOrderItems(id);
     }
 
-    public Order createOrder(OrderDTO ordDTO) {
+    public long createOrder(OrderDTO ordDTO) {
         Order o = new Order();
 
         if(ordDTO.getOrderItems().isEmpty()){
             throw new ForbiddenException("Order has to contain ordered items.");
         }
-        o.setDate(LocalDate.parse(ordDTO.getDate()));
+        o.setDate(LocalDate.now());
         o.setNote(ordDTO.getNote());
         o.setPaid(ordDTO.isPaid());
         o.setTime(LocalTime.now());
@@ -67,22 +67,30 @@ public class OrderService {
         for (OrderItemDTO orderItemDto : ordDTO.getOrderItems()) {
             OrderedItem orderItem = new OrderedItem();
 
-            Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDto.getMenuItem().getName(), orderItemDto.getMenuItem().getImage());
+            Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDto.getMenuItemId());
             if(menuItem.isPresent()) {
+                orderItem.setDeleted(false);
                 orderItem.setMenuItem(menuItem.get());
                 orderItem.setPriority(orderItemDto.getPriority());
                 orderItem.setStatus(OrderedItemStatus.ORDERED);
+                orderItem.setQuantity(orderItemDto.getQuantity());
+                orderItem.setOrder(o);
                 for (IngredientDTO acIngr : orderItemDto.getActiveIngredients()) {
-                    Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(acIngr.getName(), acIngr.isAlergen());
-                    orderItem.addActiveIngredients(i.get());
+                    Ingredient i = ingredientService.findOne(acIngr.getId());
+                    if(i == null){
+                        throw new NotFoundException("Couldn't find ingredient with id: " + acIngr.getId());
+                    }
+                    orderItem.addActiveIngredients(i);
                 }
                 o.addOrderedItem(orderItem);
                 orderedItemService.save(orderItem);
-                save(o);
+            }else{
+                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDto.getMenuItemId());
             }
         }
+        save(o);
 
-        return o;
+        return o.getId();
     }
 
 

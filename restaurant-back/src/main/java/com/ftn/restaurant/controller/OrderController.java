@@ -9,6 +9,7 @@ import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,13 +23,15 @@ public class OrderController {
     private OrderService orderService;
 
     @ResponseBody
-    @PostMapping(value = "/createOrder")
+    @PostMapping(value = "/createOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<?> createOrder( @RequestBody OrderDTO orderDTO) {
         try {
-            return new ResponseEntity(new OrderDTO(orderService.createOrder(orderDTO)), HttpStatus.CREATED);
+            return new ResponseEntity(orderService.createOrder(orderDTO), HttpStatus.CREATED);
         } catch (ForbiddenException e){
             return new ResponseEntity("Order has to contain ordered items.", HttpStatus.FORBIDDEN);
+        } catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find menu item/ingredient", HttpStatus.NOT_FOUND);
         }
     }
 

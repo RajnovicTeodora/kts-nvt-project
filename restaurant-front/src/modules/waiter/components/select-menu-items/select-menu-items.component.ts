@@ -1,6 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   Component,
+  EventEmitter,
   OnInit,
   Output,
   ViewChild
@@ -12,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { SearchMenuItemsService } from 'src/modules/shared/services/search-menu-items-service/search-menu-items.service';
+
 
 @Component({
   selector: 'app-select-menu-items',
@@ -29,6 +31,7 @@ export class SelectMenuItemsComponent implements OnInit {
   item: any;
   searchInput: string;
   showModalCustomizeOrderedItem: number;
+  @Output() onAddToOrderForwarded = new EventEmitter();  
 
   constructor(
     public router: Router,
@@ -147,4 +150,10 @@ export class SelectMenuItemsComponent implements OnInit {
   onCustomizeOrderedItemCloseClicked(item: any){
     this.showModalCustomizeOrderedItem = -1;
   }
+
+  onAddToOrderClicked(item:any){
+    this.onAddToOrderForwarded.emit(item);
+    this.showModalCustomizeOrderedItem = -1;
+  }
+
 }

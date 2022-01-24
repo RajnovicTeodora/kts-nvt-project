@@ -9,6 +9,7 @@ export class MenuItemWithIngredients {
     public ingredients: Array<Ingredient>;
     public priority: number;
     public container: string;
+    public quantity: number;
     
     constructor(id : number, price: number, name : string, type : string, ingredients: Array<Ingredient>) {
         this.id = id;

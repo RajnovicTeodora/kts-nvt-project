@@ -7,7 +7,9 @@ export const environment = {
   baseUrl: 'http://localhost:8080',
   notification: 'notification',
   table: 'api/table',
-  menuItem: 'api/menuItem'
+  menuItem: 'api/menuItem',
+  order: 'api/order',
+  orderedItem: 'api/orderedItem'
 };
 
 /*
