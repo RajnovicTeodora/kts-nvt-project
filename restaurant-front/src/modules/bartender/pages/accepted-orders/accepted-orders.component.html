@@ -1,3 +1,8 @@
-<div id=page>
-    <app-order-view typeBtn="finish" [note]="this.note" (acceptClicked)="onAccept($event)" (finishClicked)="onFinish($event)"></app-order-view>
+<div id=page *ngIf = "this.loaded">
+    <app-order-view
+    typeBtn="finish" 
+    [note]="this.note" 
+    (acceptClicked)="onAccept($event)" 
+    (finishClicked)="onFinish($event)"
+    [items] = "this.acceptedItems"></app-order-view>
 </div>

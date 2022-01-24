@@ -11,7 +11,7 @@ import { OrdersService } from '../../service/orders/orders.service';
 })
 export class NewOrdersComponent implements OnInit {
 
-  newItems: OrderedItem[];//MatTableDataSource<OrderedItem>; 
+  newItems: OrderedItem[];
   note = "";
   loaded: boolean =false;
 
@@ -23,16 +23,16 @@ export class NewOrdersComponent implements OnInit {
   ngOnInit(): void { 
     this.ordersService.getNewOrderedItems("1").subscribe((result) => {
       this.setItems(result);
-      
-      //this.newItems = result;
     });
     this.ordersService.getNote("1").subscribe((result) => { this.note = result;})
     console.log(this.note)
   }
 
   setItems(items: OrderedItem[]){
-    this.newItems = items;//new MatTableDataSource<OrderedItem>(items);
-    this.loaded = true;}
+    this.newItems = items;
+    this.loaded = true;
+  }
+
   onAccept(id: string) {
     const loggedUser = localStorage.getItem('currentUser');
     const username = loggedUser?.split('"username":"')[1].split('","')[0]

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject } from 'rxjs';
 import { OrderedItem } from 'src/modules/shared/models/orderedItem';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrdersService } from '../../service/orders/orders.service';
@@ -12,9 +11,9 @@ import { OrdersService } from '../../service/orders/orders.service';
 })
 export class AcceptedOrdersComponent implements OnInit {
 
-  acceptedItems: OrderedItem[] = [];
+  acceptedItems: OrderedItem[];
   note = "";
-
+  loaded = false;
   constructor(
     private ordersService: OrdersService,
     private toastr: ToastrService,
@@ -24,9 +23,13 @@ export class AcceptedOrdersComponent implements OnInit {
     const loggedUser = localStorage.getItem('currentUser');
     const username = loggedUser?.split('"username":"')[1].split('","')[0]
     const stringUsername = username != null? username : "";
+
     this.ordersService.getAccepteOdrderedItems(stringUsername,"1" ).subscribe(
       (result) => {
-      this.acceptedItems = result;});
+      this.acceptedItems = result;
+      this.loaded = true;
+    });
+
     this.ordersService.getNote("1").subscribe((result) => { this.note = result;})
   }
 
@@ -36,16 +39,23 @@ export class AcceptedOrdersComponent implements OnInit {
     this.ordersService.finishOrderedItem(orderedItemId).subscribe({
       next: (success) => {
         this.toastr.success('Successfully finished ordered item');
-        this.filterData();
+        this.filterData(orderedItemId);
       },
       error: (error) => {
-        this.toastr.error('Unable to finish item');
+        console.log(error.error.text);
+      if(error.error.text.includes("You finished order")){
+        this.toastr.success(error.error.text);
+        this.filterData(orderedItemId);
+        location.reload();
+      }else{
+        this.toastr.error('Unable to accept item');
+      }
       }},);
   }
 
-  filterData() {
+  filterData(id: string) {
     this.acceptedItems= this.acceptedItems.filter(
-      (item) => item.status === "ACCEPTED"
+      (item) => item.status === "ACCEPTED" || item.id+"" != id
     );
   }
 }

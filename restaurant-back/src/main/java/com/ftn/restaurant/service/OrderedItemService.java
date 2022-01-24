@@ -11,6 +11,7 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.repository.BartenderRepository;
 import com.ftn.restaurant.repository.EmployeeRepository;
+import com.ftn.restaurant.repository.NotificationRepository;
 import com.ftn.restaurant.repository.OrderedItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class OrderedItemService {
     private BartenderRepository bartenderRepository;
 
     @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
     private IngredientService ingredientService;
 
     @Autowired
@@ -41,9 +45,11 @@ public class OrderedItemService {
     private UserService userService;
 
     @Autowired
-    public OrderedItemService(OrderedItemRepository orderedItemRepository, BartenderRepository bartenderRepository) {
+    public OrderedItemService(OrderedItemRepository orderedItemRepository, BartenderRepository bartenderRepository,
+                              NotificationRepository notificationRepository) {
         this.orderedItemRepository = orderedItemRepository;
         this.bartenderRepository = bartenderRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     public String acceptOrderedItem(long id, String username) { //setovati i uloge todo
@@ -76,10 +82,12 @@ public class OrderedItemService {
                 return "You can't finish order if it is not in status in progres.";
             }
             item.get().setStatus(OrderedItemStatus.READY);
-            String message = "Item " + item.get().getMenuItem().getName() + " is finished.";
+            String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table ";
             Notification n = new Notification(item.get(), message);
-            item.get().getOrder().getWaiter().getNotifications().add(n);
-            ((Bartender)item.get().getWhoPreapiring()).getOrderedItems().remove(item); //Todo da li ovde ide save
+            n.setWaiter(item.get().getOrder().getWaiter());
+            notificationRepository.save(n);
+            //.getNotifications().add(n);
+            //((Bartender)item.get().getWhoPreapiring()).getOrderedItems().remove(item); //Todo da li ovde ide save
             this.orderedItemRepository.save(item.get());
             return  "You finished order "+ item.get().getMenuItem().getName();
         }
@@ -204,7 +212,7 @@ public class OrderedItemService {
         User bartender = userService.findByUsername(username);
         List<OrderedItem> accepted = ((Bartender)bartender).getOrderedItems();
         for(OrderedItem item : accepted){
-            if(item.getOrder().getId() == id){
+            if(item.getOrder().getId() == id && item.getStatus()==OrderedItemStatus.IN_PROGRESS){
                 OrderItemDTO dto = new OrderItemDTO(item,""); //todo ovo promeni, jer izlazi neki load exc
                 listItems.add(dto);
             }

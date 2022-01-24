@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<OrderedItem, Long> {
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
     @Query("select n from Notification n where n.waiter.id = ?1")
     List<Notification> getAllActiveNotificationsForWaiter(Long id);
