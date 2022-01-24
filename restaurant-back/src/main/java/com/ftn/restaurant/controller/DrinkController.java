@@ -2,6 +2,7 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
+import com.ftn.restaurant.dto.UserPaycheckDTO;
 import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
@@ -13,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,6 +64,17 @@ public class DrinkController {
     @ResponseStatus(HttpStatus.CREATED)
     public DrinkDTO addDrink( @RequestBody NewDrinkDTO drinkDTO,@AuthenticationPrincipal User user){
         return new DrinkDTO(drinkService.addDrinkByBartender(drinkDTO)); 
+    }
+    //getSearchedOrFiltered
+    @ResponseBody
+    @GetMapping(path = "/getSearchedOrFiltered")
+    @PreAuthorize("hasRole('BARTENDER')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DrinkDTO> getSearchedOrFiltered( @RequestParam(name = "searchName", required = false, defaultValue = "") String searchName,
+                                                     @RequestParam(name = "filterName", required = false, defaultValue = "") String filterName) {
+        List<DrinkDTO> drinkDTOS = new ArrayList<>();
+        drinkService.getSearchedOrFiltered(searchName, filterName).forEach(drink -> drinkDTOS.add(new DrinkDTO(drink)));
+        return drinkDTOS;
     }
 
 }

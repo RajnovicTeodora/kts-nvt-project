@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -73,5 +74,30 @@ public class DrinkService {
 
         Drink drink = new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<MenuItemPrice>(), drinkDTO.getDrinkType(), drinkDTO.getContainerType());
         return drink;
+    }
+
+    public List<Drink> getSearchedOrFiltered(String searchName, String filterName) {
+        List<Drink> drinks = drinkRepository.getApprovedDrinks();
+        List<Drink> searchedDrinks = new ArrayList<>();
+        if(!searchName.equals("")){
+            for(Drink drink : drinks){
+                if(drink.getName().toLowerCase().equals(searchName.toLowerCase())){
+                    searchedDrinks.add(drink);
+                }
+            }drinks = searchedDrinks;
+        }
+
+        searchedDrinks = new ArrayList<>();
+        System.out.println("moj filter"+filterName);
+        if(!filterName.equals("")){
+            for(Drink drink : drinks){
+                System.out.println("yoj filter"+drink.getDrinkType().name());
+                if(drink.getDrinkType().name().equals(filterName)){
+                    searchedDrinks.add(drink);
+                }
+            }
+            drinks =searchedDrinks;
+        }
+        return drinks;
     }
 }

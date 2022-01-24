@@ -26,5 +26,26 @@ export class DrinksService {
       });
       return res;
   }
+  username = JSON.parse(localStorage.getItem('currentUser')!).username;
+  
+  getSearchedOrFiltered(name: string, filter: string): Observable<any> {
+    let param = {
+      username: this.username,
+      searchName: name,
+      filterName: filter,
+    };
+    let queryParams = {};
+
+    queryParams = {
+      headers: this.headers,
+      observe: 'response',
+      params: param,
+    };
+
+    return this.http.get(
+      'http://localhost:8080/api/drink/getSearchedOrFiltered',
+      queryParams
+    );
+  }
 
 }

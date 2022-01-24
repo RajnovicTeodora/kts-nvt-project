@@ -1,5 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { Order } from '../../models/order';
 import { OrderedItem } from '../../models/orderedItem';
 import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component';
@@ -13,16 +18,24 @@ import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component'
 export class OrderViewComponent implements OnInit {
   
   @Input() typeBtn: string="";
-  @Input() items:  OrderedItem[] =[];
+  @Input() items:  OrderedItem[];//  //
   @Input() note: string="";
   @Output() finishClicked = new EventEmitter();
   @Output() acceptClicked = new EventEmitter();
+  dataSource: MatTableDataSource<OrderedItem> = new MatTableDataSource();
+  observable: Observable<any>;
+  
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   
 
   displayedColumns: string[] = ['name', "quantity","priority","actions"];
   isFinished = false;
-  constructor(public dialog: MatDialog) 
-  {}
+  constructor(
+    public dialog: MatDialog,
+    private liveAnnouncer: LiveAnnouncer,
+    ) {}
 
   openDialog(id: string): void {
     this.isFinished = false;
@@ -43,6 +56,24 @@ export class OrderViewComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dataSource = new MatTableDataSource<OrderedItem>(this.items);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.observable = this.dataSource.connect();
+  }
 
+  setData() {
+    this.dataSource = new MatTableDataSource<OrderedItem>(this.items);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.observable = this.dataSource.connect();
+  }
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this.liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 }
