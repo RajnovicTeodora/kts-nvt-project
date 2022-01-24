@@ -1,4 +1,4 @@
-export class RestaurantTableDTO {
+export class RestaurantTable {
 
     public tableNum: number;
     public x: number;

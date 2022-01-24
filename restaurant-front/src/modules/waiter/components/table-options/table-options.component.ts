@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
-import { RestaurantTableDTO } from 'src/modules/shared/models/restaurant-table';
+import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { RestaurantTableService } from 'src/modules/shared/services/restaurant-table-service/restaurant-table.service';
 
@@ -16,7 +16,7 @@ export class TableOptionsComponent implements OnInit {
   @Output() onRestaurantTableClose = new EventEmitter();
   title: string;
   currentUser: UserWithToken;
-  table: RestaurantTableDTO;
+  table: RestaurantTable;
 
   constructor(
     private tableService: RestaurantTableService,
@@ -27,7 +27,7 @@ export class TableOptionsComponent implements OnInit {
       JSON.parse(localStorage.getItem('currentUser')!)
     );
     this.currentUser = temp.value;
-    this.table = new RestaurantTableDTO(0, 0, 0, 0, '', false);
+    this.table = new RestaurantTable(0, 0, 0, 0, '', false);
     this.title = '';
   }
 
@@ -39,7 +39,7 @@ export class TableOptionsComponent implements OnInit {
     this.tableService.getRestaurantTable(this.tableNumber).subscribe({
       next: (result) => {
         this.title = 'Table ' + result.tableNum;
-        this.table = new RestaurantTableDTO(
+        this.table = new RestaurantTable(
           result.tableNum,
           result.x,
           result.y,
@@ -116,5 +116,7 @@ export class TableOptionsComponent implements OnInit {
     this.onRestaurantTableClose.emit(true);
   }
 
-  newOrder() {}
+  newOrder() {
+    this.router.navigate(['/create-order']);
+  }
 }

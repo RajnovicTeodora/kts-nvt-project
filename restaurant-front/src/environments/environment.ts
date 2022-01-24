@@ -6,7 +6,8 @@ export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
   notification: 'notification',
-  table: 'api/table'
+  table: 'api/table',
+  menuItem: 'api/menuItem'
 };
 
 /*

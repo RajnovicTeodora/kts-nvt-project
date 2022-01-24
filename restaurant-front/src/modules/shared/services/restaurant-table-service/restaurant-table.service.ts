@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RestaurantTableDTO } from '../../models/restaurant-table';
+import { RestaurantTable } from '../../models/restaurant-table';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +12,8 @@ export class RestaurantTableService {
 
   constructor(private http: HttpClient) {}
 
-  getRestaurantTable(tableNum: number): Observable<RestaurantTableDTO> {
-    return this.http.get<RestaurantTableDTO>(
+  getRestaurantTable(tableNum: number): Observable<RestaurantTable> {
+    return this.http.get<RestaurantTable>(
       `${environment.baseUrl}/${environment.table}/getTableByTableNumber/${tableNum}`,
       { responseType: 'json' }
     );

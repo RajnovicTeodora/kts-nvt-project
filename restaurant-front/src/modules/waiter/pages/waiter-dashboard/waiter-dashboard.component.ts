@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { UserList } from 'src/modules/shared/models/user-list';
-import { UserLogin } from 'src/modules/shared/models/user-login';
 import { UserWithBadgeNum } from 'src/modules/shared/models/user-with-badgenum';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { NotificationService } from 'src/modules/shared/services/notification-service/notification.service';
@@ -36,8 +35,8 @@ export class WaiterDashboardComponent implements OnInit {
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
   currentBadgeContent: number;
-  ////////////////TODO
-  showModalRestauranttable: number;
+  ////////////////TODO isidora
+  showModalRestaurantTableOptions: number;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -63,7 +62,7 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
-    this.showModalRestauranttable = -1;
+    this.showModalRestaurantTableOptions = -1;
   }
 
   ngOnInit() {
@@ -164,11 +163,11 @@ export class WaiterDashboardComponent implements OnInit {
   }
 
   onRestaurantTableShowClicked(tableNum: number){
-    this.showModalRestauranttable = tableNum;
+    this.showModalRestaurantTableOptions = tableNum;
   }
 
   onRestaurantTableCloseClicked(item: boolean){
-    this.showModalRestauranttable = -1;
+    this.showModalRestaurantTableOptions = -1;
   }
 
   changeAccount(username: string) {

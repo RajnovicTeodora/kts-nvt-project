@@ -143,9 +143,9 @@ INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);
 INSERT INTO ingredient (name, alergen) VALUES ('mleko', false);
 INSERT INTO ingredient (name, alergen) VALUES ('cokolada', false);
 
-INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 1 );
-INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 2 );
-INSERT INTO menu_item_ingredients ( item_id, ingredient_id ) VALUES ( 5, 3 );
+INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 1 );
+INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 2 );
+INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 3 );
 
 INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je gotova!', 2, 4);
 INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Spagete su gotove!', 6, 4);

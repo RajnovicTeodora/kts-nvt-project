@@ -68,24 +68,25 @@
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <!--TODO isidora-->
     <div class="content mat-elevation-z8">
       <div class="row">
         <button mat-button class="menu-button" (click)="onRestaurantTableShowClicked(1)" >
           <span>Table 1</span>
         </button>
-        <app-table-options *ngIf="this.showModalRestauranttable==1" [tableNumber]="1" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)'></app-table-options>
+        <app-table-options *ngIf="this.showModalRestaurantTableOptions==1" [tableNumber]="1" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)'></app-table-options>
       </div>
       <div class="row">
         <button mat-button class="menu-button" (click)="onRestaurantTableShowClicked(2)" >
           <span>Table 2</span>
         </button>
-        <app-table-options *ngIf="this.showModalRestauranttable==2" [tableNumber]="2" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)' ></app-table-options>
+        <app-table-options *ngIf="this.showModalRestaurantTableOptions==2" [tableNumber]="2" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)' ></app-table-options>
       </div>
       <div class="row">
         <button mat-button class="menu-button" (click)="onRestaurantTableShowClicked(3)" >
           <span>Table 3</span>
         </button>
-        <app-table-options *ngIf="this.showModalRestauranttable==3" [tableNumber]="3" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)' ></app-table-options>
+        <app-table-options *ngIf="this.showModalRestaurantTableOptions==3" [tableNumber]="3" (onRestaurantTableClose)='onRestaurantTableCloseClicked($event)' ></app-table-options>
       </div>
       <!--
       <div class="row">

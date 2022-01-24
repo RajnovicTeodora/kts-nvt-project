@@ -1,4 +1,4 @@
-export class NotificationDTO {
+export class Notification {
 
     public content: string;
     public isActive: boolean;

@@ -4,13 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
-import { SelectMenuItemsComponent } from '../waiter/pages/select-menu-items/select-menu-items.component';
+import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
 import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
 import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
+import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,13 @@ const routes: Routes = [
     path: 'select-menu-items',
     pathMatch: 'full',
     component: SelectMenuItemsComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'create-order',
+    pathMatch: 'full',
+    component: CreateOrderComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
   },
