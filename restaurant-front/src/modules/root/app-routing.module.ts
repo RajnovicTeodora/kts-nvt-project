@@ -4,10 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
-import { AcceptedOrdersComponent } from '../bartender/pages/accepted-orders/accepted-orders.component';
+import { AcceptedOrdersComponent } from '../shared/components/accepted-orders/accepted-orders.component';
 import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
-import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
-import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
 import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
 import { SelectMenuItemsComponent } from '../waiter/pages/select-menu-items/select-menu-items.component';
 import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
@@ -17,6 +15,8 @@ import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waite
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
+import { ChefDashboardComponent } from '../chef/pages/chef-dashboard/chef-dashboard.component';
+import { NewOrdersComponent } from '../shared/components/new-orders/new-orders.component';
 
 const routes: Routes = [
   {
@@ -55,11 +55,11 @@ const routes: Routes = [
     data: { expectedRoles: 'BARTENDER' },
   },
   {
-    path: 'view-drinks',
+    path: 'chef-dashboard',
     pathMatch: 'full',
-    component: ViewDrinksComponent,
+    component: ChefDashboardComponent,
     canActivate: [RoleGuard],
-    data: { expectedRoles: 'BARTENDER' },
+    data: { expectedRoles: 'CHEF' },
   },
   {
     path: 'view-one-drink',

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { OrderedItem } from 'src/modules/shared/models/orderedItem';
-import { OrdersService } from '../../service/orders/orders.service';
+import { OrderedItem } from '../../models/orderedItem';
+import { OrdersService } from '../../services/orders/orders.service';
 
 @Component({
   selector: 'app-new-orders',
@@ -60,5 +59,4 @@ export class NewOrdersComponent implements OnInit {
       (item) => item.status === "ORDERED" || item.id+"" != id
     );
   }
-
 }

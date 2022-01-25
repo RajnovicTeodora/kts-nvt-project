@@ -1,6 +1,8 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.dto.DishDTO;
 import com.ftn.restaurant.dto.IngredientDTO;
+import com.ftn.restaurant.dto.Items.DishWithIngredientsDTO;
 import com.ftn.restaurant.dto.NewDishDTO;
 import com.ftn.restaurant.exception.DishExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +51,13 @@ public class DishService {
         return dishRepository.save(dish);
     }
 
+    public List<DishDTO> getDishes() {
+
+        List<Dish> allDishes = dishRepository.findAproved();
+        List<DishDTO> dtos= new ArrayList<>();
+        for(Dish d: allDishes){
+            dtos.add(new DishWithIngredientsDTO(d));
+        }
+        return dtos;
+    }
 }

@@ -21,6 +21,10 @@ import { InputIngredientDialogComponent } from './components/input-ingredient-di
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
+import { DishTableComponent } from './components/dish-table/dish-table.component';
+import { NewOrdersComponent } from './components/new-orders/new-orders.component';
+import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-orders.component';
+import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
 @NgModule({
   declarations: [
     ChangePasswordComponent,
@@ -37,6 +41,10 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
     DeleteIngredientDialogComponent,
+    DishTableComponent,
+    NewOrdersComponent,
+    AcceptedOrdersComponent,
+    TableIngredientsDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -65,7 +73,10 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
-    DeleteIngredientDialogComponent
+    DeleteIngredientDialogComponent,
+    NewOrdersComponent,
+    AcceptedOrdersComponent,
+    DishTableComponent
   ],
   providers: [
     {

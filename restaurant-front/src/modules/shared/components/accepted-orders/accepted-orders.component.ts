@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { OrderedItem } from 'src/modules/shared/models/orderedItem';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
-import { OrdersService } from '../../service/orders/orders.service';
+import { OrdersService } from '../../services/orders/orders.service';
+
 
 @Component({
   selector: 'app-accepted-orders',

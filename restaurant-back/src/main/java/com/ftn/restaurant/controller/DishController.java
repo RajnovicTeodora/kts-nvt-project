@@ -38,4 +38,11 @@ public class DishController {
     public List<String> getDishTypes(){
         return DishType.getNames();
     }
+
+    @ResponseBody
+    @GetMapping(path = "/getDishes")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DishDTO> getDishes(){
+        return dishService.getDishes();
+    }
 }

@@ -15,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { ManagerModule } from '../manager/manager.module';
+import { ChefModule } from '../chef/chef.module';
 
 @NgModule({
   declarations: [AppComponent, AfterLogoutComponent],
@@ -32,6 +33,7 @@ import { ManagerModule } from '../manager/manager.module';
     SharedModule,
     BartenderModule,
     ManagerModule,
+    ChefModule,
   ],
   providers: [
     {
