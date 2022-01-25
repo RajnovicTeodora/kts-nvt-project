@@ -17,6 +17,7 @@ public class OrderItemDTO {
     private int quantity;
     private boolean deleted;
     private MenuItemDTO menuItem;
+    private String name;
     private List<IngredientDTO> activeIngredients;
 
     public OrderItemDTO() {
@@ -31,6 +32,14 @@ public class OrderItemDTO {
         this.menuItem = new MenuItemDTO(oi.getMenuItem());
         fillActiveIngredients(oi.getActiveIngredients());
     }
+    public OrderItemDTO(OrderedItem oi, String s){ //todo ako budes brisala ovo ne zaboravi i name da stavis
+        this.id = oi.getId();
+        this.status = oi.getStatus().toString();
+        this.priority = oi.getPriority();
+        this.quantity = oi.getQuantity();
+        this.deleted = oi.isDeleted();
+        this.name = oi.getMenuItem().getName();
+        }
 
     public OrderItemDTO(String status, int priority, int quantity, boolean deleted, MenuItemDTO menuItem, List<IngredientDTO> activeIngredients) {
         this.status = status;
@@ -111,5 +120,17 @@ public class OrderItemDTO {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

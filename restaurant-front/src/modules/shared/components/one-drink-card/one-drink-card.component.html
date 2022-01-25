@@ -1,0 +1,27 @@
+<div id="container-div">
+    <div id="form-holder-div">
+      <h2 >{{drink.name}}</h2>
+      <div>
+        <div id="img-div">
+            <img
+                src="https://media.giphy.com/media/JrNJ7nwRenWeHLcnzX/giphy.gif"
+                alt="”animated”"
+                />
+            </div>
+            <div>
+                <mat-label >Container:  {{drink.containerType}}</mat-label><br/>
+                <mat-label >Price:  {{drink.price}}</mat-label><br/>
+            </div>
+            <div>
+                <mat-divider></mat-divider>
+                <mat-card-subtitle style="margin-top: 30px">Ingredients</mat-card-subtitle>
+                <mat-list *ngFor="let ingredient of drink.ingredients">
+                <mat-list-item>
+                    <img mat-list-icon src="assets/images/4260850.png" />
+                    {{ ingredient.name }}
+                </mat-list-item>
+                </mat-list>
+        </div>
+        </div>
+    </div>
+  </div> 

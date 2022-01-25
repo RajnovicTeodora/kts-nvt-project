@@ -43,4 +43,10 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
     @Query("select ord.order from OrderedItem ord where ord.id =?1")
     Order findOrderByOrderedItemId(long id);
 
+  @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id and i.deleted=false and (i.status = com.ftn.restaurant.model.enums.OrderedItemStatus.ORDERED)")
+    OrderedItem[] findAllByOrderIdNotDeletedAndNew(long id);
+
+  @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id and i.deleted=false and (i.status = com.ftn.restaurant.model.enums.OrderedItemStatus.IN_PROGRESS)")
+    OrderedItem[] findAllByOrderIdNotDeletedAndAccepted(long id);
+
 }
