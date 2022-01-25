@@ -3,6 +3,7 @@ package com.ftn.restaurant.controller;
 import java.util.List;
 
 import com.ftn.restaurant.dto.DishDTO;
+import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.NewDishDTO;
 import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.enums.DishType;
@@ -26,7 +27,7 @@ public class DishController {
 
     @ResponseBody
     @PostMapping(path = "/addDish")
-    @PreAuthorize("hasAnyRole('MANAGER', 'HEAD_CHEF')")//
+    @PreAuthorize("hasAnyRole('MANAGER', 'CHEF')")//HEAD_ todo
     @ResponseStatus(HttpStatus.CREATED)
     public DishDTO addDish( @RequestBody NewDishDTO dishDTO){
         return new DishDTO(dishService.addDish(dishDTO));
@@ -41,8 +42,11 @@ public class DishController {
 
     @ResponseBody
     @GetMapping(path = "/getDishes")
+    @PreAuthorize("hasAnyRole('CHEF', 'HEAD_CHEF')")
     @ResponseStatus(HttpStatus.OK)
     public List<DishDTO> getDishes(){
         return dishService.getDishes();
     }
+
+
 }

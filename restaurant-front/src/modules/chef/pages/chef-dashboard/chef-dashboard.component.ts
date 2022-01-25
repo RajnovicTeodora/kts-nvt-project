@@ -31,11 +31,10 @@ export class ChefDashboardComponent implements OnInit {
   showModalLogin: boolean;
   currentBadgeContent: number;
 
-  isOneDishView:boolean = false;
+  
   isDishView:boolean = false;
   isNewOrders: boolean =false;
   isAcceptedOrders: boolean =false;
-  idOfDish: string ="";
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -209,28 +208,21 @@ export class ChefDashboardComponent implements OnInit {
     this.isNewOrders = false;
     this.isAcceptedOrders = false;
     this.isDishView =true;
-    this.isOneDishView = false;
+    
   }
 
   viewAcceptedOrders(){
     this.isNewOrders = false;
     this.isDishView =false;
     this.isAcceptedOrders = true;
-    this.isOneDishView = false;
+    
   }
 
   viewNewOrders(){
     this.isAcceptedOrders = false;
     this.isDishView =false;
     this.isNewOrders = true;
-    this.isOneDishView = false;
-  }
-  onClickedView(id:any){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders = false;
-    this.idOfDish = id;
-    this.isOneDishView = true;
+    
   }
 
 }

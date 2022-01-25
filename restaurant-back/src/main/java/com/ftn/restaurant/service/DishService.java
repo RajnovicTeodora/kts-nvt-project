@@ -10,6 +10,7 @@ import com.ftn.restaurant.model.Dish;
 import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.DishRepository;
+import com.ftn.restaurant.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +26,25 @@ public class DishService {
     private DishRepository dishRepository;
 
     @Autowired
-    public DishService(DishRepository dishRepository) {
+    private IngredientRepository ingredientRepository;
+
+    @Autowired
+    public DishService(DishRepository dishRepository, IngredientRepository ingredientRepository) {
         this.dishRepository = dishRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     public Dish addDish(NewDishDTO dishDTO) {
-
+        System.out.println(dishDTO == null);
+        System.out.println("jej1");
+        System.out.println(dishDTO.getName());
+        System.out.println(dishDTO.getImage());
         if(dishDTO == null)
             throw new ForbiddenException("Dish must have some values.");
-
+        System.out.println("jej");
         if (dishDTO.getName().isEmpty() || dishDTO.getImage().isEmpty())
             throw new ForbiddenException("Dish must have a name and image");
-
+        System.out.println("jej2");
         Optional<Dish> maybeDish = dishRepository.findByNameAndDishType(dishDTO.getName(), dishDTO.getType());
         if (maybeDish.isPresent())
             throw new DishExistsException("Dish already exists!");
@@ -47,7 +55,7 @@ public class DishService {
             Ingredient newIngredient = new Ingredient(ingredient);
             dish.getIngredients().add(newIngredient);
         }
-
+        System.out.println("stiglo");
         return dishRepository.save(dish);
     }
 
@@ -56,7 +64,7 @@ public class DishService {
         List<Dish> allDishes = dishRepository.findAproved();
         List<DishDTO> dtos= new ArrayList<>();
         for(Dish d: allDishes){
-            dtos.add(new DishWithIngredientsDTO(d));
+            dtos.add(new DishDTO(d));
         }
         return dtos;
     }

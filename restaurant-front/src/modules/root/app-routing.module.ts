@@ -17,6 +17,7 @@ import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashbo
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { ChefDashboardComponent } from '../chef/pages/chef-dashboard/chef-dashboard.component';
 import { NewOrdersComponent } from '../shared/components/new-orders/new-orders.component';
+import { AddDishComponent } from '../chef/pages/add-dish/add-dish.component';
 
 const routes: Routes = [
   {
@@ -117,6 +118,13 @@ const routes: Routes = [
     component: SelectMenuItemsComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'add-dish',
+    pathMatch: 'full',
+    component: AddDishComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'CHEF' },
   },
 ];
 

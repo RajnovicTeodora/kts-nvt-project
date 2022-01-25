@@ -1,6 +1,7 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit, Output, ViewChild, EventEmitter} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -8,6 +9,7 @@ import { Observable } from 'rxjs';
 import { Dish } from '../../models/dish';
 import { Select } from '../../models/select';
 import { DishService } from '../../services/dishes/dish.service';
+import { TableIngredientsDialogComponent } from '../table-ingredients-dialog/table-ingredients-dialog.component';
 
 @Component({
   selector: 'app-dish-table',
@@ -35,6 +37,7 @@ export class DishTableComponent implements OnInit {
       {value: 'SOUP', viewValue: 'soup'},
   ];
   constructor(
+    public dialog: MatDialog,
     private dishService: DishService,
     private liveAnnouncer: LiveAnnouncer,
     private fb: FormBuilder,
@@ -83,6 +86,12 @@ export class DishTableComponent implements OnInit {
       });
   }
   clickedView(dish: Dish){
-      this.onClickedView.emit(dish.id!);}
+    this.dishService.getIngredientsByItemid(dish.id).subscribe( (result) =>{
+      console.log(result)
+    const dialogRef = this.dialog.open(TableIngredientsDialogComponent, {
+      width: '1000px', data: {items: result.ingredients},
+    });
+  });
+  }
 
 }

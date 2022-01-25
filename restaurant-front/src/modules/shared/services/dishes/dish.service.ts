@@ -45,4 +45,11 @@ export class DishService {
       queryParams
     );
   }
+  
+  getIngredientsByItemid(id:string):Observable<any>{
+    return this.http.get('http://localhost:8080/api/menuItem/getById/' + id, {
+      headers: this.headers,
+      responseType: 'json',
+    });
+  }
 }
