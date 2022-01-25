@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { OrderedItem } from 'src/modules/shared/models/orderedItem';
+import { OrderedItem } from 'src/modules/shared/models/ordered-item';
 import { OrdersService } from '../../service/orders/orders.service';
 
 @Component({
