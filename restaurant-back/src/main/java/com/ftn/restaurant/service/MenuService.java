@@ -1,6 +1,6 @@
 package com.ftn.restaurant.service;
 
-import com.ftn.restaurant.dto.MenuItemPriceDTO;
+import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.MenuItemNotFoundException;
@@ -79,7 +79,7 @@ public class MenuService {
         return menuItems;
     }
 
-    public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
+    public List<MenuItemDTO> searchMenuItems(String group, String name){
         List<MenuItem> menuItems = new ArrayList<MenuItem>(); 
 
         if (group.equalsIgnoreCase("...")){
@@ -147,13 +147,13 @@ public class MenuService {
         throw new MenuItemNotFoundException("Invalid group for filtering menu items!");
     }
 
-    private List<MenuItemPriceDTO> collectPrices(List<MenuItem> menuItems){
-        List<MenuItemPriceDTO> itemsDTOs = new ArrayList<MenuItemPriceDTO>(); 
+    private List<MenuItemDTO> collectPrices(List<MenuItem> menuItems){
+        List<MenuItemDTO> itemsDTOs = new ArrayList<MenuItemDTO>(); 
 
         for (MenuItem item : menuItems) {
             Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
             if (optionalPrice.isPresent() && optionalPrice.get().isActive() == true) {
-                itemsDTOs.add(new MenuItemPriceDTO(optionalPrice.get()));
+                itemsDTOs.add(new MenuItemDTO(item));
             } 
         }
 
