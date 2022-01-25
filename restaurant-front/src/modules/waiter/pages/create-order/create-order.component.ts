@@ -4,9 +4,11 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject } from 'rxjs';
 import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
 import { Order } from 'src/modules/shared/models/order';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
+import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrderService } from 'src/modules/shared/services/order-service/order.service';
 import { PeriodicElement } from '../../models/PeriodicElement';
 
@@ -101,6 +103,11 @@ export class CreateOrderComponent implements OnInit {
         this.currentAdditionalNotes,
         orderItems
       );
+      const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+      const tableId = new BehaviorSubject<number>(JSON.parse(localStorage.getItem('tableId')!));
+      order.waiterUsername = temp.value.username; 
+      order.tableId = tableId.value;
+
       this.orderService.createOrder(order).subscribe({
         next: (result) => {
           this.toastr.success("Succesfully added new order.");          
@@ -167,5 +174,10 @@ export class CreateOrderComponent implements OnInit {
   onAdditionalNotesConfirmClicked(item: string) {
     this.currentAdditionalNotes = item;
     this.showAdditionalNotes = false;
+  }
+
+  onPayOrderCloseClicked(item:boolean){
+    this.showPaymentModal = false;
+    this.router.navigate(['/waiter-dashboard']);
   }
 }

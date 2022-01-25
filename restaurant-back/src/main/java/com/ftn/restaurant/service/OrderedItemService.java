@@ -191,16 +191,11 @@ public class OrderedItemService {
         Order order = orderService.findOneWithOrderItems(id);
 
         if(order != null){
-            for (OrderedItem orderedItem: order.getOrderedItems()) {
+            List<OrderedItem> orderedItems = orderedItemRepository.findAllByOrderId(order.getId());
+            for (OrderedItem orderedItem: orderedItems) {
                 List<Ingredient> ingredients = ingredientService.findByOrderedItemId(orderedItem.getId());
                 orderedItem.setActiveIngredients(ingredients);
                 OrderItemDTO orderItemDTO = new OrderItemDTO(orderedItem);
-                /*orderItemDTO.setId(orderedItem.getId());
-                orderItemDTO.setMenuItemId(orderedItem.getMenuItem().getId());
-                orderItemDTO.setMenuItemName(orderedItem.getMenuItem().getName());
-                orderItemDTO.setPriority(orderedItem.getPriority());
-                orderItemDTO.setStatus(orderedItem.getStatus().name().toUpperCase(Locale.ROOT));
-                orderItemDTO.setQuantity(orderedItem.getQuantity());*/
                 double price = menuItemPriceService.findCurrentPriceForMenuItemById(orderedItem.getMenuItem().getId());
                 orderItemDTO.setPrice(price);
                 orderItemDTOList.add(orderItemDTO);
@@ -209,6 +204,10 @@ public class OrderedItemService {
         }
 
         throw new NotFoundException("Couldn't find order.");
+    }
+
+    public boolean orderContainsActiveOrderedItems(long id){
+        return !orderedItemRepository.findAllActiveByOrderId(id).isEmpty();
     }
 
 }

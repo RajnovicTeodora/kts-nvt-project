@@ -40,7 +40,7 @@
       />
     </div>
     <div id="form-holder-div">
-      <h3 class="name">Ordered Items</h3>
+      <h3 class="name">Payment</h3>
 
     <mat-action-list class="custom-scroll-bar">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -99,7 +99,9 @@
 
     <mat-divider></mat-divider>
 
-    <div class="row">
+    <h2 *ngIf="this.orderIsPaid">Order is paid.</h2>
+
+    <div class="row" *ngIf="!this.orderIsPaid">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label style="color: #b3b3b3"
           >Received amount $</mat-label
@@ -108,7 +110,7 @@
       </mat-form-field>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="!this.orderIsPaid">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label style="color: #b3b3b3"
           >Change left $</mat-label
@@ -128,13 +130,14 @@
           Close
         </button>
         <button
+          *ngIf="!this.orderIsPaid"
           mat-flat-button
           type="button"
           color="primary"
           class="btn btn-primary"
           (click)="finishOrder()"
         >
-          Finish Order
+          Pay Order
         </button>
       </div>
     </div>

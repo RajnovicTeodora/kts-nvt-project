@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Order } from 'src/modules/shared/models/order';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
+import { OrderService } from 'src/modules/shared/services/order-service/order.service';
 import { OrderedItemService } from 'src/modules/shared/services/ordered-item-service/ordered-item.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class PayOrderComponent implements OnInit {
   @Input() currentOrderId: number;
   @Input() showPaymentQuestion: boolean;
   @Output() onPaylater = new EventEmitter();
+  @Output() onPayOrderClose = new EventEmitter();
   @ViewChild(MatTable) table: MatTable<OrderedItem>;
   @ViewChild('received') received: ElementRef;
   ELEMENT_DATA: OrderedItem[] = [];
@@ -36,22 +38,24 @@ export class PayOrderComponent implements OnInit {
   dataSource = [...this.ELEMENT_DATA];
   totalCost: number;
   changeLeft: number;
+  orderIsPaid: boolean;
 
   constructor(
     public router: Router,
-    private orderedItemaService: OrderedItemService,
+    private orderedItemsService: OrderedItemService,
+    private orderService: OrderService,
     private toastr: ToastrService
   ) {
     this.totalCost = 0;
-    this.changeLeft = 0;
   }
 
   ngOnInit(): void {
     this.getOrderedItems();
+    this.checkIfOrderIsPaid();
   }
 
   getOrderedItems() {
-    this.orderedItemaService
+    this.orderedItemsService
       .getOrderedItemsForOrderId(this.currentOrderId)
       .subscribe({
         next: (result) => {
@@ -68,8 +72,27 @@ export class PayOrderComponent implements OnInit {
       });
   }
 
+  checkIfOrderIsPaid(){
+    this.orderService
+      .checkIfOrderIsPaid(this.currentOrderId)
+      .subscribe({
+        next: (result) => {
+          this.orderIsPaid = result;
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
+  }
+
   receivedAmountChange(){
-    this.changeLeft = this.totalCost - this.received.nativeElement.value;
+    if(this.received.nativeElement.value < this.totalCost){
+      this.toastr.error("Received amount insufficient, can't pay order.");
+    }
+    else{
+      this.changeLeft = this.received.nativeElement.value - this.totalCost;
+    }
+    
   }
 
   payNow() {
@@ -80,9 +103,28 @@ export class PayOrderComponent implements OnInit {
     this.onPaylater.emit(true);
   }
 
-  finishOrder() {}
+  finishOrder() {
+    if(this.received.nativeElement.value < this.totalCost){
+      this.toastr.error("Received amount insufficient, can't pay order.");
+    }
+    else{
+      this.orderService
+      .payOrder(this.currentOrderId)
+      .subscribe({
+        next: (result) => {
+          this.toastr.success(result);
+          this.onPayOrderClose.emit(true);
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
+    }
+  }
 
-  close() {}
+  close() {
+    this.onPayOrderClose.emit(true);
+  }
 
   deliverOrderedItem(element: OrderedItem){}
 }

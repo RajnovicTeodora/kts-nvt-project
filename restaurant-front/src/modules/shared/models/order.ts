@@ -7,6 +7,8 @@ export class Order {
     public totalPrice: number;    
     public note: string;
     public orderItems: Array<OrderedItem>;
+    public waiterUsername: string;
+    public tableId: number;
     
     constructor( isPaid : boolean, totalPrice: number, note: string, orderItems: Array<OrderedItem>) {
         this.isPaid = isPaid;

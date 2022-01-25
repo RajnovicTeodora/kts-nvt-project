@@ -19,4 +19,23 @@ export class OrderService {
       }
     );
   }
+
+  payOrder(orderId: number): Observable<string>{
+    return this.http.get(
+      `${environment.baseUrl}/${environment.order}/payOrder/${orderId}`,
+      { responseType: 'text' }
+    );
+  }
+
+  checkIfOrderIsPaid(orderId: number): Observable<boolean>{
+    return this.http.get<boolean>(
+      `${environment.baseUrl}/${environment.order}/checkIfOrderIsPaid/${orderId}`
+    );
+  }
+
+  getActiveOrdersForTable(tableNum: number, waiterUsername: string): Observable<Array<number>>{
+    return this.http.get<Array<number>>(
+      `${environment.baseUrl}/${environment.order}/getActiveOrdersForTable/${tableNum}/${waiterUsername}`
+    );
+  }
 }

@@ -3,7 +3,6 @@ package com.ftn.restaurant.dto;
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.OrderedItem;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +13,14 @@ public class OrderDTO {
     private double totalPrice;
     private String note;
     private List<OrderItemDTO> orderItems;
+    private String waiterUsername;
+    private long tableId;
 
     public OrderDTO() {
         super();
     }
 
-    public OrderDTO(Order o){
+    public OrderDTO(Order o) {
         this.id = o.getId();
         this.isPaid = o.isPaid();
         this.totalPrice = o.getTotalPrice();
@@ -80,5 +81,21 @@ public class OrderDTO {
 
     public void setOrderItems(List<OrderItemDTO> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public String getWaiterUsername() {
+        return waiterUsername;
+    }
+
+    public void setWaiterUsername(String waiterUsername) {
+        this.waiterUsername = waiterUsername;
+    }
+
+    public long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 }

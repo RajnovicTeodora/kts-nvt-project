@@ -138,4 +138,10 @@ public class TableService {
         }
         throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
+
+    public Optional<RestaurantTable> findByTableNumber(int tableNum){
+        return tableRepository.getTableByTableNumber(tableNum);
+    }
+
+
 }

@@ -34,7 +34,9 @@ export class WaiterDashboardComponent implements OnInit {
   waiterList: Array<UserWithBadgeNum>;
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
+  showPaymentModal: boolean;
   currentBadgeContent: number;
+  currentOrderViewed: number;
   ////////////////TODO isidora
   showModalRestaurantTableOptions: number;
 
@@ -63,6 +65,7 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
     this.showModalRestaurantTableOptions = -1;
+    this.showPaymentModal = false;
   }
 
   ngOnInit() {
@@ -170,6 +173,20 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalRestaurantTableOptions = -1;
   }
 
+  onPayOrderCloseClicked(item:boolean){
+    this.showPaymentModal = false;
+  }
+
+  onViewOrderAndBillClicked(order:number){
+    this.currentOrderViewed = order;
+    //this.showModalRestaurantTableOptions = -1;
+    this.showPaymentModal = true;    
+  }
+
+  onEditOrderClicked(order:number){
+    //TODO olja
+  }
+
   changeAccount(username: string) {
     if (username === this.user.username) {
       this.toastr.info('Already logged in as ' + username);
@@ -214,4 +231,5 @@ export class WaiterDashboardComponent implements OnInit {
         );
     }
   }
+
 }

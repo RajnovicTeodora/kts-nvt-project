@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
+import { OrderService } from 'src/modules/shared/services/order-service/order.service';
 import { RestaurantTableService } from 'src/modules/shared/services/restaurant-table-service/restaurant-table.service';
 
 @Component({
@@ -14,12 +16,23 @@ import { RestaurantTableService } from 'src/modules/shared/services/restaurant-t
 export class TableOptionsComponent implements OnInit {
   @Input() tableNumber = 0;
   @Output() onRestaurantTableClose = new EventEmitter();
+  @Output() onViewOrderAndBill = new EventEmitter();
+  @Output() onEditOrder = new EventEmitter();
   title: string;
   currentUser: UserWithToken;
   table: RestaurantTable;
+  ELEMENT_DATA: number[] = [];
+  displayedColumns: string[] = [
+    'orderNumber',
+    'edit',
+    'view',
+  ];
+  dataSource = [...this.ELEMENT_DATA];
+  @ViewChild(MatTable) matTable: MatTable<number>;
 
   constructor(
     private tableService: RestaurantTableService,
+    private orderService: OrderService,
     public router: Router,
     private toastr: ToastrService
   ) {
@@ -33,6 +46,8 @@ export class TableOptionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setTable();
+    this.getActiveTableOrderNumbers();
+    
   }
 
   setTable() {
@@ -47,6 +62,22 @@ export class TableOptionsComponent implements OnInit {
           result.waiterUsername,
           result.occupied
         );
+      },
+      error: (data) => {
+        this.toastr.error(data.error);
+      },
+    });
+  }
+
+  getActiveTableOrderNumbers(){
+    this.orderService.getActiveOrdersForTable(this.tableNumber, this.currentUser.username).subscribe({
+      next: (result) => {
+        result.forEach(value =>{
+          this.ELEMENT_DATA.push(value);
+          this.dataSource.push(value);
+          this.matTable.renderRows();
+        });
+
       },
       error: (data) => {
         this.toastr.error(data.error);
@@ -117,6 +148,15 @@ export class TableOptionsComponent implements OnInit {
   }
 
   newOrder() {
+    localStorage.setItem('tableId', JSON.stringify(this.tableNumber));
     this.router.navigate(['/create-order']);
+  }
+
+  editOrder(orderNumber:number){
+    this.onEditOrder.emit(orderNumber);
+  }
+
+  viewOrderAndBill(orderNumber:number){
+    this.onViewOrderAndBill.emit(orderNumber);
   }
 }
