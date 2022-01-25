@@ -37,6 +37,13 @@ public class Order {
     @ManyToOne(fetch=FetchType.EAGER, optional = true)
     private Waiter waiter;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "restaurant_table_id")
+    private RestaurantTable restaurantTable;
+
+    @Column(name="order_number", nullable=false)
+    private int orderNumber;
+
     public Order() {
     }
 
@@ -131,5 +138,21 @@ public class Order {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public RestaurantTable getRestaurantTable() {
+        return restaurantTable;
+    }
+
+    public void setRestaurantTable(RestaurantTable restaurantTable) {
+        this.restaurantTable = restaurantTable;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }

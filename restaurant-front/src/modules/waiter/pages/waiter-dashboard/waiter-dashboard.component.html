@@ -14,7 +14,11 @@
     fxLayout="row"
     fxLayoutAlign="space-between center"
   >
-    <button mat-button class="menu-button" (click)="onOtherAccountsButtonClicked()">
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onOtherAccountsButtonClicked()"
+    >
       <mat-icon>login</mat-icon>
       <span>Other account</span>
     </button>
@@ -30,24 +34,32 @@
       (click)="this.router.navigate([''])"
     />
 
-    <h4 class="name">{{this.user.username}}</h4>
+    <h4 class="name">{{ this.user.username }}</h4>
 
     <button mat-button class="menu-button">
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onPasswordChangeButtonClicked()">
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onPasswordChangeButtonClicked()"
+    >
       <mat-icon>settings</mat-icon>
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onSearchItemsButtonClicked()" >
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onSearchItemsButtonClicked()"
+    >
       <span>Search menu items</span>
     </button>
 
@@ -55,20 +67,78 @@
 
     <p class="designation">Active accounts</p>
 
-    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList">
-      <button mat-list-item (click)="changeAccount(waiter.user.username)" 
-      matTooltip="Change account">
+    <mat-action-list
+      class="custom-scroll-bar"
+      *ngFor="let waiter of waiterList"
+    >
+      <button
+        mat-list-item
+        (click)="changeAccount(waiter.user.username)"
+        matTooltip="Change account"
+      >
         <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
-        <span>{{waiter.user.username}}</span>
-        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.user.username === this.user.username"
+        <span>{{ waiter.user.username }}</span>
+        <mat-icon
+          matBadgePosition="after"
+          color="primary"
+          *ngIf="waiter.user.username === this.user.username"
           >check</mat-icon
         >
       </button>
-      
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <!--TODO isidora-->
     <div class="content mat-elevation-z8">
+      <div class="row">
+        <button
+          mat-button
+          class="menu-button"
+          (click)="onRestaurantTableShowClicked(1)"
+        >
+          <span>Table 1</span>
+        </button>
+        <app-table-options
+          *ngIf="this.showModalRestaurantTableOptions == 1"
+          [tableNumber]="1"
+          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+          (onEditOrder)="onEditOrderClicked($event)"
+        ></app-table-options>
+      </div>
+      <div class="row">
+        <button
+          mat-button
+          class="menu-button"
+          (click)="onRestaurantTableShowClicked(2)"
+        >
+          <span>Table 2</span>
+        </button>
+        <app-table-options
+          *ngIf="this.showModalRestaurantTableOptions == 2"
+          [tableNumber]="2"
+          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+          (onEditOrder)="onEditOrderClicked($event)"
+        ></app-table-options>
+      </div>
+      <div class="row">
+        <button
+          mat-button
+          class="menu-button"
+          (click)="onRestaurantTableShowClicked(3)"
+        >
+          <span>Table 3</span>
+        </button>
+        <app-table-options
+          *ngIf="this.showModalRestaurantTableOptions == 3"
+          [tableNumber]="3"
+          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+          (onEditOrder)="onEditOrderClicked($event)"
+        ></app-table-options>
+      </div>
+      <!--
       <div class="row">
         <div class="col">
           <div fxLayout="row wrap">
@@ -84,11 +154,30 @@
           >
           </mat-paginator>
         </div>
-      </div>
+      </div>-->
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
-<app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
-<app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
-<app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>
+<app-change-password
+  *ngIf="this.showModalPasswordChange"
+  (onClose)="onPasswordChangeClose($event)"
+></app-change-password>
+<app-logout
+  *ngIf="this.showModalLogout"
+  (onLogoutClose)="onLogoutCloseClicked($event)"
+></app-logout>
+<app-other-accounts
+  *ngIf="this.showModalOtherAccounts"
+  (onOtherAccountsClose)="onOtherAccountsCloseClicked($event)"
+  (onLoginOpen)="onLoginOpenClicked($event)"
+></app-other-accounts>
+<app-login-form
+  *ngIf="this.showModalLogin"
+  (onLoginClose)="onLoginCloseClicked($event)"
+></app-login-form>
+<app-pay-order
+  *ngIf="this.showPaymentModal"
+  [currentOrderId]="this.currentOrderViewed"
+  [showPaymentQuestion]="false"
+  (onPayOrderClose)="onPayOrderCloseClicked($event)"
+></app-pay-order>

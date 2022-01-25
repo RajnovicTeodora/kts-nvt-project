@@ -47,7 +47,7 @@ public class TableControllerIntegrationTest {
     public void occupyTableTest() throws Exception {
         mockMvc.perform(get("/api/table/1/occupyTable/waiter"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Successfully occupied table with id: 1"));
+                .andExpect(content().string("Successfully occupied table with table number: 1"));
 
         //////////////////////////////
 
@@ -59,7 +59,7 @@ public class TableControllerIntegrationTest {
 
         mockMvc.perform(get("/api/table/1000/occupyTable/waiter"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find table with id: 1000"));
+                .andExpect(content().string("Couldn't find table with table number: 1000"));
 
     }
 
@@ -67,7 +67,7 @@ public class TableControllerIntegrationTest {
     public void clearTableTest() throws Exception {
         mockMvc.perform(get("/api/table/5/clearTable/waiter"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Successfully cleared table with id: 5"));
+                .andExpect(content().string("Successfully cleared table with table number: 5"));
 
         //////////////////////////////
 
@@ -79,7 +79,7 @@ public class TableControllerIntegrationTest {
 
         mockMvc.perform(get("/api/table/1000/clearTable/waiter"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find table with id: 1000"));
+                .andExpect(content().string("Couldn't find table with table number: 1000"));
 
     }
 
@@ -87,7 +87,7 @@ public class TableControllerIntegrationTest {
     public void claimTableTest() throws Exception {
         mockMvc.perform(get("/api/table/3/claimTable/waiter"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Successfully claimed table with id: 3"));
+                .andExpect(content().string("Successfully claimed table with table number: 3"));
 
         //////////////////////////////
 
@@ -99,7 +99,7 @@ public class TableControllerIntegrationTest {
 
         mockMvc.perform(get("/api/table/1000/claimTable/waiter"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find table with id: 1000"));
+                .andExpect(content().string("Couldn't find table with table number: 1000"));
 
     }
 
@@ -107,7 +107,7 @@ public class TableControllerIntegrationTest {
     public void leaveTableTest() throws Exception {
         mockMvc.perform(get("/api/table/6/leaveTable/waiter"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Successfully left table with id: 6"));
+                .andExpect(content().string("Successfully left table with table number: 6"));
 
         //////////////////////////////
 
@@ -119,7 +119,7 @@ public class TableControllerIntegrationTest {
 
         mockMvc.perform(get("/api/table/1000/leaveTable/waiter"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find table with id: 1000"));
+                .andExpect(content().string("Couldn't find table with table number: 1000"));
 
     }
     

@@ -1,6 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import {
   Component,
+  EventEmitter,
   OnInit,
   Output,
   ViewChild
@@ -13,18 +14,13 @@ import { BehaviorSubject } from 'rxjs';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { SearchMenuItemsService } from 'src/modules/shared/services/search-menu-items-service/search-menu-items.service';
 
+
 @Component({
   selector: 'app-select-menu-items',
   templateUrl: './select-menu-items.component.html',
   styleUrls: ['./select-menu-items.component.scss'],
 })
 export class SelectMenuItemsComponent implements OnInit {
-  @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
-  pageSize: number;
-  currentPage: number;
-  data: any[];
-  imagePath: string;
   user: UserWithToken;
   filterGroup: string;
   menuItems: any[];
@@ -32,21 +28,16 @@ export class SelectMenuItemsComponent implements OnInit {
   groups: any[];
   drinkTypes: any[];
   dishTypes: any[];
-  tableId: number;
   item: any;
   searchInput: string;
+  showModalCustomizeOrderedItem: number;
+  @Output() onAddToOrderForwarded = new EventEmitter();  
 
   constructor(
-    private fb: FormBuilder,
-    private observer: BreakpointObserver,
     public router: Router,
     private searchMenuItemsService: SearchMenuItemsService,
     private toastr: ToastrService,
   ) {
-    this.pageSize = 1;
-    this.currentPage = 0;
-    this.data = [];
-    this.imagePath = 'assets/images/floor3.png';
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
     this.filterGroup = '...';
@@ -55,9 +46,9 @@ export class SelectMenuItemsComponent implements OnInit {
     this.groups = ["drink", "dish"];
     this.drinkTypes = [];
     this.dishTypes = [];
-    this.tableId = -1;
     this.item = "";
     this.searchInput = "";
+    this.showModalCustomizeOrderedItem = -1;
   }
 
   ngOnInit() {
@@ -101,17 +92,6 @@ export class SelectMenuItemsComponent implements OnInit {
     })
   }
 
-  ngAfterViewInit() {
-    this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
-      if (res.matches) {
-        this.sidenav.mode = 'over';
-        this.sidenav.close();
-      } else {
-        this.sidenav.mode = 'side';
-        this.sidenav.open();
-      }
-    });
-  }
 
   editGroupName(group: string){
     group = group.toLowerCase();
@@ -120,11 +100,6 @@ export class SelectMenuItemsComponent implements OnInit {
     group = firstLetter + group.substring(1);
     group = group.replace('_', ' ');
     return group;
-  }
-
-  onPasswordChangeClose(item: boolean) {
-    const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
-    this.user = temp.value;
   }
 
 
@@ -167,4 +142,18 @@ export class SelectMenuItemsComponent implements OnInit {
     }
     this.search();
   }
+
+  onCustomizeOrderedItemClicked(itemId: number){
+    this.showModalCustomizeOrderedItem = itemId;
+  }
+
+  onCustomizeOrderedItemCloseClicked(item: any){
+    this.showModalCustomizeOrderedItem = -1;
+  }
+
+  onAddToOrderClicked(item:any){
+    this.onAddToOrderForwarded.emit(item);
+    this.showModalCustomizeOrderedItem = -1;
+  }
+
 }

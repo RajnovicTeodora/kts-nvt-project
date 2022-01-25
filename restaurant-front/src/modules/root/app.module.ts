@@ -10,14 +10,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
 import { WaiterModule } from '../waiter/waiter.module';
+import { BartenderModule } from '../bartender/bartender.module';
 import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
-import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { ManagerModule } from '../manager/manager.module';
 import { AdminModule } from '../admin/admin.module';
 
 @NgModule({
-  declarations: [AppComponent, AfterLogoutComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,6 +31,7 @@ import { AdminModule } from '../admin/admin.module';
     WaiterModule,
     AdminModule,
     SharedModule,
+    BartenderModule,
     ManagerModule,
   ],
   providers: [

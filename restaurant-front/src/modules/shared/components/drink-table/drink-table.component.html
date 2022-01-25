@@ -1,0 +1,75 @@
+<div id="container-div">
+  <h3>Drink card</h3>
+    
+  <div id="form-holder-div">
+    <form [formGroup]="searchForm">
+      <mat-form-field class="example-full-width">
+        <span matPrefix> </span>
+        <input
+          matInput
+          class="form-control"
+          type="text"
+          placeholder="Search..."
+          formControlName="search"
+          id="itemSearch"
+          name="itemSearch"
+        />
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill" >
+          <mat-label>Filter</mat-label>
+          <mat-select formControlName="filter">
+            <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
+              {{drinkType.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button
+          color="accent"
+          type="submit"
+          class="submit-button"
+          (click)="search()"
+          id="submit-button"
+          matSuffix
+          mat-button
+        >
+        <mat-icon>search</mat-icon>
+      </button>
+    </form>
+  </div>
+  <br/>
+  <div>
+  <table 
+    mat-table [dataSource] ="observable" 
+    class="mat-elevation-z8" 
+    matSort
+    (matSortChange)="announceSortChange($event)">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name"
+        sortActionDescription="Sort by name"> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="drinkType"
+          sortActionDescription="Sort by drinkType"> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.drinkType}} </td>
+      </ng-container>
+        
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="price"
+          sortActionDescription="Sort by price"> Price </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td> 
+      </ng-container>
+
+      <ng-container matColumnDef="view drink">
+        <th mat-header-cell *matHeaderCellDef > View drink </th>
+        <td mat-cell *matCellDef="let element"> <button (click)="clickedView(element)">view</button> </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </table> 
+  </div>
+</div>

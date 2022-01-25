@@ -5,10 +5,7 @@ import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.model.Ingredient;
-import com.ftn.restaurant.model.MenuItem;
-import com.ftn.restaurant.model.Order;
-import com.ftn.restaurant.model.OrderedItem;
+import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +36,12 @@ public class OrderService {
     @Autowired
     private MenuItemPriceService menuItemPriceService;
 
+    @Autowired
+    private TableService tableService;
+
+    @Autowired
+    private WaiterService waiterService;
+
     public Order save(Order order) {
         return orderRepository.save(order);
     }
@@ -51,38 +54,50 @@ public class OrderService {
         return orderRepository.findOneWithOrderItems(id);
     }
 
-    public Order createOrder(OrderDTO ordDTO) {
+    public long createOrder(OrderDTO ordDTO) {
         Order o = new Order();
 
         if(ordDTO.getOrderItems().isEmpty()){
             throw new ForbiddenException("Order has to contain ordered items.");
         }
-        o.setDate(LocalDate.parse(ordDTO.getDate()));
+        o.setDate(LocalDate.now());
         o.setNote(ordDTO.getNote());
         o.setPaid(ordDTO.isPaid());
         o.setTime(LocalTime.now());
         o.setTotalPrice(ordDTO.getTotalPrice());
+        o.setRestaurantTable(tableService.findOne(ordDTO.getTableId()));
+        o.setWaiter(waiterService.findByUsername(ordDTO.getWaiterUsername()));
         save(o);
+        o.setOrderNumber(Integer.parseInt(o.getId().toString()));
+
 
         for (OrderItemDTO orderItemDto : ordDTO.getOrderItems()) {
             OrderedItem orderItem = new OrderedItem();
 
-            Optional<MenuItem> menuItem = menuItemService.findByMenuItemNameAndImage(orderItemDto.getMenuItem().getName(), orderItemDto.getMenuItem().getImage());
+            Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDto.getMenuItemId());
             if(menuItem.isPresent()) {
+                orderItem.setDeleted(false);
                 orderItem.setMenuItem(menuItem.get());
                 orderItem.setPriority(orderItemDto.getPriority());
                 orderItem.setStatus(OrderedItemStatus.ORDERED);
+                orderItem.setQuantity(orderItemDto.getQuantity());
+                orderItem.setOrder(o);
                 for (IngredientDTO acIngr : orderItemDto.getActiveIngredients()) {
-                    Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(acIngr.getName(), acIngr.isAlergen());
-                    orderItem.addActiveIngredients(i.get());
+                    Ingredient i = ingredientService.findOne(acIngr.getId());
+                    if(i == null){
+                        throw new NotFoundException("Couldn't find ingredient with id: " + acIngr.getId());
+                    }
+                    orderItem.addActiveIngredients(i);
                 }
                 o.addOrderedItem(orderItem);
                 orderedItemService.save(orderItem);
-                save(o);
+            }else{
+                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDto.getMenuItemId());
             }
         }
+        save(o);
 
-        return o;
+        return o.getId();
     }
 
 
@@ -106,8 +121,9 @@ public class OrderService {
                 throw new ForbiddenException("Order with id " + id + " is already paid.");
             }
             double totalprice = 0;
-            for (OrderedItem oi : order.getOrderedItems()) {
-                totalprice += menuItemPriceService.findCurrentPriceForMenuItemById(oi.getMenuItem().getId());
+            List<OrderedItem> orderedItems = orderedItemService.findAllByOrderId(id);
+            for (OrderedItem oi : orderedItems) {
+                totalprice += menuItemPriceService.findCurrentPriceForMenuItemById(oi.getMenuItem().getId()) *oi.getQuantity();
             }
             order.setTotalPrice(totalprice);
             order.setPaid(true);
@@ -117,5 +133,34 @@ public class OrderService {
 
         throw new NotFoundException("Couldn't find order with id: "+ id);
     }
+    public String getNote(long id) {
+        return this.orderRepository.findByOrderId(id).getNote();
+    }
 
+    public boolean checkIfOrderIsPaid(long id){
+        Order order = findOneWithOrderItems(id);
+        if(order != null) {
+            return order.isPaid();
+        }
+
+        throw new NotFoundException("Couldn't find order with id: "+ id);
+    }
+
+    public List<Integer> getActiveOrdersForTable(int tableNum, String waiterUsername){
+        Optional<RestaurantTable> table = tableService.findByTableNumber(tableNum);
+        List<Integer> retval = new ArrayList<>();
+        if(table.isPresent()){
+            List<Long> orders =  orderRepository.getAllActiveOrdersForTable(tableNum, waiterUsername);
+            if(orders.size() != 0){
+                for (Long orderid: orders) {
+                    if(orderedItemService.orderContainsActiveOrderedItems(orderid)){
+                        retval.add(Integer.parseInt(orderid.toString()));
+                    }
+                }
+            }
+            return retval;
+        }
+
+        throw new NotFoundException("Couldn't find table with table number: "+ tableNum);
+    }
 }

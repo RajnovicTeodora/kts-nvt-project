@@ -46,14 +46,14 @@ public class TableServiceUnitTest {
         table.setWaiter(new Waiter());
         table.setOccupied(true);
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
-        tableService.occupyTable("waiter", 1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(table);
+        tableService.occupyTable("waiter", 1);
     }
 
     @Test(expected = NotFoundException.class )
     public void occupyTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(null);
-        tableService.occupyTable("waiter", 1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(null);
+        tableService.occupyTable("waiter", 1);
     }
 
     @Test
@@ -61,8 +61,8 @@ public class TableServiceUnitTest {
         RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
         table.setWaiter(new Waiter());
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
-        Assert.assertEquals( "Successfully occupied table with id: 1", tableService.occupyTable("waiter", 1L));
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully occupied table with table number: 1", tableService.occupyTable("waiter", 1));
         Assert.assertTrue(table.isOccupied());
     }
 
@@ -71,14 +71,14 @@ public class TableServiceUnitTest {
         RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
         table.setWaiter(new Waiter());
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
-        tableService.clearTable("waiter", 1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(table);
+        tableService.clearTable("waiter", 1);
     }
 
     @Test(expected = NotFoundException.class )
     public void clearTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(null);
-        tableService.clearTable("waiter", 1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(null);
+        tableService.clearTable("waiter", 1);
     }
 
     @Test
@@ -87,8 +87,8 @@ public class TableServiceUnitTest {
         table.setWaiter(new Waiter());
         table.setOccupied(true);
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L, "waiter")).thenReturn(table);
-        Assert.assertEquals( "Successfully cleared table with id: 1", tableService.clearTable("waiter", 1L));
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully cleared table with table number: 1", tableService.clearTable("waiter", 1));
         Assert.assertFalse(table.isOccupied());
     }
 
@@ -98,15 +98,15 @@ public class TableServiceUnitTest {
         Waiter waiter = new Waiter("waiter", "waiter", false);
         table.setWaiter(new Waiter());
 
-        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
+        Mockito.when(tableRepository.getTableByTableNumber(1)).thenReturn(Optional.of(table));
         Mockito.when(waiterRepository.findByUsername(waiter.getUsername())).thenReturn(waiter);
-        tableService.claimTable(waiter.getUsername(),1L);
+        tableService.claimTable(waiter.getUsername(),1);
     }
 
     @Test(expected = NotFoundException.class )
     public void claimTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
         Mockito.when(tableRepository.findByTableId(1L)).thenReturn(null);
-        tableService.claimTable("waiter", 1L);
+        tableService.claimTable("waiter", 1);
     }
 
     @Test(expected = NotFoundException.class )
@@ -114,7 +114,7 @@ public class TableServiceUnitTest {
         RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
         Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
         Mockito.when(waiterRepository.findByUsername("waiter")).thenReturn(null);
-        tableService.claimTable("waiter", 1L);
+        tableService.claimTable("waiter", 1);
     }
 
     @Test
@@ -122,9 +122,9 @@ public class TableServiceUnitTest {
         RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
         Waiter waiter = new Waiter("waiter", "waiter", false);
 
-        Mockito.when(tableRepository.findByTableId(1L)).thenReturn(table);
+        Mockito.when(tableRepository.getTableByTableNumber(1)).thenReturn(Optional.of(table));
         Mockito.when(waiterRepository.findByUsername(waiter.getUsername())).thenReturn(waiter);
-        Assert.assertEquals( "Successfully claimed table with id: 1", tableService.claimTable(waiter.getUsername(),1L));
+        Assert.assertEquals( "Successfully claimed table with table number: 1", tableService.claimTable(waiter.getUsername(),1));
         Assert.assertNotNull(table.getWaiter());
     }
 
@@ -133,14 +133,14 @@ public class TableServiceUnitTest {
         RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
         table.setOccupied(true);
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(table);
-        tableService.leaveTable("waiter",1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1,"waiter")).thenReturn(table);
+        tableService.leaveTable("waiter",1);
     }
 
     @Test(expected = NotFoundException.class )
     public void leaveTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
-        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(null);
-        tableService.claimTable("waiter", 1L);
+        Mockito.when(tableRepository.findOneWithWaiter(1,"waiter")).thenReturn(null);
+        tableService.claimTable("waiter", 1);
     }
 
     @Test
@@ -149,8 +149,8 @@ public class TableServiceUnitTest {
         Waiter waiter = new Waiter("waiter", "waiter", false);
         table.setWaiter(waiter);
 
-        Mockito.when(tableRepository.findOneWithWaiter(1L,"waiter")).thenReturn(table);
-        Assert.assertEquals( "Successfully left table with id: 1", tableService.leaveTable(waiter.getUsername(),1L));
+        Mockito.when(tableRepository.findOneWithWaiter(1,"waiter")).thenReturn(table);
+        Assert.assertEquals( "Successfully left table with table number: 1", tableService.leaveTable(waiter.getUsername(),1));
         Assert.assertNull(table.getWaiter());
     }
     

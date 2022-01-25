@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { UserList } from 'src/modules/shared/models/user-list';
-import { UserLogin } from 'src/modules/shared/models/user-login';
 import { UserWithBadgeNum } from 'src/modules/shared/models/user-with-badgenum';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { NotificationService } from 'src/modules/shared/services/notification-service/notification.service';
@@ -35,7 +34,11 @@ export class WaiterDashboardComponent implements OnInit {
   waiterList: Array<UserWithBadgeNum>;
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
+  showPaymentModal: boolean;
   currentBadgeContent: number;
+  currentOrderViewed: number;
+  ////////////////TODO isidora
+  showModalRestaurantTableOptions: number;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -61,6 +64,8 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
+    this.showModalRestaurantTableOptions = -1;
+    this.showPaymentModal = false;
   }
 
   ngOnInit() {
@@ -160,6 +165,28 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
+  onRestaurantTableShowClicked(tableNum: number){
+    this.showModalRestaurantTableOptions = tableNum;
+  }
+
+  onRestaurantTableCloseClicked(item: boolean){
+    this.showModalRestaurantTableOptions = -1;
+  }
+
+  onPayOrderCloseClicked(item:boolean){
+    this.showPaymentModal = false;
+  }
+
+  onViewOrderAndBillClicked(order:number){
+    this.currentOrderViewed = order;
+    //this.showModalRestaurantTableOptions = -1;
+    this.showPaymentModal = true;    
+  }
+
+  onEditOrderClicked(order:number){
+    //TODO olja
+  }
+
   changeAccount(username: string) {
     if (username === this.user.username) {
       this.toastr.info('Already logged in as ' + username);
@@ -204,4 +231,5 @@ export class WaiterDashboardComponent implements OnInit {
         );
     }
   }
+
 }

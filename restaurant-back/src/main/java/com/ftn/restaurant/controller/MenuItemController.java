@@ -70,10 +70,22 @@ public class MenuItemController {
 
     @ResponseBody
     @GetMapping(path = "/getById/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
     @ResponseStatus(HttpStatus.OK)
     public MenuItemDTO getItem(@PathVariable long id) {
         LOG.info("Get item with id " + id);
         return this.menuItemService.getItem(id);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getWithIngredientsById/{id}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> getWithIngredientsById(@PathVariable("id") long id){
+        try {
+            return new ResponseEntity<>(menuItemService.getWithIngredientsById(id), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        }
     }
 }

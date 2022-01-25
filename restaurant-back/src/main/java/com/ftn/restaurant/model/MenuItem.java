@@ -32,11 +32,12 @@ public abstract class MenuItem {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MenuItemPrice> priceList;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "menu_item_ingredients",
-            joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
+    //@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "menuItemIngredients",
+            joinColumns = @JoinColumn(name = "menu_item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
-    private List<Ingredient> ingredients;
+    private List<Ingredient> menuItemIngredients;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderedItem> orderedItems;
@@ -50,7 +51,7 @@ public abstract class MenuItem {
         this.approved = approved;
         this.deleted = deleted;
         this.priceList = priceList;
-        this.ingredients = new ArrayList<>();
+        this.menuItemIngredients = new ArrayList<>();
         this.orderedItems = new ArrayList<>();
     }
 
@@ -60,7 +61,7 @@ public abstract class MenuItem {
         this.approved = approved;
         this.deleted = deleted;
         this.priceList = priceList;
-        this.ingredients = ingredients;
+        this.menuItemIngredients = ingredients;
         this.orderedItems = new ArrayList<>();
     }
 
@@ -113,11 +114,11 @@ public abstract class MenuItem {
     }
 
     public List<Ingredient> getIngredients() {
-        return ingredients;
+        return menuItemIngredients;
     }
 
     public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+        this.menuItemIngredients = ingredients;
     }
 
     public List<OrderedItem> getOrderedItems() {return orderedItems;    }

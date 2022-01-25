@@ -1,0 +1,93 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button
+      mat-icon-button
+      *ngIf="sidenav.mode === 'over'"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+      <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    <span class="span">NOTI</span>
+    <div
+      fxShow="true"
+      fxHide.lt-md="true"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+    </div>
+  </mat-toolbar>
+  
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+      <img
+        class="avatar mat-elevation-z8"
+        src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+        alt="”animated”"
+        (click)="this.router.navigate([''])"
+      />
+  
+      <h4 class="name">{{this.user.username}}</h4>
+  
+      <button mat-button class="menu-button">
+        <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
+        <span>Notifications</span>
+      </button>
+  
+      <button mat-button class="menu-button" (click)="onPasswordChangeButtonClicked()">
+        <mat-icon>settings</mat-icon>
+        <span>Change password</span>
+      </button>
+  
+      <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+  
+      <mat-divider></mat-divider>
+
+    <mat-action-list>
+        <mat-list-item (click)="this.viewDrinkCard()"
+        >Drink card</mat-list-item
+      >
+      <mat-list-item (click)="this.viewNewOrders()"
+        >New ordered items</mat-list-item
+      >
+      <mat-list-item (click)="this.viewAcceptedOrders()"
+        >Accepted ordered items</mat-list-item
+      >
+      <mat-list-item [routerLink]="['/add-drink']">
+        Add new drink
+      </mat-list-item>
+    </mat-action-list>
+  
+      <mat-divider></mat-divider>
+  
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="content mat-elevation-z8">
+        <div class="row">
+          <div class="col">
+            <div fxLayout="row wrap">
+              <ng-container *ngFor="let image of data">
+                <img [src]="image.url" *ngIf="!this.isDrinkView && !this.isNewOrders && !this.isAcceptedOrders && !this.isOneDrinkView"/>
+                <app-drink-table *ngIf="this.isDrinkView"  (onClickedView) = "onClickedView($event)"></app-drink-table>
+                <app-new-orders *ngIf="this.isNewOrders"></app-new-orders>
+                <app-accepted-orders *ngIf="this.isAcceptedOrders"></app-accepted-orders>
+                <app-one-drink-card *ngIf="this.isOneDrinkView" [id]="this.idOfDrink"></app-one-drink-card>
+              </ng-container>
+            </div>
+            <mat-paginator
+              [length]="data2.length"
+              [pageSize]="pageSize"
+              [pageIndex]="currentPage"
+              (page)="getData($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
+  <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
+  

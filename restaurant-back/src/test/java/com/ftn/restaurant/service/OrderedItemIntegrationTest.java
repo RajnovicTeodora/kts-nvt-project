@@ -4,19 +4,15 @@ import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.exception.OrderAlreadyPaidException;
-import com.ftn.restaurant.repository.OrderedItemRepository;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_DTO_1;
 import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_ITEM_DTO_1;
 
 @RunWith(SpringRunner.class)
@@ -29,13 +25,13 @@ public class OrderedItemIntegrationTest {
 
     @Test
     public void acceptOrderedItemTest(){
-        Assert.assertEquals("You accepted order with id: 7",orderedItemService.acceptOrderedItem(7));
-        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(10000000));
-        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(-10));
-        Assert.assertEquals("You can't accept order if it is not in status ordered.",
-                orderedItemService.acceptOrderedItem(2));
-        Assert.assertEquals("You can't accept order if it is not in status ordered.",
-                orderedItemService.acceptOrderedItem(3));
+//        Assert.assertEquals("You accepted order with id: 7",orderedItemService.acceptOrderedItem(7, username));
+//        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(10000000, username));
+//        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(-10, username));
+//        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+//                orderedItemService.acceptOrderedItem(2, username));
+//        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+//                orderedItemService.acceptOrderedItem(3, username));
     }
 
     @Test

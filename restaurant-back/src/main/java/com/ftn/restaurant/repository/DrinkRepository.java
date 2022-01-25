@@ -25,6 +25,6 @@ public interface DrinkRepository extends JpaRepository<Drink, Long> {
             " (lower(d.name) LIKE lower(concat('%',:name,'%')) OR :name = '...') AND (:type = null OR :type = d.drinkType ) AND d.deleted = false AND d.approved = true")
     List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") DrinkType type);
     
-    @Query("SELECT d from Drink d where d.approved = true")
+    @Query("SELECT d from Drink d where d.approved = true AND d.deleted = false")
     List<Drink> getApprovedDrinks();
 }
