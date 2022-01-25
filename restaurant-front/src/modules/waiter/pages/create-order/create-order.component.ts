@@ -10,7 +10,6 @@ import { Order } from 'src/modules/shared/models/order';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrderService } from 'src/modules/shared/services/order-service/order.service';
-import { PeriodicElement } from '../../models/PeriodicElement';
 
 @Component({
   selector: 'app-create-order',
