@@ -34,6 +34,7 @@ import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.EmployeeRepository;
 import com.ftn.restaurant.repository.UserRepository;
+import com.ftn.restaurant.repository.UserRoleRepository;
 
 
 @Service
@@ -44,6 +45,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -84,10 +88,12 @@ public class UserService implements UserDetailsService {
             default:
                 throw new BadUserRoleException("Unknown user role!");
         }
+        newEmployee.setRole(userRoleRepository.findByName(employeeDTO.getRole()).get());
         ArrayList<Paychecks> paycheckList = new ArrayList<Paychecks>();
         paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1), null, 100, newEmployee));
         newEmployee.setPaychecksList(paycheckList);
 
+        userRepository.saveAndFlush(newEmployee);
         employeeRepository.saveAndFlush(newEmployee);
         return newEmployee;
     }

@@ -22,12 +22,11 @@ public class Chef extends Employee {
 
     public Chef(EmployeeDTO employeeDTO){
         super(employeeDTO);
-        this.setRole(new UserRole("CHEF"));
     }
 
 
     public Chef() {
-        this.setRole(new UserRole("CHEF"));
+        super();
     }
 
 }

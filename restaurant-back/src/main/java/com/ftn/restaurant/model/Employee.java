@@ -5,8 +5,6 @@ import javax.persistence.*;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
