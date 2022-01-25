@@ -9,6 +9,7 @@ import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,13 +23,15 @@ public class OrderController {
     private OrderService orderService;
 
     @ResponseBody
-    @PostMapping(value = "/createOrder")
+    @PostMapping(value = "/createOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<?> createOrder( @RequestBody OrderDTO orderDTO) {
         try {
-            return new ResponseEntity(new OrderDTO(orderService.createOrder(orderDTO)), HttpStatus.CREATED);
+            return new ResponseEntity(orderService.createOrder(orderDTO), HttpStatus.CREATED);
         } catch (ForbiddenException e){
             return new ResponseEntity("Order has to contain ordered items.", HttpStatus.FORBIDDEN);
+        } catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find menu item/ingredient", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -55,10 +58,34 @@ public class OrderController {
             return new ResponseEntity("Couldn't find order with id: "+ id, HttpStatus.NOT_FOUND);
         }
     }
+
+    @ResponseBody
+    @GetMapping(value = "/checkIfOrderIsPaid/{id}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?>  checkIfOrderIsPaid(@PathVariable("id") long id) {
+        try {
+            return new ResponseEntity(orderService.checkIfOrderIsPaid(id), HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order with id: "+ id, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getActiveOrdersForTable/{tableNum}/{waiterUsername}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?>  getActiveOrdersForTable(@PathVariable("tableNum") int tableNum, @PathVariable("waiterUsername") String waiterUsername) {
+        try {
+            return new ResponseEntity(orderService.getActiveOrdersForTable(tableNum, waiterUsername), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
+        }
+    }
+
     @ResponseBody
     @GetMapping(value = "/getNote/{id}")
     @PreAuthorize("hasRole('BARTENDER')")
     public String getNote( @PathVariable long id){
         return this.orderService.getNote(id);
+
     }
 }

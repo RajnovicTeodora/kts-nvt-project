@@ -62,12 +62,12 @@ INSERT INTO area (id, name) VALUES (1, 'First floor');
 INSERT INTO area (id, name) VALUES (2, 'Second floor');
 INSERT INTO area (id, name) VALUES (3, 'Garden');
 
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (5, 5, 4, false, 1);
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (6, 6, 4, true, 1);
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (8, 8, null, false, 1);
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (9, 9, 4, false, 1);
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (7, 7, 4, true, 1);
-INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id) VALUES (3, 3, 4, false, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (5, 5, 4, false, 1, 1);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (6, 6, 4, true, 1, 2);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (8, 8, null, false, 1, 3);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (9, 9, 4, false, 1, 4);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (7, 7, 4, true, 1, 5);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (3, 3, 4, false, 1, 6);
 
 INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
 INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);

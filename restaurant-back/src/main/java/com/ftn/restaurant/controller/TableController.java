@@ -7,6 +7,7 @@ import com.ftn.restaurant.service.TableService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,62 +20,62 @@ public class TableController {
     private TableService tableService;
 
     @ResponseBody
-    @GetMapping(value = "/{id}/occupyTable/{waiter}")
+    @GetMapping(value = "/{tableNum}/occupyTable/{waiter}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> occupyTable(@PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+    public ResponseEntity<?> occupyTable(@PathVariable("tableNum") int tableNum, @PathVariable("waiter") String waiter) {
         try {
-            return new ResponseEntity<>(tableService.occupyTable(waiter, id), HttpStatus.OK);
+            return new ResponseEntity<>(tableService.occupyTable(waiter, tableNum), HttpStatus.OK);
         }
         catch (ForbiddenException e){
             return new ResponseEntity<>("Table is already occupied", HttpStatus.FORBIDDEN);
         }
         catch (NotFoundException e){
-            return new ResponseEntity<>("Couldn't find table with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
     }
 
     @ResponseBody
-    @GetMapping(value = "/{id}/clearTable/{waiter}")
+    @GetMapping(value = "/{tableNum}/clearTable/{waiter}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> clearTable(@PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+    public ResponseEntity<?> clearTable(@PathVariable("tableNum") int tableNum, @PathVariable("waiter") String waiter) {
         try {
-            return new ResponseEntity<>(tableService.clearTable(waiter, id), HttpStatus.OK);
+            return new ResponseEntity<>(tableService.clearTable(waiter, tableNum), HttpStatus.OK);
         }
         catch (ForbiddenException e){
             return new ResponseEntity<>("Table is already cleared", HttpStatus.FORBIDDEN);
         }
         catch (NotFoundException e){
-            return new ResponseEntity<>("Couldn't find table with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
     }
 
     @ResponseBody
-    @GetMapping(value = "/{id}/claimTable/{waiter}")
+    @GetMapping(value = "/{tableNum}/claimTable/{waiter}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> claimTable( @PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+    public ResponseEntity<?> claimTable( @PathVariable("tableNum") int tableNum, @PathVariable("waiter") String waiter) {
         try {
-            return new ResponseEntity<>(tableService.claimTable(waiter, id), HttpStatus.OK);
+            return new ResponseEntity<>(tableService.claimTable(waiter, tableNum), HttpStatus.OK);
         }
         catch (ForbiddenException e){
             return new ResponseEntity<>("Table is already claimed", HttpStatus.FORBIDDEN);
         }
         catch (NotFoundException e){
-            return new ResponseEntity<>("Couldn't find table with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
     }
 
     @ResponseBody
-    @GetMapping(value = "/{id}/leaveTable/{waiter}")
+    @GetMapping(value = "/{tableNum}/leaveTable/{waiter}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> leaveTable( @PathVariable("id") long id, @PathVariable("waiter") String waiter) {
+    public ResponseEntity<?> leaveTable( @PathVariable("tableNum") int tableNum, @PathVariable("waiter") String waiter) {
         try {
-            return new ResponseEntity<>(tableService.leaveTable(waiter, id), HttpStatus.OK);
+            return new ResponseEntity<>(tableService.leaveTable(waiter, tableNum), HttpStatus.OK);
         }
         catch (ForbiddenException e){
             return new ResponseEntity<>("Can't leave table while its occupied", HttpStatus.FORBIDDEN);
         }
         catch (NotFoundException e){
-            return new ResponseEntity<>("Couldn't find table with id: " + id, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -92,4 +93,15 @@ public class TableController {
         return new RestaurantTableDTO(tableService.deleteTable(id));
     }
 
+    @ResponseBody
+    @GetMapping(value = "/getTableByTableNumber/{tableNum}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> getTableByTableNumber( @PathVariable("tableNum") int tableNum) {
+        try {
+            return new ResponseEntity<>(tableService.getTableByTableNumber(tableNum), HttpStatus.OK);
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
+        }
+    }
 }

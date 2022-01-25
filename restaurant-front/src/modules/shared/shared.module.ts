@@ -20,7 +20,10 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
 import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
+import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
+import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
+
 @NgModule({
   declarations: [
     ChangePasswordComponent,
@@ -36,6 +39,8 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    AfterLogoutComponent,
+    ConfirmActionComponent,
     DeleteIngredientDialogComponent,
   ],
   imports: [
@@ -65,6 +70,8 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    AfterLogoutComponent,
+    ConfirmActionComponent,
     DeleteIngredientDialogComponent
   ],
   providers: [

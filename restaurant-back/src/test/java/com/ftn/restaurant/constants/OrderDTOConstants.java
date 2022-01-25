@@ -24,12 +24,12 @@ public class OrderDTOConstants {
     public static final MenuItemDTO MENU_ITEM_DTO_1 = new MenuItemDTO("Pizza","todo");
     public static final MenuItemDTO MENU_ITEM_DTO_2 = new MenuItemDTO("Spaghetti","todo");
 
-    public static final OrderItemDTO ORDER_ITEM_DTO_1 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1, 1, false, MENU_ITEM_DTO_1, INGREDIENT_ARRAY_LIST_1);
-    public static final OrderItemDTO ORDER_ITEM_DTO_2 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1,1 , false, MENU_ITEM_DTO_2, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_1 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1, 1, 1L, INGREDIENT_ARRAY_LIST_1);
+    public static final OrderItemDTO ORDER_ITEM_DTO_2 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
     public static final ArrayList<OrderItemDTO> ORDER_ITEM_DTOS = new ArrayList<OrderItemDTO>(
             Arrays.asList(ORDER_ITEM_DTO_1, ORDER_ITEM_DTO_2));
 
-    public static final OrderDTO ORDER_DTO_1 = new OrderDTO(false, 0, "2021-12-11", "Some note", "11:11", ORDER_ITEM_DTOS);
+    public static final OrderDTO ORDER_DTO_1 = new OrderDTO(false, 0, "Some note",  ORDER_ITEM_DTOS);
 
-    public static final OrderDTO ORDER_DTO_2  = new OrderDTO(false, 0, "2020-12-12", "note", "12:12", new ArrayList<>());
+    public static final OrderDTO ORDER_DTO_2  = new OrderDTO(false, 0,  "note",  new ArrayList<>());
 }

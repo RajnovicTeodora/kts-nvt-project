@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteIngredientDialogComponent } from '../delete-ingredient-dialog/delete-ingredient-dialog.component';
 import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
 import { MatTableDataSource } from '@angular/material/table';
-import { OrderedItem } from '../../models/orderedItem';
+import { OrderedItem } from '../../models/ordered-item';
 import { Observable } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';

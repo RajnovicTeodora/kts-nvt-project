@@ -5,23 +5,25 @@ import com.ftn.restaurant.model.RestaurantTable;
 public class RestaurantTableDTO {
 
     private long id;
+    private int tableNum;
     private int x;
     private int y;
     private long areaId;
-
+    private String waiterUsername;
+    private boolean occupied;
 
     public RestaurantTableDTO() {
     }
 
 
-    public RestaurantTableDTO(long id, int x, int y) {
-        this.id = id;
+    public RestaurantTableDTO(int tableNum, int x, int y) {
+        this.tableNum = tableNum;
         this.x = x;
         this.y = y;
     }
 
     public RestaurantTableDTO(RestaurantTable table){
-        this.id = table.getId();
+        this.tableNum = table.getTableNum();
         this.x = table.getPositionX();
         this.y = table.getPositionY();
         this.areaId = table.getArea().getId();
@@ -35,12 +37,12 @@ public class RestaurantTableDTO {
     }
 
 
-    public long getId() {
-        return this.id;
+    public int getTableNum() {
+        return this.tableNum;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setTableNum(int tableNum) {
+        this.tableNum = tableNum;
     }
 
     public int getX() {
@@ -66,5 +68,17 @@ public class RestaurantTableDTO {
     public void setAreaId(long areaId) {
         this.areaId = areaId;
     }
+
+    public String getWaiterUsername(){ return this.waiterUsername;}
+
+    public void setWaiterUsername(String username){ this.waiterUsername = username;}
+
+    public void setOccupied(boolean occupied){ this.occupied = occupied;}
+
+    public boolean isOccupied(){ return  this.occupied;}
+
+    public long getId() { return this.id; }
+
+    public void setId(long id ) {  this.id = id;  }
     
 }
