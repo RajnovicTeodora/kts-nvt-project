@@ -13,7 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { AdminService } from 'src/modules/admin/admin-service/admin.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,6 +22,7 @@ import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user
 import { PaycheckService } from 'src/modules/manager/services/paycheck-service/paycheck.service';  
 import { EditPaycheckDialogComponent } from 'src/modules/manager/pages/edit-paycheck-dialog/edit-paycheck-dialog.component'; 
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
+import { AddEmployeeComponent } from 'src/modules/admin/pages/add-employee/add-employee.component';
 
 @Component({
   selector: 'app-employees',
@@ -165,6 +166,25 @@ export class EmployeesComponent implements OnInit {
         error: (error) => {
           this.toastr.error('Unable to edit user paycheck');
         },
+      });
+    });
+  }
+
+  
+  openAddEmployeeDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '60%';
+    dialogConfig.height = '80%';
+
+    const dialogRef = this.dialog.open(AddEmployeeComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      this.adminService.getAllEmployees("", "").subscribe((response) => {
+        this.setData(response.body);
       });
     });
   }

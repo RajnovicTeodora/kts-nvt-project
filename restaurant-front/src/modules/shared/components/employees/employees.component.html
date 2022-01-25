@@ -31,6 +31,13 @@
   >
     <mat-icon>search</mat-icon>
   </button>
+  <div class="addEmployeeBttn" *ngIf="user.userType == 'ADMIN'">
+    <button mat-stroked-button color="accent" class="addBttn" (click)="openAddEmployeeDialog()"><mat-icon>add</mat-icon>
+      Add Employee 
+    </button>
+  </div>
+  
+  
 </form>
 <mat-card>
   <table
@@ -129,3 +136,5 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
   </table>
 </mat-card>
+
+

@@ -15,13 +15,14 @@ import { AdminRoutes } from './admin.routes';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 
 
 @NgModule({
   declarations: [
     AdminDashboardComponent,
-    EditTablesComponent
+    EditTablesComponent,
+    AddEmployeeComponent
   ],
   imports: [
     CommonModule,
