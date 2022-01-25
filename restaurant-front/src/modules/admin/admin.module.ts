@@ -16,13 +16,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
-
+import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
 
 @NgModule({
   declarations: [
     AdminDashboardComponent,
     EditTablesComponent,
-    AddEmployeeComponent
+    AddEmployeeComponent,
+    EditEmployeeComponent
   ],
   imports: [
     CommonModule,

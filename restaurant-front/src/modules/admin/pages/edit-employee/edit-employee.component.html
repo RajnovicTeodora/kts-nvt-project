@@ -1,0 +1,86 @@
+<h2 mat-dialog-title class="title">Edit employee {{selectedEmployee.username}}</h2>
+<mat-dialog-content [formGroup]="editEmployeeForm" style="white-space: pre-line">
+  <mat-grid-list cols="2" rowHeight="3:1"> 
+    <!-- profilna slika -->
+    <mat-grid-tile rowspan="2">
+      <div class="img-space">
+        <ng-container>
+          <img
+            style="max-width: 50%; max-height: 50%"
+            [src]="url"
+            alt="Image"
+          />
+        </ng-container>
+        <input
+          accept=".png, .jpg"
+          style="display: none"
+          type="file"
+          (change)="fileChangeEvent($event)"
+          #fileInput
+        />
+      </div>
+    </mat-grid-tile>
+    <!-- name -->
+    <mat-grid-tile>
+      <mat-form-field id="name" class="input">
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+          id="name"
+          required
+          placeholder="Name"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
+    <!-- surname -->
+    <mat-grid-tile>
+      <mat-form-field id="surname" class="input">
+        <input
+          matInput
+          type="text"
+          formControlName="surname"
+          id="surname"
+          required
+          placeholder="Surname"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
+    <!-- dugmici -->
+    <mat-grid-tile>
+      <button mat-flat-button color="accent" (click)="fileInput.click()">
+        <mat-icon>add_a_photo</mat-icon>
+      </button>
+    </mat-grid-tile>
+    <!-- telephone -->
+    <mat-grid-tile>
+        <mat-form-field id="telephone" class="input">
+          <input
+            matInput
+            type="text"
+            formControlName="telephone"
+            id="telephone"
+            required
+            placeholder="Telephone"
+          />
+        </mat-form-field>
+      </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content> 
+
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="cancel()"
+    id="submit-button"
+  >
+    Cancel
+  </button>
+  <button mat-stroked-button color="accent" type="submit" class="submit-button" (click)="saveEmployee()"
+          [disabled]="editEmployeeForm.invalid" id="submit-button" >
+    Save
+  </button>
+</mat-dialog-actions>

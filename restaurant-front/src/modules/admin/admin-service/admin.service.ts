@@ -45,4 +45,14 @@ export class AdminService {
     );
   }
 
+  editEmployee(employee: Employee): Observable<any> {
+    return this.http.post<Employee>(
+      `${environment.baseUrl}/api/employees/editUser`,
+      employee,
+      {
+        headers: this.headers2,
+        responseType: 'json',
+      }
+    );
+  }
 }

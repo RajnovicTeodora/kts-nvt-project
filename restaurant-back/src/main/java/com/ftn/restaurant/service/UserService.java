@@ -102,11 +102,11 @@ public class UserService implements UserDetailsService {
         Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
         if(!optEmployee.isPresent()) return null;
         Employee employee = optEmployee.get();
-        if(employee.getPassword()!= employeeDTO.getPassword()) employee.setPassword(employeeDTO.getPassword());
-        if(employee.getName()!= employeeDTO.getName()) employee.setName(employeeDTO.getName());
-        if(employee.getSurname()!= employeeDTO.getSurname()) employee.setSurname(employeeDTO.getSurname());
-        if(employee.getImage()!= employeeDTO.getImage()) employee.setImage(employeeDTO.getImage());
-        if(employee.getTelephone()!= employeeDTO.getTelephone()) employee.setTelephone(employeeDTO.getTelephone());
+        if(!employee.getPassword().equals(employeeDTO.getPassword())) employee.setPassword(employeeDTO.getPassword());
+        if(!employee.getName().equals(employeeDTO.getName())) employee.setName(employeeDTO.getName());
+        if(!employee.getSurname().equals(employeeDTO.getSurname())) employee.setSurname(employeeDTO.getSurname());
+        if(!employee.getImage().equals(employeeDTO.getImage())) employee.setImage(employeeDTO.getImage());
+        if(!employee.getTelephone().equals(employeeDTO.getTelephone())) employee.setTelephone(employeeDTO.getTelephone());
 
         employeeRepository.saveAndFlush(employee);
 
