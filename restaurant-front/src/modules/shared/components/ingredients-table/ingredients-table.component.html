@@ -1,7 +1,7 @@
 <div id="container-div">
     <h3>Ingredients</h3>
     <button (click)="openDialog()"> <mat-icon>add</mat-icon></button>
-     <table mat-table [dataSource] ="items" class="mat-elevation-z8">
+     <table mat-table [dataSource] ="observable" class="mat-elevation-z8">
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -17,7 +17,7 @@
       <ng-container matColumnDef="delete">
         <mat-header-cell  *matHeaderCellDef > Actions </mat-header-cell>
         <mat-cell *matCellDef="let row" >
-             <button mat-button (click)="openDialog()">Delete</button>
+             <button mat-button (click)="openDialogDelete(row)">Delete</button>
         </mat-cell>
       </ng-container>
 

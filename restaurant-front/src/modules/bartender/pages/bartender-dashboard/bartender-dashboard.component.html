@@ -46,7 +46,6 @@
       <mat-divider></mat-divider>
 
     <mat-action-list>
-      <!-- <mat-list-item [routerLink]="['/view-drinks']" -->
         <mat-list-item (click)="this.viewDrinkCard()"
         >Drink card</mat-list-item
       >
@@ -70,10 +69,11 @@
           <div class="col">
             <div fxLayout="row wrap">
               <ng-container *ngFor="let image of data">
-                <img [src]="image.url" *ngIf="!this.isDrinkView && !this.isNewOrders && !this.isAcceptedOrders"/>
-                <app-drink-card *ngIf="this.isDrinkView"></app-drink-card>
+                <img [src]="image.url" *ngIf="!this.isDrinkView && !this.isNewOrders && !this.isAcceptedOrders && !this.isOneDrinkView"/>
+                <app-drink-table *ngIf="this.isDrinkView"  (onClickedView) = "onClickedView($event)"></app-drink-table>
                 <app-new-orders *ngIf="this.isNewOrders"></app-new-orders>
                 <app-accepted-orders *ngIf="this.isAcceptedOrders"></app-accepted-orders>
+                <app-one-drink-card *ngIf="this.isOneDrinkView" [id]="this.idOfDrink"></app-one-drink-card>
               </ng-container>
             </div>
             <mat-paginator

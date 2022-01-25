@@ -20,11 +20,10 @@ export class DrinksService {
   }
 
   getDrink(id:number):Observable<any>{
-    const res = this.http.get("http://localhost:8080/api/drink/getDrink/"+id, { 
-        headers: this.headers,
-        responseType: "json",
-      });
-      return res;
+    return this.http.get('http://localhost:8080/api/menuItem/getById/' + id, {
+      headers: this.headers,
+      responseType: 'json',
+    });
   }
   username = JSON.parse(localStorage.getItem('currentUser')!).username;
   

@@ -42,9 +42,12 @@ export class BartenderDashboardComponent implements OnInit {
     { id: 1, url: 'assets/images/floor3.png' },
     { id: 2, url: 'assets/images/floor2.png' },
   ];
+  isOneDrinkView:boolean = false;
   isDrinkView:boolean = false;
   isNewOrders: boolean =false;
   isAcceptedOrders: boolean =false;
+  idOfDrink: string ="";
+
   constructor(
     private observer: BreakpointObserver,
     public router: Router,
@@ -149,17 +152,27 @@ export class BartenderDashboardComponent implements OnInit {
     this.isNewOrders = false;
     this.isAcceptedOrders = false;
     this.isDrinkView =true;
+    this.isOneDrinkView = false;
   }
 
   viewAcceptedOrders(){
     this.isNewOrders = false;
     this.isDrinkView =false;
     this.isAcceptedOrders = true;
+    this.isOneDrinkView = false;
   }
 
   viewNewOrders(){
     this.isAcceptedOrders = false;
     this.isDrinkView =false;
     this.isNewOrders = true;
+    this.isOneDrinkView = false;
+  }
+  onClickedView(id:string){
+    this.isAcceptedOrders = false;
+    this.isDrinkView =false;
+    this.isNewOrders = false;
+    this.idOfDrink = id;
+    this.isOneDrinkView = true;
   }
 }

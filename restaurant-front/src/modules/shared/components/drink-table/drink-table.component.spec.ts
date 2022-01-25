@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DrinkCardComponent } from './drink-card.component';
+import { DrinkTableComponent } from './drink-table.component';
 
 describe('DrinkCardComponent', () => {
-  let component: DrinkCardComponent;
-  let fixture: ComponentFixture<DrinkCardComponent>;
+  let component: DrinkTableComponent;
+  let fixture: ComponentFixture<DrinkTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DrinkCardComponent ]
+      declarations: [ DrinkTableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DrinkCardComponent);
+    fixture = TestBed.createComponent(DrinkTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

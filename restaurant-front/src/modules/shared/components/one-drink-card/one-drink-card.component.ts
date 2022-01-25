@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
+import { Component, Input, OnInit } from '@angular/core';
+import { DrinkBartender } from 'src/modules/shared/models/drink-bartender';
 import { DrinksService } from '../../services/drinks/drinks.service';
 
 @Component({
@@ -11,6 +11,8 @@ export class OneDrinkCardComponent implements OnInit {
 
   drink: DrinkBartender ={name: "", drinkType: "", price: 0, containerType: ""}
   
+  @Input() id: string;
+
   constructor(
     private drinkService: DrinksService
   ) { }
@@ -20,8 +22,10 @@ export class OneDrinkCardComponent implements OnInit {
   }
 
   getDrink(){
-    const drink = this.drinkService.getDrink(16).subscribe((res) => {
+    const drink = this.drinkService.getDrink(parseInt(this.id)).subscribe((res) => {
       this.drink = res;
+      console.log(res)
+      console.log(this.drink)
     } )
   }
 }

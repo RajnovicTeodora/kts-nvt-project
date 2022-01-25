@@ -33,7 +33,7 @@ public class OrderedItemController {
     @ResponseBody
     @PostMapping(path = "/acceptOrderedItem/{id}/{username}")
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
-    public String acceptOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id, @PathVariable String username){
+    public String acceptOrderedItem( @PathVariable long id, @PathVariable String username){
         //kada bude autorizacija moci ce da se doda i ko ga priprema todo
         return this.orderedItemService.acceptOrderedItem(id, username);
     }
@@ -41,21 +41,21 @@ public class OrderedItemController {
     @ResponseBody
     @GetMapping(path = "/itemsOfOrder/{id}")
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
-    public List<OrderItemDTO> getOrderedItemsFromTable(@AuthenticationPrincipal User user, @PathVariable long id){
-        return this.orderedItemService.findAllByOrderIdDTO(id);//kada bude autorizacija moci ce da se doda i ko ga priprema todo
+    public List<OrderItemDTO> getOrderedItemsFromTable( @PathVariable long id){
+        return this.orderedItemService.findAllByOrderIdDTO(id);
     }
     @ResponseBody
     @PostMapping(path = "/finishOrderedItem/{id}")
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
-    public String finishOrderedItem(@AuthenticationPrincipal User user, @PathVariable long id){
+    public String finishOrderedItem( @PathVariable long id){
         return this.orderedItemService.finishOrderedItem(id);
     }
     //getAccepted
     @ResponseBody
     @GetMapping(path = "//getAccepted/{id}/{username}")
     @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
-    public List<OrderItemDTO> getAcceptedItemsFromTable(@AuthenticationPrincipal User user, @PathVariable long id, @PathVariable String username){
-        return this.orderedItemService.findAllAcceptedByOrderIdDTO(id, username);//kada bude autorizacija moci ce da se doda i ko ga priprema todo
+    public List<OrderItemDTO> getAcceptedItemsFromTable( @PathVariable long id, @PathVariable String username){
+        return this.orderedItemService.findAllAcceptedByOrderIdDTO(id, username);
     }
     @ResponseBody
     @GetMapping(value = "/confirmPickup/{id}")

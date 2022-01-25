@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
+import { Component, OnInit, Output, ViewChild,EventEmitter } from '@angular/core';
+import { DrinkBartender } from 'src/modules/shared/models/drink-bartender';
 import { DrinksService } from '../../services/drinks/drinks.service';
 import { Select } from '../../models/select';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,18 +10,20 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 
+
 @Component({
-  selector: 'app-drink-card',
-  templateUrl: './drink-card.component.html',
-  styleUrls: ['./drink-card.component.scss']
+  selector: 'app-drink-table',
+  templateUrl: './drink-table.component.html',
+  styleUrls: ['./drink-table.component.scss']
 })
-export class DrinkCardComponent implements OnInit {
+export class DrinkTableComponent implements OnInit {
 
   displayedColumns: string[] = ['name', "type","price", "view drink"];
   observable: Observable<any>;
   dataSource: MatTableDataSource<DrinkBartender>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @Output() onClickedView = new EventEmitter();
 
   searchForm: FormGroup;
   searchSting: string;
@@ -81,4 +83,6 @@ export class DrinkCardComponent implements OnInit {
         this.dataSource.data = response.body;
       });
   }
+  clickedView(drink: DrinkBartender){
+      this.onClickedView.emit(drink.id!);}
 }

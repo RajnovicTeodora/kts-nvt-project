@@ -1,13 +1,17 @@
 package com.ftn.restaurant.dto;
 
 import com.ftn.restaurant.model.Drink;
+import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItemPrice;
+
+import java.util.ArrayList;
 
 public class DrinkDTO extends MenuItemDTO {
 
     private String drinkType;
     private String containerType;
     private double price;
+    private ArrayList<IngredientDTO> ingredients;
 
     public DrinkDTO(Drink drink) {
         super(drink);
@@ -18,6 +22,7 @@ public class DrinkDTO extends MenuItemDTO {
         super(drink);
         this.drinkType = drink.getDrinkType().toString();
         this.containerType = drink.getContainerType().toString();
+        this.ingredients = new ArrayList<>();
 //        if(drink.getPriceList() == null){
 //            this.currentlyPrice = 0;
 //        }else {

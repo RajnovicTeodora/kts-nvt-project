@@ -1,6 +1,7 @@
 package com.ftn.restaurant.service;
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.IngredientDTO;
+import com.ftn.restaurant.dto.Items.DrinkWithIngredientsDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
@@ -39,8 +40,10 @@ public class DrinkService {
     public DrinkDTO getDrink(long id) {
         Optional<Drink> drink = this.drinkRepository.findById(id);
         if(drink.isPresent()){
-            DrinkDTO dto = new DrinkDTO(drink.get(), "");
-            return dto;
+            if(drink.get().isApproved() && !drink.get().isDeleted()){
+                DrinkDTO dto = new DrinkWithIngredientsDTO(drink.get());//DrinkDTO(drink.get(), "");
+                return dto;
+            }
         }
         return null;
     }

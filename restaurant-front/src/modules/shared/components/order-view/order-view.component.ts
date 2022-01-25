@@ -26,12 +26,11 @@ export class OrderViewComponent implements OnInit {
   observable: Observable<any>;
   
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   
-
   displayedColumns: string[] = ['name', "quantity","priority","actions"];
   isFinished = false;
+
   constructor(
     public dialog: MatDialog,
     private liveAnnouncer: LiveAnnouncer,
@@ -62,13 +61,7 @@ export class OrderViewComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.observable = this.dataSource.connect();
   }
-
-  setData() {
-    this.dataSource = new MatTableDataSource<OrderedItem>(this.items);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.observable = this.dataSource.connect();
-  }
+  
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this.liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);

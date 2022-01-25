@@ -27,7 +27,7 @@
         
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Type</mat-label>
-            <mat-select [(value)]="selectedValue">
+            <mat-select [(value)]="selectedValue" required>
               <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
                 {{drinkType.viewValue}}
               </mat-option>
@@ -36,7 +36,7 @@
   
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>Container</mat-label>
-            <mat-select [(value)]="selectedContainer">
+            <mat-select [(value)]="selectedContainer" required>
               <mat-option *ngFor="let container of containers" [value]="container.value">
                 {{container.viewValue}}
               </mat-option>
@@ -62,6 +62,7 @@
         <div>
           <app-ingredients-table
            (onAddIngredient)="onAddIngredient($event)"
+           (onDeleteIngredient)="onDeleteIngredient($event)"
             [items] = "this.listIngredients"
             ></app-ingredients-table>
         </div> 
@@ -73,6 +74,7 @@
             class="submit-button"
             (click)="saveDrink()"
             id="submit-button" 
+            [disabled]="addDrinkForm.invalid"
           >
             Save drink
           </button>

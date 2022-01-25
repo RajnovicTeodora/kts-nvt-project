@@ -6,5 +6,6 @@ export interface DrinkBartender{
     price: number,
     containerType: string,
     image?: string,
-    ingredients?: Ingredient[]
+    ingredients?: Ingredient[],
+    id?:string,
 }

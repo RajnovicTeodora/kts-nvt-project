@@ -70,7 +70,7 @@ public class MenuItemController {
 
     @ResponseBody
     @GetMapping(path = "/getById/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'BARTENDER')")
     @ResponseStatus(HttpStatus.OK)
     public MenuItemDTO getItem(@PathVariable long id) {
         LOG.info("Get item with id " + id);

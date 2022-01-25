@@ -2,7 +2,7 @@ import { Component,  OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { DrinkBartender } from 'src/modules/shared/models/drinkBartender';
+import { DrinkBartender } from 'src/modules/shared/models/drink-bartender';
 import { AddDrinkService } from '../../service/drinks/add-drink.service';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
 import { Select } from 'src/modules/shared/models/select';
@@ -17,7 +17,6 @@ export class AddDrinkComponent implements OnInit {
   
   addDrinkForm: FormGroup ;
   listIngredients: Ingredient[] = []
-  hide = true; 
   fileName = '';
   url: any;
   isImageSaved: boolean = false;
@@ -48,7 +47,7 @@ export class AddDrinkComponent implements OnInit {
       this.selectedContainer ="";
       this.addDrinkForm = this.fb.group({ 
       name: [null, Validators.required],
-      ingrediants: [null],
+      ingredients: [null],
     });
    }
 
@@ -70,13 +69,15 @@ export class AddDrinkComponent implements OnInit {
 
 
   onAddIngredient(ingredient: Ingredient){
-    console.log(ingredient)
-    this.listIngredients.push()
-    console.log(this.listIngredients)
+    this.listIngredients.push(ingredient);
+  }
+  onDeleteIngredient(ingredient: any){
+    const newList = this.listIngredients.filter(ing => ing.name !== ingredient.name);
+    this.listIngredients = [...newList];
   }
 
   saveDrink(){
-    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === "" || this.isImageSaved == false){
+    if(this.addDrinkForm.value.name === null || this.selectedContainer === "" || this.selectedValue === ""  || this.isImageSaved == false){
       this.toastr.error("All fields must be filled in!");
     }else{
       const newDrink:  DrinkBartender = {
