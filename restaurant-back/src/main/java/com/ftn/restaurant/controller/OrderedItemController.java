@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/orderedItem")
 public class OrderedItemController {
@@ -30,18 +32,32 @@ public class OrderedItemController {
         this.orderedItemService = orderedItemService; }
 
     @ResponseBody
-    @PostMapping(path = "/acceptOrderedItem/{id}")
-    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")@AuthenticationPrincipal User user,
-    public String acceptOrderedItem( @PathVariable long id){
-        return this.orderedItemService.acceptOrderedItem(id); //kada bude autorizacija moci ce da se doda i ko ga priprema todo
+    @PostMapping(path = "/acceptOrderedItem/{id}/{username}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public String acceptOrderedItem( @PathVariable long id, @PathVariable String username){
+        //kada bude autorizacija moci ce da se doda i ko ga priprema todo
+        return this.orderedItemService.acceptOrderedItem(id, username);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/itemsOfOrder/{id}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<OrderItemDTO> getOrderedItemsFromTable( @PathVariable long id){
+        return this.orderedItemService.findAllByOrderIdDTO(id);
     }
     @ResponseBody
     @PostMapping(path = "/finishOrderedItem/{id}")
-    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")//@AuthenticationPrincipal User user
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
     public String finishOrderedItem( @PathVariable long id){
         return this.orderedItemService.finishOrderedItem(id);
     }
-
+    //getAccepted
+    @ResponseBody
+    @GetMapping(path = "//getAccepted/{id}/{username}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<OrderItemDTO> getAcceptedItemsFromTable( @PathVariable long id, @PathVariable String username){
+        return this.orderedItemService.findAllAcceptedByOrderIdDTO(id, username);
+    }
     @ResponseBody
     @GetMapping(value = "/confirmPickup/{id}")
     @PreAuthorize("hasRole('WAITER')")
@@ -112,4 +128,6 @@ public class OrderedItemController {
             return new ResponseEntity("Couldn't find order", HttpStatus.NOT_FOUND);
         }
     }
+
+
 }

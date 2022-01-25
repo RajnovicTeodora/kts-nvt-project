@@ -133,6 +133,9 @@ public class OrderService {
 
         throw new NotFoundException("Couldn't find order with id: "+ id);
     }
+    public String getNote(long id) {
+        return this.orderRepository.findByOrderId(id).getNote();
+    }
 
     public boolean checkIfOrderIsPaid(long id){
         Order order = findOneWithOrderItems(id);

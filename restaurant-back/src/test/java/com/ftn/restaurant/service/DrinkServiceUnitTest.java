@@ -64,7 +64,7 @@ public class DrinkServiceUnitTest {
 
         verify(drinkRepository, times(1)).findByNameAndDrinkTypeAndContainerType(
                 newDrinkDTO.getName(),
-                newDrinkDTO.getType(),
+                newDrinkDTO.getDrinkType(),
                 newDrinkDTO.getContainerType());
 
         verify(drinkRepository, times(1)).save(any());//pitanje da li prvo dobijem created

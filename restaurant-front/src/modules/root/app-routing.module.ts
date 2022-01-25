@@ -4,12 +4,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
+
 import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
+
+import { AcceptedOrdersComponent } from '../bartender/pages/accepted-orders/accepted-orders.component';
+import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
+import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
+import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
+import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
+
 import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
-import { ItemCardComponent } from '../manager/pages/item-card/item-card.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
+
 import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
+
+import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
+
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
 
@@ -41,6 +52,48 @@ const routes: Routes = [
     path: 'after-logout',
     pathMatch: 'full',
     component: AfterLogoutComponent,
+  },
+  {
+    path: 'bartender-dashboard',
+    pathMatch: 'full',
+    component: BartenderDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
+  },
+  {
+    path: 'view-drinks',
+    pathMatch: 'full',
+    component: ViewDrinksComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
+  },
+  {
+    path: 'view-one-drink',
+    pathMatch: 'full',
+    component: ViewOneDrinkComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
+  },
+  {
+    path: 'add-drink',
+    pathMatch: 'full',
+    component: AddDrinkComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
+  },
+  {
+    path: 'new-orders',
+    pathMatch: 'full',
+    component: NewOrdersComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
+  },
+  {
+    path: 'accepted-orders',
+    pathMatch: 'full',
+    component: AcceptedOrdersComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'BARTENDER' },
   },
   {
     path: 'manager-dashboard',

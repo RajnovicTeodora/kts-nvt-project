@@ -35,6 +35,14 @@ public class OrderItemDTO {
 
     }
 
+    public OrderItemDTO(OrderedItem oi, String s){ //todo ako budes brisala ovo ne zaboravi i name da stavis
+        this.id = oi.getId();
+        this.status = oi.getStatus().toString();
+        this.priority = oi.getPriority();
+        this.quantity = oi.getQuantity();
+        this.menuItemName = oi.getMenuItem().getName();
+    }
+
     public OrderItemDTO(String status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
         this.status = status;
         this.priority = priority;
@@ -122,4 +130,5 @@ public class OrderItemDTO {
     public void setPrice(double price) {
         this.price = price;
     }
+
 }

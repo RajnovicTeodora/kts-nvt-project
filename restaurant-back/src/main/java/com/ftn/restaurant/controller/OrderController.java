@@ -76,8 +76,16 @@ public class OrderController {
     public ResponseEntity<?>  getActiveOrdersForTable(@PathVariable("tableNum") int tableNum, @PathVariable("waiterUsername") String waiterUsername) {
         try {
             return new ResponseEntity(orderService.getActiveOrdersForTable(tableNum, waiterUsername), HttpStatus.OK);
-        } catch (NotFoundException e){
-            return new ResponseEntity("Couldn't find table with table number: "+ tableNum, HttpStatus.NOT_FOUND);
+        } catch (NotFoundException e) {
+            return new ResponseEntity("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getNote/{id}")
+    @PreAuthorize("hasRole('BARTENDER')")
+    public String getNote( @PathVariable long id){
+        return this.orderService.getNote(id);
+
     }
 }

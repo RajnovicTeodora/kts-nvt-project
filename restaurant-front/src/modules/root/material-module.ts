@@ -41,6 +41,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
@@ -86,6 +87,7 @@ import { CommonModule } from '@angular/common';
     MatTreeModule,
     PortalModule,
     ScrollingModule,
+    FormsModule
   ]
 })
 export class MaterialModule {}
