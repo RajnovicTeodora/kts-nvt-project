@@ -66,12 +66,10 @@ export class AddEmployeeComponent implements OnInit {
     ) {
       this.toastr.error('All fields must be filled in!');
     } else {
-      if(this.url === ''){
-        this.url = "assets/images/1176381.png";
-      }
-      else{
+      if(this.url !== 'assets/images/profile_default.png'){
         this.url = this.url.split(',')[1];
       }
+
       const employee: Employee = {
         username: this.addEmployeeForm.value.username,
         password: this.addEmployeeForm.value.password,
