@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class NewDrinkDTO {
     private String name;
     private String image;
-    private DrinkType type;
+    private DrinkType drinkType;
     private ContainerType containerType;
     private ArrayList<IngredientDTO> ingredients;
 
@@ -18,7 +18,7 @@ public class NewDrinkDTO {
     public NewDrinkDTO(String name, String image, DrinkType type, ContainerType containerType) {
         this.name = name;
         this.image = image;
-        this.type = type;
+        this.drinkType = type;
         this.containerType = containerType;
     }
 
@@ -26,10 +26,31 @@ public class NewDrinkDTO {
         this.name = name;
         this.image = image;
         this.ingredients = ingredients;
-        this.type = type;
+        this.drinkType = type;
         this.containerType = containerType;
     }
 
+    public NewDrinkDTO(String name, String image, String type, String containerType, String price) {
+        this.name = name;
+        this.image = image;
+        if(type.equals("alcoholic")){
+            this.drinkType = DrinkType.ALCOHOLIC;
+        }else if(type.equals("coffee")){
+            this.drinkType = DrinkType.COFFEE;
+        }else if(type.equals("cold drink")){
+            this.drinkType = DrinkType.COLD_DRINK;
+        }else{
+            this.drinkType = DrinkType.HOT_DRINK;
+        }
+        if(containerType.equals("glass")){
+            this.containerType = ContainerType.GLASS;
+        }else if(type.equals("pitcher")){
+            this.containerType = ContainerType.PITCHER;
+        }else{
+            this.containerType = ContainerType.BOTTLE;
+        }
+
+    }
     public String getName() {
         return name;
     }
@@ -46,12 +67,12 @@ public class NewDrinkDTO {
         this.image = image;
     }
 
-    public DrinkType getType() {
-        return type;
+    public DrinkType getDrinkType() {
+        return drinkType;
     }
 
-    public void setType(DrinkType type) {
-        this.type = type;
+    public void setDrinkType(DrinkType type) {
+        this.drinkType = type;
     }
 
     public ContainerType getContainerType() {

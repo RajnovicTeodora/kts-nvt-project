@@ -63,4 +63,12 @@ public class Notification {
     public void setItem(OrderedItem item) {
         this.item = item;
     }
+
+    public Waiter getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(Waiter waiter) {
+        this.waiter = waiter;
+    }
 }

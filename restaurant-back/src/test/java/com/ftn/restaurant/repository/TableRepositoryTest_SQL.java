@@ -23,18 +23,18 @@ public class TableRepositoryTest_SQL {
 
     @Test
     public void findOneWithWaiterTest(){
-        RestaurantTable rt = tableRepository.findOneWithWaiter(1L, "waiter");
+        RestaurantTable rt = tableRepository.findOneWithWaiter(1, "waiter");
         Assert.assertNotNull(rt);
-        rt = tableRepository.findOneWithWaiter(1L, "ww");
+        rt = tableRepository.findOneWithWaiter(1, "ww");
         Assert.assertNull(rt);
-        rt = tableRepository.findOneWithWaiter(1000L, "waiter");
+        rt = tableRepository.findOneWithWaiter(1000, "waiter");
         Assert.assertNull(rt);
     }
 
     @Test
     public void findByAreaIdTest(){
         List<RestaurantTable> areaTables = tableRepository.findByAreaId(1L);
-        Assert.assertEquals(3, areaTables.size());
+        Assert.assertEquals(6, areaTables.size());
         
         List<RestaurantTable> areaTables2 = tableRepository.findByAreaId(100L);
         Assert.assertEquals(0, areaTables2.size());
