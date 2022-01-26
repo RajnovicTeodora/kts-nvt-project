@@ -137,15 +137,15 @@ INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id,
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4, 2, 6);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (false, 1, '2021-12-11', 'x', '18:18', 4, 2, 7);
 
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 2, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('DELIVERED', 1, 5, 3, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 4, false, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 5, false, 2, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 6, false, 2, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 5, 1, false, 2, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 3, 1, true, 1, 4);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 1, 7, false, 1, 4);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 2, false, 1, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('DELIVERED', 1, 5, 3, false, 1, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 4, false, 1, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 5, false, 2, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('READY', 1, 5, 6, false, 2, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 5, 1, false, 2, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 3, 1, true, 1, 2);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id, employee_id) VALUES ('ORDERED', 1, 1, 7, false, 1, 2);
 
 
 INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
@@ -157,6 +157,9 @@ INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 1 );
 INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 2 );
 INSERT INTO menuItemIngredients ( menu_item_id, ingredient_id ) VALUES ( 1, 3 );
 
-INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je gotova!', 2, 4);
-INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Spagete su gotove!', 6, 4);
-INSERT INTO notification (is_active, text, item_id, waiter_id) VALUES (true, 'Pizza je zapoceta!', 1, 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (false, 'Status changed for Pizza to READY for order number 3, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Pizza to IN_PROGRESS for order number 1, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Pizza to READY for order number 2, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Spaghetti to READY for order number 5, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Pizza to READY for order number 4, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Spaghetti to READY for order number 6, at table number 2', 4);

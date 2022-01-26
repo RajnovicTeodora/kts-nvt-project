@@ -145,7 +145,7 @@ public class OrderedItemUnitTest {
         Assert.assertEquals("Successfully deleted ordered item with id: 1", orderedItemService.deleteOrderedItem(1L));
         Assert.assertTrue(orderedItem.isDeleted());
     }
-
+/*
     @Test(expected = NotFoundException.class )
     public void updateOrderedItem_ThrowNotFoundExceptionWhenOrderNonExisting(){
         Mockito.when(orderedItemRepository.findOrderByOrderedItemId(1L)).thenReturn(null);
@@ -233,5 +233,5 @@ public class OrderedItemUnitTest {
         Mockito.when(orderRepository.findOneWithOrderItems(1L)).thenReturn(order);
         orderedItemService.addOrderItemToOrder(1L, new OrderItemDTO());
     }
-
+*/
 }

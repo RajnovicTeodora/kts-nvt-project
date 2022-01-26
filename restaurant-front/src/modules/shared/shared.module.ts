@@ -29,6 +29,8 @@ import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-o
 import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
 import { ListNewOrdersComponent } from './components/list-new-orders/list-new-orders.component';
 import { ListAcceptedOrdersComponent } from './components/list-accepted-orders/list-accepted-orders.component';
+import { ViewNotificationsComponent } from './components/view-notifications/view-notifications.component';
+import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { ListAcceptedOrdersComponent } from './components/list-accepted-orders/l
     TableIngredientsDialogComponent,
     ListNewOrdersComponent,
     ListAcceptedOrdersComponent,
+    ViewNotificationsComponent,
+    ShortenStringPipe,
   ],
   imports: [
     CommonModule,
@@ -90,7 +94,8 @@ import { ListAcceptedOrdersComponent } from './components/list-accepted-orders/l
     ConfirmActionComponent,
     DeleteIngredientDialogComponent,
     ListNewOrdersComponent,
-    ListAcceptedOrdersComponent
+    ListAcceptedOrdersComponent,
+    ViewNotificationsComponent,
   ],
   providers: [
     {

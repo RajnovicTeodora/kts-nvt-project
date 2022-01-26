@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
 import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
+import { OrderedItem } from 'src/modules/shared/models/ordered-item';
 import { MenuItemWithIngredientsService } from 'src/modules/shared/services/menu-item-with-ingredients-service/menu-item-with-ingredients.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class CustomizeOrderedItemComponent implements OnInit {
   @ViewChild('priority') matSelect: MatSelect;
   @Input() menuItemId = -1;
   @Input() orderedItemDetails : MenuItemWithIngredients;
+  @Input() editModeMenuItemId = -1;
   @Output() onCustomizeOrderedItemClose = new EventEmitter();
   @Output() onAddToOrder = new EventEmitter();
   @Output() onEditOrderedItem = new EventEmitter();
@@ -75,13 +77,19 @@ export class CustomizeOrderedItemComponent implements OnInit {
   }
 
   setOrderedItemDetails(){
-    this.menuItemService.getMenuItem(this.orderedItemDetails.id).subscribe({
+    let searchedId = -1;
+    if(this.editModeMenuItemId != -1){
+      searchedId = this.editModeMenuItemId;
+    }else{
+      searchedId = this.orderedItemDetails.id;
+    }
+    this.menuItemService.getMenuItem(searchedId).subscribe({
       next: (result) => {
         this.menuItemWithIngredients = new MenuItemWithIngredients(
-          this.orderedItemDetails.id,
+          this.orderedItemDetails.id, //if editModeMenuItemId active => then this id is orderedItemId else its menuItemId
           this.orderedItemDetails.price,
           this.orderedItemDetails.name,
-          this.orderedItemDetails.type,
+          result.type,
           result.ingredients
         );
         this.menuItemWithIngredients.ingredients.forEach((value, index) =>{
@@ -96,8 +104,9 @@ export class CustomizeOrderedItemComponent implements OnInit {
             this.menuItemWithIngredients.ingredients[index].isAlergen = false;
           }
         });
+        this.menuItemWithIngredients.quantity = this.orderedItemDetails.quantity;
         this.menuItemWithIngredients.priority = this.orderedItemDetails.priority;
-        this.menuItemWithIngredients.container = this.orderedItemDetails.container;
+        this.menuItemWithIngredients.container = result.container;
         
       },
       error: (data) => {
@@ -162,27 +171,37 @@ export class CustomizeOrderedItemComponent implements OnInit {
 
   saveChanges(){
     let activeIngredientsArray = Array<Ingredient>();
-    if (this.menuItemWithIngredients.ingredients.length != 0) {
-      if (this.ingredients.selectedOptions.selected.length == 0) {
-        this.toastr.error('Must have at least one ingredient.');
-      } else {
-        this.ingredients.selectedOptions.selected.forEach((value) => {
-          activeIngredientsArray.push(value.value);
-        });
+      if (this.menuItemWithIngredients.ingredients.length != 0) {
+        if (this.ingredients.selectedOptions.selected.length == 0) {
+          this.toastr.error('Must have at least one ingredient.');
+        } else {
+          this.ingredients.selectedOptions.selected.forEach((value) => {
+            activeIngredientsArray.push(value.value);
+          });
+        }
       }
+    if(this.editModeMenuItemId == -1){
+      
+      let newOrderedItem = new MenuItemWithIngredients(
+        this.menuItemWithIngredients.id,
+        this.menuItemWithIngredients.price,
+        this.menuItemWithIngredients.name,
+        this.menuItemWithIngredients.type,
+        activeIngredientsArray
+      );
+      newOrderedItem.container = this.menuItemWithIngredients.container;
+      newOrderedItem.priority = this.selectedPriority;
+      newOrderedItem.quantity = this.quantity.nativeElement.value;
+      this.onEditOrderedItem.emit(newOrderedItem);
     }
-
-    let newOrderedItem = new MenuItemWithIngredients(
-      this.menuItemWithIngredients.id,
-      this.menuItemWithIngredients.price,
-      this.menuItemWithIngredients.name,
-      this.menuItemWithIngredients.type,
-      activeIngredientsArray
-    );
-    newOrderedItem.container = this.menuItemWithIngredients.container;
-    newOrderedItem.priority = this.selectedPriority;
-    newOrderedItem.quantity = this.quantity.nativeElement.value;
-    this.onEditOrderedItem.emit(newOrderedItem);
+    else{
+      let editedOrderedItem = new OrderedItem(this.selectedPriority, this.quantity.nativeElement.value, this.editModeMenuItemId, activeIngredientsArray);
+      editedOrderedItem.id = this.menuItemWithIngredients.id;
+      editedOrderedItem.menuItemName = this.menuItemWithIngredients.name;
+      editedOrderedItem.price = this.menuItemWithIngredients.price;
+      editedOrderedItem.status = "PENDING";
+      this.onEditOrderedItem.emit(editedOrderedItem);
+    }
   }
 
 }

@@ -1,19 +1,20 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaycheckService {
+  constructor(private http: HttpClient) {}
+
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
 
   username = JSON.parse(localStorage.getItem('currentUser')!).username;
-
-  constructor(private http: HttpClient) {}
 
   getAll(name: string, filter: string): Observable<any> {
     let param = {
@@ -30,14 +31,14 @@ export class PaycheckService {
     };
 
     return this.http.get(
-      'http://localhost:8080/api/paychecks/getCurrent',
+      `${environment.baseUrl}/api/paychecks/getCurrent`,
       queryParams
     );
   }
 
   updatePaycheck(data: EditPaycheck): Observable<any> {
     return this.http.post(
-      'http://localhost:8080/api/paychecks/changePaycheck',
+      `${environment.baseUrl}/api/paychecks/changePaycheck`,
       data,
       {
         headers: this.headers,

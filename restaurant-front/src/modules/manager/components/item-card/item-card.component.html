@@ -1,0 +1,45 @@
+<mat-card
+  *ngIf="this.item"
+  style="width: fit-content; margin-left: 10%; margin-top: 10px"
+>
+  <mat-card-header>
+    <img
+      mat-card-avatar
+      [src]="
+        this.itemType === 'Dish'
+          ? 'assets/images/2515183.png'
+          : 'assets/images/2309358.png'
+      "
+      alt="Photo of item"
+      style="margin-bottom: 10px"
+    />
+
+    <mat-card-title> {{ this.itemType }} - {{ this.item.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <img mat-card-md-image [src]="this.image" alt="Photo of item" />
+    <div *ngIf="this.itemType === 'Dish'">
+      <p>Dish type: {{ getDish(this.item).dishType | titlecase }}</p>
+    </div>
+    <div *ngIf="this.itemType === 'Drink'">
+      <p>Drink type:{{ getDrink(this.item).drinkType | titlecase }}</p>
+      <p>
+        Drink container:
+        {{ getDrink(this.item).container | titlecase }}
+      </p>
+    </div>
+
+    <mat-divider></mat-divider>
+    <mat-card-subtitle style="margin-top: 30px">Ingredients</mat-card-subtitle>
+    <mat-list *ngFor="let ingredient of this.item.ingredients">
+      <mat-list-item>
+        <img mat-list-icon src="assets/images/4260850.png" />
+        {{ ingredient.name }}
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="approveItem(this.item.id)">Approve</button>
+    <button mat-button (click)="deleteItem(this.item.id)">Delete</button>
+  </mat-card-actions>
+</mat-card>

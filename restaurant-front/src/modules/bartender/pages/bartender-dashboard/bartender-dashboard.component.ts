@@ -79,7 +79,7 @@ export class BartenderDashboardComponent implements OnInit {
   }
   setBadgeValues(){
     this.waiterList = new Array;    
-    this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
+    this.notifService.getActiveNotificationsForEmployee(this.user.username).subscribe(
       {
         next: (result) => {
           this.currentBadgeContent = result.length;
@@ -93,7 +93,7 @@ export class BartenderDashboardComponent implements OnInit {
       JSON.parse(localStorage.getItem('WAITER_LIST')!)
     );
     users.value.list.forEach((value, index) => {
-      this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
+      this.notifService.getActiveNotificationsForEmployee(value.username).subscribe(
         {
           next: (result) => {
             let badgeNum = result.length;

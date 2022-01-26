@@ -2,14 +2,14 @@ package com.ftn.restaurant.dto;
 
 public class NotificationDTO {
 
+    private Long id;
     private String content;
     private boolean isActive;
-    private long orderedItemId;
 
-    public NotificationDTO(String content, boolean isActive, long orderedItemId) {
+    public NotificationDTO(Long id, String content, boolean isActive) {
+        this.id = id;
         this.content = content;
         this.isActive = isActive;
-        this.orderedItemId = orderedItemId;
     }
 
     public String getContent() {
@@ -28,11 +28,11 @@ public class NotificationDTO {
         isActive = active;
     }
 
-    public long getOrderedItemId() {
-        return orderedItemId;
+    public Long getId() {
+        return id;
     }
 
-    public void setOrderedItemId(long orderedItemId) {
-        this.orderedItemId = orderedItemId;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

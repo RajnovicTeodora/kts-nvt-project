@@ -2,8 +2,7 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
+import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
@@ -38,13 +37,23 @@ public class OrderController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/updateOrder/{id}")
+    @PostMapping(value = "/updateOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> updateOrder(@PathVariable("id") long id, @RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> updateOrder( @RequestBody OrderDTO orderDTO) {
         try {
-            return new ResponseEntity(new OrderDTO(orderService.updateOrder(id, orderDTO)), HttpStatus.OK);
-        } catch (ForbiddenException e){
+            return new ResponseEntity(orderService.updateOrder(orderDTO), HttpStatus.OK);
+        }catch (ForbiddenException e){
+            return new ResponseEntity("Can't change ordered item in preparation.", HttpStatus.FORBIDDEN);
+        } catch (OrderAlreadyPaidException e){
             return new ResponseEntity("Can't change order that is already paid.", HttpStatus.FORBIDDEN);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
+        }catch (BadRequestException e){
+            return new ResponseEntity("Can't update deleted ordered item.", HttpStatus.BAD_REQUEST);
+        }catch (IngredientNotFoundException e){
+            return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
+        }catch (MenuItemNotFoundException e){
+            return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -101,8 +110,18 @@ public class OrderController {
     @ResponseBody
     @GetMapping(value = "/getAcceptedOrders/{username}")
     @PreAuthorize("hasAnyRole('CHEF' , 'HEAD_CHEF', 'BARTENDER')")
-    public List<OrderDTO> getAcceptedOrders(@PathVariable("username") String username){
+    public List<OrderDTO> getAcceptedOrders(@PathVariable("username") String username) {
         return this.orderService.getAcceptedOrders(username);
 
+    }
+    @ResponseBody
+    @GetMapping(value = "/getOrder/{orderNum}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?>  getOrder(@PathVariable("orderNum") int orderNum) {
+        try {
+            return new ResponseEntity(orderService.getOrder(orderNum), HttpStatus.OK);
+        } catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order with order number: "+ orderNum, HttpStatus.NOT_FOUND);
+        }
     }
 }

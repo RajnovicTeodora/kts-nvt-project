@@ -31,7 +31,7 @@ public class MenuItemPriceController {
     @PostMapping(path = "/updatePrice")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public MenuItemPriceDTO changeMenuItemPrice(@AuthenticationPrincipal User user, @RequestBody UpdateMenuItemPriceDTO updateMenuItemPriceDTO) {
+    public MenuItemPriceDTO changeMenuItemPrice(@RequestBody UpdateMenuItemPriceDTO updateMenuItemPriceDTO) {
         LOG.info("Updating menu item price...");
         return new MenuItemPriceDTO(menuItemPriceService.updateMenuItemPrice(updateMenuItemPriceDTO));
     }

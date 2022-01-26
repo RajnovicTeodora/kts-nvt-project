@@ -1,0 +1,63 @@
+<div class="content">
+  <div class="row">
+    <div>
+      <div class="buttons">
+        <button
+          mat-button
+          class="type-button"
+          (click)="onChangeTypeClick('incomeAndSold')"
+        >
+          Income and Sold
+        </button>
+        <button
+          mat-button
+          class="type-button"
+          (click)="onChangeTypeClick('paychecks')"
+        >
+          Paychecks
+        </button>
+        <button
+          mat-button
+          class="type-button"
+          (click)="onChangeTypeClick('preparationCosts')"
+        >
+          Preparation Costs
+        </button>
+      </div>
+      <div id="chart">
+        <apx-chart
+          [colors]="chartOptions.colors"
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [stroke]="chartOptions.stroke"
+          [tooltip]="chartOptions.tooltip"
+          [dataLabels]="chartOptions.dataLabels"
+        ></apx-chart>
+      </div>
+      <div class="buttons">
+        <button
+          mat-button
+          class="period-button"
+          (click)="onChangePeriodClick('monthly')"
+        >
+          Monthly
+        </button>
+        <button
+          mat-button
+          class="period-button"
+          (click)="onChangePeriodClick('quarterly')"
+        >
+          Quarterly
+        </button>
+        <button
+          mat-button
+          class="period-button"
+          (click)="onChangePeriodClick('annual')"
+        >
+          Annual
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

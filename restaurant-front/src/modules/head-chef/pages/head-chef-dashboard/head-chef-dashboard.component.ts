@@ -75,31 +75,31 @@ export class HeadChefDashboardComponent implements OnInit {
 
   setBadgeValues(){
     this.waiterList = new Array;    
-    this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
-      {
-        next: (result) => {
-          this.currentBadgeContent = result.length;
-        },
-        error: data => {
-            this.toastr.error(data.error);          
-        }
-      }
-    );
+    // this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
+    //   {
+    //     next: (result) => {
+    //       this.currentBadgeContent = result.length;
+    //     },
+    //     error: data => {
+    //         this.toastr.error(data.error);          
+    //     }
+    //   }
+    // );
     const users = new BehaviorSubject<UserList>(
       JSON.parse(localStorage.getItem('WAITER_LIST')!)
     );
     users.value.list.forEach((value, index) => {
-      this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
-        {
-          next: (result) => {
-            let badgeNum = result.length;
-            this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
-          },
-          error: data => {
-              this.toastr.error(data.error);            
-          }
-        }
-      );      
+      // this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
+      //   {
+      //     next: (result) => {
+      //       let badgeNum = result.length;
+      //       this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
+      //     },
+      //     error: data => {
+      //         this.toastr.error(data.error);            
+      //     }
+      //   }
+      // );      
     });
   }
 

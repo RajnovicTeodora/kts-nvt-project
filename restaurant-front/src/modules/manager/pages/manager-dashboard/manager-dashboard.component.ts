@@ -16,6 +16,7 @@ export class ManagerDashboardComponent implements OnInit {
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
+  activeView: string = '1';
 
   constructor(private observer: BreakpointObserver, public router: Router) {
     const temp = new BehaviorSubject<UserWithToken>(
