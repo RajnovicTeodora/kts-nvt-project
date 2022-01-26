@@ -23,10 +23,10 @@ export class ViewNotificationsComponent implements OnInit {
   @Input() currentUsername: string;
   @ViewChild('newnotif') tableNew: MatTable<Notification>;
   @ViewChild('oldnotif') tableOld: MatTable<Notification>;
-  ELEMENT_DATA_NEW: Notification[] = [];
-  ELEMENT_DATA_OLD: Notification[] = [];
-  dataSourceNew = this.ELEMENT_DATA_NEW;
-  dataSourceOld = this.ELEMENT_DATA_OLD;
+  element_data_new: Notification[] = [];
+  element_data_old: Notification[] = [];
+  dataSourceNew = this.element_data_new;
+  dataSourceOld = this.element_data_old;
   columnsToDisplay = ['content', 'active'];
   expandedElement: Notification | null;
 
@@ -48,10 +48,10 @@ export class ViewNotificationsComponent implements OnInit {
           });
           temp1.forEach((value) =>{
             if(value.active){
-              this.ELEMENT_DATA_NEW.push(value);
+              this.element_data_new.push(value);
               
             }else{
-              this.ELEMENT_DATA_OLD.push(value);              
+              this.element_data_old.push(value);              
             }
           });
           this.tableNew.renderRows();
@@ -72,13 +72,13 @@ export class ViewNotificationsComponent implements OnInit {
     this.notifService.setNotificationInactive(notif.id).subscribe(
       {
         next: (result) => {           
-          this.ELEMENT_DATA_NEW.forEach((value, index)=>{
+          this.element_data_new.forEach((value, index)=>{
             if(value.id == notif.id){
-              this.ELEMENT_DATA_NEW.splice(index, 1);
+              this.element_data_new.splice(index, 1);
             }
           })
-          this.ELEMENT_DATA_OLD.push(notif);  
-          this.ELEMENT_DATA_OLD.sort(function (a, b) {
+          this.element_data_old.push(notif);  
+          this.element_data_old.sort(function (a, b) {
             return b.id - a.id;
           });
           this.tableNew.renderRows();

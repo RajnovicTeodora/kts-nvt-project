@@ -27,7 +27,7 @@ export class PayOrderComponent implements OnInit {
   @Output() onPayOrderClose = new EventEmitter();
   @ViewChild(MatTable) table: MatTable<OrderedItem>;
   @ViewChild('received') received: ElementRef;
-  ELEMENT_DATA: OrderedItem[] = [];
+  element_data: OrderedItem[] = [];
   displayedColumns: string[] = [
     'name',
     'quantity',
@@ -35,7 +35,7 @@ export class PayOrderComponent implements OnInit {
     'status',
     'deliver',
   ];
-  dataSource = [...this.ELEMENT_DATA];
+  dataSource = [...this.element_data];
   totalCost: number;
   changeLeft: number;
   orderIsPaid: boolean;
@@ -60,7 +60,7 @@ export class PayOrderComponent implements OnInit {
       .subscribe({
         next: (result) => {
           result.forEach((value )=>{
-            this.ELEMENT_DATA.push(value);
+            this.element_data.push(value);
             this.dataSource.push(value);
             this.totalCost += value.quantity * value.price;
           });
@@ -132,10 +132,10 @@ export class PayOrderComponent implements OnInit {
       .subscribe({
         next: (result) => {
           this.toastr.success(result);
-          this.ELEMENT_DATA.forEach((value, index )=>{
+          this.element_data.forEach((value, index )=>{
             if(value == element){
               element.status = 'DELIVERED';
-              this.ELEMENT_DATA[index] = element;
+              this.element_data[index] = element;
               this.dataSource[index] = element;
               this.table.renderRows();
             }

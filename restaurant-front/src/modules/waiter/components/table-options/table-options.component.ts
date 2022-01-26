@@ -23,13 +23,13 @@ export class TableOptionsComponent implements OnInit {
   title: string;
   currentUser: UserWithToken;
   table: RestaurantTable;
-  ELEMENT_DATA: number[] = [];
+  element_data: number[] = [];
   displayedColumns: string[] = [
     'orderNumber',
     'edit',
     'view',
   ];
-  dataSource = [...this.ELEMENT_DATA];
+  dataSource = [...this.element_data];
   @ViewChild(MatTable) matTable: MatTable<number>;
 
   constructor(
@@ -55,7 +55,7 @@ export class TableOptionsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if(this.refreshRequired){
-      this.ELEMENT_DATA = [];
+      this.element_data = [];
       this.dataSource = [];
       this.matTable.renderRows();
       this.getActiveTableOrderNumbers();
@@ -87,7 +87,7 @@ export class TableOptionsComponent implements OnInit {
     this.orderService.getActiveOrdersForTable(this.tableNumber, this.currentUser.username).subscribe({
       next: (result) => {
         result.forEach(value =>{
-          this.ELEMENT_DATA.push(value);
+          this.element_data.push(value);
           this.dataSource.push(value);
           this.matTable.renderRows();
         });
@@ -162,8 +162,7 @@ export class TableOptionsComponent implements OnInit {
   }
 
   newOrder() {
-    localStorage.setItem('tableId', JSON.stringify(this.tableNumber));
-    this.router.navigate(['/create-order']);
+    this.router.navigate(['/create-order/'+this.tableNumber]);
   }
 
   editOrder(orderNumber:number){
@@ -172,8 +171,7 @@ export class TableOptionsComponent implements OnInit {
       .subscribe({
         next: (result) => {
           if(!result){
-            localStorage.setItem('orderNum', JSON.stringify(orderNumber));
-            this.router.navigate(['/edit-order']);
+            this.router.navigate(['/edit-order/'+orderNumber]);
           }else{
             this.toastr.error("Can't edit order that is paid.");
           }

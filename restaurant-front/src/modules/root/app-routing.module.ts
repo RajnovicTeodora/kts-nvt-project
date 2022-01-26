@@ -129,14 +129,14 @@ const routes: Routes = [
     data: { expectedRoles: 'MANAGER' },
   },
   {
-    path: 'create-order',
+    path: 'create-order/:parameter',
     pathMatch: 'full',
     component: CreateOrderComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
   },
   {
-    path: 'edit-order',
+    path: 'edit-order/:parameter',
     pathMatch: 'full',
     component: EditOrderComponent,
     canActivate: [RoleGuard],

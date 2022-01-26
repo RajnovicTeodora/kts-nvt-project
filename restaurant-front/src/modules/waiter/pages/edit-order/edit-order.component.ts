@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTable } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
@@ -26,7 +26,7 @@ export class EditOrderComponent implements OnInit {
   showAdditionalNotes: boolean;
   currentAdditionalNotes: string;
   confirmActionTitleDelete: string;
-  ELEMENT_DATA: OrderedItem[] = [];
+  element_data: OrderedItem[] = [];
   displayedColumns: string[] = [
     'quantity',
     'name',
@@ -34,7 +34,7 @@ export class EditOrderComponent implements OnInit {
     'edit',
     'delete',
   ];
-  dataSource = [...this.ELEMENT_DATA];
+  dataSource = [...this.element_data];
   currentOrder: Order;
   currentOrderedItem: OrderedItem;
   currentMenuItemId: number;
@@ -44,7 +44,8 @@ export class EditOrderComponent implements OnInit {
     private observer: BreakpointObserver,
     private toastr: ToastrService,
     private orderService: OrderService,
-    private orderedItemService: OrderedItemService
+    private orderedItemService: OrderedItemService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.totalCost = 0;
     this.showOrderedItemDetails = false;
@@ -59,16 +60,14 @@ export class EditOrderComponent implements OnInit {
   }
 
   getOrder() {
-    const orderNum = new BehaviorSubject<number>(
-      JSON.parse(localStorage.getItem('orderNum')!)
-    );
-    this.orderService.getOrder(orderNum.value).subscribe({
+    let orderNum = this.activatedRoute.snapshot.paramMap.get('parameter');
+    this.orderService.getOrder(Number(orderNum)).subscribe({
       next: (result) => {
         this.currentOrder = result;
         this.currentAdditionalNotes = result.note;
         this.currentOrder.orderItems.forEach((value, index)=>{
           this.totalCost += value.price * value.quantity;
-          this.ELEMENT_DATA.push(value);
+          this.element_data.push(value);
           this.dataSource.push(value);
           this.table.renderRows();
         })
@@ -99,7 +98,7 @@ export class EditOrderComponent implements OnInit {
     temp.id = -1;
     temp.status = "PENDING";
 
-    this.ELEMENT_DATA.push(temp);
+    this.element_data.push(temp);
     this.dataSource.push(temp);
     this.table.renderRows();
   }
@@ -120,14 +119,14 @@ export class EditOrderComponent implements OnInit {
 
   
   saveChanges() {
-    if (this.ELEMENT_DATA.length == 0) {
+    if (this.element_data.length == 0) {
       this.toastr.error("Can't save order with no ordered items.");
     }
     else {      
       let order = this.currentOrder;
       order.totalPrice = this.totalCost;
       order.note = this.currentAdditionalNotes;
-      order.orderItems = this.ELEMENT_DATA;
+      order.orderItems = this.element_data;
       
       this.orderService.updateOrder(order).subscribe({
         next: (result) => {
@@ -147,10 +146,10 @@ export class EditOrderComponent implements OnInit {
 
   onEditOrderedItemClicked(item: OrderedItem) {
     this.showOrderedItemDetails = false;
-    this.ELEMENT_DATA.forEach((value, index) => {
+    this.element_data.forEach((value, index) => {
       if (value == this.currentOrderedItem) {
         this.totalCost -= value.price * value.quantity;
-        this.ELEMENT_DATA[index] = item;
+        this.element_data[index] = item;
         this.totalCost += item.price * item.quantity;
         this.dataSource[index] = item;
       }
@@ -173,10 +172,10 @@ export class EditOrderComponent implements OnInit {
   onConfirmActionConfirmedClicked(item: boolean) {
     this.showConfirmAction = false;
     this.confirmActionTitleDelete = '';
-    this.ELEMENT_DATA.forEach((value, index) => {
+    this.element_data.forEach((value, index) => {
       if (value == this.currentOrderedItem) {
         this.totalCost -= value.price * value.quantity;
-        this.ELEMENT_DATA.splice(index, 1);
+        this.element_data.splice(index, 1);
         this.dataSource.splice(index, 1);
 
         if(this.currentOrderedItem.id != -1){

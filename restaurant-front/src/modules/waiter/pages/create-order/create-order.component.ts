@@ -2,7 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTable } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
@@ -27,16 +27,17 @@ export class CreateOrderComponent implements OnInit {
   showPaymentModal: boolean;
   currentAdditionalNotes: string;
   confirmActionTitleDelete: string;
-  ELEMENT_DATA: MenuItemWithIngredients[] = [];
+  element_data: MenuItemWithIngredients[] = [];
   displayedColumns: string[] = ['quantity', 'name', 'details', 'delete'];
-  dataSource = [...this.ELEMENT_DATA];
+  dataSource = [...this.element_data];
   createdOrderId: number;
 
   constructor(
     public router: Router,
     private observer: BreakpointObserver,
     private toastr: ToastrService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.totalCost = 0;
     this.showOrderedItemDetails = false;
@@ -62,7 +63,7 @@ export class CreateOrderComponent implements OnInit {
 
   onAddToOrderForwardedClicked(item: MenuItemWithIngredients) {
     this.totalCost += item.price * item.quantity;
-    this.ELEMENT_DATA.push(item);
+    this.element_data.push(item);
     this.dataSource.push(item);
     this.table.renderRows();
   }
@@ -82,11 +83,11 @@ export class CreateOrderComponent implements OnInit {
   }
 
   confirm() {
-    if (this.ELEMENT_DATA.length == 0) {
+    if (this.element_data.length == 0) {
       this.toastr.error("Can't create order with no ordered items.");
     } else {
       let orderItems = Array<OrderedItem>();
-      this.ELEMENT_DATA.forEach((value, index) => {
+      this.element_data.forEach((value, index) => {
         let orderitem = new OrderedItem(
           value.priority,
           value.quantity,
@@ -105,12 +106,9 @@ export class CreateOrderComponent implements OnInit {
       const temp = new BehaviorSubject<UserWithToken>(
         JSON.parse(localStorage.getItem('currentUser')!)
       );
-      const tableId = new BehaviorSubject<number>(
-        JSON.parse(localStorage.getItem('tableId')!)
-      );
+      let tableId = this.activatedRoute.snapshot.paramMap.get('parameter');
       order.waiterUsername = temp.value.username;
-      order.tableId = tableId.value;
-      localStorage.removeItem('tableId');
+      order.tableId = Number(tableId);
       this.orderService.createOrder(order).subscribe({
         next: (result) => {
           this.toastr.success('Succesfully added new order.');
@@ -130,10 +128,10 @@ export class CreateOrderComponent implements OnInit {
 
   onEditOrderedItemClicked(item: MenuItemWithIngredients) {
     this.showOrderedItemDetails = false;
-    this.ELEMENT_DATA.forEach((value, index) => {
+    this.element_data.forEach((value, index) => {
       if (value == this.currentOrderedItemDetails) {
         this.totalCost -= value.price * value.quantity;
-        this.ELEMENT_DATA[index] = item;
+        this.element_data[index] = item;
         this.totalCost += item.price * item.quantity;
         this.dataSource[index] = item;
       }
@@ -156,10 +154,10 @@ export class CreateOrderComponent implements OnInit {
   onConfirmActionConfirmedClicked(item: boolean) {
     this.showConfirmAction = false;
     this.confirmActionTitleDelete = '';
-    this.ELEMENT_DATA.forEach((value, index) => {
+    this.element_data.forEach((value, index) => {
       if (value == this.currentOrderedItemDetails) {
         this.totalCost -= value.price * value.quantity;
-        this.ELEMENT_DATA.splice(index, 1);
+        this.element_data.splice(index, 1);
         this.dataSource.splice(index, 1);
       }
     });
