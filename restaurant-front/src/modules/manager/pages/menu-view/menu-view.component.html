@@ -24,15 +24,25 @@
   </mat-form-field>
 </form>
 
+<button mat-button (click)="openDialog()">
+  Add Drink <mat-icon>plus</mat-icon>
+</button>
+
 <div class="card-deck">
-  <mat-list class="example-card" *ngFor="let item of observable | async">
-    <app-item-card
-      id="{{ item.id }}"
-      [itemId]="item.id"
-      (approveClicked)="onApproved($event)"
-      (deleteClicked)="onDeleted($event)"
+  <mat-list
+    matSort
+    matSortActive="seqNo"
+    matSortDirection="asc"
+    matSortDisableClear
+    class="example-card"
+    *ngFor="let item of observable | async"
+  >
+    <app-menu-item-card
+      id="{{ item.menuItem.id }}"
+      [item]="item"
+      (deleteClicked)="onDeleteClicked($event)"
     >
-    </app-item-card>
+    </app-menu-item-card>
   </mat-list>
 </div>
 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

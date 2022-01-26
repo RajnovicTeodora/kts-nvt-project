@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.model.User;
@@ -30,26 +31,43 @@ public class MenuController {
     }
 
     @ResponseBody
-    @PutMapping(path = "/activateItems")
+    @PutMapping(path = "/toggleIsActive")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> setActiveMenuItems(@RequestBody SelectedMenuItemsDTO selectedMenuItemsDTO) {
+    public MenuItemPriceDTO toggleIsMenuItemActive(@RequestParam(name = "id") Long id) {
         LOG.info("Updating active menu items...");
-        List<MenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
 
-        menuService.defineActiveMenuItem(selectedMenuItemsDTO).forEach(item ->
-                menuItemPriceDTOS.add(new MenuItemPriceDTO(item)));
-        return menuItemPriceDTOS;
+        return (new MenuItemPriceDTO(menuService.toggleIsMenuItemActive(id)));
+
     }
 
     @ResponseBody
     @GetMapping(path = "/searchMenuItems/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> searchMenuItems(@PathVariable(value = "group") String group, @PathVariable(value = "name") String name){
+    public List<MenuItemPriceDTO> searchMenuItems(@PathVariable(value = "group") String group, @PathVariable(value = "name") String name) {
         LOG.info("searching menu items...");
         LOG.info("group: " + group);
-        LOG.info("name: "+name);
+        LOG.info("name: " + name);
         return menuService.searchMenuItems(group, name);
-        
+
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/getAll")
+    @PreAuthorize("hasRole('MANAGER')")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MenuItemPriceDTO> getActiveMenuItems(@RequestParam(name = "searchName", required = false, defaultValue = "") String searchName) {
+        LOG.info("Getting active menu items...");
+
+        return menuService.getActiveMenuItem(searchName);
+    }
+
+    @ResponseBody
+    @DeleteMapping(path = "/deleteMenuItem/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
+    @ResponseStatus(HttpStatus.OK)
+    public MenuItemDTO deleteMenuItem(@PathVariable Long id) {
+        LOG.info("Deleting menu item price...");
+        return new MenuItemDTO(menuService.deleteMenuItem(id));
     }
 }
