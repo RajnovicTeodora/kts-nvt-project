@@ -7,10 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query("select n from Notification n where n.waiter.id = ?1")
-    List<Notification> getAllActiveNotificationsForWaiter(Long id);
+    @Query("select n from Notification n where n.recipient.id = ?1 and n.isActive = true")
+    List<Notification> getAllActiveNotificationsForEmployee(Long id);
+
+    @Query("select n from Notification n where n.recipient.id = ?1")
+    List<Notification> getAllNotificationsForEmployee(Long id);
+
+    @Query("select n from Notification n where n.id = ?1")
+    Optional<Notification> findById(long id);
 }

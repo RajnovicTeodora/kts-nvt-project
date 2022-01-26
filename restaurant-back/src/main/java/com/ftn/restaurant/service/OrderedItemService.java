@@ -2,10 +2,7 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
-import com.ftn.restaurant.exception.BadRequestException;
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.exception.OrderAlreadyPaidException;
+import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
@@ -49,6 +46,9 @@ public class OrderedItemService {
     private UserService userService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     public OrderedItemService(OrderedItemRepository orderedItemRepository, BartenderRepository bartenderRepository,
                               NotificationRepository notificationRepository) {
 
@@ -88,8 +88,8 @@ public class OrderedItemService {
             }
             item.get().setStatus(OrderedItemStatus.READY);
             String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table ";
-            Notification n = new Notification(item.get(), message);
-            n.setWaiter(item.get().getOrder().getWaiter());
+            Notification n = new Notification( message);
+            n.setRecipient(item.get().getOrder().getWaiter());
             notificationRepository.save(n);
             //.getNotifications().add(n);
             //((Bartender)item.get().getWhoPreapiring()).getOrderedItems().remove(item); //Todo da li ovde ide save
@@ -111,10 +111,10 @@ public class OrderedItemService {
     public List<OrderedItem> findAllByOrderId(long id){
         return orderedItemRepository.findAllByOrderId(id);
     }
-
+/*
     public Order findOrderByOrderedItemId(long id){
         return orderedItemRepository.findOrderByOrderedItemId(id);
-    }
+    }*/
 
     public String confirmPickup(long id){
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
@@ -127,7 +127,13 @@ public class OrderedItemService {
                 throw new ForbiddenException("Can't deliver ordered item when status is not READY.");
             }
             item.get().setStatus(OrderedItemStatus.DELIVERED);
+            Order order = orderedItemRepository.findOrderByOrderedItemId(id);
             orderedItemRepository.save(item.get());
+            notificationService.sendOrderedItemStatusChangedNotification(order.getOrderNumber(),
+                    order.getRestaurantTable().getTableNum(),
+                    orderedItemRepository.findEmployeePreparingOrderedItemById(id),
+                    OrderedItemStatus.DELIVERED,
+                    orderedItemRepository.findMenuItemNameForOrderedItemId(id));
             return  "Successfully delivered ordered item with id: "+ id;
         }
         throw new NotFoundException("Couldn't find ordered item.");
@@ -150,13 +156,13 @@ public class OrderedItemService {
         throw new NotFoundException("Couldn't find ordered item.");
     }
 
-    public OrderedItem updateOrderedItem(long id, OrderItemDTO orderItemDTO){
-        Order order = findOrderByOrderedItemId(id);
+    public String updateOrderedItem(long id, OrderItemDTO orderItemDTO){
+        Order order = orderService.findOne(id);
         if(order != null) {
             if (order.isPaid()) {
                 throw new OrderAlreadyPaidException("Can't change order that is already paid.");
             }
-            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
+            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(orderItemDTO.getId());
             if (orderItem.isDeleted()) {
                 throw new BadRequestException("Can't update deleted ordered item with id: " + id);
             }
@@ -167,17 +173,20 @@ public class OrderedItemService {
             orderItem.setPriority(orderItemDTO.getPriority());
             orderItem.setActiveIngredients(new ArrayList<>());
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-                Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
-                i.ifPresent(orderItem::addActiveIngredients);
+                Ingredient i = ingredientService.findOne(ingredientDTO.getId());
+                if(i != null){
+                    orderItem.addActiveIngredients(i);
+                }else
+                    throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
             }
             save(orderItem);
-            return orderItem;
+            return "Successfully updated ordered item with id: "+ orderItemDTO.getId();
         }
         throw new NotFoundException("Couldn't find order.");
     }
 
     public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
-        Order order = orderService.findOneWithOrderItems(id);
+        Order order = orderService.findOne(id);
         if(order != null) {
             if (order.isPaid()) {
                 throw new OrderAlreadyPaidException("Can't add order items to order that is already paid.");
@@ -185,9 +194,10 @@ public class OrderedItemService {
             OrderedItem orderItem = new OrderedItem();
             orderItem.setQuantity(orderItemDTO.getQuantity());
             orderItem.setPriority(orderItemDTO.getPriority());
+            orderItem.setOrder(order);
             Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDTO.getMenuItemId());
             if(!menuItem.isPresent()){
-                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDTO.getMenuItemId());
+                throw new MenuItemNotFoundException("Couldn't find menu item with id: " + orderItemDTO.getMenuItemId());
             }
             menuItem.ifPresent(orderItem::setMenuItem);
             orderItem.setDeleted(false);
@@ -196,12 +206,12 @@ public class OrderedItemService {
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
                 Ingredient i = ingredientService.findOne(ingredientDTO.getId());
                 if(i == null){
-                    throw new NotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
+                    throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
                 }
                 orderItem.addActiveIngredients(i);
             }
-            order.addOrderedItem(orderItem);
-            orderService.save(order);
+            /*order.addOrderedItem(orderItem);
+            orderService.save(order);*/
             save(orderItem);
 
             return orderItem;
@@ -254,6 +264,10 @@ public class OrderedItemService {
         }
         return listItems;
 
+    }
+
+    public List<Employee> findAllChefsAndBartendersPreparingOrderById(Long orderId){
+        return orderedItemRepository.findAllChefsAndBartendersPreparingOrderById(orderId);
     }
 
 }

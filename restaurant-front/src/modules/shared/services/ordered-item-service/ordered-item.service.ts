@@ -18,4 +18,19 @@ export class OrderedItemService {
       { responseType: 'json' }
     );
   }
+
+  setOrderedItemDelivered(orderedItemId: number): Observable<string> {
+    return this.http.get(
+      `${environment.baseUrl}/${environment.orderedItem}/confirmPickup/${orderedItemId}`,
+      { responseType: 'text' }
+    );
+  }
+
+  deleteOrderedItem(orderedItemId: number): Observable<string> {
+    return this.http.get(
+      `${environment.baseUrl}/${environment.orderedItem}/setDeleted/${orderedItemId}`,
+      { responseType: 'text' }
+    );
+  }
+
 }

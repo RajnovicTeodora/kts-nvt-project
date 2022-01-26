@@ -23,6 +23,8 @@ import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
 import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
+import { ViewNotificationsComponent } from './components/view-notifications/view-notifications.component';
+import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     AfterLogoutComponent,
     ConfirmActionComponent,
     DeleteIngredientDialogComponent,
+    ViewNotificationsComponent,
+    ShortenStringPipe,
   ],
   imports: [
     CommonModule,
@@ -72,7 +76,8 @@ import { DeleteIngredientDialogComponent } from './components/delete-ingredient-
     ReplaceUnderscorePipe,
     AfterLogoutComponent,
     ConfirmActionComponent,
-    DeleteIngredientDialogComponent
+    DeleteIngredientDialogComponent,
+    ViewNotificationsComponent,
   ],
   providers: [
     {

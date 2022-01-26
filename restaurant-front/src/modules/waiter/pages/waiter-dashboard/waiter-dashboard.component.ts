@@ -37,6 +37,8 @@ export class WaiterDashboardComponent implements OnInit {
   showPaymentModal: boolean;
   currentBadgeContent: number;
   currentOrderViewed: number;
+  refreshRestaurantTableRequired = false;
+  showNotificationsModal: boolean;
   ////////////////TODO isidora
   showModalRestaurantTableOptions: number;
 
@@ -66,6 +68,7 @@ export class WaiterDashboardComponent implements OnInit {
     this.currentBadgeContent = 0;
     this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = false;
+    this.showNotificationsModal = false;
   }
 
   ngOnInit() {
@@ -75,21 +78,12 @@ export class WaiterDashboardComponent implements OnInit {
 
   setBadgeValues(){
     this.waiterList = new Array;    
-    this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
-      {
-        next: (result) => {
-          this.currentBadgeContent = result.length;
-        },
-        error: data => {
-            this.toastr.error(data.error);          
-        }
-      }
-    );
+    this.setBagdeValueForCurrentUser();
     const users = new BehaviorSubject<UserList>(
       JSON.parse(localStorage.getItem('WAITER_LIST')!)
     );
     users.value.list.forEach((value, index) => {
-      this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
+      this.notifService.getActiveNotificationsForEmployee(value.username).subscribe(
         {
           next: (result) => {
             let badgeNum = result.length;
@@ -101,6 +95,19 @@ export class WaiterDashboardComponent implements OnInit {
         }
       );      
     });
+  }
+
+  setBagdeValueForCurrentUser(){
+    this.notifService.getActiveNotificationsForEmployee(this.user.username).subscribe(
+      {
+        next: (result) => {
+          this.currentBadgeContent = result.length;
+        },
+        error: data => {
+            this.toastr.error(data.error);          
+        }
+      }
+    );
   }
 
   getData(obj: { pageIndex: any; pageSize: any }) {
@@ -175,16 +182,25 @@ export class WaiterDashboardComponent implements OnInit {
 
   onPayOrderCloseClicked(item:boolean){
     this.showPaymentModal = false;
+    this.refreshRestaurantTableRequired = true;
+  }
+
+  onRefreshFinished(item:boolean){
+    this.refreshRestaurantTableRequired = false;
   }
 
   onViewOrderAndBillClicked(order:number){
     this.currentOrderViewed = order;
-    //this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = true;    
   }
 
-  onEditOrderClicked(order:number){
-    //TODO olja
+  onNotificationsClicked(){
+    this.showNotificationsModal = true;
+  }
+
+  onNotificationsCloseClicked(item:boolean){
+    this.showNotificationsModal = false;
+    this.setBadgeValues();
   }
 
   changeAccount(username: string) {

@@ -1,13 +1,12 @@
 export class Notification {
-
+    
+    public id: number;
     public content: string;
-    public isActive: boolean;
-    public orderedItemId: string;
+    public active: boolean;
 
-    constructor(content: string, isActive: boolean, orderedItemId: string) {
+    constructor(id:number, content: string, active: boolean) {
+        this.id = id;
         this.content = content;
-        this.isActive = isActive;
-        this.orderedItemId = orderedItemId;
+        this.active = active;
     }
-
 }
