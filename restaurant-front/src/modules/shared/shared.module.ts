@@ -25,6 +25,7 @@ import { DishTableComponent } from './components/dish-table/dish-table.component
 import { NewOrdersComponent } from './components/new-orders/new-orders.component';
 import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-orders.component';
 import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
+import { ListNewOrdersComponent } from './components/list-new-orders/list-new-orders.component';
 @NgModule({
   declarations: [
     ChangePasswordComponent,
@@ -45,6 +46,7 @@ import { TableIngredientsDialogComponent } from './components/table-ingredients-
     NewOrdersComponent,
     AcceptedOrdersComponent,
     TableIngredientsDialogComponent,
+    ListNewOrdersComponent,
   ],
   imports: [
     CommonModule,
