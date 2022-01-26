@@ -18,6 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
 import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
+import { EditAreaComponent } from './pages/edit-area/edit-area.component';
+import { DeleteAreaComponent } from './components/delete-area/delete-area.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { DeleteEmployeeComponent } from './components/delete-employee/delete-emp
     EditTablesComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    DeleteEmployeeComponent
+    DeleteEmployeeComponent,
+    EditAreaComponent,
+    DeleteAreaComponent
   ],
   imports: [
     CommonModule,

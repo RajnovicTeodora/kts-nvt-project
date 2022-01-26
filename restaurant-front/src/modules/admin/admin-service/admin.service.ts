@@ -59,4 +59,16 @@ export class AdminService {
       `${environment.baseUrl}/api/employees/deleteUser/${username}`
     );
   }
+
+  getAllAreas() : Observable<any> {
+    return this.http.get(
+      `${environment.baseUrl}/api/area/getAllAreas`
+    );
+  }
+
+  deleteArea(id: number): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.baseUrl}/api/area/deleteArea/${id}`
+    );
+  }
 }
