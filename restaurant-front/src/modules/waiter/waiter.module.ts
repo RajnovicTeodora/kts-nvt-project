@@ -17,6 +17,7 @@ import { CreateOrderComponent } from './pages/create-order/create-order.componen
 import { CustomizeOrderedItemComponent } from './components/customize-ordered-item/customize-ordered-item.component';
 import { AdditionalNotesComponent } from './components/additional-notes/additional-notes.component';
 import { PayOrderComponent } from './components/pay-order/pay-order.component';
+import { EditOrderComponent } from './pages/edit-order/edit-order.component';
 
 
 
@@ -28,7 +29,8 @@ import { PayOrderComponent } from './components/pay-order/pay-order.component';
     CreateOrderComponent,
     CustomizeOrderedItemComponent,
     AdditionalNotesComponent,
-    PayOrderComponent
+    PayOrderComponent,
+    EditOrderComponent
   ],
   imports: [
     CommonModule,

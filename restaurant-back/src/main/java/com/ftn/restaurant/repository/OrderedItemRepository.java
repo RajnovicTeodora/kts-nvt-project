@@ -1,5 +1,6 @@
 package com.ftn.restaurant.repository;
 
+import com.ftn.restaurant.model.Employee;
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.OrderedItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,7 +39,8 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
     @Query("select ord from OrderedItem ord left join fetch ord.activeIngredients e where ord.id =?1")
     OrderedItem findOneWithActiveIngredients(long id);
 
-    @Query("select ord.order from OrderedItem ord where ord.id =?1")
+    //left join fetch ord.order o left join fetch o.restaurantTable
+    @Query("select ord.order from OrderedItem ord left join fetch ord.order.restaurantTable where ord.id =?1")
     Order findOrderByOrderedItemId(long id);
 
     @Query("SELECT i from OrderedItem i where i.order.id = :id and i.deleted = false and not(i.status = 'DELIVERED')")
@@ -50,5 +52,12 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
   @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id and i.deleted=false and (i.status = com.ftn.restaurant.model.enums.OrderedItemStatus.IN_PROGRESS)")
     OrderedItem[] findAllByOrderIdNotDeletedAndAccepted(long id);
 
+    @Query("select o.employee from OrderedItem o where o.order.id = ?1")
+    List<Employee> findAllChefsAndBartendersPreparingOrderById(Long orderId);
 
+    @Query("select o.menuItem.name from OrderedItem o where o.id = ?1")
+    String findMenuItemNameForOrderedItemId(long id);
+
+    @Query("select o.employee from OrderedItem o where o.id = ?1")
+    Employee findEmployeePreparingOrderedItemById(long id);
 }

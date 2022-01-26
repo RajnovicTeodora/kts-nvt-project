@@ -18,6 +18,7 @@ export class ManagerDashboardComponent implements OnInit {
   showModalLogout: boolean;
   paychecksWindowOpen: boolean;
   itemsWindowOpen: boolean;
+  activeView: string = '1';
 
   constructor(private observer: BreakpointObserver, public router: Router) {
     const temp = new BehaviorSubject<UserWithToken>(

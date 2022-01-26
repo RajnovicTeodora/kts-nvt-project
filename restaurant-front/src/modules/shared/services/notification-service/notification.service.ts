@@ -12,9 +12,23 @@ export class NotificationService {
 
   constructor(private http: HttpClient) { }
 
-  getNumberOfActiveNotificationsForWaiter(username: string): Observable<Array<Notification>> {
+  getActiveNotificationsForEmployee(username: string): Observable<Array<Notification>> {
     return this.http.get<Array<Notification>>(
-      `${environment.baseUrl}/${environment.notification}/getActiveNotificationsForWaiter/${username}`
+      `${environment.baseUrl}/${environment.notification}/getActiveNotificationsForEmployee/${username}`
+    );
+  }
+
+  getAllNotificationsForEmployee(username: string): Observable<Array<Notification>> {
+    return this.http.get<Array<Notification>>(
+      `${environment.baseUrl}/${environment.notification}/getAllNotificationsForEmployee/${username}`
+    );
+  }
+
+  setNotificationInactive(notificationId: number): Observable<string> {
+    return this.http.get(
+      `${environment.baseUrl}/${environment.notification}/setNotificationInactive/${notificationId}`, {
+        responseType : "text"
+      }
     );
   }
 }

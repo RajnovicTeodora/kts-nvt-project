@@ -27,6 +27,9 @@ public abstract class Employee extends User {
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
 
+    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    private List<Notification> notifications;
+
     public Employee() {
     }
 
@@ -88,5 +91,14 @@ public abstract class Employee extends User {
 
     public Employee(String username, String password, boolean deleted) {
         super(username, password, deleted);
+    }
+
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 }

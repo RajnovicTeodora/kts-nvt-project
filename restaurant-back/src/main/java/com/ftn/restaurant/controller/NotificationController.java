@@ -1,6 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.exception.ForbiddenException;
+import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +22,38 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @ResponseBody
-    @GetMapping(value = "/getActiveNotificationsForWaiter/{username}")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> getActiveNotificationsForWaiterUsername(@PathVariable("username") String username){
+    @GetMapping(value = "/getActiveNotificationsForEmployee/{username}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER')")
+    public ResponseEntity<?> getAllActiveNotificationsForEmployee(@PathVariable("username") String username){
         try {
-            return new ResponseEntity<>(notificationService.getAllActiveNotificationsForWaiterUsername(username), HttpStatus.OK);
+            return new ResponseEntity<>(notificationService.getAllActiveNotificationsForEmployee(username), HttpStatus.OK);
         }
         catch (Exception e){
             return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/getAllNotificationsForEmployee/{username}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER')")
+    public ResponseEntity<?> getAllNotificationsForEmployee(@PathVariable("username") String username){
+        try {
+            return new ResponseEntity<>(notificationService.getAllNotificationsForEmployee(username), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/setNotificationInactive/{notificationId}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER')")
+    public ResponseEntity<?> setNotificationInactive(@PathVariable("notificationId") long notificationId){
+        try {
+            return new ResponseEntity<>(notificationService.setNotificationInactive(notificationId), HttpStatus.OK);
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>("Couldn't find notification with id: " + notificationId, HttpStatus.NOT_FOUND);
         }
     }
 }

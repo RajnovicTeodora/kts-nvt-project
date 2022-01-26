@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -15,22 +16,24 @@ import { RestaurantTableService } from 'src/modules/shared/services/restaurant-t
 })
 export class TableOptionsComponent implements OnInit {
   @Input() tableNumber = 0;
+  @Input() refreshRequired :boolean;
   @Output() onRestaurantTableClose = new EventEmitter();
   @Output() onViewOrderAndBill = new EventEmitter();
-  @Output() onEditOrder = new EventEmitter();
+  @Output() refreshFinished = new EventEmitter();
   title: string;
   currentUser: UserWithToken;
   table: RestaurantTable;
-  ELEMENT_DATA: number[] = [];
+  element_data: number[] = [];
   displayedColumns: string[] = [
     'orderNumber',
     'edit',
     'view',
   ];
-  dataSource = [...this.ELEMENT_DATA];
+  dataSource = [...this.element_data];
   @ViewChild(MatTable) matTable: MatTable<number>;
 
   constructor(
+    private observer: BreakpointObserver,
     private tableService: RestaurantTableService,
     private orderService: OrderService,
     public router: Router,
@@ -48,6 +51,17 @@ export class TableOptionsComponent implements OnInit {
     this.setTable();
     this.getActiveTableOrderNumbers();
     
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(this.refreshRequired){
+      this.element_data = [];
+      this.dataSource = [];
+      this.matTable.renderRows();
+      this.getActiveTableOrderNumbers();
+      this.refreshFinished.emit(true);
+      this.refreshRequired = false;
+    }
   }
 
   setTable() {
@@ -73,7 +87,7 @@ export class TableOptionsComponent implements OnInit {
     this.orderService.getActiveOrdersForTable(this.tableNumber, this.currentUser.username).subscribe({
       next: (result) => {
         result.forEach(value =>{
-          this.ELEMENT_DATA.push(value);
+          this.element_data.push(value);
           this.dataSource.push(value);
           this.matTable.renderRows();
         });
@@ -148,12 +162,24 @@ export class TableOptionsComponent implements OnInit {
   }
 
   newOrder() {
-    localStorage.setItem('tableId', JSON.stringify(this.tableNumber));
-    this.router.navigate(['/create-order']);
+    this.router.navigate(['/create-order/'+this.tableNumber]);
   }
 
   editOrder(orderNumber:number){
-    this.onEditOrder.emit(orderNumber);
+    this.orderService
+      .checkIfOrderIsPaid(orderNumber)
+      .subscribe({
+        next: (result) => {
+          if(!result){
+            this.router.navigate(['/edit-order/'+orderNumber]);
+          }else{
+            this.toastr.error("Can't edit order that is paid.");
+          }
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
   }
 
   viewOrderAndBill(orderNumber:number){

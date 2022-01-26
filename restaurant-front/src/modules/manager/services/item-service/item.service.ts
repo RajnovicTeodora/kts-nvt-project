@@ -2,46 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddManagerDrink } from 'src/modules/shared/models/item-models/add-manager-drink';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ItemService {
+  constructor(private http: HttpClient) {}
+
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
 
-  constructor(private http: HttpClient) {}
-  getAll(): Observable<any> {
+  getAll(name: string): Observable<any> {
     let queryParams = {};
 
     queryParams = {
       headers: this.headers,
       observe: 'response',
-    };
-
-    return this.http.get('http://localhost:8080/api/menuItem/getAll');
-  }
-
-  getAllBySearchCriteria(name: string): Observable<any> {
-    let param = { searchName: name };
-
-    let queryParams = {};
-
-    queryParams = {
-      headers: this.headers,
-      observe: 'response',
-      params: param,
+      params: { searchName: name },
     };
 
     return this.http.get(
-      'http://localhost:8080/api/menuItem/getAll',
+      `${environment.baseUrl}/api/menuItem/getAll`,
       queryParams
     );
   }
 
   getById(id: string): Observable<any> {
-    return this.http.get('http://localhost:8080/api/menuItem/getById/' + id, {
+    return this.http.get(`${environment.baseUrl}/api/menuItem/getById/` + id, {
       headers: this.headers,
       responseType: 'json',
     });
@@ -49,21 +38,21 @@ export class ItemService {
 
   deleteMenuItem(id: string): Observable<any> {
     return this.http.delete(
-      'http://localhost:8080/api/menuItem/deleteMenuItem/' + id,
+      `${environment.baseUrl}/api/menuItem/deleteMenuItem/ ` + id,
       { headers: this.headers, responseType: 'json' }
     );
   }
 
   approveMenuItem(id: string): Observable<any> {
     return this.http.get(
-      'http://localhost:8080/api/menuItem/approveMenuItem/' + id,
+      `${environment.baseUrl}/api/menuItem/approveMenuItem/` + id,
       { headers: this.headers, responseType: 'json' }
     );
   }
 
   saveMenuItem(data: AddManagerDrink): Observable<any> {
     return this.http.post<AddManagerDrink>(
-      'http://localhost:8080/api/menuItem/addDrink',
+      `${environment.baseUrl}/api/menuItem/addDrink`,
       data,
       {
         headers: this.headers,

@@ -36,7 +36,7 @@
 
     <h4 class="name">{{ this.user.username }}</h4>
 
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
@@ -93,9 +93,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 1"
           [tableNumber]="1"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <div class="row">
@@ -109,9 +110,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 2"
           [tableNumber]="2"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <div class="row">
@@ -125,9 +127,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 3"
           [tableNumber]="3"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <!--
@@ -173,3 +176,8 @@
   [showPaymentQuestion]="false"
   (onPayOrderClose)="onPayOrderCloseClicked($event)"
 ></app-pay-order>
+<app-view-notifications
+  *ngIf="this.showNotificationsModal"
+  [currentUsername]="this.user.username"
+  (onNotificationsClose)="onNotificationsCloseClicked($event)"
+></app-view-notifications>

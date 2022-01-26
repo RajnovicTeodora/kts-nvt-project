@@ -43,21 +43,39 @@
 
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" (click)="onItemTableClicked()">
-      <mat-icon>person</mat-icon>
-      <span>Items table</span>
-    </button>
-    <button mat-button class="menu-button" (click)="onPaychecksClicked()">
-      <mat-icon>person</mat-icon>
-      <span>Paychecks</span>
-    </button>
-
+    <mat-action-list>
+      <!-- <mat-list-item (click)="this.activeView = '1'">Item view</mat-list-item>
+      <mat-list-item (click)="this.activeView = '2'">Menu</mat-list-item> -->
+      <button mat-button class="menu-button" (click)="onItemTableClicked()">
+        <mat-icon>person</mat-icon>
+        <span>Items table</span>
+      </button>
+      <button mat-button class="menu-button" (click)="onPaychecksClicked()">
+        <mat-icon>person</mat-icon>
+        <span>Paychecks</span>
+      </button>
+      <mat-list-item (click)="this.activeView = '3'">Paychecks</mat-list-item>
+      <mat-list-item (click)="this.activeView = '4'">Reports</mat-list-item>
+    </mat-action-list>
   </mat-sidenav>
-
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">
-      <app-employees class="paychecks" *ngIf="paychecksWindowOpen === true"></app-employees>
-      <app-item-table class="items" *ngIf="itemsWindowOpen === true"></app-item-table>
+      <div class="row">
+        <div class="col">
+          <div fxLayout="row wrap">
+            <ng-container>
+              <!-- <app-item-view *ngIf="this.activeView == '1'"></app-item-view> -->
+              <!-- <app-menu-view *ngIf="this.activeView == '2'"></app-menu-view> -->
+              <app-employees class="paychecks" *ngIf="paychecksWindowOpen === true"></app-employees>
+              <app-item-table class="items" *ngIf="itemsWindowOpen === true"></app-item-table>
+              <app-paycheck-table
+                *ngIf="this.activeView == '3'"
+              ></app-paycheck-table>
+              <app-report *ngIf="this.activeView == '4'"></app-report>
+            </ng-container>
+          </div>
+        </div>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

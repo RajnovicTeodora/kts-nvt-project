@@ -1,9 +1,11 @@
 import { Ingredient } from '../ingredient';
+import { Injectable } from '@angular/core';
 
-export interface AddManagerDrink {
+@Injectable()
+export class AddManagerDrink {
   name: string;
   image: string;
-  type: string;
+  drinkType: string;
   containerType: string;
   ingredients: Array<Ingredient>;
 }
