@@ -76,4 +76,16 @@ public class MenuItemController {
         LOG.info("Get item with id " + id);
         return this.menuItemService.getItem(id);
     }
+
+    @ResponseBody
+    @GetMapping(value = "/getWithIngredientsById/{id}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> getWithIngredientsById(@PathVariable("id") long id){
+        try {
+            return new ResponseEntity<>(menuItemService.getWithIngredientsById(id), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        }
+    }
 }

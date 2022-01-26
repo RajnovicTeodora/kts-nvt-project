@@ -6,6 +6,7 @@ import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.exception.OrderAlreadyPaidException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -115,7 +116,17 @@ public class OrderedItemController {
         }catch (NotFoundException e){
             return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
         }
+    }
 
+    @ResponseBody
+    @GetMapping(value = "/getOrderedItemsForOrderId/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> getOrderedItemsForOrderId( @PathVariable("orderId") long orderId) {
+        try {
+            return new ResponseEntity(orderedItemService.getOrderedItemsForOrderId(orderId), HttpStatus.OK);
+        }catch (NotFoundException e){
+            return new ResponseEntity("Couldn't find order", HttpStatus.NOT_FOUND);
+        }
     }
 
 

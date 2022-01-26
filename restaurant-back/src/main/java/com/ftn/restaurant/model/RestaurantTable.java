@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
 
+import java.util.List;
+
 @Entity
 @Table(name = "restaurant_table")
 public class RestaurantTable {
@@ -28,6 +30,12 @@ public class RestaurantTable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "area_id", nullable = false)
     private Area area;
+
+    @Column(name = "tableNum", nullable=false)
+    private int tableNum;
+
+    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
+    private List<Order> orders;
 
     public Long getId() {
         return id;
@@ -95,4 +103,19 @@ public class RestaurantTable {
         this.area = area;
     }
 
+    public int getTableNum() {
+        return tableNum;
+    }
+
+    public void setTableNum(int tableNum) {
+        this.tableNum = tableNum;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

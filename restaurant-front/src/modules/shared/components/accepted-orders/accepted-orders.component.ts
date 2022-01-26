@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { OrderedItem } from 'src/modules/shared/models/orderedItem';
+import { OrderedItem } from 'src/modules/shared/models/ordered-item';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrdersService } from '../../services/orders/orders.service';
 

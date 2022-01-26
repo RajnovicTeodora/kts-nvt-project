@@ -20,12 +20,15 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
 import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
+import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
+import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
 import { DishTableComponent } from './components/dish-table/dish-table.component';
 import { NewOrdersComponent } from './components/new-orders/new-orders.component';
 import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-orders.component';
 import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
 import { ListNewOrdersComponent } from './components/list-new-orders/list-new-orders.component';
+
 @NgModule({
   declarations: [
     ChangePasswordComponent,
@@ -41,6 +44,8 @@ import { ListNewOrdersComponent } from './components/list-new-orders/list-new-or
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    AfterLogoutComponent,
+    ConfirmActionComponent,
     DeleteIngredientDialogComponent,
     DishTableComponent,
     NewOrdersComponent,
@@ -78,7 +83,10 @@ import { ListNewOrdersComponent } from './components/list-new-orders/list-new-or
     DeleteIngredientDialogComponent,
     NewOrdersComponent,
     AcceptedOrdersComponent,
-    DishTableComponent
+    DishTableComponent,
+    AfterLogoutComponent,
+    ConfirmActionComponent,
+    DeleteIngredientDialogComponent
   ],
   providers: [
     {

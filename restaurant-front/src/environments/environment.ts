@@ -5,7 +5,11 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080',
-  notification: 'notification'
+  notification: 'notification',
+  table: 'api/table',
+  menuItem: 'api/menuItem',
+  order: 'api/order',
+  orderedItem: 'api/orderedItem'
 };
 
 /*

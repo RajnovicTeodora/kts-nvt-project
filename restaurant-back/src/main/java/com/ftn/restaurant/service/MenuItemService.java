@@ -1,18 +1,12 @@
 package com.ftn.restaurant.service;
 
-import com.ftn.restaurant.dto.DishDTO;
-import com.ftn.restaurant.dto.DrinkDTO;
+import com.ftn.restaurant.dto.*;
 import com.ftn.restaurant.dto.Items.DishWithIngredientsDTO;
 import com.ftn.restaurant.dto.Items.DrinkWithIngredientsDTO;
-import com.ftn.restaurant.dto.MenuItemDTO;
-import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.MenuItemNotFoundException;
-import com.ftn.restaurant.model.Dish;
-import com.ftn.restaurant.model.Drink;
-import com.ftn.restaurant.model.MenuItem;
-import com.ftn.restaurant.model.MenuItemPrice;
+import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.repository.DrinkRepository;
 import com.ftn.restaurant.repository.MenuItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +27,9 @@ import java.util.stream.Collectors;
 public class MenuItemService {
 
     private final MenuItemRepository menuItemRepository;
+
+    @Autowired
+    private MenuItemPriceService menuItemPriceService;
 
 
     @Autowired
@@ -82,6 +79,39 @@ public class MenuItemService {
             }else{
                 return new DishWithIngredientsDTO((Dish) item.get());
             }
+
+        }
+        throw new MenuItemNotFoundException("Item with id " + id + "not found");
+    }
+
+    public MenuItemWithIngredientsDTO getWithIngredientsById(long id){
+        Optional<MenuItem> item = this.menuItemRepository.findById(id);
+        if(item.isPresent()){
+            MenuItemWithIngredientsDTO itemWithIngredientsDTO = new MenuItemWithIngredientsDTO();
+            itemWithIngredientsDTO.setId(id);
+            itemWithIngredientsDTO.setName(item.get().getName());
+            itemWithIngredientsDTO.setPriority(1);
+            if(item.get() instanceof Drink){
+                itemWithIngredientsDTO.setType("drink");
+                Drink drink = (Drink) item.get();
+                itemWithIngredientsDTO.setContainer(drink.getContainerType().name());
+
+            }else{
+                itemWithIngredientsDTO.setType("dish");
+                itemWithIngredientsDTO.setContainer("");
+            }
+            if(!item.get().getIngredients().isEmpty()){
+                List<IngredientDTO> ingredientDTOS = new ArrayList<>();
+                for (Ingredient i : item.get().getIngredients()) {
+                    ingredientDTOS.add(new IngredientDTO(i));
+                }
+                itemWithIngredientsDTO.setIngredientDTOArray(ingredientDTOS);
+            }else
+                itemWithIngredientsDTO.setIngredientDTOArray(new ArrayList<>());
+
+            double val = menuItemPriceService.findCurrentPriceForMenuItemById(item.get().getId());
+            itemWithIngredientsDTO.setPrice(val);
+            return itemWithIngredientsDTO;
 
         }
         throw new MenuItemNotFoundException("Item with id " + id + "not found");

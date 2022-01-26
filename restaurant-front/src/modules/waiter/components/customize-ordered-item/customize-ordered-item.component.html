@@ -1,0 +1,92 @@
+<div id="container-div">
+  <div id="img-div">
+    <img
+      src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+  </div>
+  <div id="form-holder-div">
+    <h2>Customize {{ this.menuItemWithIngredients.name }}</h2>
+    <mat-divider></mat-divider>
+    <div class="row">
+      <span style="margin-right: 50%">Price: </span>
+      <span style="text-align: right"
+        >$ {{ this.menuItemWithIngredients.price }}
+      </span>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="row">
+      <mat-selection-list #ingredients class="custom-scroll-bar">
+        <!--NOTE isAlergen is actually isElementSelected-->
+        <mat-list-option
+          *ngFor="let i of this.menuItemWithIngredients.ingredients"
+          [selected]="i.isAlergen"
+          [value]="i"
+        >
+          {{ i.name }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label style="color: #b3b3b3"
+          >Quantity
+          <span *ngIf="this.menuItemWithIngredients.type == 'drink'"
+            >({{ this.menuItemWithIngredients.container }})</span
+          ></mat-label
+        >
+        <input matInput type="number" min="1" #quantity [value]="this.currentQ"/>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field
+        appearance="fill"
+        style="background-color: rgb(0 0 0 / 0%)"
+      >
+        <mat-label style="color: #b3b3b3">Priority</mat-label>
+        <mat-select [value]="this.menuItemWithIngredients.priority" #priority>
+          <mat-option *ngFor="let p of priorities" [value]="p">
+            {{ p }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="modal-footer">
+      
+      <button
+        mat-flat-button
+        type="button"
+        color="accent"
+        class="btn btn-danger"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button *ngIf="!this.editMode"
+        mat-flat-button
+        type="button"
+        color="primary"
+        class="btn btn-primary"
+        (click)="addToOrder()"
+      >
+        Add to order
+      </button>
+      
+      <button *ngIf="this.editMode"
+        mat-flat-button
+        type="button"
+        color="primary"
+        class="btn btn-primary"
+        (click)="saveChanges()"
+        matTooltip="Save changes to ordered item."
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+<div class="jw-modal-background"></div>

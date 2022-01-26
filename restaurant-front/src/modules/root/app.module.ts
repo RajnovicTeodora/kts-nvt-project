@@ -13,12 +13,11 @@ import { WaiterModule } from '../waiter/waiter.module';
 import { BartenderModule } from '../bartender/bartender.module';
 import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
-import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { ManagerModule } from '../manager/manager.module';
 import { ChefModule } from '../chef/chef.module';
 
 @NgModule({
-  declarations: [AppComponent, AfterLogoutComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
