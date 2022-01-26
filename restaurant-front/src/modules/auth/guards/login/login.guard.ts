@@ -21,7 +21,7 @@ export class LoginGuard implements CanActivate {
       }else if(userType === "MANAGER") {
         this.router.navigate(['/manager-dashboard']);
       }else if(userType === "HEAD_CHEF") {
-        this.router.navigate(['/headChef-dashboard']);
+        this.router.navigate(['/chef-dashboard']);
       }else if(userType === "CHEF") {
         this.router.navigate(['/chef-dashboard']);
       }else if(userType === "BARTENDER") {

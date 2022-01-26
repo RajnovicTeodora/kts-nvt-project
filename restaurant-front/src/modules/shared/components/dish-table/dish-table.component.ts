@@ -89,7 +89,7 @@ export class DishTableComponent implements OnInit {
     this.dishService.getIngredientsByItemid(dish.id).subscribe( (result) =>{
       console.log(result)
     const dialogRef = this.dialog.open(TableIngredientsDialogComponent, {
-      width: '1000px', data: {items: result.ingredients},
+      width: '300px', data: {items: result.ingredients},
     });
   });
   }

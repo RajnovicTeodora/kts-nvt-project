@@ -29,5 +29,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
            // "left join fetch ord.restaurantTable t  left join fetch ord.waiter w " +
             "where ord.waiter.username=?2 and ord.restaurantTable.tableNum=?1 ")//and not (e.status = 'DELIVERED')
     List<Long> getAllActiveOrdersForTable(int tableNum, String waiterUsername);
+
+
 }
 

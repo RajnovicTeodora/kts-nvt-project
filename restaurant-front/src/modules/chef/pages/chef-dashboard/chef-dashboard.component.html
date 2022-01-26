@@ -59,9 +59,6 @@
       <mat-list-item (click)="this.viewAcceptedOrders()"
         >Accepted ordered items</mat-list-item
       >
-      <mat-list-item [routerLink]="['/add-dish']">
-        Add new dish
-      </mat-list-item>
     </mat-action-list>
 
     <mat-divider></mat-divider>
@@ -87,11 +84,12 @@
           <div fxLayout="row wrap">
             <ng-container *ngFor="let image of data">
               <ng-container *ngFor="let image of data">
-                <img [src]="image.url" *ngIf="!this.isDishView && !this.isNewOrders && !this.isAcceptedOrders"/>
+                <img [src]="image.url" *ngIf="!this.isDishView && !this.isNewOrders && !this.isAcceptedOrders && !this.isNewOrderItems && !this.isAcceptedOrderItems"/>
                 <app-dish-table *ngIf="this.isDishView"></app-dish-table>
-                <app-new-orders *ngIf="this.isNewOrders"></app-new-orders>
-                <app-accepted-orders *ngIf="this.isAcceptedOrders"></app-accepted-orders>
-               
+                 <app-new-orders *ngIf="this.isNewOrderItems" [orderId]="this.idOrder"></app-new-orders> 
+                <app-accepted-orders *ngIf="this.isAcceptedOrderItems" [orderId]="this.idOrder"></app-accepted-orders>
+                <app-list-accepted-orders *ngIf="this.isAcceptedOrders" (onClickView)="onClickViewAccepted($event)"></app-list-accepted-orders>
+                <app-list-new-orders *ngIf="this.isNewOrders" (onClickView)="onClickViewNew($event)"></app-list-new-orders>
               </ng-container>
             </ng-container>
           </div>

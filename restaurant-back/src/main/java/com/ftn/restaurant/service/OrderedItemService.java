@@ -76,12 +76,20 @@ public class OrderedItemService {
               item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
               this.orderedItemRepository.save(item.get());
               this.bartenderRepository.save((Bartender) user);
+              String message = "Item " + item.get().getMenuItem().getName() + " is accepted. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
+              Notification n = new Notification(item.get(), message);
+              n.setWaiter(item.get().getOrder().getWaiter());
+              notificationRepository.save(n);
           }else{
                 ((Chef)user).getOrderedItems().add(item.get());
                 item.get().setWhoPreapiring((Chef)user);
                 item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
                 this.orderedItemRepository.save(item.get());
                 this.chefRepository.save((Chef) user);
+                String message = "Item " + item.get().getMenuItem().getName() + " is accepted. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
+                Notification n = new Notification(item.get(), message);
+                n.setWaiter(item.get().getOrder().getWaiter());
+                notificationRepository.save(n);
             }
           return  "You accepted order "+ item.get().getMenuItem().getName();
         }
@@ -96,7 +104,7 @@ public class OrderedItemService {
                 return "You can't finish order if it is not in status in progres.";
             }
             item.get().setStatus(OrderedItemStatus.READY);
-            String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table ";
+            String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
             Notification n = new Notification(item.get(), message);
             n.setWaiter(item.get().getOrder().getWaiter());
             notificationRepository.save(n);

@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Ingredient } from 'src/modules/shared/models/ingredient';
 import { AddChefDish } from 'src/modules/shared/models/item-models/add-chef-dish';
 import { Select } from 'src/modules/shared/models/select';
-import { DishesService } from 'src/modules/chef/service/dish/dishes.service';
+import { DishesService } from 'src/modules/head-chef/service/dish/dishes.service';
 
 @Component({
   selector: 'app-add-dish',

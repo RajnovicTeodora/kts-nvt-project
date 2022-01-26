@@ -28,6 +28,7 @@ import { NewOrdersComponent } from './components/new-orders/new-orders.component
 import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-orders.component';
 import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
 import { ListNewOrdersComponent } from './components/list-new-orders/list-new-orders.component';
+import { ListAcceptedOrdersComponent } from './components/list-accepted-orders/list-accepted-orders.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ListNewOrdersComponent } from './components/list-new-orders/list-new-or
     AcceptedOrdersComponent,
     TableIngredientsDialogComponent,
     ListNewOrdersComponent,
+    ListAcceptedOrdersComponent,
   ],
   imports: [
     CommonModule,
@@ -86,7 +88,9 @@ import { ListNewOrdersComponent } from './components/list-new-orders/list-new-or
     DishTableComponent,
     AfterLogoutComponent,
     ConfirmActionComponent,
-    DeleteIngredientDialogComponent
+    DeleteIngredientDialogComponent,
+    ListNewOrdersComponent,
+    ListAcceptedOrdersComponent
   ],
   providers: [
     {

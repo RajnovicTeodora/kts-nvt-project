@@ -35,6 +35,9 @@ export class ChefDashboardComponent implements OnInit {
   isDishView:boolean = false;
   isNewOrders: boolean =false;
   isAcceptedOrders: boolean =false;
+  isNewOrderItems: boolean =false;
+  isAcceptedOrderItems: boolean =false;
+  idOrder: any;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -207,22 +210,41 @@ export class ChefDashboardComponent implements OnInit {
   viewDishCard(){
     this.isNewOrders = false;
     this.isAcceptedOrders = false;
+    this.isAcceptedOrderItems = false;
     this.isDishView =true;
-    
+    this.isNewOrderItems=false;
   }
 
   viewAcceptedOrders(){
     this.isNewOrders = false;
     this.isDishView =false;
+    this.isAcceptedOrderItems = false;
     this.isAcceptedOrders = true;
-    
+    this.isNewOrderItems=false;
   }
 
   viewNewOrders(){
     this.isAcceptedOrders = false;
     this.isDishView =false;
+    this.isAcceptedOrderItems = false;
     this.isNewOrders = true;
-    
+    this.isNewOrderItems=false;
+  }
+  onClickViewNew(id:number){
+    this.isAcceptedOrders = false;
+    this.isDishView =false;
+    this.isNewOrders =false;
+    this.isAcceptedOrderItems = false;
+    this.idOrder = id;
+    this.isNewOrderItems= true;
+  }
+  onClickViewAccepted(id:number){
+    this.isAcceptedOrders = false;
+    this.isDishView =false;
+    this.isNewOrders =false;
+    this.idOrder = id;
+    this.isNewOrderItems= false;
+    this.isAcceptedOrderItems = true;
   }
 
 }

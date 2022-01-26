@@ -7,6 +7,7 @@ import com.ftn.restaurant.dto.NewDishDTO;
 import com.ftn.restaurant.exception.DishExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Dish;
+import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.DishRepository;
@@ -52,8 +53,10 @@ public class DishService {
         Dish dish = new Dish(dishDTO.getName(), dishDTO.getImage(), false, false, new ArrayList<MenuItemPrice>(), dishDTO.getType());
 
         for (IngredientDTO ingredient : dishDTO.getIngredients()){
+
             Ingredient newIngredient = new Ingredient(ingredient);
             dish.getIngredients().add(newIngredient);
+            this.ingredientRepository.save(newIngredient);
         }
         System.out.println("stiglo");
         return dishRepository.save(dish);
@@ -67,5 +70,30 @@ public class DishService {
             dtos.add(new DishDTO(d));
         }
         return dtos;
+    }
+
+    public List<Dish> getSearchedOrFiltered(String searchName, String filterName) {
+        List<Dish> dishes = dishRepository.getApprovedDishes();
+        List<Dish> searchedDishes = new ArrayList<>();
+        if(!searchName.equals("")){
+            for(Dish dish : dishes){
+                if(dish.getName().toLowerCase().equals(searchName.toLowerCase())){
+                    searchedDishes.add(dish);
+                }
+            }dishes = searchedDishes;
+        }
+
+        searchedDishes = new ArrayList<>();
+        System.out.println("moj filter"+filterName);
+        if(!filterName.equals("")){
+            for(Dish dish : dishes){
+                System.out.println("yoj filter"+dish.getDishType().name());
+                if(dish.getDishType().name().equals(filterName)){
+                    searchedDishes.add(dish);
+                }
+            }
+            dishes =searchedDishes;
+        }
+        return dishes;
     }
 }

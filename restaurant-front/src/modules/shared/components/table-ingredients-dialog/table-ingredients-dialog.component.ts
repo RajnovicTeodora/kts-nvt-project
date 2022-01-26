@@ -25,6 +25,7 @@ export class TableIngredientsDialogComponent implements OnInit {
     { }
 
   ngOnInit(): void {
+    console.log(this.data.items)
     this.dataSource = new MatTableDataSource<Ingredient>(this.data.items);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

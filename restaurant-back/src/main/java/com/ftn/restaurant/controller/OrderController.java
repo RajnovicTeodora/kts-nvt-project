@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
@@ -83,9 +85,24 @@ public class OrderController {
 
     @ResponseBody
     @GetMapping(value = "/getNote/{id}")
-    @PreAuthorize("hasRole('BARTENDER')")
+    @PreAuthorize("hasAnyRole('BARTENDER', 'CHEF', 'HEAD_CHEF')")
     public String getNote( @PathVariable long id){
         return this.orderService.getNote(id);
+
+    }
+    @ResponseBody
+    @GetMapping(value = "/getNewOrders")
+    @PreAuthorize("hasAnyRole('CHEF' , 'HEAD_CHEF', 'BARTENDER')")
+    public List<OrderDTO> getNewOrders(){
+        return this.orderService.getNewOrders();
+
+    }
+    //getAcceptedOrders
+    @ResponseBody
+    @GetMapping(value = "/getAcceptedOrders/{username}")
+    @PreAuthorize("hasAnyRole('CHEF' , 'HEAD_CHEF', 'BARTENDER')")
+    public List<OrderDTO> getAcceptedOrders(@PathVariable("username") String username){
+        return this.orderService.getAcceptedOrders(username);
 
     }
 }

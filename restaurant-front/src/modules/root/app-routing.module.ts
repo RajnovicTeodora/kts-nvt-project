@@ -21,9 +21,10 @@ import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashbo
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { ChefDashboardComponent } from '../chef/pages/chef-dashboard/chef-dashboard.component';
 import { NewOrdersComponent } from '../shared/components/new-orders/new-orders.component';
-import { AddDishComponent } from '../chef/pages/add-dish/add-dish.component';
+import { AddDishComponent } from '../head-chef/pages/add-dish/add-dish.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
 import { AcceptedOrdersComponent } from '../shared/components/accepted-orders/accepted-orders.component';
+import { HeadChefDashboardComponent } from '../head-chef/pages/head-chef-dashboard/head-chef-dashboard.component';
 
 const routes: Routes = [
   {
@@ -66,7 +67,14 @@ const routes: Routes = [
     pathMatch: 'full',
     component: ChefDashboardComponent,
     canActivate: [RoleGuard],
-    data: { expectedRoles: 'CHEF' },
+    data: { expectedRoles: 'CHEF'}, 
+  },
+  {
+    path: 'head-chef-dashboard',
+    pathMatch: 'full',
+    component: HeadChefDashboardComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'HEAD_CHEF'}, 
   },
   {
     path: 'view-one-drink',
@@ -130,7 +138,7 @@ const routes: Routes = [
     pathMatch: 'full',
     component: AddDishComponent,
     canActivate: [RoleGuard],
-    data: { expectedRoles: 'CHEF' }
+    data: { expectedRoles: 'HEAD_CHEF' }
   },{
     path: 'create-order',
     pathMatch: 'full',

@@ -26,4 +26,7 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
     @Query("SELECT d from Dish d where" +
             " d.approved = true AND d.deleted = false")
     List<Dish> findAproved();
+
+    @Query("SELECT d from Dish d where d.approved = true AND d.deleted = false")
+    List<Dish> getApprovedDishes();
 }
