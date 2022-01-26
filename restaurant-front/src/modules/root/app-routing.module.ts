@@ -18,6 +18,7 @@ import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashbo
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { MenuViewComponent } from '../manager/pages/menu-view/menu-view.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
+import { ReportComponent } from '../manager/pages/report/report.component';
 
 const routes: Routes = [
   {
@@ -132,6 +133,13 @@ const routes: Routes = [
     component: CreateOrderComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'reports',
+    pathMatch: 'full',
+    component: ReportComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
   },
 ];
 

@@ -19,6 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
 import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
 import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-paycheck-dialog.component';
+import { ReportComponent } from './pages/report/report.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { MenuViewComponent } from './pages/menu-view/menu-view.component';
 import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.component';
 
@@ -30,6 +32,7 @@ import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.com
     AddDrinkManagerComponent,
     PaycheckTableComponent,
     EditPaycheckDialogComponent,
+    ReportComponent,
     MenuViewComponent,
     MenuItemCardComponent,
   ],
@@ -53,6 +56,7 @@ import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.com
     RouterModule.forChild(ManagerRoutes),
     SharedModule,
     AuthModule,
+    NgApexchartsModule,
   ],
 })
 export class ManagerModule {}
