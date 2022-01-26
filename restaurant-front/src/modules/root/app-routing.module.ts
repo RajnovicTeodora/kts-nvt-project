@@ -16,7 +16,6 @@ import { AfterLogoutComponent } from '../shared/components/after-logout/after-lo
 import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
 import { EditAreaComponent } from '../admin/pages/edit-area/edit-area.component';
 import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
-import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
 import { MenuViewComponent } from '../manager/pages/menu-view/menu-view.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';

@@ -20,7 +20,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Select } from 'src/modules/shared/models/select';
 import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user-with-paycheck';
 import { PaycheckService } from 'src/modules/manager/services/paycheck-service/paycheck.service';  
-import { EditPaycheckDialogComponent } from 'src/modules/manager/pages/edit-paycheck-dialog/edit-paycheck-dialog.component'; 
+import { EditPaycheckDialogComponent } from 'src/modules/manager/components/edit-paycheck-dialog/edit-paycheck-dialog.component';  
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
 import { AddEmployeeComponent } from 'src/modules/admin/pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from 'src/modules/admin/pages/edit-employee/edit-employee.component';

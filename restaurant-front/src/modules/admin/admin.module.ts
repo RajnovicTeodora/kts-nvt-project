@@ -1,5 +1,5 @@
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
-import { EditTablesComponent } from './pages/edit-tables/edit-tables.component';
+import { EditTablesComponent } from './components/edit-tables/edit-tables.component'; 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
