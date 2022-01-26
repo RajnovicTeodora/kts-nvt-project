@@ -77,7 +77,7 @@ export class AddDrinkManagerComponent implements OnInit {
           this.toastr.success(
             'Successfully added and approved ' + success.name
           );
-          this.dialogRef.close();
+          this.dialogRef.close(success);
         },
         error: (error) => {
           this.toastr.error('Unable to add new item');

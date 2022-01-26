@@ -1,6 +1,8 @@
+import { Injectable } from '@angular/core';
 import { Report } from './report';
 
-export interface IncomeReport extends Report {
+@Injectable()
+export class IncomeReport extends Report {
   earnings: number;
   totalSoldItems: number;
 }

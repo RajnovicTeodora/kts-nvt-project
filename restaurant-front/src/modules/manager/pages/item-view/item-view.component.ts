@@ -8,9 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-item-table',
-  templateUrl: './item-table.component.html',
-  styleUrls: ['./item-table.component.scss'],
+  selector: 'app-item-view',
+  templateUrl: './item-view.component.html',
+  styleUrls: ['./item-view.component.scss'],
 })
 export class ItemTableComponent implements OnInit {
   dataSource: MatTableDataSource<Item>;
@@ -31,8 +31,8 @@ export class ItemTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.itemService.getAll().subscribe((response) => {
-      this.setData(response);
+    this.itemService.getAll('').subscribe((response) => {
+      this.setData(response.body);
     });
   }
 
@@ -46,19 +46,14 @@ export class ItemTableComponent implements OnInit {
   search() {
     this.searchString = this.searchForm.value.search;
 
-    this.itemService
-      .getAllBySearchCriteria(this.searchString)
-      .subscribe((response) => {
-        console.log(response.body);
-        this.dataSource.data = response.body;
-      });
+    this.itemService.getAll(this.searchString).subscribe((response) => {
+      this.dataSource.data = response.body;
+    });
   }
 
   onApproved(id: string) {
-    console.log(id);
     this.itemService.approveMenuItem(id).subscribe({
       next: (success) => {
-        console.log(success.name);
         this.toastr.success('Successfully approved ' + success.name);
         this.filterData(id);
       },
@@ -70,7 +65,6 @@ export class ItemTableComponent implements OnInit {
   }
 
   onDeleted(id: string) {
-    console.log(id);
     this.itemService.deleteMenuItem(id).subscribe({
       next: (success) => {
         this.toastr.success('Successfully deleted ' + success.name);
@@ -78,7 +72,6 @@ export class ItemTableComponent implements OnInit {
       },
       error: (error) => {
         this.toastr.error('Unable to delete item');
-        console.log(error);
       },
     });
   }

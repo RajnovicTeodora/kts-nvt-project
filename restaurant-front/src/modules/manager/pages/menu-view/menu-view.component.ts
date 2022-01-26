@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { MenuItemPrice } from 'src/modules/shared/models/menu-models/menu-item-price';
 import { MenuService } from '../../services/menu-service/menu.service';
-import { AddDrinkManagerComponent } from '../add-drink-manager/add-drink-manager.component';
+import { AddDrinkManagerComponent } from '../../components/add-drink-manager/add-drink-manager.component';
 
 @Component({
   selector: 'app-menu-view',
@@ -34,13 +34,16 @@ export class MenuViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setAll();
+  }
+
+  setAll() {
     this.menuService.getAll('').subscribe((response) => {
       this.setData(response.body);
     });
   }
 
   setData(data: MenuItemPrice[]) {
-    console.log(data);
     data.sort((a, b) => a.menuItem.name.localeCompare(b.menuItem.name));
     this.dataSource = new MatTableDataSource<MenuItemPrice>(data);
     this.dataSource.paginator = this.paginator;
@@ -71,7 +74,6 @@ export class MenuViewComponent implements OnInit {
     this.searchString = this.searchForm.value.search;
 
     this.menuService.getAll(this.searchString).subscribe((response) => {
-      console.log(response.body);
       (response.body as MenuItemPrice[]).sort((a, b) =>
         a.menuItem.name.localeCompare(b.menuItem.name)
       );
@@ -89,8 +91,14 @@ export class MenuViewComponent implements OnInit {
 
     const dialogRef = this.dialog.open(AddDrinkManagerComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe({
+      next: () => {
+        this.setAll();
+      },
+      error: (error) => {
+        this.toastr.error('Unable to approve item');
+        console.log(error);
+      },
     });
   }
 }
