@@ -21,6 +21,14 @@ public class MenuItemPriceDTO {
         this.approved = menuItemPrice.getItem().isApproved();
     }
 
+    public MenuItemPriceDTO(MenuItemDTO menuItem, double purchasePrice, double price, boolean active, boolean approved) {
+        this.menuItem = menuItem;
+        this.purchasePrice = purchasePrice;
+        this.price = price;
+        this.active = active;
+        this.approved = approved;
+    }
+
     public MenuItemDTO getMenuItem() {
         return menuItem;
     }

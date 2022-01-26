@@ -17,12 +17,11 @@ public interface MenuItemPriceRepository extends JpaRepository<MenuItemPrice, Lo
     Optional<MenuItemPrice> findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(
             @Param("id") long id, @Param("date") LocalDate date);
 
-    List<MenuItemPrice> findByItemIdNotIn(@Param("itemIds") List<Long> itemIds);
-
     Optional<MenuItemPrice> findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(@Param("id") long id);
 
     @Query("SELECT mip.price from MenuItemPrice mip where mip.item = :id and mip.active = true")
     double findCurrentPriceForMenuItemById(long id);
 
     List<MenuItemPrice> findByItemId(@Param("id") Long id);
+
 }
