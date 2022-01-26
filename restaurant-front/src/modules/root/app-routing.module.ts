@@ -10,7 +10,7 @@ import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.compon
 import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
 import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
 import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
-import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
+import { ItemTableComponent } from '../manager/pages/item-view/item-view.component';
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
