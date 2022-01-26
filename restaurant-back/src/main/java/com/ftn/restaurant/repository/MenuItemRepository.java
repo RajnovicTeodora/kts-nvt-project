@@ -28,4 +28,7 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
     @Query("select m from MenuItem m where m.deleted = false and m.approved = false and ( lower(m.name) like lower(concat('%', :searchName,'%')))")
     List<MenuItem> findAll(String searchName);
+
+    @Query("select m from MenuItem m where m.deleted = false and m.approved = true and ( lower(m.name) like lower(concat('%', :searchName,'%')))")
+    List<MenuItem> findByDeletedFalseAndApprovedTrueAndBySearchCriteria(String searchName);
 }
