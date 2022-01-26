@@ -33,8 +33,9 @@ export class DeleteAreaComponent implements OnInit {
           this.dialogRef.close();
         },
         error: (error) => {
-          this.toastr.error('Unable to delete area');
+          this.toastr.error('Area has occupied tables, or does not exits');
           console.log(error);
+          this.dialogRef.close();
         },
       });
   }
