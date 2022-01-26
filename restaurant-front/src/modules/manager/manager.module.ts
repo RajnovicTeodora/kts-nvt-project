@@ -20,6 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
 import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
 import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-paycheck-dialog.component';
+import { ReportComponent } from './pages/report/report.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-p
     AddDrinkManagerComponent,
     PaycheckTableComponent,
     EditPaycheckDialogComponent,
+    ReportComponent,
   ],
   imports: [
     CommonModule,
@@ -51,6 +54,7 @@ import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-p
     RouterModule.forChild(ManagerRoutes),
     SharedModule,
     AuthModule,
+    NgApexchartsModule,
   ],
 })
 export class ManagerModule {}
