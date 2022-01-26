@@ -19,6 +19,7 @@ import { AfterLogoutComponent } from '../shared/components/after-logout/after-lo
 import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
 
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
+import { EditAreaComponent } from '../admin/pages/edit-area/edit-area.component';
 
 const routes: Routes = [
   {
@@ -105,6 +106,13 @@ const routes: Routes = [
     component: ItemTableComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'MANAGER' },
+  },
+  {
+    path: 'edit-area',
+    pathMatch: 'full',
+    component: EditAreaComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'ADMIN' },
   },
   {
     path: 'create-order',

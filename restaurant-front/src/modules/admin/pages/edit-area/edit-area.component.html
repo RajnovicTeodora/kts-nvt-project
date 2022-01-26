@@ -1,0 +1,65 @@
+<mat-toolbar class="mat-elevation-z8">
+    <span class="span">NOTI</span>
+    <div
+      fxShow="true"
+      fxHide.lt-md="true"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+    </div>
+  </mat-toolbar>
+  
+  <mat-sidenav-container>
+  
+    <mat-sidenav class="mat-elevation-z8">
+      <span class="span">Areas</span>
+      <mat-divider></mat-divider>
+      <p *ngIf="areas.length === 0; else showAreaButtons">No areas exist!</p>
+      <ng-template #showAreaButtons>
+        <div *ngFor="let area of areas">
+          <button
+            mat-button
+            class="dugmic-area"
+          >
+            {{ area.name }}
+          </button>
+          <button
+            mat-button
+            color="accent"
+            type="submit"
+            class="submit-button"
+            (click)="openDeleteAreaDialog(area.name, area.id)"
+          >
+          <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </ng-template>
+      
+      <!-- <button mat-button class="menu-button" (click)="onRestaurantTablesClicked()">
+        <mat-icon> restaurant</mat-icon>
+        <span>Restaurant preview</span>
+      </button>
+  
+      <button mat-button class="menu-button" (click)="onEmployeesClicked()">
+        <mat-icon>person</mat-icon>
+        <span>Employees</span>
+      </button> -->
+      <mat-divider></mat-divider>
+      <button mat-raised-button color="accent" class="addAreaBttn">
+        <mat-icon>add</mat-icon>
+        <span>Add area</span>
+      </button>
+      <!-- <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button> -->
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <div class="content mat-elevation-z8">
+        <p>:)</p>
+      </div>
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
+  <!-- <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout> -->
