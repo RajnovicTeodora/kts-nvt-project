@@ -27,7 +27,7 @@ public class AreaController {
 
     @ResponseBody
     @PostMapping(path = "/addArea")
-   @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public AreaDTO addArea(@RequestBody String name) throws Exception{
     	return new AreaDTO(areaService.addArea(name));
     }

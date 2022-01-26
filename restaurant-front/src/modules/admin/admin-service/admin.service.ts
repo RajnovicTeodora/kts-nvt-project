@@ -71,4 +71,15 @@ export class AdminService {
       `${environment.baseUrl}/api/area/deleteArea/${id}`
     );
   }
+
+  addArea(name: string) : Observable<any> {
+    return this.http.post(
+      `${environment.baseUrl}/api/area/addArea`,
+      name,
+      {
+        headers: this.headers2,
+        responseType: 'json',
+      }
+    );
+  }
 }

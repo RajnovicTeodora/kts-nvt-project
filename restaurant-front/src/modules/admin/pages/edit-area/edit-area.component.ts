@@ -17,6 +17,7 @@ import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 import { MatTableDataSource } from '@angular/material/table';
 import { DeleteAreaComponent } from '../../components/delete-area/delete-area.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddAreaComponent } from '../../components/add-area/add-employee/add-area.component';
 
 @Component({
   selector: 'app-edit-area',
@@ -49,6 +50,7 @@ export class EditAreaComponent implements OnInit {
   getAreas() {
     this.adminService.getAllAreas().subscribe((response) => {
       this.areas = response;
+      console.log(this.areas);
       if(this.areas.length !== 0){
         this.activeArea = this.areas[0];
       }
@@ -88,5 +90,23 @@ export class EditAreaComponent implements OnInit {
     });
   }
 
+  openAddAreaDialog() {
+    const dialogRef = this.dialog.open(AddAreaComponent,  {
+      disableClose: true,
+      autoFocus: true,
+      width: '40%',
+      height: '30%',
+
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      this.getAreas();
+    });
+  }
+
+  return() {
+    this.router.navigate(['/admin-dashboard']);
+  }
 
 }

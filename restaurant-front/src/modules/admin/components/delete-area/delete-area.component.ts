@@ -24,7 +24,6 @@ export class DeleteAreaComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteArea() {
-      console.log(this.id)
       this.adminService.deleteArea(this.id).subscribe({
         next: (success) => {
           this.toastr.success(

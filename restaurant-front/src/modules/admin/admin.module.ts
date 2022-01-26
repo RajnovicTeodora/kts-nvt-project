@@ -20,6 +20,7 @@ import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.compo
 import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 import { EditAreaComponent } from './pages/edit-area/edit-area.component';
 import { DeleteAreaComponent } from './components/delete-area/delete-area.component';
+import { AddAreaComponent } from './components/add-area/add-employee/add-area.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DeleteAreaComponent } from './components/delete-area/delete-area.compon
     EditEmployeeComponent,
     DeleteEmployeeComponent,
     EditAreaComponent,
-    DeleteAreaComponent
+    DeleteAreaComponent,
+    AddAreaComponent
   ],
   imports: [
     CommonModule,

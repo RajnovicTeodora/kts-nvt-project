@@ -32,24 +32,7 @@ mat-toolbar {
     height: calc(100vh - 65px);
     align-items: start;
   }
-  
-  
-  .dugmic-back {
-    color: black;
-    background-color: white;
-    margin-right: 30px;
-  }
-  
-  .dugmic-search {
-    color: black;
-    background-color: white;
-    margin-left: 10px;
-  }
-  
-  .row {
-    width: 90%;
-  }
-  
+
   mat-form-field {
     width: 85%;
   }
@@ -73,13 +56,7 @@ mat-toolbar {
   .custom-scroll-bar::-webkit-scrollbar-thumb{
       background: rgba(0,0,0,.26);
   }
-  
-  .buttons {
-    text-align: center;
-    align-content: center;
-    height:calc(100vh - 220px);
-  }
-  
+
   .dugmic-area {
     font-size: large;
     margin-left: 15px;
@@ -89,6 +66,7 @@ mat-toolbar {
     margin-top: 15px;
     margin-bottom: 15px;
   }
+
   
   .menu-button {
     width: 100%;
