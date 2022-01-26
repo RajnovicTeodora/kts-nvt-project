@@ -38,4 +38,20 @@ export class OrderService {
       `${environment.baseUrl}/${environment.order}/getActiveOrdersForTable/${tableNum}/${waiterUsername}`
     );
   }
+
+  getOrder(tableNum: number): Observable<Order>{
+    return this.http.get<Order>(
+      `${environment.baseUrl}/${environment.order}/getOrder/${tableNum}`,
+      { responseType: 'json' }
+    );
+  }
+
+  updateOrder(order: Order): Observable<string> {
+    return this.http.post(
+      `${environment.baseUrl}/${environment.order}/updateOrder`, order, {
+        headers: this.headers,
+        responseType: 'text'
+      }
+    );
+  }
 }
