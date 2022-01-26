@@ -48,9 +48,11 @@ export class MenuItemCardComponent implements OnInit {
 
     this.menuService.updateMenuItemPrice(newPrices).subscribe({
       next: (success) => {
-        this.item.price = success.body.price;
-        this.item.purchasePrice = success.body.purchasePrice;
-        this.toastr.success('Successfully updated prices for ' + success.name);
+        this.item.price = success.price;
+        this.item.purchasePrice = success.purchasePrice;
+        this.toastr.success(
+          'Successfully updated prices for ' + success.menuItem.name
+        );
       },
       error: (error) => {
         this.toastr.error('Unable to update menu item prices');
@@ -68,7 +70,7 @@ export class MenuItemCardComponent implements OnInit {
       next: (success) => {
         this.item.active = success.body.active;
         this.toastr.success(
-          'Successfully changed ' + success.body.name + ' status'
+          'Successfully changed ' + success.body.menuItem.name + ' status'
         );
       },
       error: (error) => {

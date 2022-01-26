@@ -27,6 +27,7 @@
           id="price"
           name="price"
           required
+          min="0"
         />
         <input
           matInput
@@ -37,6 +38,7 @@
           id="purchasePrice"
           name="purchasePrice"
           required
+          min="0"
         />
         <button
           mat-flat-button
@@ -54,10 +56,8 @@
   </mat-card-content>
   <mat-card-actions>
     <div
-      matTooltip="You cannot delete that"
-      [matTooltipDisabled]="
-        this.item.price <= 0 || this.item.purchasePrice <= 0
-      "
+      matTooltip="Can't approve item without prices"
+      [matTooltipDisabled]="this.item.price > 0 && this.item.purchasePrice > 0"
     >
       <p>Is on menu:</p>
       <button

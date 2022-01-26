@@ -72,6 +72,9 @@ export class MenuViewComponent implements OnInit {
 
     this.menuService.getAll(this.searchString).subscribe((response) => {
       console.log(response.body);
+      (response.body as MenuItemPrice[]).sort((a, b) =>
+        a.menuItem.name.localeCompare(b.menuItem.name)
+      );
       this.dataSource.data = response.body;
     });
   }
