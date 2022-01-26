@@ -11,10 +11,10 @@ public class LoginPage {
     @FindBy(id = "username")
     private WebElement usernameInput;
 
-    @FindBy(xpath = "//input[@type='password']")
+    @FindBy(xpath = "//*[@id='password']")
     private WebElement passwordInput;
 
-    @FindBy(id = "login-button")
+    @FindBy(id = "submit-button")
     private WebElement loginButton;
 
     public LoginPage(WebDriver driver) {
