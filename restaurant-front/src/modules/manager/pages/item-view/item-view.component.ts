@@ -8,9 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-item-table',
-  templateUrl: './item-table.component.html',
-  styleUrls: ['./item-table.component.scss'],
+  selector: 'app-item-view',
+  templateUrl: './item-view.component.html',
+  styleUrls: ['./item-view.component.scss'],
 })
 export class ItemTableComponent implements OnInit {
   dataSource: MatTableDataSource<Item>;
