@@ -1,6 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.RestaurantTableDTO;
+import com.ftn.restaurant.exception.ActiveOrdersPresentException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.service.TableService;
@@ -46,6 +47,9 @@ public class TableController {
         }
         catch (NotFoundException e){
             return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
+        }
+        catch (ActiveOrdersPresentException e){
+            return new ResponseEntity<>("Can't unoccupy table when there are active orders.", HttpStatus.FORBIDDEN);
         }
     }
 

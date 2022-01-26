@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -15,9 +16,10 @@ import { RestaurantTableService } from 'src/modules/shared/services/restaurant-t
 })
 export class TableOptionsComponent implements OnInit {
   @Input() tableNumber = 0;
+  @Input() refreshRequired :boolean;
   @Output() onRestaurantTableClose = new EventEmitter();
   @Output() onViewOrderAndBill = new EventEmitter();
-  @Output() onEditOrder = new EventEmitter();
+  @Output() refreshFinished = new EventEmitter();
   title: string;
   currentUser: UserWithToken;
   table: RestaurantTable;
@@ -31,6 +33,7 @@ export class TableOptionsComponent implements OnInit {
   @ViewChild(MatTable) matTable: MatTable<number>;
 
   constructor(
+    private observer: BreakpointObserver,
     private tableService: RestaurantTableService,
     private orderService: OrderService,
     public router: Router,
@@ -48,6 +51,17 @@ export class TableOptionsComponent implements OnInit {
     this.setTable();
     this.getActiveTableOrderNumbers();
     
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(this.refreshRequired){
+      this.ELEMENT_DATA = [];
+      this.dataSource = [];
+      this.matTable.renderRows();
+      this.getActiveTableOrderNumbers();
+      this.refreshFinished.emit(true);
+      this.refreshRequired = false;
+    }
   }
 
   setTable() {
@@ -153,7 +167,21 @@ export class TableOptionsComponent implements OnInit {
   }
 
   editOrder(orderNumber:number){
-    this.onEditOrder.emit(orderNumber);
+    this.orderService
+      .checkIfOrderIsPaid(orderNumber)
+      .subscribe({
+        next: (result) => {
+          if(!result){
+            localStorage.setItem('orderNum', JSON.stringify(orderNumber));
+            this.router.navigate(['/edit-order']);
+          }else{
+            this.toastr.error("Can't edit order that is paid.");
+          }
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
   }
 
   viewOrderAndBill(orderNumber:number){

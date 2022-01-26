@@ -4,24 +4,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from '../admin/pages/admin-dashboard/admin-dashboard.component';
 import { RoleGuard } from '../auth/guards/role/role.guard';
 import { LoginFormComponent } from '../auth/pages/login/login-form.component';
-
-import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
-
 import { AcceptedOrdersComponent } from '../bartender/pages/accepted-orders/accepted-orders.component';
-import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
 import { NewOrdersComponent } from '../bartender/pages/new-orders/new-orders.component';
+import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
+import { EditOrderComponent } from '../waiter/pages/edit-order/edit-order.component';
+import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
+import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
 import { ViewDrinksComponent } from '../bartender/pages/view-drinks/view-drinks.component';
 import { ViewOneDrinkComponent } from '../bartender/pages/view-one-drink/view-one-drink.component';
-
-import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
+import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
 import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/manager-dashboard.component';
-import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
-
-import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
-
-import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
-
+import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
+import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
 
 const routes: Routes = [
@@ -128,6 +123,13 @@ const routes: Routes = [
     path: 'create-order',
     pathMatch: 'full',
     component: CreateOrderComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'edit-order',
+    pathMatch: 'full',
+    component: EditOrderComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
   },

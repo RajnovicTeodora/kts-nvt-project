@@ -126,5 +126,24 @@ export class PayOrderComponent implements OnInit {
     this.onPayOrderClose.emit(true);
   }
 
-  deliverOrderedItem(element: OrderedItem){}
+  deliverOrderedItem(element: OrderedItem){
+    this.orderedItemsService
+      .setOrderedItemDelivered(element.id)
+      .subscribe({
+        next: (result) => {
+          this.toastr.success(result);
+          this.ELEMENT_DATA.forEach((value, index )=>{
+            if(value == element){
+              element.status = 'DELIVERED';
+              this.ELEMENT_DATA[index] = element;
+              this.dataSource[index] = element;
+              this.table.renderRows();
+            }
+          });
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });
+  }
 }

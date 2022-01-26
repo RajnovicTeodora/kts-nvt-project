@@ -24,6 +24,9 @@ public class TableService {
     @Autowired
     private WaiterService waiterService;
 
+    @Autowired
+    private OrderService orderService;
+
     public RestaurantTable findOne(Long id) {
         return tableRepository.findById(id).orElse(null);
     }
@@ -50,6 +53,9 @@ public class TableService {
         if (rt != null) {
             if(!rt.isOccupied()){
                 throw new ForbiddenException("Table is already cleared");
+            }
+            if(!orderService.getActiveOrdersForTable(tableNum, waiter).isEmpty()){
+                throw new ActiveOrdersPresentException("Can't unoccupy table when there are active orders.");
             }
             rt.setOccupied(false);
             save(rt);

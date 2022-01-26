@@ -2,10 +2,7 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
-import com.ftn.restaurant.exception.BadRequestException;
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.exception.OrderAlreadyPaidException;
+import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
@@ -150,7 +147,7 @@ public class OrderedItemService {
         throw new NotFoundException("Couldn't find ordered item.");
     }
 
-    public OrderedItem updateOrderedItem(long id, OrderItemDTO orderItemDTO){
+    public String updateOrderedItem(long id, OrderItemDTO orderItemDTO){
         Order order = findOrderByOrderedItemId(id);
         if(order != null) {
             if (order.isPaid()) {
@@ -167,11 +164,14 @@ public class OrderedItemService {
             orderItem.setPriority(orderItemDTO.getPriority());
             orderItem.setActiveIngredients(new ArrayList<>());
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-                Optional<Ingredient> i = ingredientService.findByIngredientNameAndIsAlergen(ingredientDTO.getName(), ingredientDTO.isAlergen());
-                i.ifPresent(orderItem::addActiveIngredients);
+                Ingredient i = ingredientService.findOne(ingredientDTO.getId());
+                if(i != null){
+                    orderItem.addActiveIngredients(i);
+                }else
+                    throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
             }
             save(orderItem);
-            return orderItem;
+            return "Successfully updated ordered item with id: "+ orderItemDTO.getId();
         }
         throw new NotFoundException("Couldn't find order.");
     }
@@ -185,9 +185,10 @@ public class OrderedItemService {
             OrderedItem orderItem = new OrderedItem();
             orderItem.setQuantity(orderItemDTO.getQuantity());
             orderItem.setPriority(orderItemDTO.getPriority());
+            orderItem.setOrder(order);
             Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDTO.getMenuItemId());
             if(!menuItem.isPresent()){
-                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDTO.getMenuItemId());
+                throw new MenuItemNotFoundException("Couldn't find menu item with id: " + orderItemDTO.getMenuItemId());
             }
             menuItem.ifPresent(orderItem::setMenuItem);
             orderItem.setDeleted(false);
@@ -196,7 +197,7 @@ public class OrderedItemService {
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
                 Ingredient i = ingredientService.findOne(ingredientDTO.getId());
                 if(i == null){
-                    throw new NotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
+                    throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
                 }
                 orderItem.addActiveIngredients(i);
             }

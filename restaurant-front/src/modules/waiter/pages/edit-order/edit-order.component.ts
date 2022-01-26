@@ -8,35 +8,43 @@ import { BehaviorSubject } from 'rxjs';
 import { MenuItemWithIngredients } from 'src/modules/shared/models/menu-item-with-ingredients';
 import { Order } from 'src/modules/shared/models/order';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
-import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrderService } from 'src/modules/shared/services/order-service/order.service';
+import { OrderedItemService } from 'src/modules/shared/services/ordered-item-service/ordered-item.service';
 
 @Component({
-  selector: 'app-create-order',
-  templateUrl: './create-order.component.html',
-  styleUrls: ['./create-order.component.scss'],
+  selector: 'app-edit-order',
+  templateUrl: './edit-order.component.html',
+  styleUrls: ['./edit-order.component.scss'],
 })
-export class CreateOrderComponent implements OnInit {
+export class EditOrderComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
-  @ViewChild(MatTable) table: MatTable<MenuItemWithIngredients>;
+  @ViewChild(MatTable) table: MatTable<OrderedItem>;
   totalCost: number;
   showOrderedItemDetails: boolean;
   currentOrderedItemDetails: MenuItemWithIngredients;
   showConfirmAction: boolean;
   showAdditionalNotes: boolean;
-  showPaymentModal: boolean;
   currentAdditionalNotes: string;
   confirmActionTitleDelete: string;
-  ELEMENT_DATA: MenuItemWithIngredients[] = [];
-  displayedColumns: string[] = ['quantity', 'name', 'details', 'delete'];
+  ELEMENT_DATA: OrderedItem[] = [];
+  displayedColumns: string[] = [
+    'quantity',
+    'name',
+    'status',
+    'edit',
+    'delete',
+  ];
   dataSource = [...this.ELEMENT_DATA];
-  createdOrderId: number;
+  currentOrder: Order;
+  currentOrderedItem: OrderedItem;
+  currentMenuItemId: number;
 
   constructor(
     public router: Router,
     private observer: BreakpointObserver,
     private toastr: ToastrService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private orderedItemService: OrderedItemService
   ) {
     this.totalCost = 0;
     this.showOrderedItemDetails = false;
@@ -46,7 +54,30 @@ export class CreateOrderComponent implements OnInit {
     this.showAdditionalNotes = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getOrder();
+  }
+
+  getOrder() {
+    const orderNum = new BehaviorSubject<number>(
+      JSON.parse(localStorage.getItem('orderNum')!)
+    );
+    this.orderService.getOrder(orderNum.value).subscribe({
+      next: (result) => {
+        this.currentOrder = result;
+        this.currentAdditionalNotes = result.note;
+        this.currentOrder.orderItems.forEach((value, index)=>{
+          this.totalCost += value.price * value.quantity;
+          this.ELEMENT_DATA.push(value);
+          this.dataSource.push(value);
+          this.table.renderRows();
+        })
+      },
+      error: (data) => {
+        this.toastr.error(data.error);
+      },
+    });
+  }
 
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
@@ -62,8 +93,14 @@ export class CreateOrderComponent implements OnInit {
 
   onAddToOrderForwardedClicked(item: MenuItemWithIngredients) {
     this.totalCost += item.price * item.quantity;
-    this.ELEMENT_DATA.push(item);
-    this.dataSource.push(item);
+    let temp = new OrderedItem(item.priority, item.quantity, item.id, item.ingredients);
+    temp.menuItemName = item.name;
+    temp.price = item.price;
+    temp.id = -1;
+    temp.status = "PENDING";
+
+    this.ELEMENT_DATA.push(temp);
+    this.dataSource.push(temp);
     this.table.renderRows();
   }
 
@@ -71,51 +108,30 @@ export class CreateOrderComponent implements OnInit {
     this.showOrderedItemDetails = false;
   }
 
-  viewOrderedItemDetails(element: MenuItemWithIngredients) {
+  viewOrderedItemDetailsAndEdit(element: OrderedItem) {
     this.showOrderedItemDetails = true;
-    this.currentOrderedItemDetails = element;
+    let oi = new MenuItemWithIngredients(element.id, element.price, element.menuItemName, "", element.activeIngredients);
+    this.currentMenuItemId = element.menuItemId;
+    oi.priority = element.priority;
+    oi.quantity = element.quantity;
+    this.currentOrderedItemDetails = oi;
+    this.currentOrderedItem = element;
   }
 
-  onPaylaterClicked(item: boolean) {
-    this.showPaymentModal = false;
-    this.router.navigate(['/waiter-dashboard']);
-  }
-
-  confirm() {
+  
+  saveChanges() {
     if (this.ELEMENT_DATA.length == 0) {
-      this.toastr.error("Can't create order with no ordered items.");
-    } else {
-      let orderItems = Array<OrderedItem>();
-      this.ELEMENT_DATA.forEach((value, index) => {
-        let orderitem = new OrderedItem(
-          value.priority,
-          value.quantity,
-          value.id,
-          value.ingredients
-        );
-        orderItems.push(orderitem);
-      });
-
-      let order = new Order(
-        false,
-        this.totalCost,
-        this.currentAdditionalNotes,
-        orderItems
-      );
-      const temp = new BehaviorSubject<UserWithToken>(
-        JSON.parse(localStorage.getItem('currentUser')!)
-      );
-      const tableId = new BehaviorSubject<number>(
-        JSON.parse(localStorage.getItem('tableId')!)
-      );
-      order.waiterUsername = temp.value.username;
-      order.tableId = tableId.value;
-      localStorage.removeItem('tableId');
-      this.orderService.createOrder(order).subscribe({
+      this.toastr.error("Can't save order with no ordered items.");
+    }
+    else {      
+      let order = this.currentOrder;
+      order.totalPrice = this.totalCost;
+      order.note = this.currentAdditionalNotes;
+      order.orderItems = this.ELEMENT_DATA;
+      
+      this.orderService.updateOrder(order).subscribe({
         next: (result) => {
-          this.toastr.success('Succesfully added new order.');
-          this.createdOrderId = result;
-          this.showPaymentModal = true;
+          //TODO
         },
         error: (data) => {
           this.toastr.error(data.error);
@@ -128,10 +144,10 @@ export class CreateOrderComponent implements OnInit {
     this.router.navigate(['/waiter-dashboard']);
   }
 
-  onEditOrderedItemClicked(item: MenuItemWithIngredients) {
+  onEditOrderedItemClicked(item: OrderedItem) {
     this.showOrderedItemDetails = false;
     this.ELEMENT_DATA.forEach((value, index) => {
-      if (value == this.currentOrderedItemDetails) {
+      if (value == this.currentOrderedItem) {
         this.totalCost -= value.price * value.quantity;
         this.ELEMENT_DATA[index] = item;
         this.totalCost += item.price * item.quantity;
@@ -141,10 +157,10 @@ export class CreateOrderComponent implements OnInit {
     this.table.renderRows();
   }
 
-  onDeleteOrderedItemClicked(item: MenuItemWithIngredients) {
-    this.currentOrderedItemDetails = item;
+  onDeleteOrderedItemClicked(item: OrderedItem) {
+    this.currentOrderedItem = item;
     this.confirmActionTitleDelete =
-      'Are you sure you want to delete ordered ' + item.name + '?';
+      'Are you sure you want to delete ordered ' + item.menuItemName + '?';
     this.showConfirmAction = true;
   }
 
@@ -157,10 +173,21 @@ export class CreateOrderComponent implements OnInit {
     this.showConfirmAction = false;
     this.confirmActionTitleDelete = '';
     this.ELEMENT_DATA.forEach((value, index) => {
-      if (value == this.currentOrderedItemDetails) {
+      if (value == this.currentOrderedItem) {
         this.totalCost -= value.price * value.quantity;
         this.ELEMENT_DATA.splice(index, 1);
         this.dataSource.splice(index, 1);
+
+        if(this.currentOrderedItem.id != -1){
+          this.orderedItemService.deleteOrderedItem(this.currentOrderedItem.id).subscribe({
+            next: (result) => {
+              this.toastr.success(result);            
+            },
+            error: (data) => {
+              this.toastr.error(data.error);
+            },
+          });
+        }
       }
     });
     this.table.renderRows();
@@ -177,10 +204,5 @@ export class CreateOrderComponent implements OnInit {
   onAdditionalNotesConfirmClicked(item: string) {
     this.currentAdditionalNotes = item;
     this.showAdditionalNotes = false;
-  }
-
-  onPayOrderCloseClicked(item: boolean) {
-    this.showPaymentModal = false;
-    this.router.navigate(['/waiter-dashboard']);
   }
 }

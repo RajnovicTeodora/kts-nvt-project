@@ -37,6 +37,7 @@ export class WaiterDashboardComponent implements OnInit {
   showPaymentModal: boolean;
   currentBadgeContent: number;
   currentOrderViewed: number;
+  refreshRestaurantTableRequired = false;
   ////////////////TODO isidora
   showModalRestaurantTableOptions: number;
 
@@ -175,16 +176,18 @@ export class WaiterDashboardComponent implements OnInit {
 
   onPayOrderCloseClicked(item:boolean){
     this.showPaymentModal = false;
+    this.refreshRestaurantTableRequired = true;
+    //TODO olja, after order finished remove from
+  }
+
+  onRefreshFinished(item:boolean){
+    this.refreshRestaurantTableRequired = false;
   }
 
   onViewOrderAndBillClicked(order:number){
     this.currentOrderViewed = order;
     //this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = true;    
-  }
-
-  onEditOrderClicked(order:number){
-    //TODO olja
   }
 
   changeAccount(username: string) {

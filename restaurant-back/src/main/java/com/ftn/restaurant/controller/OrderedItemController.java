@@ -58,10 +58,11 @@ public class OrderedItemController {
     public List<OrderItemDTO> getAcceptedItemsFromTable( @PathVariable long id, @PathVariable String username){
         return this.orderedItemService.findAllAcceptedByOrderIdDTO(id, username);
     }
+
     @ResponseBody
     @GetMapping(value = "/confirmPickup/{id}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> confirmPickup(@PathVariable long id){
+    public ResponseEntity<?> confirmPickup(@PathVariable("id") long id){
         try {
             return new ResponseEntity(orderedItemService.confirmPickup(id), HttpStatus.OK);
         }catch (NotFoundException e){
@@ -76,7 +77,7 @@ public class OrderedItemController {
     @ResponseBody
     @GetMapping(value = "/setDeleted/{id}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> deleteOrderedItem( @PathVariable long id) {
+    public ResponseEntity<?> deleteOrderedItem( @PathVariable("id") long id) {
         try {
             return new ResponseEntity(orderedItemService.deleteOrderedItem(id), HttpStatus.OK);
         } catch (ForbiddenException e){
@@ -93,7 +94,7 @@ public class OrderedItemController {
     @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<?> updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
         try {
-            return new ResponseEntity(new OrderItemDTO(orderedItemService.updateOrderedItem(id, orderItemDTO)), HttpStatus.OK);
+            return new ResponseEntity(orderedItemService.updateOrderedItem(id, orderItemDTO), HttpStatus.OK);
         } catch (ForbiddenException e){
             return new ResponseEntity("Can't change ordered item in preparation.", HttpStatus.FORBIDDEN);
         } catch (OrderAlreadyPaidException e){

@@ -26,8 +26,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     double sumTotalPriceByIsPaidAndDateBetween(@Param("from") LocalDate from, @Param("to") LocalDate to);
 
     @Query("select ord.id from Order ord " +
-           // "left join fetch ord.restaurantTable t  left join fetch ord.waiter w " +
-            "where ord.waiter.username=?2 and ord.restaurantTable.tableNum=?1 ")//and not (e.status = 'DELIVERED')
+            "where ord.waiter.username=?2 and ord.restaurantTable.tableNum=?1 ")
     List<Long> getAllActiveOrdersForTable(int tableNum, String waiterUsername);
+
+    @Query("select ord.isPaid from Order ord where ord.id=?1 ")
+    boolean orderIsPaid(long orderId);
+
+    @Query("select o from Order o where o.orderNumber = ?1")
+    Order findByOrderNumber(int orderNum);
 }
 

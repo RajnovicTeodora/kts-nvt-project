@@ -101,9 +101,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 1"
           [tableNumber]="1"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <div class="row">
@@ -117,9 +118,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 2"
           [tableNumber]="2"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <div class="row">
@@ -133,9 +135,10 @@
         <app-table-options
           *ngIf="this.showModalRestaurantTableOptions == 3"
           [tableNumber]="3"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
           (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
           (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-          (onEditOrder)="onEditOrderClicked($event)"
         ></app-table-options>
       </div>
       <!--

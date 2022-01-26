@@ -5,6 +5,7 @@ import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
+import com.ftn.restaurant.exception.OrderAlreadyPaidException;
 import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.repository.OrderRepository;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -101,17 +103,31 @@ public class OrderService {
     }
 
 
-    public Order updateOrder(long id, OrderDTO ordDTO){
-        Order order = findOneWithOrderItems(id);
-
-        if(order.isPaid()){
-            throw new ForbiddenException("Can't change order that is already paid.");
+    public String updateOrder(OrderDTO ordDTO){
+        Order order = findOneWithOrderItems(ordDTO.getId());
+        if(order==null){
+            throw new NotFoundException("Couldn't find order.");
         }
-
-        order.setNote(ordDTO.getNote());
+        if(order.isPaid()){
+            throw new OrderAlreadyPaidException("Can't change order that is already paid.");
+        }
+        for (OrderItemDTO item: ordDTO.getOrderItems()) {
+            if(item.getId() == -1){
+                //TODO notif of new ordered item
+                orderedItemService.addOrderItemToOrder(ordDTO.getId(), item);
+            }
+            else if(item.getStatusAsString().equals("PENDING")){
+                //TODO notif of update
+                orderedItemService.updateOrderedItem(ordDTO.getId(), item);
+            }
+        }
+        if(!order.getNote().equals(ordDTO.getNote())){
+            order.setNote(ordDTO.getNote());
+            //TODO notif of note update
+        }
         save(order);
 
-        return order;
+        return "Successfully updated order with order number: " + order.getOrderNumber();
     }
 
     public String setTotalPriceAndPay(long id){
@@ -133,6 +149,7 @@ public class OrderService {
 
         throw new NotFoundException("Couldn't find order with id: "+ id);
     }
+
     public String getNote(long id) {
         return this.orderRepository.findByOrderId(id).getNote();
     }
@@ -155,6 +172,8 @@ public class OrderService {
                 for (Long orderid: orders) {
                     if(orderedItemService.orderContainsActiveOrderedItems(orderid)){
                         retval.add(Integer.parseInt(orderid.toString()));
+                    }else if(!orderRepository.orderIsPaid(orderid)){
+                        retval.add(Integer.parseInt(orderid.toString()));
                     }
                 }
             }
@@ -162,5 +181,29 @@ public class OrderService {
         }
 
         throw new NotFoundException("Couldn't find table with table number: "+ tableNum);
+    }
+
+    public OrderDTO getOrder(int orderNum){
+        Order order = orderRepository.findByOrderNumber(orderNum);
+        if(order != null){
+            List<OrderItemDTO> orderItemDTOList = new ArrayList<>();
+            List<OrderedItem> orderedItems = orderedItemService.findAllByOrderId(order.getId());
+            for (OrderedItem oi: orderedItems ) {
+                List<Ingredient> ingredients = ingredientService.findByOrderedItemId(oi.getId());
+                oi.setActiveIngredients(ingredients);
+                OrderItemDTO orderItemDTO = new OrderItemDTO(oi);
+                orderItemDTO.setPrice(menuItemPriceService.findCurrentPriceForMenuItemById(oi.getMenuItem().getId()));
+                orderItemDTOList.add(orderItemDTO);
+            }
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setOrderItems(orderItemDTOList);
+            orderDTO.setPaid(order.isPaid());
+            orderDTO.setId(order.getId());
+            orderDTO.setTotalPrice(order.getTotalPrice());
+            orderDTO.setNote(order.getNote());
+            orderDTO.setOrderItems(orderItemDTOList);
+            return orderDTO;
+        }
+        throw new NotFoundException("Couldn't find order with order number: "+ orderNum);
     }
 }
