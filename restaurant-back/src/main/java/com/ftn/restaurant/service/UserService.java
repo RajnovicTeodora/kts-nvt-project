@@ -88,6 +88,7 @@ public class UserService implements UserDetailsService {
             default:
                 throw new BadUserRoleException("Unknown user role!");
         }
+        newEmployee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
         newEmployee.setRole(userRoleRepository.findByName(employeeDTO.getRole()).get());
         ArrayList<Paychecks> paycheckList = new ArrayList<Paychecks>();
         paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1), null, 100, newEmployee));
@@ -102,7 +103,6 @@ public class UserService implements UserDetailsService {
         Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
         if(!optEmployee.isPresent()) return null;
         Employee employee = optEmployee.get();
-        if(!employee.getPassword().equals(employeeDTO.getPassword())) employee.setPassword(employeeDTO.getPassword());
         if(!employee.getName().equals(employeeDTO.getName())) employee.setName(employeeDTO.getName());
         if(!employee.getSurname().equals(employeeDTO.getSurname())) employee.setSurname(employeeDTO.getSurname());
         if(!employee.getImage().equals(employeeDTO.getImage())) employee.setImage(employeeDTO.getImage());
