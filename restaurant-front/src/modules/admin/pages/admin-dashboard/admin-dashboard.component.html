@@ -14,7 +14,7 @@
     <mat-sidenav class="mat-elevation-z8">
       <span class="span">Options</span>
       <mat-divider></mat-divider>
-      <button mat-button class="menu-button" (click)="onEmployeesClicked()">
+      <button mat-button class="menu-button">
         <mat-icon>person</mat-icon>
         <span>Employees</span>
       </button>
@@ -31,8 +31,7 @@
   
     <mat-sidenav-content>
       <div class="content mat-elevation-z8">
-          <app-employees class="employees" *ngIf="employeesWindowOpen === true"></app-employees>
-          <app-edit-tables class="tables" *ngIf="tablesWindowOpen === true"></app-edit-tables>
+          <app-employees class="employees"></app-employees>
       </div>
     </mat-sidenav-content>
   
