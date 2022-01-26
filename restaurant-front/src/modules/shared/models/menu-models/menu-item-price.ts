@@ -1,6 +1,8 @@
 import { MenuItem } from '../menuItem';
+import { Injectable } from '@angular/core';
 
-export interface MenuItemPrice {
+@Injectable()
+export class MenuItemPrice {
   menuItem: MenuItem;
   purchasePrice: number;
   price: number;

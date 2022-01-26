@@ -1,6 +1,8 @@
 import { Ingredient } from '../ingredient';
+import { Injectable } from '@angular/core';
 
-export interface AddManagerDrink {
+@Injectable()
+export class AddManagerDrink {
   name: string;
   image: string;
   drinkType: string;

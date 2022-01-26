@@ -1,6 +1,7 @@
-import { MenuItem } from '../menuItem';
+import { Injectable } from '@angular/core';
 
-export interface UpdateMenuItemPrice {
+@Injectable()
+export class UpdateMenuItemPrice {
   menuItemId: string;
   newPrice: number;
   newPurchasePrice: number;
