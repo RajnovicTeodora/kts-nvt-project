@@ -17,7 +17,9 @@ import { ManagerDashboardComponent } from '../manager/pages/manager-dashboard/ma
 import { ItemTableComponent } from '../manager/pages/item-table/item-table.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
 import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
+import { MenuViewComponent } from '../manager/pages/menu-view/menu-view.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
+import { ReportComponent } from '../manager/pages/report/report.component';
 
 const routes: Routes = [
   {
@@ -120,6 +122,13 @@ const routes: Routes = [
     data: { expectedRoles: 'WAITER' },
   },
   {
+    path: 'view-menu-items',
+    pathMatch: 'full',
+    component: MenuViewComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
+  },
+  {
     path: 'create-order',
     pathMatch: 'full',
     component: CreateOrderComponent,
@@ -132,6 +141,13 @@ const routes: Routes = [
     component: EditOrderComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'reports',
+    pathMatch: 'full',
+    component: ReportComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
   },
 ];
 

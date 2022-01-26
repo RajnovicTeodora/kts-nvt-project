@@ -68,7 +68,7 @@ export class AddDrinkManagerComponent implements OnInit {
       const newDrink: AddManagerDrink = {
         name: this.addDrinkForm.value.name,
         image: this.url.split(',')[1],
-        type: this.addDrinkForm.value.drinkType,
+        drinkType: this.addDrinkForm.value.drinkType,
         containerType: this.addDrinkForm.value.container,
         ingredients: new Array<Ingredient>(),
       };

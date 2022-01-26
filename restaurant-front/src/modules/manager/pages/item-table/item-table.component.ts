@@ -1,14 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { Item } from 'src/modules/shared/models/item';
 import { ItemService } from '../../services/item-service/item.service';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AddDrinkManagerComponent } from '../add-drink-manager/add-drink-manager.component';
 
 @Component({
   selector: 'app-item-table',
@@ -19,16 +16,14 @@ export class ItemTableComponent implements OnInit {
   dataSource: MatTableDataSource<Item>;
   observable: Observable<any>;
   searchForm: FormGroup;
-  searchSting: string;
+  searchString: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private itemService: ItemService,
     private toastr: ToastrService,
-    private fb: FormBuilder,
-    private dialog: MatDialog
+    private fb: FormBuilder
   ) {
     this.searchForm = this.fb.group({
       search: [null],
@@ -42,17 +37,17 @@ export class ItemTableComponent implements OnInit {
   }
 
   setData(data: Item[]) {
+    data.sort((a, b) => a.name.localeCompare(b.name));
     this.dataSource = new MatTableDataSource<Item>(data);
     this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     this.observable = this.dataSource.connect();
   }
 
   search() {
-    this.searchSting = this.searchForm.value.search;
+    this.searchString = this.searchForm.value.search;
 
     this.itemService
-      .getAllBySearchCriteria(this.searchSting)
+      .getAllBySearchCriteria(this.searchString)
       .subscribe((response) => {
         console.log(response.body);
         this.dataSource.data = response.body;
@@ -92,20 +87,5 @@ export class ItemTableComponent implements OnInit {
     this.dataSource.data = this.dataSource.data.filter(
       (item) => item.id !== id
     );
-  }
-
-  openDialog() {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    dialogConfig.height = '60%';
-
-    const dialogRef = this.dialog.open(AddDrinkManagerComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
   }
 }
