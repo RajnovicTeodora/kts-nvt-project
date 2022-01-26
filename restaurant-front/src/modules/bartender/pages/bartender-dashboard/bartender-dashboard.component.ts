@@ -50,6 +50,7 @@ export class BartenderDashboardComponent implements OnInit {
   isNewOrderItems: boolean =false;
   isAcceptedOrderItems: boolean =false;
   idOrder: any;
+  isAdding:boolean =false;
 
   constructor(
     private observer: BreakpointObserver,
@@ -158,6 +159,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isDrinkView =true;
     this.isOneDrinkView = false;
+    this.isAdding = false;
   }
 
   viewAcceptedOrders(){
@@ -167,6 +169,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isAcceptedOrders = true;
     this.isOneDrinkView = false;
+    this.isAdding = false;
   }
 
   viewNewOrders(){
@@ -176,6 +179,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isNewOrders = true;
     this.isOneDrinkView = false;
+    this.isAdding = false;
   }
   onClickedView(id:string){
     this.isAcceptedOrders = false;
@@ -185,6 +189,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.isOneDrinkView = true;
     this.isNewOrderItems= false;
     this.isAcceptedOrderItems = false;
+    this.isAdding = false;
   }
   onClickViewNew(id:number){
     this.isAcceptedOrders = false;
@@ -193,6 +198,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.idOrder = id;
     this.isNewOrderItems= true;
+    this.isAdding = false;
   }
   onClickViewAccepted(id:number){
     this.isAcceptedOrders = false;
@@ -201,5 +207,15 @@ export class BartenderDashboardComponent implements OnInit {
     this.idOrder = id;
     this.isNewOrderItems= false;
     this.isAcceptedOrderItems = true;
+    this.isAdding = false;
+  }
+  onAddingDrinkClick(){
+    this.isAcceptedOrders = false;
+    this.isDrinkView =false;
+    this.isNewOrderItems= false;
+    this.isAcceptedOrderItems = false;
+    this.isNewOrders = false;
+    this.isOneDrinkView = false;
+    this.isAdding = true;
   }
 }

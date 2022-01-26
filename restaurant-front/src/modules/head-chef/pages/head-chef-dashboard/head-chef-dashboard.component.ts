@@ -39,6 +39,7 @@ export class HeadChefDashboardComponent implements OnInit {
   isAcceptedOrderItems: boolean =false;
   idOrder: any;
   isHeadChef:boolean;
+  isAdding:boolean;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -143,14 +144,6 @@ export class HeadChefDashboardComponent implements OnInit {
     this.showModalLogout = false;
   }
 
-  onOtherAccountsButtonClicked(){
-    this.showModalOtherAccounts = true;
-  }
-
-  onOtherAccountsCloseClicked(item: boolean){
-    this.showModalOtherAccounts = false;
-  }
-
   onLoginOpenClicked(item: boolean){
     this.showModalLogin = true;
     this.showModalOtherAccounts = false;
@@ -215,6 +208,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isDishView =true;
     this.isNewOrderItems=false;
+    this.isAdding = false;
   }
 
   viewAcceptedOrders(){
@@ -223,6 +217,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isAcceptedOrders = true;
     this.isNewOrderItems=false;
+    this.isAdding = false;
   }
 
   viewNewOrders(){
@@ -231,6 +226,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.isNewOrders = true;
     this.isNewOrderItems=false;
+    this.isAdding = false;
   }
   onClickViewNew(id:number){
     this.isAcceptedOrders = false;
@@ -239,6 +235,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.isAcceptedOrderItems = false;
     this.idOrder = id;
     this.isNewOrderItems= true;
+    this.isAdding = false;
   }
   onClickViewAccepted(id:number){
     this.isAcceptedOrders = false;
@@ -247,6 +244,14 @@ export class HeadChefDashboardComponent implements OnInit {
     this.idOrder = id;
     this.isNewOrderItems= false;
     this.isAcceptedOrderItems = true;
+    this.isAdding = false;
   }
-
+  onAddingDishClick(){
+    this.isAcceptedOrders = false;
+    this.isDishView =false;
+    this.isNewOrders =false;
+    this.isNewOrderItems= false;
+    this.isAcceptedOrderItems = false;
+    this.isAdding = true;
+  }
 }

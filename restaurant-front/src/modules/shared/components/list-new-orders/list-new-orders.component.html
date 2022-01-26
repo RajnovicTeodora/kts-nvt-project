@@ -1,4 +1,4 @@
-
+<div id="container-div">
 <mat-list class="example-card" *ngFor="let order of observable | async">
     <mat-card (click) = onClick(this.order.id)>
         <mat-card-header>
@@ -6,7 +6,8 @@
             <mat-card-title> Table number: {{ this.order.tableId}} </mat-card-title>
         </mat-card-header>
     </mat-card>
-
 </mat-list>
-
+<br/>
+<div *ngIf = "this.dataSource.data.length == 0">There is no new orders</div>
+</div>
 

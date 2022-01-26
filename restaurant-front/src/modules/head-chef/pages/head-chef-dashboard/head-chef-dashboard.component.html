@@ -14,10 +14,7 @@
       fxLayout="row"
       fxLayoutAlign="space-between center"
     >
-      <button mat-button class="menu-button" (click)="onOtherAccountsButtonClicked()">
-        <mat-icon>login</mat-icon>
-        <span>Other account</span>
-      </button>
+      
     </div>
   </mat-toolbar>
   
@@ -59,7 +56,7 @@
         <mat-list-item (click)="this.viewAcceptedOrders()"
           >Accepted ordered items</mat-list-item
         >
-        <mat-list-item [routerLink]="['/add-dish']">
+        <mat-list-item (click)="this.onAddingDishClick()">
           Add new dish
         </mat-list-item>
       </mat-action-list>
@@ -87,12 +84,13 @@
             <div fxLayout="row wrap">
               <ng-container *ngFor="let image of data">
                 <ng-container *ngFor="let image of data">
-                  <img [src]="image.url" *ngIf="!this.isDishView && !this.isNewOrders && !this.isAcceptedOrders && !this.isNewOrderItems && !this.isAcceptedOrderItems"/>
+                  <img [src]="image.url" *ngIf="!this.isDishView && !this.isNewOrders && !this.isAcceptedOrders && !this.isNewOrderItems && !this.isAcceptedOrderItems && !this.isAdding"/>
                   <app-dish-table *ngIf="this.isDishView"></app-dish-table>
                    <app-new-orders *ngIf="this.isNewOrderItems" [orderId]="this.idOrder"></app-new-orders> 
                   <app-accepted-orders *ngIf="this.isAcceptedOrderItems" [orderId]="this.idOrder"></app-accepted-orders>
                   <app-list-accepted-orders *ngIf="this.isAcceptedOrders" (onClickView)="onClickViewAccepted($event)"></app-list-accepted-orders>
                   <app-list-new-orders *ngIf="this.isNewOrders" (onClickView)="onClickViewNew($event)"></app-list-new-orders>
+                  <app-add-dish *ngIf="this.isAdding"></app-add-dish>
                 </ng-container>
               </ng-container>
             </div>
@@ -110,5 +108,4 @@
   </mat-sidenav-container>
   <app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
   <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
-  <app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
   <app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>

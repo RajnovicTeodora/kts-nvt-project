@@ -28,6 +28,7 @@ export class AcceptedOrdersComponent implements OnInit {
 
     this.ordersService.getAccepteOdrderedItems(stringUsername,this.orderId+"" ).subscribe(
       (result) => {
+        console.log(result)
       this.acceptedItems = result;
       this.loaded = true;
     });
