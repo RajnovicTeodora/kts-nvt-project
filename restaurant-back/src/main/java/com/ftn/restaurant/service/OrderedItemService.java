@@ -46,6 +46,9 @@ public class OrderedItemService {
     private UserService userService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     public OrderedItemService(OrderedItemRepository orderedItemRepository, BartenderRepository bartenderRepository,
                               NotificationRepository notificationRepository) {
 
@@ -85,8 +88,8 @@ public class OrderedItemService {
             }
             item.get().setStatus(OrderedItemStatus.READY);
             String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table ";
-            Notification n = new Notification(item.get(), message);
-            n.setWaiter(item.get().getOrder().getWaiter());
+            Notification n = new Notification( message);
+            n.setRecipient(item.get().getOrder().getWaiter());
             notificationRepository.save(n);
             //.getNotifications().add(n);
             //((Bartender)item.get().getWhoPreapiring()).getOrderedItems().remove(item); //Todo da li ovde ide save
@@ -108,10 +111,10 @@ public class OrderedItemService {
     public List<OrderedItem> findAllByOrderId(long id){
         return orderedItemRepository.findAllByOrderId(id);
     }
-
+/*
     public Order findOrderByOrderedItemId(long id){
         return orderedItemRepository.findOrderByOrderedItemId(id);
-    }
+    }*/
 
     public String confirmPickup(long id){
         Optional<OrderedItem> item = this.orderedItemRepository.findById(id);
@@ -124,7 +127,13 @@ public class OrderedItemService {
                 throw new ForbiddenException("Can't deliver ordered item when status is not READY.");
             }
             item.get().setStatus(OrderedItemStatus.DELIVERED);
+            Order order = orderedItemRepository.findOrderByOrderedItemId(id);
             orderedItemRepository.save(item.get());
+            notificationService.sendOrderedItemStatusChangedNotification(order.getOrderNumber(),
+                    order.getRestaurantTable().getTableNum(),
+                    orderedItemRepository.findEmployeePreparingOrderedItemById(id),
+                    OrderedItemStatus.DELIVERED,
+                    orderedItemRepository.findMenuItemNameForOrderedItemId(id));
             return  "Successfully delivered ordered item with id: "+ id;
         }
         throw new NotFoundException("Couldn't find ordered item.");
@@ -148,12 +157,12 @@ public class OrderedItemService {
     }
 
     public String updateOrderedItem(long id, OrderItemDTO orderItemDTO){
-        Order order = findOrderByOrderedItemId(id);
+        Order order = orderService.findOne(id);
         if(order != null) {
             if (order.isPaid()) {
                 throw new OrderAlreadyPaidException("Can't change order that is already paid.");
             }
-            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(id);
+            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(orderItemDTO.getId());
             if (orderItem.isDeleted()) {
                 throw new BadRequestException("Can't update deleted ordered item with id: " + id);
             }
@@ -177,7 +186,7 @@ public class OrderedItemService {
     }
 
     public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
-        Order order = orderService.findOneWithOrderItems(id);
+        Order order = orderService.findOne(id);
         if(order != null) {
             if (order.isPaid()) {
                 throw new OrderAlreadyPaidException("Can't add order items to order that is already paid.");
@@ -201,8 +210,8 @@ public class OrderedItemService {
                 }
                 orderItem.addActiveIngredients(i);
             }
-            order.addOrderedItem(orderItem);
-            orderService.save(order);
+            /*order.addOrderedItem(orderItem);
+            orderService.save(order);*/
             save(orderItem);
 
             return orderItem;
@@ -255,6 +264,10 @@ public class OrderedItemService {
         }
         return listItems;
 
+    }
+
+    public List<Employee> findAllChefsAndBartendersPreparingOrderById(Long orderId){
+        return orderedItemRepository.findAllChefsAndBartendersPreparingOrderById(orderId);
     }
 
 }

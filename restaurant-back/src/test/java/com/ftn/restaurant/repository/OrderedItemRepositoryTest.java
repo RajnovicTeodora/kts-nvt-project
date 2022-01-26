@@ -37,7 +37,7 @@ public class OrderedItemRepositoryTest {
     //TODO add menu item without any prices, replace with constants
     @Before
     public void setUp() {
-        OrderedItem orderedItem = new OrderedItem(OrderedItemStatus.DELIVERED, 2, 5, null, null, new ArrayList<>(), false, null, null);
+        OrderedItem orderedItem = new OrderedItem(OrderedItemStatus.DELIVERED, 2, 5, null, null, new ArrayList<>(), false, null);
         ArrayList<OrderedItem> orderedItems = new ArrayList<>();
         orderedItems.add(orderedItem);
         Order order = new Order(true, 75, LocalDate.now(), "some note...", LocalTime.now(), orderedItems, null);

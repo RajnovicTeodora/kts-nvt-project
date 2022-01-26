@@ -36,7 +36,7 @@
 
     <h4 class="name">{{ this.user.username }}</h4>
 
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
@@ -53,14 +53,6 @@
     <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
-    </button>
-
-    <button
-      mat-button
-      class="menu-button"
-      (click)="onSearchItemsButtonClicked()"
-    >
-      <span>Search menu items</span>
     </button>
 
     <mat-divider></mat-divider>
@@ -184,3 +176,8 @@
   [showPaymentQuestion]="false"
   (onPayOrderClose)="onPayOrderCloseClicked($event)"
 ></app-pay-order>
+<app-view-notifications
+  *ngIf="this.showNotificationsModal"
+  [currentUsername]="this.user.username"
+  (onNotificationsClose)="onNotificationsCloseClicked($event)"
+></app-view-notifications>

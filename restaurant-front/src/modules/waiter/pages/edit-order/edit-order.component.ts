@@ -131,7 +131,8 @@ export class EditOrderComponent implements OnInit {
       
       this.orderService.updateOrder(order).subscribe({
         next: (result) => {
-          //TODO
+          this.toastr.success(result);    
+          this.router.navigate(['/waiter-dashboard']);
         },
         error: (data) => {
           this.toastr.error(data.error);
