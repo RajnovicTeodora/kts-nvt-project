@@ -11,6 +11,7 @@ import { ItemCardComponent } from '../manager/pages/item-card/item-card.componen
 import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waiter-dashboard.component';
 import { AfterLogoutComponent } from './pages/after-logout/after-logout.component';
 import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
+import { MenuViewComponent } from '../manager/pages/menu-view/menu-view.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,13 @@ const routes: Routes = [
     component: SelectMenuItemsComponent,
     canActivate: [RoleGuard],
     data: { expectedRoles: 'WAITER' },
+  },
+  {
+    path: 'view-menu-items',
+    pathMatch: 'full',
+    component: MenuViewComponent,
+    canActivate: [RoleGuard],
+    data: { expectedRoles: 'MANAGER' },
   },
 ];
 

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManagerDashboardComponent } from './pages/manager-dashboard/manager-dashboard.component';
 import { MatTableModule } from '@angular/material/table';
-import { MenuTableComponent } from './pages/menu-table/menu-table.component';
 import { ItemCardComponent } from './pages/item-card/item-card.component';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from '../root/app-routing.module';
@@ -20,16 +19,19 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddDrinkManagerComponent } from './pages/add-drink-manager/add-drink-manager.component';
 import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
 import { EditPaycheckDialogComponent } from './pages/edit-paycheck-dialog/edit-paycheck-dialog.component';
+import { MenuViewComponent } from './pages/menu-view/menu-view.component';
+import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.component';
 
 @NgModule({
   declarations: [
     ManagerDashboardComponent,
-    MenuTableComponent,
     ItemCardComponent,
     ItemTableComponent,
     AddDrinkManagerComponent,
     PaycheckTableComponent,
     EditPaycheckDialogComponent,
+    MenuViewComponent,
+    MenuItemCardComponent,
   ],
   imports: [
     CommonModule,
