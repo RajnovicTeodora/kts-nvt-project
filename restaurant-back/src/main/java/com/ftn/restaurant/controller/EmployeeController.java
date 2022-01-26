@@ -3,14 +3,15 @@ package com.ftn.restaurant.controller;
 import java.util.List;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,15 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.OK)
     public EmployeeDTO editUser(@RequestBody EmployeeDTO employeeDTO){
         return (new EmployeeDTO(userService.editUser(employeeDTO)));
+    }
+
+    //TODO testirati :')
+    @ResponseBody
+    @DeleteMapping(path = "/deleteUser/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeDTO deleteUser(@PathVariable String username){
+        return (new EmployeeDTO(userService.deleteUser(username)));
     }
 
     @GetMapping(path = "/getAllEmployees")

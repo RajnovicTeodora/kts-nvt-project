@@ -17,13 +17,15 @@ import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
+import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 
 @NgModule({
   declarations: [
     AdminDashboardComponent,
     EditTablesComponent,
     AddEmployeeComponent,
-    EditEmployeeComponent
+    EditEmployeeComponent,
+    DeleteEmployeeComponent
   ],
   imports: [
     CommonModule,

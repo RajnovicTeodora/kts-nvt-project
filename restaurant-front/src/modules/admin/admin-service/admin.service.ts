@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MenuItemTypes } from '../../shared/models/menu-item-types';
-import { MenuItemPriceDTO } from '../../shared/models/menu-item-price';
 import { Employee } from 'src/modules/shared/models/employee';
 
 @Injectable({
@@ -53,6 +51,12 @@ export class AdminService {
         headers: this.headers2,
         responseType: 'json',
       }
+    );
+  }
+
+  deleteEmployee(username: string): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.baseUrl}/api/employees/deleteUser/${username}`
     );
   }
 }

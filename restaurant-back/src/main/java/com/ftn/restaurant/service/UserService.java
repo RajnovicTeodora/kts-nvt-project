@@ -112,6 +112,17 @@ public class UserService implements UserDetailsService {
 
         return employee;
     }
+
+    public Employee deleteUser(String username){
+        Optional<Employee> optEmployee = employeeRepository.findByUsername(username);
+        if(optEmployee.isPresent()){
+            Employee employee = optEmployee.get();
+            employee.setDeleted(true);
+            employeeRepository.saveAndFlush(employee);
+            return employee;
+        }
+        throw new UsernameNotFoundException("User not found!");
+    }
     
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElse(null);
@@ -170,7 +181,8 @@ public class UserService implements UserDetailsService {
 
     public List<EmployeeDTO> searchAndFilterEmployees(String search, String filter) {
         List<EmployeeDTO> users = new ArrayList<EmployeeDTO>();
-        employeeRepository.findBySearchCriteriaAndUserRole(search, filter).forEach(item -> users.add(new EmployeeDTO(item)));
+        employeeRepository.findBySearchCriteriaAndUserRoleAndNotDeleted(search, filter).forEach(item -> users.add(new EmployeeDTO(item)));
+
         return users;
     }
 

@@ -21,6 +21,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         "((lower(e.name) like lower(concat('%', :search,'%'))) or " +
         "(lower(e.username) like lower(concat('%', :search,'%'))) or" +
         "(lower(e.surname) like lower(concat('%', :search,'%'))))  and"+
-        "(e.role.name = :filter OR :filter = '')")
-    List<Employee> findBySearchCriteriaAndUserRole(@Param("search") String search, @Param("filter") String filter);
+        "(e.role.name = :filter OR :filter = '') and e.deleted = false")
+    List<Employee> findBySearchCriteriaAndUserRoleAndNotDeleted(@Param("search") String search, @Param("filter") String filter);
 }

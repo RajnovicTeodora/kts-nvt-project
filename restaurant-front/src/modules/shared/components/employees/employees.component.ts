@@ -25,6 +25,7 @@ import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-pay
 import { AddEmployeeComponent } from 'src/modules/admin/pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from 'src/modules/admin/pages/edit-employee/edit-employee.component';
 import { Employee } from '../../models/employee';
+import { DeleteEmployeeComponent } from 'src/modules/admin/components/delete-employee/delete-employee.component';
 
 @Component({
   selector: 'app-employees',
@@ -91,6 +92,7 @@ export class EmployeesComponent implements OnInit {
         this.setData(response.body);
       });
       this.displayedColumns.push('Edit employee');
+      this.displayedColumns.push('Delete');
     }
     if(this.user.userType === "MANAGER"){
       this.paycheckService.getAll('', '').subscribe((response) => {
@@ -208,6 +210,26 @@ export class EmployeesComponent implements OnInit {
         telephone: element.telephone,
         image: element.image,
         role: element.role,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      this.adminService.getAllEmployees("", "").subscribe((response) => {
+        this.setData(response.body);
+      });
+    });
+  }
+
+  openDeleteEmployeeDialog(username: string) {
+    console.log(username);
+    const dialogRef = this.dialog.open(DeleteEmployeeComponent,  {
+      disableClose: true,
+      autoFocus: true,
+      width: '40%',
+      height: '20%',
+      data: {
+        username: username
       }
     });
 
