@@ -22,18 +22,19 @@
           accept=".png, .jpg"
           style="display: none"
           type="file"
+          id="file-upload"
           (change)="fileChangeEvent($event)"
           #fileInput
         />
       </div>
     </mat-grid-tile>
     <mat-grid-tile>
-      <mat-form-field id="name">
+      <mat-form-field>
         <input
           matInput
           type="text"
           formControlName="name"
-          id="name"
+          id="name-field"
           required
           placeholder="Name"
         />
@@ -42,7 +43,7 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Type</mat-label>
-        <mat-select formControlName="drinkType">
+        <mat-select formControlName="drinkType" id="drink-type-select">
           <mat-option
             *ngFor="let drinkType of drinkTypes"
             [value]="drinkType.value"
@@ -53,7 +54,12 @@
       </mat-form-field>
     </mat-grid-tile>
     <mat-grid-tile>
-      <button mat-flat-button color="accent" (click)="fileInput.click()">
+      <button
+        mat-flat-button
+        color="accent"
+        (click)="fileInput.click()"
+        id="file-input-button"
+      >
         <mat-icon>add_a_photo</mat-icon>
       </button>
     </mat-grid-tile>
@@ -61,7 +67,7 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Container</mat-label>
-        <mat-select formControlName="container">
+        <mat-select formControlName="container" id="drink-container-select">
           <mat-option
             *ngFor="let container of containers"
             [value]="container.value"
@@ -81,7 +87,7 @@
     type="submit"
     class="submit-button"
     (click)="cancel()"
-    id="submit-button"
+    id="cancel-button"
   >
     Cancel
   </button>
@@ -92,7 +98,7 @@
     class="submit-button"
     (click)="saveDrink()"
     [disabled]="addDrinkForm.invalid || !this.isImageSaved"
-    id="submit-button"
+    id="submit-drink-button"
   >
     Save
   </button>

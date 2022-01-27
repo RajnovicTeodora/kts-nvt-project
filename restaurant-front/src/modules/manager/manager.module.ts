@@ -23,6 +23,7 @@ import { ReportComponent } from './pages/report/report.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MenuViewComponent } from './pages/menu-view/menu-view.component';
 import { MenuItemCardComponent } from './components/menu-item-card/menu-item-card.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MenuItemCardComponent } from './components/menu-item-card/menu-item-car
     HttpClientModule,
     MaterialModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
