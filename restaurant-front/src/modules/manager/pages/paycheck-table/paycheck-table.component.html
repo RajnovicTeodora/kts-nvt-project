@@ -10,13 +10,13 @@
             type="text"
             placeholder="Search..."
             formControlName="search"
-            id="itemSearch"
-            name="itemSearch"
+            id="employee-search"
+            name="employee-earch"
           />
         </mat-form-field>
         <mat-form-field>
           <mat-label>User role</mat-label>
-          <mat-select formControlName="filter">
+          <mat-select formControlName="filter" id="role-filter-input">
             <mat-option *ngFor="let role of roles" [value]="role.value">
               {{ role.viewValue }}
             </mat-option>
@@ -53,7 +53,9 @@
           >
             Username
           </th>
-          <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.username }}
+          </td>
         </ng-container>
 
         <!-- Name Column -->
@@ -66,7 +68,9 @@
           >
             Name
           </th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ element.name }}
+          </td>
         </ng-container>
 
         <!-- Surname Column -->
