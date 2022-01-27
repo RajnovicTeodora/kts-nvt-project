@@ -1,17 +1,13 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
-import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.*;
-import com.ftn.restaurant.model.Order;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
