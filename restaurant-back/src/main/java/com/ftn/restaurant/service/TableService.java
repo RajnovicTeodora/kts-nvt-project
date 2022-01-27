@@ -148,6 +148,4 @@ public class TableService {
     public Optional<RestaurantTable> findByTableNumber(int tableNum){
         return tableRepository.getTableByTableNumber(tableNum);
     }
-
-
 }

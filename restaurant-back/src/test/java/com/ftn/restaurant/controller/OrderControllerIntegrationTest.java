@@ -60,6 +60,22 @@ public class OrderControllerIntegrationTest {
                 .andExpect(status().isForbidden())
                 .andExpect(content().string("Order has to contain ordered items."));
 
+        /////////////////////////////////////////
+        dto = json(ORDER_DTO_3);
+
+        mockMvc.perform(post("/api/order/createOrder")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find menu item."));
+
+        /////////////////////////////////////////
+        dto = json(ORDER_DTO_4);
+
+        mockMvc.perform(post("/api/order/createOrder")
+                .contentType(contentType).content(dto))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find ingredient."));
+
     }
 
     @Test

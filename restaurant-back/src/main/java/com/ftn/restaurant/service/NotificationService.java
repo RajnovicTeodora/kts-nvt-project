@@ -52,7 +52,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public void sendOrderedItemStatusChangedNotification(int orderNum, int tableNum, Employee employee,
+    public boolean sendOrderedItemStatusChangedNotification(int orderNum, int tableNum, Employee employee,
                                                          OrderedItemStatus status, String menuItemName){
         Notification notification = new Notification();
         notification.setRecipient(employee);
@@ -60,6 +60,8 @@ public class NotificationService {
         notification.setText("Status changed for " + menuItemName + " to " +
                 status.name() + " for order number " + orderNum + ", at table number " + tableNum);
         notificationRepository.save(notification);
+
+        return true;
     }
 
     public String setNotificationInactive(long notificationId){

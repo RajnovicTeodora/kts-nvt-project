@@ -3,9 +3,7 @@ package com.ftn.restaurant.service;
 import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.exception.OrderAlreadyPaidException;
+import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.repository.OrderRepository;
@@ -50,7 +48,7 @@ public class OrderService {
     }
 
     public Order findOne(Long id) {
-        return orderRepository.findById(id).orElse(null);
+        return orderRepository.findByOrderId(id);
     }
 
     public Order findOneWithOrderItems(long id) {
@@ -86,16 +84,16 @@ public class OrderService {
                 orderItem.setQuantity(orderItemDto.getQuantity());
                 orderItem.setOrder(o);
                 for (IngredientDTO acIngr : orderItemDto.getActiveIngredients()) {
-                    Ingredient i = ingredientService.findOne(acIngr.getId());
-                    if (i == null) {
-                        throw new NotFoundException("Couldn't find ingredient with id: " + acIngr.getId());
-                    }
-                    orderItem.addActiveIngredients(i);
+                    Optional<Ingredient> i = ingredientService.findByIngredientId(acIngr.getId());
+                    if(!i.isPresent()){
+                        throw new IngredientNotFoundException("Couldn't find ingredient with id: " + acIngr.getId());
+                    }else
+                        orderItem.addActiveIngredients(i.get());
                 }
                 o.addOrderedItem(orderItem);
                 orderedItemService.save(orderItem);
             } else {
-                throw new NotFoundException("Couldn't find menu item with id: " + orderItemDto.getMenuItemId());
+                throw new MenuItemNotFoundException("Couldn't find menu item with id: " + orderItemDto.getMenuItemId());
             }
         }
         save(o);
@@ -116,7 +114,7 @@ public class OrderService {
             if (item.getId() == -1) {
                 orderedItemService.addOrderItemToOrder(ordDTO.getId(), item);
             } else if (item.getStatusAsString().equals("PENDING")) {
-                orderedItemService.updateOrderedItem(ordDTO.getId(), item);
+                orderedItemService.updateOrderedItem( item);
             }
         }
         if (!order.getNote().equals(ordDTO.getNote())) {

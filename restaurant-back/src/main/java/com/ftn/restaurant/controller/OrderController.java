@@ -29,8 +29,10 @@ public class OrderController {
             return new ResponseEntity(orderService.createOrder(orderDTO), HttpStatus.CREATED);
         } catch (ForbiddenException e){
             return new ResponseEntity("Order has to contain ordered items.", HttpStatus.FORBIDDEN);
-        } catch (NotFoundException e){
-            return new ResponseEntity("Couldn't find menu item/ingredient", HttpStatus.NOT_FOUND);
+        } catch (IngredientNotFoundException e){
+            return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
+        } catch (MenuItemNotFoundException e){
+            return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
         }
     }
 

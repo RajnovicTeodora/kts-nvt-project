@@ -12,10 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OrderDTOConstants {
-    public static final IngredientDTO INGREDIENT_11 = new IngredientDTO("sladoled", true);
-    public static final IngredientDTO INGREDIENT_22 = new IngredientDTO("plazma", false);
-    public static final IngredientDTO INGREDIENT_33 = new IngredientDTO("mleko", false);
-    public static final IngredientDTO INGREDIENT_44 = new IngredientDTO("cokolada", false);
+    public static final IngredientDTO INGREDIENT_11 = new IngredientDTO(2L, "sladoled", true);
+    public static final IngredientDTO INGREDIENT_22 = new IngredientDTO(1L, "plazma", false);
+    public static final IngredientDTO INGREDIENT_33 = new IngredientDTO(3L,"mleko", false);
+    public static final IngredientDTO INGREDIENT_44 = new IngredientDTO(4L,"cokolada", false);
+    public static final IngredientDTO INGREDIENT_55 = new IngredientDTO(10000L,"non existant", false);
     public static final ArrayList<IngredientDTO> INGREDIENT_ARRAY_LIST_1 = new ArrayList<IngredientDTO>(
             Arrays.asList(INGREDIENT_11, INGREDIENT_22));
     public static final ArrayList<IngredientDTO> INGREDIENT_ARRAY_LIST_2 = new ArrayList<IngredientDTO>(
@@ -24,12 +25,18 @@ public class OrderDTOConstants {
     public static final MenuItemDTO MENU_ITEM_DTO_1 = new MenuItemDTO("Pizza","todo");
     public static final MenuItemDTO MENU_ITEM_DTO_2 = new MenuItemDTO("Spaghetti","todo");
 
-    public static final OrderItemDTO ORDER_ITEM_DTO_1 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1, 1, 1L, INGREDIENT_ARRAY_LIST_1);
-    public static final OrderItemDTO ORDER_ITEM_DTO_2 = new OrderItemDTO(OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_1 = new OrderItemDTO(5L, OrderedItemStatus.ORDERED.toString(), 1, 1, 1L, INGREDIENT_ARRAY_LIST_1);
+    public static final OrderItemDTO ORDER_ITEM_DTO_2 = new OrderItemDTO(2L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_3 = new OrderItemDTO(3L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_4 = new OrderItemDTO(8L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_5 = new OrderItemDTO(5L, OrderedItemStatus.ORDERED.toString(), 1,1 , 1L, new ArrayList<>(Arrays.asList(INGREDIENT_55)));
+    public static final OrderItemDTO ORDER_ITEM_DTO_6 = new OrderItemDTO(-1L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_7 = new OrderItemDTO(-1L, OrderedItemStatus.ORDERED.toString(), 1,1 , 20000L, INGREDIENT_ARRAY_LIST_2);
     public static final ArrayList<OrderItemDTO> ORDER_ITEM_DTOS = new ArrayList<OrderItemDTO>(
             Arrays.asList(ORDER_ITEM_DTO_1, ORDER_ITEM_DTO_2));
 
     public static final OrderDTO ORDER_DTO_1 = new OrderDTO(false, 0, "Some note",  ORDER_ITEM_DTOS);
-
     public static final OrderDTO ORDER_DTO_2  = new OrderDTO(false, 0,  "note",  new ArrayList<>());
+    public static final OrderDTO ORDER_DTO_3  = new OrderDTO(false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_7)));
+    public static final OrderDTO ORDER_DTO_4  = new OrderDTO(false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_5)));
 }

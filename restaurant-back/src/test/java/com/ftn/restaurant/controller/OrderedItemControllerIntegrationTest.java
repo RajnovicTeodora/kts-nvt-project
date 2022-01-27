@@ -2,6 +2,7 @@ package com.ftn.restaurant.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ftn.restaurant.dto.OrderItemDTO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static com.ftn.restaurant.constants.OrderDTOConstants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -163,6 +165,18 @@ public class OrderedItemControllerIntegrationTest {
     }
 
     @Test
+    public void getOrderedItemsForOrderIdTest() throws Exception {
+        mockMvc.perform(get("/api/orderedItem/getOrderedItemsForOrderId/6"))
+                .andExpect(status().isOk());
+
+        /////////////////
+
+        mockMvc.perform(get("/api/orderedItem/getOrderedItemsForOrderId/-1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find order"));
+    }
+/*
+    @Test
     public void updateOrderedItemTest() throws Exception {
         String dto = json(ORDER_ITEM_DTO_1);
 
@@ -198,8 +212,8 @@ public class OrderedItemControllerIntegrationTest {
                 .contentType(contentType).content(dto))
                 .andExpect(status().isOk());
 
-    }
-
+    }*/
+/*
     @Test
     public void addOrderItemToOrderTest() throws Exception {
         String dto = json(ORDER_ITEM_DTO_1);
@@ -222,7 +236,7 @@ public class OrderedItemControllerIntegrationTest {
                 .contentType(contentType).content(dto))
                 .andExpect(status().isCreated());
 
-    }
+    }*/
 
     public static String json(Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

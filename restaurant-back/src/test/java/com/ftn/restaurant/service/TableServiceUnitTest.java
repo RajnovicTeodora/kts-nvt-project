@@ -9,6 +9,7 @@ import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.ftn.restaurant.repository.WaiterRepository;
@@ -39,6 +40,9 @@ public class TableServiceUnitTest {
     
     @MockBean
     private AreaRepository areaRepository;
+
+    @MockBean
+    private OrderService orderService;
 
     @Test(expected = ForbiddenException.class )
     public void occupyTable_ThrowForbiddenExceptionWhenTableIsOccupied(){
@@ -78,6 +82,19 @@ public class TableServiceUnitTest {
     @Test(expected = NotFoundException.class )
     public void clearTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
         Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(null);
+        tableService.clearTable("waiter", 1);
+    }
+
+    @Test(expected = ActiveOrdersPresentException.class )
+    public void clearTable_ThrowActiveOrdersPresentExceptionWhenTableHasActiveOrders(){
+        RestaurantTable table = new RestaurantTable(12, 12, new Area("abc"));
+        table.setWaiter(new Waiter());
+        table.setOccupied(true);
+        List<Integer> activeOrders = new ArrayList<>();
+        activeOrders.add(1);
+
+        Mockito.when(orderService.getActiveOrdersForTable(1, "waiter")).thenReturn(activeOrders);
+        Mockito.when(tableRepository.findOneWithWaiter(1, "waiter")).thenReturn(table);
         tableService.clearTable("waiter", 1);
     }
 
@@ -141,6 +158,27 @@ public class TableServiceUnitTest {
     public void leaveTable_ThrowNotFoundExceptionWhenTableIsNonExisting(){
         Mockito.when(tableRepository.findOneWithWaiter(1,"waiter")).thenReturn(null);
         tableService.claimTable("waiter", 1);
+    }
+
+    @Test(expected = NotFoundException.class )
+    public void getTableByTableNumber_ThrowNotFoundExceptionWhenTableIsNonExisting(){
+        Mockito.when(tableRepository.getTableByTableNumber(1)).thenReturn(Optional.empty());
+        tableService.getTableByTableNumber( 1);
+    }
+
+    @Test
+    public void getTableByTableNumber_ReturnRestaurantTableDTOWhenAllOk(){
+        Area area = new Area("First floor");
+        area.setId(1L);
+        RestaurantTable table = new RestaurantTable(12, 12, area);
+        table.setOccupied(true);
+        Waiter waiter = new Waiter();
+        waiter.setId(1L);
+        table.setWaiter(waiter);
+
+        Mockito.when(tableRepository.getTableByTableNumber(1)).thenReturn(Optional.of(table));
+        Mockito.when(waiterRepository.findById(1L)).thenReturn(Optional.of(waiter));
+        Assert.assertEquals(RestaurantTableDTO.class, tableService.getTableByTableNumber( 1).getClass());
     }
 
     @Test

@@ -51,6 +51,15 @@ public class OrderItemDTO {
         this.activeIngredients = activeIngredients;
     }
 
+    public OrderItemDTO(Long id, String status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
+        this.id = id;
+        this.status = status;
+        this.priority = priority;
+        this.quantity = quantity;
+        this.menuItemId = menuItemId;
+        this.activeIngredients = activeIngredients;
+    }
+
     public OrderItemDTO(OrderedItemStatus status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
         this.status = status.toString();
         this.priority = priority;

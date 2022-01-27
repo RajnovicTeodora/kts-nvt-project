@@ -90,36 +90,6 @@ public class OrderedItemController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/updateOrderedItem/{id}")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?> updateOrderedItem(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
-        try {
-            return new ResponseEntity(orderedItemService.updateOrderedItem(id, orderItemDTO), HttpStatus.OK);
-        } catch (ForbiddenException e){
-            return new ResponseEntity("Can't change ordered item in preparation.", HttpStatus.FORBIDDEN);
-        } catch (OrderAlreadyPaidException e){
-            return new ResponseEntity("Can't change order that is already paid.", HttpStatus.FORBIDDEN);
-        }catch (NotFoundException e){
-            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
-        }catch (BadRequestException e){
-            return new ResponseEntity("Can't update deleted ordered item with id: " + id, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @ResponseBody
-    @PostMapping(value = "/addOrderItemToOrder/{id}")
-    @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<OrderItemDTO> addOrderItemToOrder(@PathVariable("id") long id, @RequestBody OrderItemDTO orderItemDTO) {
-        try {
-            return new ResponseEntity(new OrderItemDTO(orderedItemService.addOrderItemToOrder(id, orderItemDTO)), HttpStatus.CREATED);
-        }catch (OrderAlreadyPaidException e){
-            return new ResponseEntity("Can't add order items to order that is already paid.", HttpStatus.FORBIDDEN);
-        }catch (NotFoundException e){
-            return new ResponseEntity("Couldn't find order.", HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @ResponseBody
     @GetMapping(value = "/getOrderedItemsForOrderId/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")
     public ResponseEntity<?> getOrderedItemsForOrderId( @PathVariable("orderId") long orderId) {
@@ -129,6 +99,5 @@ public class OrderedItemController {
             return new ResponseEntity("Couldn't find order", HttpStatus.NOT_FOUND);
         }
     }
-
 
 }
