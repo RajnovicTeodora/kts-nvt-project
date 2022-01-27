@@ -1,7 +1,6 @@
 package com.ftn.restaurant.e2e.tests;
 
 import com.ftn.restaurant.e2e.pages.*;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertTrue;
 
-public class BartenderAcceptOrderTest {
+public class BartenderFinishOrderTest {
     private WebDriver browser;
 
     private LoginPage loginPage;
@@ -19,6 +18,7 @@ public class BartenderAcceptOrderTest {
     private NewOrdersPage newOrdersPage;
     private TableOfOrderedItemsPage tableOfOrderedItemsPage;
     private AcceptedOrdersPage acceptedOrdersPage;
+    private TableOfAcceptedOrdersPage tableOfAcceptedOrdersPage;
 
     @Before
     public void setupSelenium() {
@@ -35,6 +35,8 @@ public class BartenderAcceptOrderTest {
         newOrdersPage = PageFactory.initElements(browser, NewOrdersPage.class);
         tableOfOrderedItemsPage = PageFactory.initElements(browser, TableOfOrderedItemsPage.class);
         acceptedOrdersPage = PageFactory.initElements(browser, AcceptedOrdersPage.class);
+        tableOfAcceptedOrdersPage = PageFactory.initElements(browser, TableOfAcceptedOrdersPage.class);
+        //todo dokaz da je gotovo
     }
 
     @Test
@@ -77,6 +79,14 @@ public class BartenderAcceptOrderTest {
         assertTrue(bartenderDashboardPage.getContainerWithOrders()!=null);
 
         assertTrue(acceptedOrdersPage.isTitleOfOrder().getText().equals("Order number: 1"));
+        acceptedOrdersPage.clickFirstOrder();
+
+        assertTrue(tableOfAcceptedOrdersPage.isRow().getText().equals("Spaghetti"));
+        tableOfAcceptedOrdersPage.clickFinish();
+        //finish
+        tableOfAcceptedOrdersPage.clickAcceptDialog();
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/bartender-dashboard"));
+        //nesto logicno
     }
 
     @After

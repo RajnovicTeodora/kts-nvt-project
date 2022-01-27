@@ -4,10 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class BartenderDashboardPage {
-
+public class HeadChefDashboardPage {
     private WebDriver driver;
-    private static String URL = "http://localhost:4200/bartender-dashboard";
+    private static String URL = "http://localhost:4200/head-chef-dashboard";
 
     @FindBy(id = "password")
     private WebElement inputNewPassword;
@@ -24,7 +23,7 @@ public class BartenderDashboardPage {
     @FindBy(id = "container-div")
     private WebElement containerWithOrders;
 
-    public BartenderDashboardPage(WebDriver driver) {
+    public HeadChefDashboardPage(WebDriver driver) {
         this.driver = driver;
     }
 

@@ -1,7 +1,6 @@
 package com.ftn.restaurant.e2e.tests;
 
 import com.ftn.restaurant.e2e.pages.*;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,14 +10,16 @@ import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertTrue;
 
-public class BartenderAcceptOrderTest {
+public class ChefFinishOrderTest {
+
     private WebDriver browser;
 
     private LoginPage loginPage;
-    private BartenderDashboardPage bartenderDashboardPage;
+    private ChefDashboardPage chefDashboardPage;
     private NewOrdersPage newOrdersPage;
     private TableOfOrderedItemsPage tableOfOrderedItemsPage;
     private AcceptedOrdersPage acceptedOrdersPage;
+    private TableOfAcceptedOrdersPage tableOfAcceptedOrdersPage;
 
     @Before
     public void setupSelenium() {
@@ -31,33 +32,31 @@ public class BartenderAcceptOrderTest {
         browser.navigate().to("http://localhost:4200/");
 
         loginPage = PageFactory.initElements(browser, LoginPage.class);
-        bartenderDashboardPage = PageFactory.initElements(browser, BartenderDashboardPage.class);
+        chefDashboardPage = PageFactory.initElements(browser, ChefDashboardPage.class);
         newOrdersPage = PageFactory.initElements(browser, NewOrdersPage.class);
         tableOfOrderedItemsPage = PageFactory.initElements(browser, TableOfOrderedItemsPage.class);
         acceptedOrdersPage = PageFactory.initElements(browser, AcceptedOrdersPage.class);
+        tableOfAcceptedOrdersPage = PageFactory.initElements(browser, TableOfAcceptedOrdersPage.class);
+        //todo dokaz da je gotovo
     }
 
     @Test
     public void singInTest() {
 
         // set username
-        loginPage.setUsernameInput("misko");
+        loginPage.setUsernameInput("chef");
 
         // set correct password
         loginPage.setPasswordInput("test");
         loginPage.loginBtnClick();
 
-        assertTrue(bartenderDashboardPage.urlPresent());
+        assertTrue(chefDashboardPage.urlPresent());
 
-        //input new password
-        bartenderDashboardPage.setInputNewPassword("test");
-        bartenderDashboardPage.clickSubmitBtn();
-
-        assertTrue(bartenderDashboardPage.urlPresent());
+        assertTrue(chefDashboardPage.urlPresent());
 
         //click on new orders
-        bartenderDashboardPage.clickNewOrders();
-        assertTrue(bartenderDashboardPage.getContainerWithOrders()!=null);
+        chefDashboardPage.clickNewOrders();
+        assertTrue(chefDashboardPage.getContainerWithOrders()!=null);
 
         //new orders list
         assertTrue(newOrdersPage.isTitleOfOrder().getText().equals("Order number: 1"));
@@ -68,15 +67,25 @@ public class BartenderAcceptOrderTest {
         tableOfOrderedItemsPage.clickAccept();
         //accepted
         tableOfOrderedItemsPage.clickAcceptDialog();
-        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/bartender-dashboard"));
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/chef-dashboard"));
         //checking is accepted
-        bartenderDashboardPage.clickNewOrders();
-        bartenderDashboardPage.clickNewOrders();
-        bartenderDashboardPage.clickAccOrders(); //ovo se dewsi prebrzo
-        bartenderDashboardPage.clickAccOrders(); bartenderDashboardPage.clickAccOrders(); bartenderDashboardPage.clickAccOrders();
-        assertTrue(bartenderDashboardPage.getContainerWithOrders()!=null);
+        chefDashboardPage.clickNewOrders();
+        chefDashboardPage.clickNewOrders();
+        chefDashboardPage.clickAccOrders(); //ovo se dewsi prebrzo
+        chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders();
+        chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders();chefDashboardPage.clickAccOrders();
+        chefDashboardPage.clickAccOrders();
+        assertTrue(chefDashboardPage.getContainerWithOrders()!=null);
 
         assertTrue(acceptedOrdersPage.isTitleOfOrder().getText().equals("Order number: 1"));
+        acceptedOrdersPage.clickFirstOrder();
+
+        assertTrue(tableOfAcceptedOrdersPage.isRow().getText().equals("Spaghetti"));
+        tableOfAcceptedOrdersPage.clickFinish();
+        //finish
+        tableOfAcceptedOrdersPage.clickAcceptDialog();
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/chef-dashboard"));
+        //nesto logicno
     }
 
     @After

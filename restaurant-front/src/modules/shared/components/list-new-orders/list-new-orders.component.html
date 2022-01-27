@@ -2,7 +2,7 @@
 <mat-list class="example-card" *ngFor="let order of observable | async">
     <mat-card (click) = onClick(this.order.id)>
         <mat-card-header>
-            <mat-card-title> Order number: {{ this.order.id}} </mat-card-title>
+            <mat-card-title id = "title{{this.order.id}}"> Order number: {{ this.order.id}} </mat-card-title>
             <mat-card-title> Table number: {{ this.order.tableId}} </mat-card-title>
         </mat-card-header>
     </mat-card>
