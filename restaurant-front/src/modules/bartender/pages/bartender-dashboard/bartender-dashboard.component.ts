@@ -42,15 +42,10 @@ export class BartenderDashboardComponent implements OnInit {
     { id: 1, url: 'assets/images/floor3.png' },
     { id: 2, url: 'assets/images/floor2.png' },
   ];
-  isOneDrinkView:boolean = false;
-  isDrinkView:boolean = false;
-  isNewOrders: boolean =false;
-  isAcceptedOrders: boolean =false;
-  idOfDrink: string ="";
-  isNewOrderItems: boolean =false;
-  isAcceptedOrderItems: boolean =false;
+  
+  state:number=0;
   idOrder: any;
-  isAdding:boolean =false;
+  idOfDrink: string ="";
 
   constructor(
     private observer: BreakpointObserver,
@@ -140,10 +135,6 @@ export class BartenderDashboardComponent implements OnInit {
     this.showModalLogout = true;
   }
 
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
-  }
-
   onLogoutCloseClicked(item: boolean) {
     this.showModalLogout = false;
   }
@@ -152,70 +143,17 @@ export class BartenderDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  viewDrinkCard(){
-    this.isNewOrders = false;
-    this.isAcceptedOrders = false;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isDrinkView =true;
-    this.isOneDrinkView = false;
-    this.isAdding = false;
-  }
-
-  viewAcceptedOrders(){
-    this.isNewOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isAcceptedOrders = true;
-    this.isOneDrinkView = false;
-    this.isAdding = false;
-  }
-
-  viewNewOrders(){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isNewOrders = true;
-    this.isOneDrinkView = false;
-    this.isAdding = false;
-  }
+  
   onClickedView(id:string){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrders = false;
     this.idOfDrink = id;
-    this.isOneDrinkView = true;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isAdding = false;
+    this.state=6;
   }
   onClickViewNew(id:number){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrders =false;
-    this.isAcceptedOrderItems = false;
     this.idOrder = id;
-    this.isNewOrderItems= true;
-    this.isAdding = false;
+    this.state = 2;
   }
   onClickViewAccepted(id:number){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrders =false;
     this.idOrder = id;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = true;
-    this.isAdding = false;
-  }
-  onAddingDrinkClick(){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isNewOrders = false;
-    this.isOneDrinkView = false;
-    this.isAdding = true;
+    this.state = 3;
   }
 }

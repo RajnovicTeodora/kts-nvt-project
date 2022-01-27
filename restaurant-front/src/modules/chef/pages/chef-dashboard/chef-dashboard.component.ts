@@ -31,12 +31,7 @@ export class ChefDashboardComponent implements OnInit {
   showModalLogin: boolean;
   currentBadgeContent: number;
 
-  
-  isDishView:boolean = false;
-  isNewOrders: boolean =false;
-  isAcceptedOrders: boolean =false;
-  isNewOrderItems: boolean =false;
-  isAcceptedOrderItems: boolean =false;
+  state:number=0;
   idOrder: any;
 
   data2 = [
@@ -83,7 +78,7 @@ export class ChefDashboardComponent implements OnInit {
     //   }
     // );
     const users = new BehaviorSubject<UserList>(
-      JSON.parse(localStorage.getItem('WAITER_LIST')!)
+      JSON.parse(localStorage.getItem('CHEF_LIST')!)
     );
     users.value.list.forEach((value, index) => {
       // this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
@@ -133,10 +128,6 @@ export class ChefDashboardComponent implements OnInit {
     this.showModalLogout = true;
   }
 
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
-  }
-
   onLogoutCloseClicked(item: boolean) {
     this.showModalLogout = false;
   }
@@ -168,7 +159,7 @@ export class ChefDashboardComponent implements OnInit {
     } else {
       const data = this.userService.getUserByUsernameAndListName(
         username,
-        'WAITER_LIST'
+        'CHEF_LIST'
       );
       this.userService
         .switchToActiveAccount({
@@ -207,44 +198,15 @@ export class ChefDashboardComponent implements OnInit {
     }
   }
 
-  viewDishCard(){
-    this.isNewOrders = false;
-    this.isAcceptedOrders = false;
-    this.isAcceptedOrderItems = false;
-    this.isDishView =true;
-    this.isNewOrderItems=false;
-  }
-
-  viewAcceptedOrders(){
-    this.isNewOrders = false;
-    this.isDishView =false;
-    this.isAcceptedOrderItems = false;
-    this.isAcceptedOrders = true;
-    this.isNewOrderItems=false;
-  }
-
-  viewNewOrders(){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isAcceptedOrderItems = false;
-    this.isNewOrders = true;
-    this.isNewOrderItems=false;
-  }
+  
   onClickViewNew(id:number){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders =false;
-    this.isAcceptedOrderItems = false;
+    this.state=2;
     this.idOrder = id;
-    this.isNewOrderItems= true;
   }
   onClickViewAccepted(id:number){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders =false;
+   this.state=3;
     this.idOrder = id;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = true;
+   
   }
 
 }

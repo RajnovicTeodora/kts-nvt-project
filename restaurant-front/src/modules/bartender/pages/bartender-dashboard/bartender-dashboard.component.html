@@ -46,16 +46,16 @@
       <mat-divider></mat-divider>
 
     <mat-action-list>
-        <mat-list-item (click)="this.viewDrinkCard()"
+        <mat-list-item (click)="this.state=1"
         >Drink card</mat-list-item
       >
-      <mat-list-item (click)="this.viewNewOrders()"
-        >New ordered items</mat-list-item
+      <mat-list-item (click)="this.state=5"
+        >New orders</mat-list-item
       >
-      <mat-list-item (click)="this.viewAcceptedOrders()"
-        >Accepted ordered items</mat-list-item
+      <mat-list-item (click)="this.state=4"
+        >Accepted orders</mat-list-item
       >
-      <mat-list-item (click)="this.onAddingDrinkClick()"><!-- [routerLink]="['/add-drink']"> -->
+      <mat-list-item (click)="this.state=7">
         Add new drink
       </mat-list-item>
     </mat-action-list>
@@ -69,14 +69,14 @@
           <div class="col">
             <div fxLayout="row wrap">
               <ng-container *ngFor="let image of data">
-                <img [src]="image.url" *ngIf="!this.isDrinkView && !this.isNewOrders && !this.isAcceptedOrders && !this.isOneDrinkView && !this.isAcceptedOrderItems && !this.isNewOrderItems && !this.isAdding"/>
-                <app-drink-table *ngIf="this.isDrinkView"  (onClickedView) = "onClickedView($event)"></app-drink-table>
-                <app-new-orders *ngIf="this.isNewOrderItems" [orderId]="this.idOrder"></app-new-orders> 
-                <app-accepted-orders *ngIf="this.isAcceptedOrderItems" [orderId]="this.idOrder"></app-accepted-orders>
-                <app-list-accepted-orders *ngIf="this.isAcceptedOrders" (onClickView)="onClickViewAccepted($event)"></app-list-accepted-orders>
-                <app-list-new-orders *ngIf="this.isNewOrders" (onClickView)="onClickViewNew($event)"></app-list-new-orders>
-                <app-one-drink-card *ngIf="this.isOneDrinkView" [id]="this.idOfDrink"></app-one-drink-card>
-                <app-add-drink *ngIf="this.isAdding"></app-add-drink>
+                <img [src]="image.url" *ngIf="this.state===0"/>
+                <app-drink-table *ngIf="this.state===1"  (onClickedView) = "onClickedView($event)"></app-drink-table>
+                <app-new-orders *ngIf="this.state===2" [orderId]="this.idOrder"></app-new-orders> 
+                <app-accepted-orders *ngIf="this.state===3" [orderId]="this.idOrder"></app-accepted-orders>
+                <app-list-accepted-orders *ngIf="this.state===4" (onClickView)="onClickViewAccepted($event)"></app-list-accepted-orders>
+                <app-list-new-orders *ngIf="this.state===5" (onClickView)="onClickViewNew($event)"></app-list-new-orders>
+                <app-one-drink-card *ngIf="this.state===6" [id]="this.idOfDrink"></app-one-drink-card>
+                <app-add-drink *ngIf="this.state===7"></app-add-drink>
               </ng-container>
             </div>
             <mat-paginator

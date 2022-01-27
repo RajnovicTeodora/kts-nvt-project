@@ -32,14 +32,15 @@ export class HeadChefDashboardComponent implements OnInit {
   currentBadgeContent: number;
 
   
-  isDishView:boolean = false;
-  isNewOrders: boolean =false;
-  isAcceptedOrders: boolean =false;
-  isNewOrderItems: boolean =false;
-  isAcceptedOrderItems: boolean =false;
+  // isDishView:boolean = false;
+  // isNewOrders: boolean =false;
+  // isAcceptedOrders: boolean =false;
+  // isNewOrderItems: boolean =false;
+  // isAcceptedOrderItems: boolean =false;
   idOrder: any;
-  isHeadChef:boolean;
-  isAdding:boolean;
+  state: number = 0; 
+  // isHeadChef:boolean;
+  // isAdding:boolean;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -65,7 +66,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
-    this.isHeadChef =this.user.userType=="HEAD_CHEF";
+    // this.isHeadChef =this.user.userType=="HEAD_CHEF";
   }
 
   ngOnInit() {
@@ -136,10 +137,6 @@ export class HeadChefDashboardComponent implements OnInit {
     this.showModalLogout = true;
   }
 
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
-  }
-
   onLogoutCloseClicked(item: boolean) {
     this.showModalLogout = false;
   }
@@ -202,56 +199,14 @@ export class HeadChefDashboardComponent implements OnInit {
     }
   }
 
-  viewDishCard(){
-    this.isNewOrders = false;
-    this.isAcceptedOrders = false;
-    this.isAcceptedOrderItems = false;
-    this.isDishView =true;
-    this.isNewOrderItems=false;
-    this.isAdding = false;
-  }
-
-  viewAcceptedOrders(){
-    this.isNewOrders = false;
-    this.isDishView =false;
-    this.isAcceptedOrderItems = false;
-    this.isAcceptedOrders = true;
-    this.isNewOrderItems=false;
-    this.isAdding = false;
-  }
-
-  viewNewOrders(){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isAcceptedOrderItems = false;
-    this.isNewOrders = true;
-    this.isNewOrderItems=false;
-    this.isAdding = false;
-  }
   onClickViewNew(id:number){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders =false;
-    this.isAcceptedOrderItems = false;
     this.idOrder = id;
-    this.isNewOrderItems= true;
-    this.isAdding = false;
+    this.state = 2;
+    
   }
   onClickViewAccepted(id:number){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders =false;
     this.idOrder = id;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = true;
-    this.isAdding = false;
+    this.state = 3;
   }
-  onAddingDishClick(){
-    this.isAcceptedOrders = false;
-    this.isDishView =false;
-    this.isNewOrders =false;
-    this.isNewOrderItems= false;
-    this.isAcceptedOrderItems = false;
-    this.isAdding = true;
-  }
+ 
 }
