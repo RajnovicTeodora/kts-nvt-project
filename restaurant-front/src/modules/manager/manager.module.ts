@@ -22,7 +22,7 @@ import { EditPaycheckDialogComponent } from './components/edit-paycheck-dialog/e
 import { ReportComponent } from './pages/report/report.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MenuViewComponent } from './pages/menu-view/menu-view.component';
-import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.component';
+import { MenuItemCardComponent } from './components/menu-item-card/menu-item-card.component';
 
 @NgModule({
   declarations: [

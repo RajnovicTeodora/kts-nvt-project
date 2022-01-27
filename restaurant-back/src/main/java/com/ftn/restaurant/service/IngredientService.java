@@ -27,4 +27,9 @@ public class IngredientService {
     public List<Ingredient> findByOrderedItemId(long id){
         return ingredientRepository.findByOrderedItemId(id);
     }
+
+    public Optional<Ingredient> findByIngredientId(long id){
+        return ingredientRepository.findByIngredientId(id);
+    }
+
 }

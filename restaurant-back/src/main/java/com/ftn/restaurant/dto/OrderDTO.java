@@ -28,6 +28,14 @@ public class OrderDTO {
         fillOrderItems(o.getOrderedItems());
     }
 
+    public OrderDTO(Order o, String without_items) {
+        this.id = o.getId();
+        this.isPaid = o.isPaid();
+        this.totalPrice = o.getTotalPrice();
+        this.note = o.getNote();
+        this.tableId = o.getRestaurantTable().getId();
+    }
+
     private void fillOrderItems(List<OrderedItem> orderItems) {
         if (this.orderItems == null)
             this.orderItems = new ArrayList<OrderItemDTO>();
@@ -41,6 +49,33 @@ public class OrderDTO {
         this.totalPrice = totalPrice;
         this.note = note;
         this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
+    }
+
+    public OrderDTO(boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
     }
 
     public Long getId() {

@@ -15,6 +15,8 @@ import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
 import { ManagerModule } from '../manager/manager.module';
 import { AdminModule } from '../admin/admin.module';
+import { ChefModule } from '../chef/chef.module';
+import { HeadChefModule } from '../head-chef/head-chef.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +35,8 @@ import { AdminModule } from '../admin/admin.module';
     SharedModule,
     BartenderModule,
     ManagerModule,
+    ChefModule,
+    HeadChefModule
   ],
   providers: [
     {

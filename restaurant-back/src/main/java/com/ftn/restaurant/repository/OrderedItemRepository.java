@@ -33,7 +33,7 @@ public interface OrderedItemRepository extends JpaRepository<OrderedItem, Long> 
     @Query("SELECT i from OrderedItem i where i.id = :id")
     Optional<OrderedItem> findWithId(long id);
 
-    @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id")
+    @Query("SELECT i from OrderedItem i left join fetch i.order e where i.order.id = :id and i.deleted = false")
     List<OrderedItem> findAllByOrderId(long id);
 
     @Query("select ord from OrderedItem ord left join fetch ord.activeIngredients e where ord.id =?1")
