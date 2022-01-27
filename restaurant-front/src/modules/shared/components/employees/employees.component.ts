@@ -52,8 +52,7 @@ export class EmployeesComponent implements OnInit {
     'Username',
     'Name',
     'Surname',
-    'Role',
-    'Telephone'
+    'Role'
   ];
 
   roles: Select[] = [
@@ -93,10 +92,12 @@ export class EmployeesComponent implements OnInit {
       });
       this.displayedColumns.push('Edit employee');
       this.displayedColumns.push('Delete');
+      this.displayedColumns.push('Telephone');
     }
     if(this.user.userType === "MANAGER"){
       this.paycheckService.getAll('', '').subscribe((response) => {
         this.setData(response.body);
+        console.log(this.dataSource);
       });
       this.displayedColumns.push('Paycheck');
       this.displayedColumns.push('Edit paycheck');

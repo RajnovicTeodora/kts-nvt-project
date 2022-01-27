@@ -56,6 +56,10 @@ export class AdminDashboardComponent implements OnInit {
     this.showModalLogout = true;
   }
 
+  onLogoutCloseClicked(item: boolean) {
+    this.showModalLogout = false;
+  }
+
   onRestaurantTablesClicked(){
     this.employeesWindowOpen = false;
     this.router.navigate(['/edit-area']);
