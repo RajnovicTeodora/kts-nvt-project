@@ -1,6 +1,6 @@
 <h2 mat-dialog-title class="title">Add new employee</h2>
 <mat-dialog-content [formGroup]="addEmployeeForm" style="white-space: pre-line">
-  <mat-grid-list cols="2" rowHeight="6:1"> 
+  <mat-grid-list cols="2" rowHeight="6:1">
     <!-- profilna slika -->
     <mat-grid-tile rowspan="5">
       <div class="img-space">
@@ -104,17 +104,14 @@
       <mat-form-field id="role" class="input">
         <mat-label>Role</mat-label>
         <mat-select formControlName="role">
-          <mat-option
-            *ngFor="let role of roles"
-            [value]="role.value"
-          >
+          <mat-option *ngFor="let role of roles" [value]="role.value">
             {{ role.viewValue }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
-</mat-dialog-content> 
+</mat-dialog-content>
 
 <mat-dialog-actions>
   <button
@@ -127,8 +124,15 @@
   >
     Cancel
   </button>
-  <button mat-stroked-button color="accent" type="submit" class="submit-button" (click)="saveEmployee()"
-          [disabled]="addEmployeeForm.invalid" id="submit-button" >
+  <button
+    mat-stroked-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="saveEmployee()"
+    [disabled]="addEmployeeForm.invalid || !this.isImageSaved"
+    id="submit-button"
+  >
     Save
   </button>
 </mat-dialog-actions>

@@ -1,13 +1,18 @@
-<h2 mat-dialog-title class="title">Edit employee {{selectedEmployee.username}}</h2>
-<mat-dialog-content [formGroup]="editEmployeeForm" style="white-space: pre-line">
-  <mat-grid-list cols="2" rowHeight="3:1"> 
+<h2 mat-dialog-title class="title">
+  Edit employee {{ selectedEmployee.username }}
+</h2>
+<mat-dialog-content
+  [formGroup]="editEmployeeForm"
+  style="white-space: pre-line"
+>
+  <mat-grid-list cols="2" rowHeight="3:1">
     <!-- profilna slika -->
     <mat-grid-tile rowspan="2">
       <div class="img-space">
         <ng-container>
           <img
             style="max-width: 50%; max-height: 50%"
-            [src]="url"
+            [src]="this.image"
             alt="Image"
           />
         </ng-container>
@@ -54,19 +59,19 @@
     </mat-grid-tile>
     <!-- telephone -->
     <mat-grid-tile>
-        <mat-form-field id="telephone" class="input">
-          <input
-            matInput
-            type="text"
-            formControlName="telephone"
-            id="telephone"
-            required
-            placeholder="Telephone"
-          />
-        </mat-form-field>
-      </mat-grid-tile>
+      <mat-form-field id="telephone" class="input">
+        <input
+          matInput
+          type="text"
+          formControlName="telephone"
+          id="telephone"
+          required
+          placeholder="Telephone"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
   </mat-grid-list>
-</mat-dialog-content> 
+</mat-dialog-content>
 
 <mat-dialog-actions>
   <button
@@ -79,8 +84,15 @@
   >
     Cancel
   </button>
-  <button mat-stroked-button color="accent" type="submit" class="submit-button" (click)="saveEmployee()"
-          [disabled]="editEmployeeForm.invalid" id="submit-button" >
+  <button
+    mat-stroked-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="saveEmployee()"
+    [disabled]="editEmployeeForm.invalid || !this.isImageSaved"
+    id="submit-button"
+  >
     Save
   </button>
 </mat-dialog-actions>

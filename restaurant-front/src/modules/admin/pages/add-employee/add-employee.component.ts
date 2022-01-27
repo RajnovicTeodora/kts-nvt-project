@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Select } from 'src/modules/shared/models/select';
 import { Employee } from 'src/modules/shared/models/employee';
-import { AdminService } from 'src/modules/admin/admin-service/admin.service'
+import { AdminService } from 'src/modules/admin/admin-service/admin.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -18,25 +18,25 @@ export class AddEmployeeComponent implements OnInit {
     { value: 'HEAD_CHEF', viewValue: 'Head chef' },
     { value: 'CHEF', viewValue: 'Chef' },
     { value: 'BARTENDER', viewValue: 'Bartender' },
-    { value: 'WAITER', viewValue: 'Waiter' }
+    { value: 'WAITER', viewValue: 'Waiter' },
   ];
+
   isImageSaved: boolean = false;
   url: any;
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
     private dialogRef: MatDialogRef<AddEmployeeComponent>,
     private adminService: AdminService
   ) {
-    this.url = '';
     this.addEmployeeForm = this.fb.group({
       username: [null, Validators.required],
       password: [null, Validators.required],
       name: [null, Validators.required],
       surname: [null, Validators.required],
-      image: [null, Validators.nullValidator],
       telephone: [null, Validators.required],
-      role: [null, Validators.required]
+      role: [null, Validators.required],
     });
   }
 
@@ -55,44 +55,26 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   saveEmployee() {
-
-    if (
-      this.addEmployeeForm.value.username === null ||
-      this.addEmployeeForm.get('role')?.value === '' ||
-      this.addEmployeeForm.value.password === null ||
-      this.addEmployeeForm.value.name === null ||
-      this.addEmployeeForm.value.surname === null ||
-      this.addEmployeeForm.value.telephone === null
-    ) {
-      this.toastr.error('All fields must be filled in!');
-    } else {
-      if(this.url !== 'assets/images/profile_default.png'){
-        this.url = this.url.split(',')[1];
-      }
-
-      const employee: Employee = {
-        username: this.addEmployeeForm.value.username,
-        password: this.addEmployeeForm.value.password,
-        name: this.addEmployeeForm.value.name,
-        surname: this.addEmployeeForm.value.surname,
-        telephone: this.addEmployeeForm.value.telephone,
-        image: this.url,
-        role: this.addEmployeeForm.value.role
-      };
-      console.log(employee)
-      this.adminService.addEmployee(employee).subscribe({
-        next: (success) => {
-          this.toastr.success(
-            'Successfully added ' + success.name
-          );
-          this.dialogRef.close();
-        },
-        error: (error) => {
-          this.toastr.error('Unable to add new employee');
-          console.log(error);
-        },
-      });
-    }
+    const employee: Employee = {
+      username: this.addEmployeeForm.value.username,
+      password: this.addEmployeeForm.value.password,
+      name: this.addEmployeeForm.value.name,
+      surname: this.addEmployeeForm.value.surname,
+      telephone: this.addEmployeeForm.value.telephone,
+      image: this.url.split(',')[1],
+      role: this.addEmployeeForm.value.role,
+    };
+    console.log(employee);
+    this.adminService.addEmployee(employee).subscribe({
+      next: (success) => {
+        this.toastr.success('Successfully added ' + success.name);
+        this.dialogRef.close();
+      },
+      error: (error) => {
+        this.toastr.error('Unable to add new employee');
+        console.log(error);
+      },
+    });
   }
 
   cancel() {

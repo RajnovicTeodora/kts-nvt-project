@@ -18,7 +18,7 @@ public abstract class Employee extends User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false, columnDefinition="text", length=10485760)
     private String image;
 
     @Column(name = "telephone")
