@@ -18,7 +18,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class ManagerReportTest {
+public class ReportTest {
     private WebDriver browser;
 
     private LoginPage loginPage;
@@ -47,7 +47,7 @@ public class ManagerReportTest {
     }
 
     @Test
-    public void managerReportTest() {
+    public void reportTest() {
 
         // set username
         loginPage.setUsernameInput("manager");
@@ -63,6 +63,7 @@ public class ManagerReportTest {
 
         // Test if default report is showing
         // Two series: income and sold items
+        reportsPage.waitUntilReportPresent();
         assertTrue(reportsPage.seriesContainersCountEqual(2));
 
         String[] incomeAndSoldMonthly = new String[] {"2", "0", "3", "0", "1", "10", "0", "23", "0", "5"};
