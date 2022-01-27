@@ -15,7 +15,6 @@ import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { AdminService } from 'src/modules/admin/admin-service/admin.service';
 import { Area } from 'src/modules/shared/models/area';
 import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
-import { DeleteAreaComponent } from '../../components/delete-area/delete-area.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAreaComponent } from '../../components/add-area/add-employee/add-area.component';
 import { CdkDragDrop, CdkDragEnd, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -35,7 +34,10 @@ export class EditAreaComponent implements OnInit {
   tablePositions: any[];
   savedChanges: boolean;
   selectedTable: number;
-  selectedDelete: boolean;
+  selectedDeleteTable: boolean;
+  selectedDeleteArea: boolean;
+  areaToDelete: number;
+  messageDeleteArea: string;
   
   constructor(  
     private fb: FormBuilder,
@@ -49,7 +51,10 @@ export class EditAreaComponent implements OnInit {
     this.data = [];
     this.savedChanges = true;
     this.selectedTable = -1;
-    this.selectedDelete = false;
+    this.selectedDeleteTable = false;
+    this.selectedDeleteArea = false;
+    this.areaToDelete -1;
+  
    }
 
   ngOnInit(): void {
@@ -98,21 +103,24 @@ export class EditAreaComponent implements OnInit {
   }
 
   openDeleteAreaDialog(name: string, id: number) {
-    const dialogRef = this.dialog.open(DeleteAreaComponent,  {
-      disableClose: true,
-      autoFocus: true,
-      width: '40%',
-      height: '20%',
-      data: {
-        id: id,
-        name: name
-      }
-    });
+    this.areaToDelete = id;
+    this.messageDeleteArea = "Are you sure you want to delete area " + name;
+    this.selectedDeleteArea = true;
+    // const dialogRef = this.dialog.open(DeleteAreaComponent,  {
+    //   disableClose: true,
+    //   autoFocus: true,
+    //   width: '40%',
+    //   height: '20%',
+    //   data: {
+    //     id: id,
+    //     name: name
+    //   }
+    // });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-      this.getAreas();
-    });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   console.log(`Dialog result: ${result}`);
+    //   this.getAreas();
+    // });
   }
 
   openAddAreaDialog() {
@@ -233,30 +241,54 @@ export class EditAreaComponent implements OnInit {
   }
 
   deleteTable() {
-    this.selectedDelete = true;
+    this.selectedDeleteTable = true;
   }
 
-  onConfirmDeleteCancelClicked(item: boolean) {
-    this.selectedDelete = false;
+  onConfirmDeleteTableCancelClicked(item: boolean) {
+    this.selectedDeleteTable = false;
     this.selectedTable = -1;
   }
 
-  onConfirmDeleteConfirmedClicked(item: boolean) {
+  onConfirmDeleteTableConfirmedClicked(item: boolean) {
     this.adminService.deleteTable(this.selectedTable).subscribe({
       next: (success) => {
         this.toastr.success(
           'Successfully deleted table'
         );
         this.refreshArea();
-        this.selectedDelete = false;
+        this.selectedDeleteTable = false;
       },
       error: (error) => {
         this.toastr.error('Table occupied!');
         console.log(error);
-        this.selectedDelete = false;
+        this.selectedDeleteTable = false;
       },
     });
   }
+
+  onConfirmAreaTableCancelClicked(item: boolean) {
+    this.selectedDeleteArea = false;
+    this.areaToDelete = -1;
+    this.messageDeleteArea = "";
+  }
+
+  onConfirmDeleteAreaConfirmedClicked(item: boolean) {
+    this.adminService.deleteArea(this.areaToDelete).subscribe({
+      next: (success) => {
+        this.toastr.success(
+          'Successfully deleted area'
+        );
+        this.getAreas();
+        this.selectedDeleteArea = false;
+      },
+      error: (error) => {
+        this.toastr.error('Area has occupied tables, or does not exits');
+        console.log(error);
+        this.selectedDeleteArea = false;
+      },
+    });
+  }
+
 
 
 }

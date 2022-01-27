@@ -86,8 +86,14 @@
   
   </mat-sidenav-container>
   <app-confirm-action
-    *ngIf="this.selectedDelete"
+    *ngIf="this.selectedDeleteTable"
     confirmActionTitle="Are you sure you want to delete table?"
-    (onConfirmActionCancelled)="onConfirmDeleteCancelClicked($event)"
-    (onConfirmActionConfirmed)="onConfirmDeleteConfirmedClicked($event)"
+    (onConfirmActionCancelled)="onConfirmDeleteTableCancelClicked($event)"
+    (onConfirmActionConfirmed)="onConfirmDeleteTableConfirmedClicked($event)"
   ></app-confirm-action>
+  <app-confirm-action
+  *ngIf="this.selectedDeleteArea"
+  [confirmActionTitle]="this.messageDeleteArea"
+  (onConfirmActionCancelled)="onConfirmAreaTableCancelClicked($event)"
+  (onConfirmActionConfirmed)="onConfirmDeleteAreaConfirmedClicked($event)"
+></app-confirm-action>

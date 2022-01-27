@@ -18,7 +18,6 @@ import { AddEmployeeComponent } from './pages/add-employee/add-employee.componen
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
 import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 import { EditAreaComponent } from './pages/edit-area/edit-area.component';
-import { DeleteAreaComponent } from './components/delete-area/delete-area.component';
 import { AddAreaComponent } from './components/add-area/add-employee/add-area.component';
 import { ConfirmComponent } from './components/confirm/delete-area/confirm.component';
 
@@ -29,7 +28,6 @@ import { ConfirmComponent } from './components/confirm/delete-area/confirm.compo
     EditEmployeeComponent,
     DeleteEmployeeComponent,
     EditAreaComponent,
-    DeleteAreaComponent,
     AddAreaComponent,
     ConfirmComponent
   ],
