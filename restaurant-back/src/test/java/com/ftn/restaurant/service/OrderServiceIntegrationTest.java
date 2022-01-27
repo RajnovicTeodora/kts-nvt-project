@@ -1,8 +1,6 @@
 package com.ftn.restaurant.service;
 
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.model.Order;
+import com.ftn.restaurant.exception.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -12,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_DTO_1;
-import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_DTO_2;
-import static org.junit.Assert.assertEquals;
+import static com.ftn.restaurant.constants.OrderDTOConstants.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,31 +19,53 @@ public class OrderServiceIntegrationTest {
 
     @Autowired
     private OrderService orderService;
-/*
+
     @Test
     public void createOrderTest(){
-        Order order = orderService.createOrder(ORDER_DTO_1);
         //Ok
-        assertEquals(ORDER_DTO_1.getDate(), order.getDate().toString());
-        assertEquals(ORDER_DTO_1.getNote(), order.getNote());
+        Assert.assertTrue(orderService.createOrder(ORDER_DTO_1) >= 1L);
         //"Order has to contain ordered items."
         Assertions.assertThrows(ForbiddenException.class, () -> {orderService.createOrder( ORDER_DTO_2);});
+        //"Couldn't find menu item."
+        Assertions.assertThrows(MenuItemNotFoundException.class, () -> {orderService.createOrder( ORDER_DTO_3);});
+        //"Couldn't find ingredient."
+        Assertions.assertThrows(IngredientNotFoundException.class, () -> {orderService.createOrder( ORDER_DTO_4);});
     }
 
     @Test
     public void updateOrderTest(){
-        Order order = orderService.updateOrder(4, ORDER_DTO_1);
-        //Ok
-        assertEquals(ORDER_DTO_1.getDate(), order.getDate().toString());
-        assertEquals(ORDER_DTO_1.getNote(), order.getNote());
+        //"Couldn't find order."
+        Assertions.assertThrows(NotFoundException.class, () -> {orderService.updateOrder( ORDER_DTO_6);});
         //"Can't change order that is already paid."
-        Assertions.assertThrows(ForbiddenException.class, () -> {orderService.updateOrder(5, ORDER_DTO_1);});
+        Assertions.assertThrows(OrderAlreadyPaidException.class, () -> {orderService.updateOrder( ORDER_DTO_7);});
+        //ok
+        Assertions.assertEquals( "Successfully updated order with order number: 3", orderService.updateOrder( ORDER_DTO_10));
     }
 
     @Test
     public void setTotalPriceAndPayTest(){
-        Assert.assertEquals("Successfully paid order with id: 3",orderService.setTotalPriceAndPay(3));
+        Assert.assertEquals("Successfully paid order with id: 7",orderService.setTotalPriceAndPay(7));
         Assertions.assertThrows(ForbiddenException.class, () -> {orderService.setTotalPriceAndPay(5);});
         Assertions.assertThrows(NotFoundException.class, () -> {orderService.setTotalPriceAndPay(1000);});
-    }*/
+    }
+
+    @Test
+    public void checkIfOrderIsPaidTest(){
+        Assert.assertTrue(orderService.checkIfOrderIsPaid(5));
+        Assert.assertFalse(orderService.checkIfOrderIsPaid(4));
+        Assertions.assertThrows(NotFoundException.class, () -> {orderService.checkIfOrderIsPaid(-1);});
+    }
+
+    @Test
+    public void getActiveOrdersForTableTest(){
+        Assert.assertFalse(orderService.getActiveOrdersForTable(2, "waiter").isEmpty());
+        Assertions.assertThrows(NotFoundException.class, () -> {orderService.getActiveOrdersForTable(-1, "waiter");});
+    }
+
+    @Test
+    public void getOrderTest(){
+        Assert.assertEquals("xxxx", orderService.getOrder(7).getNote());
+        Assertions.assertThrows(NotFoundException.class, () -> {orderService.getOrder(-1);});
+    }
+
 }

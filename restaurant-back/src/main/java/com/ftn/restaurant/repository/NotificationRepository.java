@@ -12,11 +12,11 @@ import java.util.Optional;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    @Query("select n from Notification n where n.recipient.id = ?1 and n.isActive = true")
-    List<Notification> getAllActiveNotificationsForEmployee(Long id);
+    @Query("select n from Notification n where n.recipient.username = ?1 and n.isActive = true")
+    List<Notification> getAllActiveNotificationsForEmployee(String username);
 
-    @Query("select n from Notification n where n.recipient.id = ?1")
-    List<Notification> getAllNotificationsForEmployee(Long id);
+    @Query("select n from Notification n where n.recipient.username = ?1")
+    List<Notification> getAllNotificationsForEmployee(String username);
 
     @Query("select n from Notification n where n.id = ?1")
     Optional<Notification> findById(long id);
