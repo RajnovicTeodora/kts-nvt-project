@@ -27,6 +27,7 @@
               <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
               <td mat-cell *matCellDef="let element">
                 <button
+                  id="set-notification-inactive"
                   *ngIf="column == 'active'"
                   class="details"
                   (click)="onViewedNotification(element)"

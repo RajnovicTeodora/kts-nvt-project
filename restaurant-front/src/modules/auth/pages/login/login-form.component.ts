@@ -55,7 +55,9 @@ export class LoginFormComponent implements OnInit {
 
       this.authService.login(loggedUser).subscribe(
         (result) => {
-          this.toastr.success('Successful login!');
+          this.toastr.success('', 'Successful login!', {
+            positionClass: 'toast-top-left' 
+         });
           const user = new UserWithToken(
             result.token,
             result.expiresIn,

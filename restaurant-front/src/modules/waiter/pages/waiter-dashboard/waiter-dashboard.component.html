@@ -15,6 +15,7 @@
     fxLayoutAlign="space-between center"
   >
     <button
+      id="other-account-button"
       mat-button
       class="menu-button"
       (click)="onOtherAccountsButtonClicked()"
@@ -34,14 +35,15 @@
       (click)="this.router.navigate([''])"
     />
 
-    <h4 class="name">{{ this.user.username }}</h4>
+    <h4 class="name" id="current-user">{{ this.user.username }}</h4>
 
-    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
+    <button mat-button class="menu-button" (click)="onNotificationsClicked()" id="notifications-button">
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
 
     <button
+      id="change-password-button"
       mat-button
       class="menu-button"
       (click)="onPasswordChangeButtonClicked()"
@@ -50,7 +52,7 @@
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" id="logout-button">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -63,6 +65,7 @@
       class="custom-scroll-bar"
       *ngFor="let waiter of waiterList"
     >
+    <mat-list-item>
       <button
         mat-list-item
         (click)="changeAccount(waiter.user.username)"
@@ -77,6 +80,7 @@
           >check</mat-icon
         >
       </button>
+    </mat-list-item>
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
