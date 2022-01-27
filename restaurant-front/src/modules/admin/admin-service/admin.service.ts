@@ -11,7 +11,7 @@ import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 })
 export class AdminService {
   private headers = new HttpHeaders({ 'Content-Type': 'text' });
-  private headers2 = new HttpHeaders({
+  private headersJson = new HttpHeaders({
     'Content-Type': 'application/json',
   });
   constructor(private http: HttpClient) { }
@@ -39,7 +39,7 @@ export class AdminService {
       `${environment.baseUrl}/api/employees/addUser`,
       employee,
       {
-        headers: this.headers2,
+        headers: this.headersJson,
         responseType: 'json',
       }
     );
@@ -50,7 +50,7 @@ export class AdminService {
       `${environment.baseUrl}/api/employees/editUser`,
       employee,
       {
-        headers: this.headers2,
+        headers: this.headersJson,
         responseType: 'json',
       }
     );
@@ -85,7 +85,7 @@ export class AdminService {
       `${environment.baseUrl}/api/area/addArea`,
       name,
       {
-        headers: this.headers2,
+        headers: this.headersJson,
         responseType: 'json',
       }
     );
@@ -96,7 +96,7 @@ export class AdminService {
       `${environment.baseUrl}/api/table/addTable`,
       table,
       {
-        headers: this.headers2,
+        headers: this.headersJson,
         responseType: 'json',
       }
     );
@@ -107,7 +107,7 @@ export class AdminService {
       `${environment.baseUrl}/api/area/editTables`,
       area,
       {
-        headers: this.headers2,
+        headers: this.headersJson,
         responseType: 'json',
       }
     );

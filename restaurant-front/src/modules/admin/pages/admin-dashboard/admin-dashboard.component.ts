@@ -52,10 +52,6 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  onLogoutCloseClicked(item: boolean) {
-    this.showModalLogout = false;
-  }
-
   onLogoutButtonClicked() {
     this.showModalLogout = true;
   }
