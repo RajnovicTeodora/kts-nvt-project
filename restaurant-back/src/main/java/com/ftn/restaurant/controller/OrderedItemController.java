@@ -1,21 +1,16 @@
 package com.ftn.restaurant.controller;
 
-import com.ftn.restaurant.dto.OrderDTO;
+import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.exception.OrderAlreadyPaidException;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
-import com.ftn.restaurant.model.OrderedItem;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderedItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,6 +93,13 @@ public class OrderedItemController {
         }catch (NotFoundException e){
             return new ResponseEntity("Couldn't find order", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/getActiveIngredients/{id}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<IngredientDTO> getActiveIngredients(@PathVariable long id){
+        return this.orderedItemService.getActiveIngredients(id);
     }
 
 }

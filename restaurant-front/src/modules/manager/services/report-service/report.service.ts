@@ -1,16 +1,17 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
+  constructor(private http: HttpClient) {}
+
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
-
-  constructor(private http: HttpClient) {}
 
   // period = monthly, quarterly, annual
   // type = incomeAndSold, preparationCosts, paychecks
@@ -23,7 +24,7 @@ export class ReportService {
     };
 
     return this.http.get(
-      'http://localhost:8080/api/reports/' + period + '/' + type,
+      `${environment.baseUrl}/api/reports/` + period + '/' + type,
       queryParams
     );
   }

@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Select } from 'src/modules/shared/models/select';
 import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user-with-paycheck';
 import { PaycheckService } from '../../services/paycheck-service/paycheck.service';
-import { EditPaycheckDialogComponent } from '../edit-paycheck-dialog/edit-paycheck-dialog.component';
+import { EditPaycheckDialogComponent } from '../../components/edit-paycheck-dialog/edit-paycheck-dialog.component';
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
 
 @Component({

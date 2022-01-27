@@ -40,6 +40,8 @@ public class OrderService {
 
     @Autowired
     private WaiterService waiterService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private NotificationService notificationService;
@@ -224,5 +226,51 @@ public class OrderService {
             return orderDTO;
         }
         throw new NotFoundException("Couldn't find order with order number: " + orderNum);
+    }
+
+    public List<OrderDTO> getNewOrders() {
+        List<Order> orders = this.orderRepository.findAll();
+        List<OrderDTO> dtos = new ArrayList<>();
+        for( Order ord : orders){
+            for(OrderedItem item : this.orderedItemService.findAllByOrderId(ord.getId()) ){
+                if(item.getStatus().name().equals("ORDERED") && !item.isDeleted()){
+                    dtos.add(new OrderDTO(ord, "without items"));
+                    break;
+                }
+            }
+        }
+        return dtos;
+    }
+
+    public List<OrderDTO> getAcceptedOrders(String username) {
+        User user = this.userService.findByUsername(username);
+        List<OrderDTO> orders = new ArrayList<>();
+        if(user.getRole().getName().equals("CHEF") || user.getRole().getName().equals("HEAD_CHEF")){
+            for(OrderedItem item:((Chef)user).getOrderedItems()){
+                if(item.getStatus().name().equals("IN_PROGRESS")){
+                    if(!checkIsInList(orders, item.getOrder().getId())){
+                        orders.add(new OrderDTO(item.getOrder(), ""));
+                    }
+                }
+            }
+        }else{
+            for(OrderedItem item:((Bartender)user).getOrderedItems()){
+                if(item.getStatus().name().equals("IN_PROGRESS")){
+                    if(!checkIsInList(orders, item.getOrder().getId())){
+                        orders.add(new OrderDTO(item.getOrder(), ""));
+                    }
+                }
+            }
+        }
+        return orders;
+    }
+
+    private boolean checkIsInList(List<OrderDTO> orders, Long id) {
+        for(OrderDTO dto : orders){
+            if(dto.getId()==id){
+                return true;
+            }
+        }
+        return false;
     }
 }

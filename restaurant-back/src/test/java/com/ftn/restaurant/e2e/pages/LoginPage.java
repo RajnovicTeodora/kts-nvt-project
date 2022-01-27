@@ -8,6 +8,8 @@ public class LoginPage {
 
     private WebDriver driver;
 
+    public static final String URL = "http://localhost:4200/login";
+
     @FindBy(id = "username")
     private WebElement usernameInput;
 
@@ -43,5 +45,9 @@ public class LoginPage {
 
     public void loginBtnClick(){
         Utilities.clickableWait(driver, this.loginButton, 10).click();
+    }
+
+    public boolean urlPresent() {
+        return Utilities.urlWait(driver, URL, 10);
     }
 }
