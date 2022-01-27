@@ -93,7 +93,7 @@
                 </ng-container>
               </ng-container>
             </div>
-            <mat-paginator
+            <mat-paginator *ngIf="this.state!==1"
               [length]="data2.length"
               [pageSize]="pageSize"
               [pageIndex]="currentPage"

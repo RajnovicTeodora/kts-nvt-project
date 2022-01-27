@@ -1,6 +1,6 @@
 <div id="container-div">
     <h3>View orders in progress</h3>
-     <table mat-table [dataSource] ="observable" class="mat-elevation-z8" matSort
+     <table mat-table [dataSource] ="observable"  matSort
      (matSortChange)="announceSortChange($event)">
 
       <ng-container matColumnDef="name">
@@ -37,8 +37,9 @@
 
        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      
     </table> 
+    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
     <br/>
     <label>Note:</label><br/>
     <textarea matInput

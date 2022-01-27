@@ -79,7 +79,7 @@
                 <app-add-drink *ngIf="this.state===7"></app-add-drink>
               </ng-container>
             </div>
-            <mat-paginator
+            <mat-paginator *ngIf="this.state!==1"
               [length]="data2.length"
               [pageSize]="pageSize"
               [pageIndex]="currentPage"
