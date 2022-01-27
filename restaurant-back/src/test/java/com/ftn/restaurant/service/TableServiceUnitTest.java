@@ -196,15 +196,19 @@ public class TableServiceUnitTest {
     public void addTableTest_Success() {
     	Area area = new Area("First floor");
     	area.setId(1L);
-    	Mockito.when(tableRepository.findByPositionXAndPositionY(33, 33)).thenReturn(Optional.empty());
+    	List<RestaurantTable> tables = new ArrayList<RestaurantTable>();
+    	RestaurantTable previousTable = new RestaurantTable(100,100,area);
+    	previousTable.setTableNum(1);
+    	tables.add(previousTable);
+    	Mockito.when(tableRepository.findAll()).thenReturn(tables);
     	Mockito.when(areaRepository.findById(1L)).thenReturn(Optional.of(area));
-    	Assert.assertEquals("First floor", tableService.addTable(new RestaurantTableDTO(33, 33, 1L)).getArea().getName());
+    	Assert.assertEquals(2, tableService.addTable(new RestaurantTableDTO(33, 33, 1L, 1)).getTableNum());
     }
     
     @Test(expected = AreaNotFoundException.class )
     public void addTableTest_Area_Not_Found_Exception() {
     	Mockito.when(areaRepository.findById(2L)).thenReturn(Optional.empty());
-    	tableService.addTable(new RestaurantTableDTO(33, 33, 1L));
+    	tableService.addTable(new RestaurantTableDTO(33, 33, 1L, 1));
     }
     
     @Test
