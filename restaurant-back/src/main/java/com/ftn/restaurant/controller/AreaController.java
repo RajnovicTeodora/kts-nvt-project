@@ -50,7 +50,6 @@ public class AreaController {
 
     @ResponseBody
     @GetMapping(path = "/getAllAreas")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<AreaDTO> getAllAreas(){
         return areaService.getAllAreas();

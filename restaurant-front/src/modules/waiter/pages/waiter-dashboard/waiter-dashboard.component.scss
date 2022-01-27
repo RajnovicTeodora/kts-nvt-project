@@ -24,9 +24,9 @@ mat-sidenav {
   margin: 16px;
   margin-left: 32px;
 
-  display: flex;
+  // display: flex;
   justify-content: center;
-  align-items: center;
+  align-items:center;
 
   font-size: 2rem;
   color: lightgray;
@@ -96,4 +96,46 @@ mat-action-list {
 
 .custom-scroll-bar::-webkit-scrollbar-thumb{
     background: rgba(0,0,0,.26);
+}
+
+.areaBttn {
+  font-size: large;
+  margin-left: 15px;
+  margin-right: 15px;
+  width: 60%;
+  height: 50px;
+}
+
+
+.boundary {
+  height: 80%;
+  width: 97%;
+  border: dotted;
+  margin-top: 1%;
+  margin-left: 1%;
+}
+
+.title {
+  height: 10%;
+  width: 97%;
+  margin-top: 1%;
+  margin-left: 1%;
+  text-emphasis-color: #424242;
+  text-align: center;
+}
+
+.text {
+  text-emphasis-color: #424242;
+  font-size: large;
+}
+
+
+.claimedTableBttn {
+  border-style: solid;
+  border-color: hotpink;
+}
+
+.unclaimedTableBttn {
+  border-style: solid;
+  border-color: #424242;
 }
