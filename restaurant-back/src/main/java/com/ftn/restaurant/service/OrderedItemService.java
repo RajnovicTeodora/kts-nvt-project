@@ -6,10 +6,7 @@ import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.OrderedItem;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import com.ftn.restaurant.model.*;
-import com.ftn.restaurant.repository.BartenderRepository;
-import com.ftn.restaurant.repository.EmployeeRepository;
-import com.ftn.restaurant.repository.NotificationRepository;
-import com.ftn.restaurant.repository.OrderedItemRepository;
+import com.ftn.restaurant.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +26,9 @@ public class OrderedItemService {
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Autowired
+    private ChefRepository chefRepository;
 
     @Autowired
     private IngredientService ingredientService;
@@ -55,6 +55,7 @@ public class OrderedItemService {
         this.orderedItemRepository = orderedItemRepository;
         this.bartenderRepository = bartenderRepository;
         this.notificationRepository = notificationRepository;
+        this.chefRepository  = chefRepository;
     }
 
     public String acceptOrderedItem(long id, String username) { //setovati i uloge todo
@@ -68,12 +69,28 @@ public class OrderedItemService {
           if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){
               return "You can't accept order if it is not in status ordered.";
           }
-          User bartender = userService.findByUsername(username); //mora da ostane user zbog sefa
-          ((Bartender)bartender).getOrderedItems().add(item.get());
-          item.get().setWhoPreapiring((Bartender)bartender);
-          item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
-          this.orderedItemRepository.save(item.get());
-          this.bartenderRepository.save((Bartender) bartender);
+          User user = userService.findByUsername(username); //mora da ostane user zbog sefa
+          if( user instanceof Bartender){
+              ((Bartender)user).getOrderedItems().add(item.get());
+              item.get().setWhoPreapiring((Bartender)user);
+              item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
+              this.orderedItemRepository.save(item.get());
+              this.bartenderRepository.save((Bartender) user);
+              String message = "Item " + item.get().getMenuItem().getName() + " is accepted. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
+              Notification n = new Notification( message);
+              n.setRecipient(item.get().getOrder().getWaiter());
+              notificationRepository.save(n);
+          }else{
+                ((Chef)user).getOrderedItems().add(item.get());
+                item.get().setWhoPreapiring((Chef)user);
+                item.get().setStatus(OrderedItemStatus.IN_PROGRESS);
+                this.orderedItemRepository.save(item.get());
+                this.chefRepository.save((Chef) user);
+                String message = "Item " + item.get().getMenuItem().getName() + " is accepted. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
+                Notification n = new Notification( message);
+                n.setRecipient(item.get().getOrder().getWaiter());
+                notificationRepository.save(n);
+            }
           return  "You accepted order "+ item.get().getMenuItem().getName();
         }
         return "Order doesn't exists";
@@ -87,7 +104,7 @@ public class OrderedItemService {
                 return "You can't finish order if it is not in status in progres.";
             }
             item.get().setStatus(OrderedItemStatus.READY);
-            String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table ";
+            String message = "Item " + item.get().getMenuItem().getName() + " is finished. Table " + item.get().getOrder().getRestaurantTable().getTableNum();
             Notification n = new Notification( message);
             n.setRecipient(item.get().getOrder().getWaiter());
             notificationRepository.save(n);
@@ -254,8 +271,12 @@ public class OrderedItemService {
 
     public List<OrderItemDTO> findAllAcceptedByOrderIdDTO(long id, String username) {
         List<OrderItemDTO> listItems = new ArrayList<>();
-        User bartender = userService.findByUsername(username);
-        List<OrderedItem> accepted = ((Bartender)bartender).getOrderedItems();
+        User user = userService.findByUsername(username);
+        List<OrderedItem> accepted = new ArrayList<>();
+
+        if(user instanceof Bartender){ accepted = ((Bartender)user).getOrderedItems();}
+        else{ accepted = ((Chef)user).getOrderedItems();}
+
         for(OrderedItem item : accepted){
             if(item.getOrder().getId() == id && item.getStatus()==OrderedItemStatus.IN_PROGRESS){
                 OrderItemDTO dto = new OrderItemDTO(item,""); //todo ovo promeni, jer izlazi neki load exc

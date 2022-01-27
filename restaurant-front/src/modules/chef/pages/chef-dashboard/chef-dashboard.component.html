@@ -1,0 +1,111 @@
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+    <button mat-button class="menu-button" (click)="onOtherAccountsButtonClicked()">
+      <mat-icon>login</mat-icon>
+      <span>Other account</span>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img
+      class="avatar mat-elevation-z8"
+      src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+
+    <h4 class="name">{{this.user.username}}</h4>
+
+    <button mat-button class="menu-button">
+      <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
+      <span>Notifications</span>
+    </button>
+
+    <button mat-button class="menu-button" (click)="onPasswordChangeButtonClicked()">
+      <mat-icon>settings</mat-icon>
+      <span>Change password</span>
+    </button>
+
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()" >
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <mat-action-list>
+        <mat-list-item (click)="this.state=1"
+        >Dish card</mat-list-item
+      >
+      <mat-list-item (click)="this.state=5"
+        >New orderes</mat-list-item
+      >
+      <mat-list-item (click)="this.state=4"
+        >Accepted orders</mat-list-item
+      >
+    </mat-action-list>
+
+    <mat-divider></mat-divider>
+
+    <p class="designation">Active accounts</p>
+
+    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList">
+      <button mat-list-item (click)="changeAccount(waiter.user.username)" 
+      matTooltip="Change account">
+        <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
+        <span>{{waiter.user.username}}</span>
+        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.user.username === this.user.username"
+          >check</mat-icon
+        >
+      </button>
+      
+    </mat-action-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <div class="row">
+        <div class="col">
+          <div fxLayout="row wrap">
+            <ng-container *ngFor="let image of data">
+              <ng-container *ngFor="let image of data">
+                <img [src]="image.url" *ngIf="this.state===0"/>
+                <app-dish-table *ngIf="this.state===1"></app-dish-table>
+                 <app-new-orders *ngIf="this.state===2" [orderId]="this.idOrder"></app-new-orders> 
+                <app-accepted-orders *ngIf="this.state===3" [orderId]="this.idOrder"></app-accepted-orders>
+                <app-list-accepted-orders *ngIf="this.state===4" (onClickView)="onClickViewAccepted($event)"></app-list-accepted-orders>
+                <app-list-new-orders *ngIf="this.state===5" (onClickView)="onClickViewNew($event)"></app-list-new-orders>
+              </ng-container>
+            </ng-container>
+          </div>
+          <mat-paginator
+            [length]="data2.length"
+            [pageSize]="pageSize"
+            [pageIndex]="currentPage"
+            (page)="getData($event)"
+          >
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
+<app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
+<app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
+<app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>
