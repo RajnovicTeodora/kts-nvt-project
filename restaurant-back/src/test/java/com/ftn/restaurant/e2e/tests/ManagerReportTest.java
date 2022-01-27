@@ -73,8 +73,9 @@ public class ManagerReportTest {
 
         // Test paychecks
         reportsPage.paychecksBtnClick();
-        assertTrue(true);
+        reportsPage.waitUntilReportPresent();
         // One series: paychecks
+        reportsPage.seriesContainersCountEqual(1);
 
         // Monthly
         String[] paychecksMonthly = new String[] {"20", "20", "40", "40"};
@@ -85,26 +86,89 @@ public class ManagerReportTest {
 
         // Quarterly
         reportsPage.quarterlyBtnClick();
+        reportsPage.waitUntilReportPresent();
+
         assertTrue(reportsPage.seriesContainersCountEqual(1));
         String[] paychecksQuarterly= new String[] {"20", "100"};
         assertTrue(reportsPage.seriesContainsText(paychecksQuarterly));
 
-        String[] paychecksQuarterlyXAxis = new String[] {"Q3-2021", "Q4-2021"};
+        String[] paychecksQuarterlyXAxis = new String[] {"Q3 - 2021", "Q4 - 2021"};
         assertTrue(reportsPage.xAxisContainsText(paychecksQuarterlyXAxis));
 
         // Annual
         reportsPage.annualBtnClick();
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(1));
         String[] paychecksAnnual= new String[] {"120"};
-        assertTrue(reportsPage.seriesContainsText(incomeAndSoldMonthly));
+        assertTrue(reportsPage.seriesContainsText(paychecksAnnual));
 
         String[] paychecksAnnualXAxis = new String[] {"2021"};
-        assertTrue(reportsPage.xAxisContainsText(incomeAndSoldMonthlyXAxis));
+        assertTrue(reportsPage.xAxisContainsText(paychecksAnnualXAxis));
+
+        //Preparation costs
+        //Annual
+        reportsPage.preparationCostsBtnClick();
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(1));
+        String[] preparationAnnual= new String[] {"300"};
+        assertTrue(reportsPage.seriesContainsText(preparationAnnual));
+
+        String[] preparationAnnualXAxis = new String[] {"2021"};
+        assertTrue(reportsPage.xAxisContainsText(preparationAnnualXAxis));
+
+        //Monthly
+        reportsPage.monthlyBtnClick();
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(1));
+        String[] preparationMonthly= new String[] {"100", "0", "150", "0", "50"};
+        assertTrue(reportsPage.seriesContainsText(preparationMonthly));
+
+        String[] preparationMonthlyXAxis = new String[] {"2021-08", "2021-09", "2021-10", "2021-11", "2021-12"};
+        assertTrue(reportsPage.xAxisContainsText(preparationMonthlyXAxis));
+
+        //Quarterly
+        reportsPage.quarterlyBtnClick();
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(1));
+        String[] preparationQuarterly= new String[] {"100", "200"};
+        assertTrue(reportsPage.seriesContainsText(preparationQuarterly));
+
+        String[] preparationQuarterlyXAxis = new String[] {"Q3 - 2021", "Q4 - 2021"};
+        assertTrue(reportsPage.xAxisContainsText(preparationQuarterlyXAxis));
+
+        // Income and Sold Items
+        reportsPage.incomeAndSoldBtnClick();
+        // Quarterly
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(2));
+        String[] incomeAndSoldQuarterly= new String[] {"2", "4", "10", "28"};
+        assertTrue(reportsPage.seriesContainsText(incomeAndSoldQuarterly));
+
+        String[] incomeAndSoldQuarterlyXAxis = new String[] {"Q3 - 2021", "Q4 - 2021"};
+        assertTrue(reportsPage.xAxisContainsText(incomeAndSoldQuarterlyXAxis));
+
+        //Annual
+        reportsPage.annualBtnClick();
+        reportsPage.waitUntilReportPresent();
+
+        assertTrue(reportsPage.seriesContainersCountEqual(2));
+        String[] incomeAndSoldAnnual= new String[] {"6", "38"};
+        assertTrue(reportsPage.seriesContainsText(incomeAndSoldAnnual));
+
+        String[] incomeAndSoldAnnualXAxis = new String[] {"2021"};
+        assertTrue(reportsPage.xAxisContainsText(incomeAndSoldAnnualXAxis));
+
     }
 
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 
 }
