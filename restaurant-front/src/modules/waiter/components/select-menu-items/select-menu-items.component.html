@@ -2,12 +2,13 @@
 
   <div class="content mat-elevation-z8">
     <div class="row">
-      <button mat-fab class="dugmic-back" (click)="onBackClick()">
+      <button mat-fab class="dugmic-back" id="backBttn" (click)="onBackClick()">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <mat-form-field class="example-container" id="search-field">
         <input
           matInput
+          id="searchInput"
           placeholder="Search..."
           #searchInputField
           [value]="searchInput"
@@ -15,6 +16,7 @@
       </mat-form-field>
       <button
         mat-fab
+        id="searchBttn"
         class="dugmic-search"
         (click)="onSearchClicked(searchInputField.value)"
       >
@@ -43,6 +45,7 @@
               mat-button
               class="dugmic-item"
               (click)="onFilterClick('dish')"
+              id="dishBttn"
             >
               <mat-icon> fastfood</mat-icon> Dishes
             </button>
@@ -50,6 +53,7 @@
               mat-button
               class="dugmic-item"
               (click)="onFilterClick('drink')"
+              id="drinkBttn"
             >
               <mat-icon>free_breakfast</mat-icon> Drinks
             </button>
