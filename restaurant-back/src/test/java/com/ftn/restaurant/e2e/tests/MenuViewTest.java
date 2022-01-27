@@ -60,17 +60,17 @@ public class MenuViewTest {
         addDrinkPage.submitDrinkBtnClick();
 
         //Test search for added drink
-        menuViewPage.setMenuItemSearchInput("c");
+        menuViewPage.setMenuItemSearchInput("Test");
         menuViewPage.submitBtnClick();
 
         //Wait till items are showing
         menuViewPage.waitUntilItemsPresent();
 
         // Validate search
-        assertTrue(menuViewPage.menuItemsTitleTextsSizeCompare(2));
-        assertTrue(menuViewPage.menuItemsContainText("c"));
+        assertTrue(menuViewPage.menuItemsTitleTextsSizeCompare(1));
+        assertTrue(menuViewPage.menuItemsContainText("Test"));
 
-        // Change prices
+        // Change price
 
         // Set as active menu item
 

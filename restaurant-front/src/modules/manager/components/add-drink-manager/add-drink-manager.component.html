@@ -20,7 +20,6 @@
         </ng-template>
         <input
           accept=".png, .jpg"
-          style="display: none"
           type="file"
           id="file-upload"
           (change)="fileChangeEvent($event)"
@@ -52,16 +51,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <button
-        mat-flat-button
-        color="accent"
-        (click)="fileInput.click()"
-        id="file-input-button"
-      >
-        <mat-icon>add_a_photo</mat-icon>
-      </button>
     </mat-grid-tile>
 
     <mat-grid-tile>

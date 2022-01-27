@@ -27,9 +27,6 @@ public class AddDrinkPage {
     @FindBy(xpath = "//span[contains(text(),'Glass')]")
     private WebElement drinkContainerOption;
 
-    @FindBy(id = "file-input-button")
-    private WebElement fileInputButton;
-
     @FindBy(id = "file-upload")
     private WebElement fileInput;
 
@@ -59,8 +56,6 @@ public class AddDrinkPage {
         Utilities.clickableWait(driver, this.drinkContainer, 10).click();
         Utilities.clickableWait(driver, this.drinkContainerOption, 10).click();
     }
-
-    public void fileInputBtnClick() { Utilities.clickableWait(driver, this.fileInputButton, 10).click();}
 
     public WebElement getFileInput() {
         return Utilities.visibilityWait(driver, this.fileInput, 10);
