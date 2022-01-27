@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,7 +27,7 @@ public class AreaController {
 
     @ResponseBody
     @PostMapping(path = "/addArea")
-   @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public AreaDTO addArea(@RequestBody String name) throws Exception{
     	return new AreaDTO(areaService.addArea(name));
     }
@@ -52,7 +50,6 @@ public class AreaController {
 
     @ResponseBody
     @GetMapping(path = "/getAllAreas")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public List<AreaDTO> getAllAreas(){
         return areaService.getAllAreas();

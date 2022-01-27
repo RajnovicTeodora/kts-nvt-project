@@ -14,6 +14,7 @@ import { BartenderModule } from '../bartender/bartender.module';
 import { SharedModule } from '../shared/shared.module';
 import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
 import { ManagerModule } from '../manager/manager.module';
+import { AdminModule } from '../admin/admin.module';
 import { ChefModule } from '../chef/chef.module';
 import { HeadChefModule } from '../head-chef/head-chef.module';
 
@@ -30,6 +31,7 @@ import { HeadChefModule } from '../head-chef/head-chef.module';
     HttpClientModule,
     AuthModule,
     WaiterModule,
+    AdminModule,
     SharedModule,
     BartenderModule,
     ManagerModule,

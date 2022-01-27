@@ -80,76 +80,38 @@
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <!--TODO isidora-->
     <div class="content mat-elevation-z8">
-      <div class="row">
-        <button
-          mat-button
-          class="menu-button"
-          (click)="onRestaurantTableShowClicked(1)"
-        >
-          <span>Table 1</span>
-        </button>
-        <app-table-options
-          *ngIf="this.showModalRestaurantTableOptions == 1"
-          [tableNumber]="1"
-          [refreshRequired]="this.refreshRestaurantTableRequired"
-          (refreshFinished)="this.onRefreshFinished($event)"
-          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
-          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-        ></app-table-options>
+      <div class="boundary">
+        <ng-container *ngFor="let table of activeArea.tables">
+          <button mat-raised-button cdkDragBoundary=".boundary"
+          cdkDrag cdkDragDisabled [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
+          (click)="onRestaurantTableShowClicked(table.id)"
+          [class]="table.waiterUsername === user.username ? 'claimedTableBttn' : 'unclaimedTableBttn'">
+          {{table.tableNum}}</button>
+        </ng-container>
       </div>
-      <div class="row">
-        <button
-          mat-button
-          class="menu-button"
-          (click)="onRestaurantTableShowClicked(2)"
-        >
-          <span>Table 2</span>
-        </button>
-        <app-table-options
-          *ngIf="this.showModalRestaurantTableOptions == 2"
-          [tableNumber]="2"
-          [refreshRequired]="this.refreshRestaurantTableRequired"
-          (refreshFinished)="this.onRefreshFinished($event)"
-          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
-          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-        ></app-table-options>
-      </div>
-      <div class="row">
-        <button
-          mat-button
-          class="menu-button"
-          (click)="onRestaurantTableShowClicked(3)"
-        >
-          <span>Table 3</span>
-        </button>
-        <app-table-options
-          *ngIf="this.showModalRestaurantTableOptions == 3"
-          [tableNumber]="3"
-          [refreshRequired]="this.refreshRestaurantTableRequired"
-          (refreshFinished)="this.onRefreshFinished($event)"
-          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
-          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-        ></app-table-options>
-      </div>
-      <!--
-      <div class="row">
-        <div class="col">
-          <div fxLayout="row wrap">
-            <ng-container *ngFor="let image of data">
-              <img [src]="image.url" />
-            </ng-container>
-          </div>
-          <mat-paginator
-            [length]="data2.length"
-            [pageSize]="pageSize"
-            [pageIndex]="currentPage"
-            (page)="getData($event)"
+      <div class="buttonsDiv">
+        <h1 style="color:#424242;">Areas</h1>
+        <div *ngFor="let area of areas">
+          <button
+            mat-raised-button color="accent"
+            class="areaBttn"
+            (click)="openArea(area)"
           >
-          </mat-paginator>
-        </div>
-      </div>-->
+            {{ area.name }}
+          </button>
+        </div>        
+      </div>
+
+      <app-table-options
+          *ngIf="this.showModalRestaurantTableOptions !== -1"
+          [tableNumber]="this.showModalRestaurantTableOptions"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
+          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+        ></app-table-options>
+
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

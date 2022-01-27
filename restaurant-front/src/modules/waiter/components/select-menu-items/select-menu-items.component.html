@@ -30,7 +30,7 @@
               name="menuItem"
               *ngFor="let item of menuItems"
             >
-              {{ item.menuItem.name }}
+              {{ item.name }}
             </button>
           </div>
           <ng-template #noSearchResults>
@@ -87,9 +87,9 @@
                   class="dugmic-item"
                   name="menuItem"
                   *ngFor="let item of menuItems"
-                  (click)="onCustomizeOrderedItemClicked(item.menuItem.id)"
+                  (click)="onCustomizeOrderedItemClicked(item.id)"
                 >
-                  {{ item.menuItem.name }}
+                  {{ item.name }}
                 </button>
               </div>
               <ng-template #noResults>
