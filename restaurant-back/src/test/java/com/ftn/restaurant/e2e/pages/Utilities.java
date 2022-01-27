@@ -27,6 +27,10 @@ public class Utilities {
 		return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOf(element));
 	}
 
+	public static WebElement visibilityWaitByLocator(WebDriver driver, By locator, int wait) {
+		return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOfElementLocated(locator));
+	}
+
 	public static List<WebElement> visibilityWait(WebDriver driver, By locator, int wait) {
 		return new WebDriverWait(driver, wait).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
 	}
