@@ -1,8 +1,6 @@
 package com.ftn.restaurant.e2e.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import com.ftn.restaurant.e2e.pages.ItemViewPage;
 import com.ftn.restaurant.e2e.pages.LoginPage;
 import com.ftn.restaurant.e2e.pages.ManagerDashboardPage;
 import org.junit.After;
@@ -11,12 +9,16 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import sun.security.krb5.internal.PAEncTSEnc;
 
-public class ManagerReportTest {
+import static org.junit.Assert.assertTrue;
+
+public class ItemViewTest {
     private WebDriver browser;
 
     private LoginPage loginPage;
     private ManagerDashboardPage managerDashboardPage;
+    private ItemViewPage itemViewPage;
 
     @Before
     public void setupSelenium() {
@@ -30,6 +32,7 @@ public class ManagerReportTest {
 
         loginPage = PageFactory.initElements(browser, LoginPage.class);
         managerDashboardPage = PageFactory.initElements(browser, ManagerDashboardPage.class);
+        itemViewPage = PageFactory.initElements(browser, ItemViewPage.class);
     }
 
     @Test
@@ -51,5 +54,6 @@ public class ManagerReportTest {
         // Shutdown the browser
         //browser.quit();
     }
+
 
 }
