@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.IngredientDTO;
 import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.BadRequestException;
@@ -128,6 +129,13 @@ public class OrderedItemController {
         }catch (NotFoundException e){
             return new ResponseEntity("Couldn't find order", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/getActiveIngredients/{id}")
+    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF')")
+    public List<IngredientDTO> getActiveIngredients(@PathVariable long id){
+        return this.orderedItemService.getActiveIngredients(id);
     }
 
 

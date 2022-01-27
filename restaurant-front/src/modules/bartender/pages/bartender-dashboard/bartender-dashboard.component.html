@@ -28,7 +28,7 @@
   
       <h4 class="name">{{this.user.username}}</h4>
   
-      <button mat-button class="menu-button">
+      <button mat-button class="menu-button" (click)="onNotificationsClicked()">
         <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
         <span>Notifications</span>
       </button>
@@ -93,4 +93,8 @@
   </mat-sidenav-container>
   <app-change-password *ngIf="this.showModalPasswordChange" (onClose)='onPasswordChangeClose($event)' ></app-change-password>
   <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
-  
+  <app-view-notifications
+  *ngIf="this.showNotificationsModal"
+  [currentUsername]="this.user.username"
+  (onNotificationsClose)="onNotificationsCloseClicked($event)"
+></app-view-notifications>

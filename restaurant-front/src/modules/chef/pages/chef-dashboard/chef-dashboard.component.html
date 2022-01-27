@@ -32,7 +32,7 @@
 
     <h4 class="name">{{this.user.username}}</h4>
 
-    <button mat-button class="menu-button">
+    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
@@ -65,12 +65,12 @@
 
     <p class="designation">Active accounts</p>
 
-    <mat-action-list class="custom-scroll-bar" *ngFor="let waiter of waiterList">
-      <button mat-list-item (click)="changeAccount(waiter.user.username)" 
+    <mat-action-list class="custom-scroll-bar" *ngFor="let chef of chefList">
+      <button mat-list-item (click)="changeAccount(chef.user.username)" 
       matTooltip="Change account">
-        <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
-        <span>{{waiter.user.username}}</span>
-        <mat-icon matBadgePosition="after" color="primary" *ngIf="waiter.user.username === this.user.username"
+        <app-badge [badgeContent]="chef.badgeNum"></app-badge>
+        <span>{{chef.user.username}}</span>
+        <mat-icon matBadgePosition="after" color="primary" *ngIf="chef.user.username === this.user.username"
           >check</mat-icon
         >
       </button>
@@ -109,3 +109,8 @@
 <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
 <app-other-accounts *ngIf="this.showModalOtherAccounts"  (onOtherAccountsClose)='onOtherAccountsCloseClicked($event)' (onLoginOpen)='onLoginOpenClicked($event)'></app-other-accounts>
 <app-login-form *ngIf="this.showModalLogin" (onLoginClose)='onLoginCloseClicked($event)' ></app-login-form>
+<app-view-notifications
+  *ngIf="this.showNotificationsModal"
+  [currentUsername]="this.user.username"
+  (onNotificationsClose)="onNotificationsCloseClicked($event)"
+></app-view-notifications>

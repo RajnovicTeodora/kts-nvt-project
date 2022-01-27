@@ -291,4 +291,9 @@ public class OrderedItemService {
         return orderedItemRepository.findAllChefsAndBartendersPreparingOrderById(orderId);
     }
 
+    public List<IngredientDTO> getActiveIngredients(long id) {
+        List<IngredientDTO> dtos = new ArrayList<>();
+        this.ingredientService.findByOrderedItemId(id).forEach(ingredient -> dtos.add(new IngredientDTO(ingredient)));
+        return dtos;
+    }
 }
