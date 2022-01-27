@@ -23,6 +23,7 @@ public class RestaurantTableDTO {
     }
 
     public RestaurantTableDTO(RestaurantTable table){
+        this.id = table.getId();
         this.tableNum = table.getTableNum();
         this.x = table.getPositionX();
         this.y = table.getPositionY();

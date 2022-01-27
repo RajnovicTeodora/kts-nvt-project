@@ -61,7 +61,4 @@ export class ManagerDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  onItemTableClicked() {
-    this.router.navigate(['/item-table']);
-  }
 }

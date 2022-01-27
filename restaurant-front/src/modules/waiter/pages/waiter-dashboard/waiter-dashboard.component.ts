@@ -10,6 +10,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
+import { AdminService } from 'src/modules/admin/admin-service/admin.service';
+import { Area } from 'src/modules/shared/models/area';
 import { UserList } from 'src/modules/shared/models/user-list';
 import { UserWithBadgeNum } from 'src/modules/shared/models/user-with-badgenum';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
@@ -39,8 +41,11 @@ export class WaiterDashboardComponent implements OnInit {
   currentOrderViewed: number;
   refreshRestaurantTableRequired = false;
   showNotificationsModal: boolean;
-  ////////////////TODO isidora
   showModalRestaurantTableOptions: number;
+  areas: Area[];
+  activeArea: Area;
+  tablePositions: any[];
+
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -52,6 +57,7 @@ export class WaiterDashboardComponent implements OnInit {
     public router: Router,
     private toastr: ToastrService,
     private userService: UserService,
+    private adminService: AdminService,
     private notifService: NotificationService
   ) {
     this.pageSize = 1;
@@ -74,7 +80,33 @@ export class WaiterDashboardComponent implements OnInit {
   ngOnInit() {
     this.getData({ pageIndex: this.currentPage, pageSize: this.pageSize });
     this.setBadgeValues();
+    this.getAreas();
   }
+
+  getAreas() {
+    this.tablePositions = [];
+    this.adminService.getAllAreas().subscribe((response) => {
+      this.areas = response;
+      if(this.areas.length !== 0){
+        this.activeArea = this.areas[0];
+        this.setTableCoordinates();
+      }
+    });
+  }
+
+  openArea(area: Area) {
+    this.activeArea = area;
+    this.setTableCoordinates();
+  }
+
+  setTableCoordinates() {
+    this.tablePositions = [];
+    this.activeArea.tables.sort((n1,n2) => n1.tableNum - n2.tableNum);
+    this.activeArea.tables.forEach(table => {
+      this.tablePositions.push({x: table.x, y: table.y});
+    });
+  }
+
 
   setBadgeValues(){
     this.waiterList = new Array;    
@@ -141,10 +173,6 @@ export class WaiterDashboardComponent implements OnInit {
 
   onLogoutButtonClicked() {
     this.showModalLogout = true;
-  }
-
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
   }
 
   onLogoutCloseClicked(item: boolean) {
