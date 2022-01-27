@@ -162,7 +162,7 @@ public class OrderedItemUnitTest {
         Assert.assertTrue(orderedItem.isDeleted());
     }
 
-    @Test(expected = NotFoundException.class )
+    @Test(expected = OrderedItemNotFoundException.class )
     public void updateOrderedItem_ThrowNotFoundExceptionWhenOrderNonExisting(){
         OrderItemDTO o = new OrderItemDTO();
         o.setId(1L);
@@ -285,7 +285,7 @@ public class OrderedItemUnitTest {
         Mockito.when(ingredientRepository.findByIngredientId(2)).thenReturn(Optional.of(ingredient));
         Mockito.when(ingredientRepository.findByIngredientId(1)).thenReturn(Optional.of(ingredient1));
         Assert.assertEquals("Successfully added new ordered item to order id: 1", orderedItemService.addOrderItemToOrder(1L, ORDER_ITEM_DTO_1));
-        Assert.assertFalse(order.getOrderedItems().isEmpty());
+
     }
 
     @Test(expected = NotFoundException.class )

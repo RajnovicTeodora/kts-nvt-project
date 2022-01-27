@@ -33,6 +33,10 @@ public class OrderController {
             return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
         } catch (MenuItemNotFoundException e){
             return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
+        } catch (RestaurantTableNotFoundException e){
+            return new ResponseEntity("Couldn't find restaurant table.", HttpStatus.NOT_FOUND);
+        } catch (EmployeeNotFoundException e){
+            return new ResponseEntity("Couldn't find waiter.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -54,6 +58,8 @@ public class OrderController {
             return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
         }catch (MenuItemNotFoundException e){
             return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
+        }catch (OrderedItemNotFoundException e){
+            return new ResponseEntity("Couldn't find ordered item.", HttpStatus.NOT_FOUND);
         }
     }
 

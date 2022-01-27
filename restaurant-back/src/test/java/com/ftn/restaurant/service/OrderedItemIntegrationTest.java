@@ -64,7 +64,7 @@ public class OrderedItemIntegrationTest {
         //"Couldn't find ingredient with id: 10000"
         Assertions.assertThrows(IngredientNotFoundException.class, () -> {orderedItemService.updateOrderedItem( ORDER_ITEM_DTO_5);});
         //"Couldn't find ordered item."
-        Assertions.assertThrows(NotFoundException.class, () -> {orderedItemService.updateOrderedItem( ORDER_ITEM_DTO_6);});
+        Assertions.assertThrows(OrderedItemNotFoundException.class, () -> {orderedItemService.updateOrderedItem( ORDER_ITEM_DTO_6);});
     }
 
     @Test
@@ -88,15 +88,16 @@ public class OrderedItemIntegrationTest {
         Assertions.assertThrows(OrderAlreadyPaidException.class, () -> {orderedItemService.addOrderItemToOrder(5, ORDER_ITEM_DTO_1);});
         //"Couldn't find ingredient with id: -1"
         Assertions.assertThrows(IngredientNotFoundException.class, () -> {orderedItemService.addOrderItemToOrder( 4, ORDER_ITEM_DTO_5);});
+        //"Couldn't find menu item with id: "
+        Assertions.assertThrows(MenuItemNotFoundException.class, () -> {orderedItemService.addOrderItemToOrder( 3, ORDER_ITEM_DTO_7);});
     }
 
     @Test
     public void getOrderedItemsForOrderIdTest(){
-        //"Couldn't find order."
-        Assertions.assertThrows(NotFoundException.class, () -> {orderedItemService.getOrderedItemsForOrderId(-1);});
         //ok
         Assert.assertEquals(1,orderedItemService.getOrderedItemsForOrderId(6).size());
-
+        //"Couldn't find order."
+        Assertions.assertThrows(NotFoundException.class, () -> {orderedItemService.getOrderedItemsForOrderId(-1);});
     }
 
 }

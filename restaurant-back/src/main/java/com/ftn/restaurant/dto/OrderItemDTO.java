@@ -82,12 +82,12 @@ public class OrderItemDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
+/*
     public OrderedItemStatus getStatus() {
         return OrderedItemStatus.valueOf(status);
-    }
+    }*/
 
-    public String getStatusAsString() { return status; }
+    public String getStatus() { return status; }
 
     public void setStatus(String status) {
         this.status = status;

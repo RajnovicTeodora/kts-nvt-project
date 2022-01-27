@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.exception.EmployeeNotFoundException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.service.NotificationService;
@@ -28,8 +29,8 @@ public class NotificationController {
         try {
             return new ResponseEntity<>(notificationService.getAllActiveNotificationsForEmployee(username), HttpStatus.OK);
         }
-        catch (Exception e){
-            return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        catch (EmployeeNotFoundException e){
+            return new ResponseEntity<>("Couldn't find employee with username " + username, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -40,8 +41,8 @@ public class NotificationController {
         try {
             return new ResponseEntity<>(notificationService.getAllNotificationsForEmployee(username), HttpStatus.OK);
         }
-        catch (Exception e){
-            return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
+        catch (EmployeeNotFoundException e){
+            return new ResponseEntity<>("Couldn't find employee with username " + username, HttpStatus.NOT_FOUND);
         }
     }
 

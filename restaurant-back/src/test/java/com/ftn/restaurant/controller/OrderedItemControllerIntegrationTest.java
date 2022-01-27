@@ -175,68 +175,6 @@ public class OrderedItemControllerIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Couldn't find order"));
     }
-/*
-    @Test
-    public void updateOrderedItemTest() throws Exception {
-        String dto = json(ORDER_ITEM_DTO_1);
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/8")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Can't update deleted ordered item with id: 8"));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/-1")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find order."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/6")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't change order that is already paid."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/3")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't change ordered item in preparation."));
-
-        ///////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/7")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isOk());
-
-    }*/
-/*
-    @Test
-    public void addOrderItemToOrderTest() throws Exception {
-        String dto = json(ORDER_ITEM_DTO_1);
-
-        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/-1")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find order."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/5")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't add order items to order that is already paid."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/4")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isCreated());
-
-    }*/
 
     public static String json(Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

@@ -43,6 +43,33 @@ public class OrderDTO {
         this.orderItems = orderItems;
     }
 
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
+    }
+
+    public OrderDTO(boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
+    }
+
     public Long getId() {
         return id;
     }

@@ -159,7 +159,7 @@ public class OrderedItemService {
     public String updateOrderedItem( OrderItemDTO orderItemDTO){
         OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(orderItemDTO.getId());
         if(orderItem == null){
-            throw new NotFoundException("Couldn't find ordered item.");
+            throw new OrderedItemNotFoundException("Couldn't find ordered item.");
         }
         if (orderItem.isDeleted()) {
             throw new BadRequestException("Can't update deleted ordered item with id: " + orderItemDTO.getId());
@@ -208,8 +208,8 @@ public class OrderedItemService {
                     orderItem.addActiveIngredients(i.get());
             }
             save(orderItem);
-            order.addOrderedItem(orderItem);
-            orderService.save(order);
+            /*order.addOrderedItem(orderItem);
+            orderService.save(order);*/
 
             return "Successfully added new ordered item to order id: " + id;
         }

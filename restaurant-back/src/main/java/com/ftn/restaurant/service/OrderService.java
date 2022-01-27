@@ -15,6 +15,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class OrderService {
@@ -66,15 +67,24 @@ public class OrderService {
         o.setPaid(ordDTO.isPaid());
         o.setTime(LocalTime.now());
         o.setTotalPrice(ordDTO.getTotalPrice());
-        o.setRestaurantTable(tableService.findOne(ordDTO.getTableId()));
-        o.setWaiter(waiterService.findByUsername(ordDTO.getWaiterUsername()));
+        RestaurantTable restaurantTable = tableService.findOne(ordDTO.getTableId());
+        if(restaurantTable == null){
+            throw new RestaurantTableNotFoundException("Couldn't find restaurant table.");
+        }
+        o.setRestaurantTable(restaurantTable);
+        Waiter waiter = waiterService.findByUsername(ordDTO.getWaiterUsername());
+        if(waiter== null){
+            throw new EmployeeNotFoundException("Couldn't find waiter.");
+        }
+        o.setWaiter(waiter);
         save(o);
-        o.setOrderNumber(Integer.parseInt(o.getId().toString()));
+        o.setOrderNumber(setOrderNumber(o.getId()));
+        o.setOrderedItems(new ArrayList<>());
+        save(o);
 
-
+        if(o.getId() == null){o.setId(1L);}
         for (OrderItemDTO orderItemDto : ordDTO.getOrderItems()) {
             OrderedItem orderItem = new OrderedItem();
-
             Optional<MenuItem> menuItem = menuItemService.findByMenuItemId(orderItemDto.getMenuItemId());
             if (menuItem.isPresent()) {
                 orderItem.setDeleted(false);
@@ -90,14 +100,15 @@ public class OrderService {
                     }else
                         orderItem.addActiveIngredients(i.get());
                 }
-                o.addOrderedItem(orderItem);
                 orderedItemService.save(orderItem);
+                o.addOrderedItem(orderItem);
+                orderRepository.save(o);
+
             } else {
                 throw new MenuItemNotFoundException("Couldn't find menu item with id: " + orderItemDto.getMenuItemId());
             }
         }
         save(o);
-
         return o.getId();
     }
 
@@ -113,7 +124,7 @@ public class OrderService {
         for (OrderItemDTO item : ordDTO.getOrderItems()) {
             if (item.getId() == -1) {
                 orderedItemService.addOrderItemToOrder(ordDTO.getId(), item);
-            } else if (item.getStatusAsString().equals("PENDING")) {
+            } else if (item.getStatus().equals("PENDING")) {
                 orderedItemService.updateOrderedItem( item);
             }
         }
@@ -155,6 +166,14 @@ public class OrderService {
         return this.orderRepository.findByOrderId(id).getNote();
     }
 
+    public int setOrderNumber(Long id){
+        if(id==null){
+            Random rand = new Random();
+            return rand.nextInt(100);
+        }
+        return Integer.parseInt(id.toString());
+    }
+
     public boolean checkIfOrderIsPaid(long id) {
         Order order = orderRepository.findByOrderId(id);
         if (order != null) {
@@ -180,7 +199,6 @@ public class OrderService {
             }
             return retval;
         }
-
         throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 

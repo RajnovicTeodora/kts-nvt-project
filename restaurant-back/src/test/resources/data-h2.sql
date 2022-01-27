@@ -60,6 +60,7 @@ INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id,
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (false, 1, '2021-12-11', 'x', '11:11', 4, 2, 4);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4, 2, 5);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-12-11', 'x', '18:18', 4, 2, 6);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (false, 1, '2021-12-07', 'xxxx', '18:18', 4, 2, 7);
 
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('IN_PROGRESS', 1, 5, 1, false, 1);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 2, false, 1);
@@ -67,11 +68,16 @@ INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_i
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('READY', 1, 5, 5, false, 2);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 5, 1, false, 2);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 3, 1, true, 1);
-INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 3, false, 1);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 3, false, 3);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 3, true, 1);
 INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 6, false, 3);
+INSERT INTO ordered_item ( status, priority, quantity, order_id, deleted, menu_item_id) VALUES ('ORDERED', 1, 1, 7, false, 3);
 
 INSERT INTO ingredient (name, alergen) VALUES ('plazma', false);
 INSERT INTO ingredient (name, alergen) VALUES ('sladoled', true);
 INSERT INTO ingredient (name, alergen) VALUES ('mleko', false);
 INSERT INTO ingredient (name, alergen) VALUES ('cokolada', false);
+
+INSERT INTO notification (is_active, text, employee_id) VALUES (false, 'Status changed for Pizza to READY for order number 3, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Pizza to IN_PROGRESS for order number 1, at table number 2', 4);
+INSERT INTO notification (is_active, text, employee_id) VALUES (true, 'Status changed for Pizza to READY for order number 2, at table number 2', 4);

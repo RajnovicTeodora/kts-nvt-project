@@ -32,6 +32,12 @@ public class Notification {
 
     public Notification(){}
 
+    public Notification(Long id, boolean isActive, String text) {
+        this.id = id;
+        this.isActive = isActive;
+        this.text = text;
+    }
+
     public Long getId() {
         return id;
     }

@@ -27,16 +27,24 @@ public class OrderDTOConstants {
 
     public static final OrderItemDTO ORDER_ITEM_DTO_1 = new OrderItemDTO(5L, OrderedItemStatus.ORDERED.toString(), 1, 1, 1L, INGREDIENT_ARRAY_LIST_1);
     public static final OrderItemDTO ORDER_ITEM_DTO_2 = new OrderItemDTO(2L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
-    public static final OrderItemDTO ORDER_ITEM_DTO_3 = new OrderItemDTO(3L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
-    public static final OrderItemDTO ORDER_ITEM_DTO_4 = new OrderItemDTO(8L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
-    public static final OrderItemDTO ORDER_ITEM_DTO_5 = new OrderItemDTO(5L, OrderedItemStatus.ORDERED.toString(), 1,1 , 1L, new ArrayList<>(Arrays.asList(INGREDIENT_55)));
+    public static final OrderItemDTO ORDER_ITEM_DTO_3 = new OrderItemDTO(3L, "PENDING", 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_4 = new OrderItemDTO(8L, "PENDING", 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_5 = new OrderItemDTO(5L, "PENDING", 1,1 , 1L, new ArrayList<>(Arrays.asList(INGREDIENT_55)));
     public static final OrderItemDTO ORDER_ITEM_DTO_6 = new OrderItemDTO(-1L, OrderedItemStatus.ORDERED.toString(), 1,1 , 2L, INGREDIENT_ARRAY_LIST_2);
     public static final OrderItemDTO ORDER_ITEM_DTO_7 = new OrderItemDTO(-1L, OrderedItemStatus.ORDERED.toString(), 1,1 , 20000L, INGREDIENT_ARRAY_LIST_2);
+    public static final OrderItemDTO ORDER_ITEM_DTO_8 = new OrderItemDTO(2000L, "PENDING", 1,1 , 1L, INGREDIENT_ARRAY_LIST_2);
     public static final ArrayList<OrderItemDTO> ORDER_ITEM_DTOS = new ArrayList<OrderItemDTO>(
             Arrays.asList(ORDER_ITEM_DTO_1, ORDER_ITEM_DTO_2));
 
-    public static final OrderDTO ORDER_DTO_1 = new OrderDTO(false, 0, "Some note",  ORDER_ITEM_DTOS);
+    public static final OrderDTO ORDER_DTO_1 = new OrderDTO(false, 0, "Some note",  ORDER_ITEM_DTOS, 1L, "waiter");
     public static final OrderDTO ORDER_DTO_2  = new OrderDTO(false, 0,  "note",  new ArrayList<>());
-    public static final OrderDTO ORDER_DTO_3  = new OrderDTO(false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_7)));
-    public static final OrderDTO ORDER_DTO_4  = new OrderDTO(false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_5)));
+    public static final OrderDTO ORDER_DTO_3  = new OrderDTO(3L,false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_7)), 2L, "waiter");
+    public static final OrderDTO ORDER_DTO_4  = new OrderDTO(3L,false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_5)), 2L, "waiter");
+    public static final OrderDTO ORDER_DTO_5  = new OrderDTO(4L,false, 0,  "note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_4)));
+    public static final OrderDTO ORDER_DTO_6 = new OrderDTO(2000L,false, 0, "Some note",  new ArrayList<>());
+    public static final OrderDTO ORDER_DTO_7 = new OrderDTO(5L,false, 0, "Some note",  new ArrayList<>());
+    public static final OrderDTO ORDER_DTO_8 = new OrderDTO(3L,false, 0, "Some note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_8)));
+    public static final OrderDTO ORDER_DTO_9 = new OrderDTO(3L,false, 0, "Some note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_3)), 2L, "");
+    public static final OrderDTO ORDER_DTO_10 = new OrderDTO(3L,false, 0, "Some note",  new ArrayList<>(Arrays.asList(ORDER_ITEM_DTO_1)));
+    public static final OrderDTO ORDER_DTO_11 = new OrderDTO(3L,false, 0, "Some note",  new ArrayList<>());
 }
