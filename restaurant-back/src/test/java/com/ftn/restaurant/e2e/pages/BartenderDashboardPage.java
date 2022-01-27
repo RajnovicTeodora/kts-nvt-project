@@ -24,6 +24,9 @@ public class BartenderDashboardPage {
     @FindBy(id = "container-div")
     private WebElement containerWithOrders;
 
+    @FindBy(id = "drink-table")
+    private WebElement drinkTableBtn;
+
     public BartenderDashboardPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -52,5 +55,8 @@ public class BartenderDashboardPage {
 
     public WebElement getContainerWithOrders() {
         return Utilities.visibilityWait(this.driver, this.containerWithOrders, 40);
+    }
+    public void clickDrinkTableBtn(){
+        Utilities.clickableWait(this.driver, this.drinkTableBtn, 40).click();
     }
 }

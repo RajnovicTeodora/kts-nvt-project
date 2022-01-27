@@ -6,7 +6,7 @@
         <mat-form-field class="example-full-width">
           <!-- <span matPrefix> </span> -->
           <input
-            matInput
+          matInput
             class="form-control"
             type="text"
             placeholder="Search..."
@@ -15,15 +15,16 @@
             name="itemSearch"
           />
           </mat-form-field>
-          <mat-form-field class="example-full-width" appearance="fill" >
-            <mat-label>Filter</mat-label>
+          <mat-form-field class="example-full-width" appearance="fill" id="type-filter-input">
+            <mat-label id= "filterLabel">Filter</mat-label>
             <mat-select formControlName="filter">
-              <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
+              <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value" id="filter{{drinkType.value}}">
                 {{drinkType.viewValue}}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <button
+            id="submit-button"
             color="accent"
             type="submit"
             class="submit-button"
@@ -46,8 +47,8 @@
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="name"
-          sortActionDescription="Sort by name"> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          sortActionDescription="Sort by name" > Name </th>
+        <td mat-cell *matCellDef="let element" id="{{element.name}}"> {{element.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="type">

@@ -14,7 +14,7 @@
             name="itemSearch"
           />
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field id="type-filter-input">
           <mat-label>User role</mat-label>
           <mat-select formControlName="filter">
             <mat-option *ngFor="let role of roles" [value]="role.value">

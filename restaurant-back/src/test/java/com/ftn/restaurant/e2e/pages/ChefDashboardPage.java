@@ -23,6 +23,9 @@ public class ChefDashboardPage {
     @FindBy(id = "container-div")
     private WebElement containerWithOrders;
 
+    @FindBy(id = "dish-table")
+    private WebElement dishTableBtn;
+
     public ChefDashboardPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -51,5 +54,8 @@ public class ChefDashboardPage {
 
     public WebElement getContainerWithOrders() {
         return Utilities.visibilityWait(this.driver, this.containerWithOrders, 40);
+    }
+
+    public void clickDishTableBtn() { Utilities.clickableWait(this.driver, this.dishTableBtn, 40).click();
     }
 }
