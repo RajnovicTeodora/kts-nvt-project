@@ -28,6 +28,14 @@ public class OrderDTO {
         fillOrderItems(o.getOrderedItems());
     }
 
+    public OrderDTO(Order o, String without_items) {
+        this.id = o.getId();
+        this.isPaid = o.isPaid();
+        this.totalPrice = o.getTotalPrice();
+        this.note = o.getNote();
+        this.tableId = o.getRestaurantTable().getId();
+    }
+
     private void fillOrderItems(List<OrderedItem> orderItems) {
         if (this.orderItems == null)
             this.orderItems = new ArrayList<OrderItemDTO>();

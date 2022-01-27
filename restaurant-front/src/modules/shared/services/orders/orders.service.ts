@@ -49,4 +49,18 @@ export class OrdersService {
       });
       return res;
   }
+  getNewOrders():Observable<any>{
+    const res = this.http.get("http://localhost:8080/api/order/getNewOrders",{
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
+  getAcceptedOrders(username: string):Observable<any>{
+    const res = this.http.get("http://localhost:8080/api/order/getAcceptedOrders/"+username,{
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
 }

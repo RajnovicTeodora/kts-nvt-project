@@ -42,10 +42,9 @@ export class BartenderDashboardComponent implements OnInit {
     { id: 1, url: 'assets/images/floor3.png' },
     { id: 2, url: 'assets/images/floor2.png' },
   ];
-  isOneDrinkView:boolean = false;
-  isDrinkView:boolean = false;
-  isNewOrders: boolean =false;
-  isAcceptedOrders: boolean =false;
+  
+  state:number=0;
+  idOrder: any;
   idOfDrink: string ="";
 
   constructor(
@@ -136,10 +135,6 @@ export class BartenderDashboardComponent implements OnInit {
     this.showModalLogout = true;
   }
 
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
-  }
-
   onLogoutCloseClicked(item: boolean) {
     this.showModalLogout = false;
   }
@@ -148,31 +143,17 @@ export class BartenderDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  viewDrinkCard(){
-    this.isNewOrders = false;
-    this.isAcceptedOrders = false;
-    this.isDrinkView =true;
-    this.isOneDrinkView = false;
-  }
-
-  viewAcceptedOrders(){
-    this.isNewOrders = false;
-    this.isDrinkView =false;
-    this.isAcceptedOrders = true;
-    this.isOneDrinkView = false;
-  }
-
-  viewNewOrders(){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrders = true;
-    this.isOneDrinkView = false;
-  }
+  
   onClickedView(id:string){
-    this.isAcceptedOrders = false;
-    this.isDrinkView =false;
-    this.isNewOrders = false;
     this.idOfDrink = id;
-    this.isOneDrinkView = true;
+    this.state=6;
+  }
+  onClickViewNew(id:number){
+    this.idOrder = id;
+    this.state = 2;
+  }
+  onClickViewAccepted(id:number){
+    this.idOrder = id;
+    this.state = 3;
   }
 }
