@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
-import { OrdersService } from '../../service/orders/orders.service';
+import { OrdersService } from '../../services/orders/orders.service';
 
 @Component({
   selector: 'app-new-orders',
@@ -10,7 +9,7 @@ import { OrdersService } from '../../service/orders/orders.service';
   styleUrls: ['./new-orders.component.scss']
 })
 export class NewOrdersComponent implements OnInit {
-
+  @Input() orderId: number;
   newItems: OrderedItem[];
   note = "";
   loaded: boolean =false;
@@ -21,10 +20,11 @@ export class NewOrdersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
-    this.ordersService.getNewOrderedItems("1").subscribe((result) => {
+    console.log("aaaa", this.orderId)
+    this.ordersService.getNewOrderedItems(this.orderId+"").subscribe((result) => {
       this.setItems(result);
     });
-    this.ordersService.getNote("1").subscribe((result) => { this.note = result;})
+    this.ordersService.getNote(this.orderId+"").subscribe((result) => { this.note = result;})
     console.log(this.note)
   }
 
@@ -60,5 +60,4 @@ export class NewOrdersComponent implements OnInit {
       (item) => item.status === "ORDERED" || item.id+"" != id
     );
   }
-
 }

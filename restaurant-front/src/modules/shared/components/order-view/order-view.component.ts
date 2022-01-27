@@ -6,7 +6,9 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { OrderedItem } from '../../models/ordered-item';
+import { OrderedItemService } from '../../services/ordered-item-service/ordered-item.service';
 import { FinishDialogComponent } from '../finish-dialog/finish-dialog.component';
+import { TableIngredientsDialogComponent } from '../table-ingredients-dialog/table-ingredients-dialog.component';
 
 
 @Component({
@@ -27,10 +29,11 @@ export class OrderViewComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   
-  displayedColumns: string[] = ['name', "quantity","priority","actions"];
+  displayedColumns: string[] = ['name', "quantity","priority", "activeIng","actions"];
   isFinished = false;
 
   constructor(
+    private orderedItemService: OrderedItemService,
     public dialog: MatDialog,
     private liveAnnouncer: LiveAnnouncer,
     ) {}
@@ -52,6 +55,15 @@ export class OrderViewComponent implements OnInit {
         }
       }
     });
+  }
+  openIng(element: OrderedItem): void {
+     this.orderedItemService.getActiveIngredients(element.id).subscribe(result => {
+      console.log(result, "ing")
+    const dialogRef = this.dialog.open(TableIngredientsDialogComponent, {
+      width: '400px', data: {items: result},
+    });
+    });
+    
   }
 
   ngOnInit() {
