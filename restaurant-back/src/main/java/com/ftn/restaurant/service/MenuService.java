@@ -1,5 +1,6 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
@@ -43,40 +44,15 @@ public class MenuService {
     @Autowired
     private DishRepository dishRepository;
 
-    //Sets active menu items and returns all items
-    public List<MenuItemPrice> defineActiveMenuItem(SelectedMenuItemsDTO selectedItems) {
-        List<MenuItemPrice> menuItems = new ArrayList<>();
-        List<Long> ids = selectedItems.getItemIds();
+    //Toggle active status for menu item
+    public MenuItemPrice toggleIsMenuItemActive(long id) {
 
-        ids.forEach(itemId -> {
-            Optional<MenuItemPrice> maybePrice = menuItemPriceRepository
-                    .findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(itemId, LocalDate.now());
-            if (!maybePrice.isPresent())
-                throw new ForbiddenException("Approved menu item with " + itemId + " and active price not found.");
-
-            maybePrice.get().setActive(true);
-            menuItemPriceRepository.save(maybePrice.get());
-            menuItems.add(maybePrice.get());
-        });
-
-        if (ids.isEmpty()) {
-            menuItemPriceRepository.findAll().forEach(
-                    item -> {
-                        item.setActive(false);
-                        menuItemPriceRepository.save(item);
-                        menuItems.add(item);
-                    }
-            );
-        } else {
-            menuItemPriceRepository.findByItemIdNotIn(ids).forEach(
-                    item -> {
-                        item.setActive(false);
-                        menuItemPriceRepository.save(item);
-                        menuItems.add(item);
-                    }
-            );
-        }
-        return menuItems;
+        Optional<MenuItemPrice> maybePrice = menuItemPriceRepository
+                    .findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(id, LocalDate.now());
+        if (!maybePrice.isPresent())
+            throw new ForbiddenException("Approved menu item with " + id + " and active price not found.");
+        maybePrice.get().setActive(!maybePrice.get().isActive()); //toggle
+        return menuItemPriceRepository.save(maybePrice.get());
     }
 
     public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
@@ -85,7 +61,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("...")){
             List<MenuItem> all = menuItemRepository.findAll();
             for (MenuItem item : all) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -97,7 +73,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("drink")){
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -109,7 +85,7 @@ public class MenuService {
         if (group.equalsIgnoreCase("dish")){
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if(item.getName().contains(name) || name.equalsIgnoreCase("...")){
+                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -122,7 +98,7 @@ public class MenuService {
         if (groupIndex != -1) {
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
+                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -135,7 +111,7 @@ public class MenuService {
         if (groupIndex != -1) {
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if((item.getName().contains(name) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
+                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
                     if(item.isDeleted() == false && item.isApproved() == true){
                         menuItems.add(item);
                     }
@@ -158,5 +134,36 @@ public class MenuService {
         }
 
         return itemsDTOs;
+    }
+
+    public List<MenuItemPriceDTO> getActiveMenuItem(String searchName) {
+        List<MenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
+        menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria(searchName).forEach(item -> {
+            Optional<MenuItemPrice> price = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
+            if(price.isPresent()){
+                menuItemPriceDTOS.add(new MenuItemPriceDTO(price.get()));
+            }else{
+                MenuItemDTO menuItemDTO = new MenuItemDTO(item);
+                menuItemPriceDTOS.add(new MenuItemPriceDTO(menuItemDTO, 0, 0, false, true));
+            }
+        });
+        return menuItemPriceDTOS;
+    }
+
+    public MenuItem deleteMenuItem(long id) {
+        Optional<MenuItem> menuItem = menuItemRepository.findByIdAndDeletedFalse(id);
+        if (!menuItem.isPresent())
+            throw new ForbiddenException("Menu item with " + id + " not found.");
+
+        //Get last price
+        Optional<MenuItemPrice> menuItemPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(id);
+
+        if (menuItemPrice.isPresent()){
+           menuItemPrice.get().setActive(false);
+           menuItemPrice.get().setDateTo(LocalDate.now());
+           menuItemPriceRepository.save(menuItemPrice.get());
+        }
+        menuItem.get().setDeleted(true);
+        return menuItemRepository.save(menuItem.get());
     }
 }

@@ -2,7 +2,6 @@ package com.ftn.restaurant.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftn.restaurant.dto.OrderDTO;
 import com.ftn.restaurant.dto.OrderItemDTO;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static com.ftn.restaurant.constants.OrderDTOConstants.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -125,6 +125,17 @@ public class OrderedItemControllerIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Couldn't find ordered item."));
 
+        //////////////////
+
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/3"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't deliver ordered item when status is not READY."));
+
+        //////////////////
+
+        mockMvc.perform(get("/api/orderedItem/confirmPickup/6"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Can't deliver DELETED ordered item."));
     }
 
     @Test
@@ -154,44 +165,15 @@ public class OrderedItemControllerIntegrationTest {
     }
 
     @Test
-    public void updateOrderedItemTest() throws Exception {
-        String dto = json(ORDER_ITEM_DTO_1);
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/6")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't change order that is already paid."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/3")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't change ordered item in preparation."));
-
-        ///////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/updateOrderedItem/7")
-                .contentType(contentType).content(dto))
+    public void getOrderedItemsForOrderIdTest() throws Exception {
+        mockMvc.perform(get("/api/orderedItem/getOrderedItemsForOrderId/6"))
                 .andExpect(status().isOk());
 
-    }
+        /////////////////
 
-    @Test
-    public void addOrderItemToOrderTest() throws Exception {
-        String dto = json(ORDER_ITEM_DTO_1);
-
-        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/5")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Can't add order items to order that is already paid."));
-
-        ////////////////////////////////////////////////////
-
-        this.mockMvc.perform(post("/api/orderedItem/addOrderItemToOrder/4")
-                .contentType(contentType).content(dto))
-                .andExpect(status().isCreated());
-
+        mockMvc.perform(get("/api/orderedItem/getOrderedItemsForOrderId/-1"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find order"));
     }
 
     public static String json(Object object) throws IOException {

@@ -17,15 +17,26 @@ public class Notification {
     @Column(name = "text", nullable=false)
     private String text;
 
-    @OneToOne(cascade = CascadeType.ALL)
+   /* @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id")
     private OrderedItem item;  //neka za sada bude item, ako bude potrebe promenicemo u order, ali obavestite natasu u tom slucaju
+*/
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    private Employee recipient;
 
-    public Notification(OrderedItem orderedItem, String message) {
-        this.item = orderedItem;
+    public Notification( String message) {
         this.text = message;
         this.isActive = true;
     }
+
     public Notification(){}
+
+    public Notification(Long id, boolean isActive, String text) {
+        this.id = id;
+        this.isActive = isActive;
+        this.text = text;
+    }
 
     public Long getId() {
         return id;
@@ -50,12 +61,20 @@ public class Notification {
     public void setText(String text) {
         this.text = text;
     }
-
+/*
     public OrderedItem getItem() {
         return item;
     }
 
     public void setItem(OrderedItem item) {
         this.item = item;
+    }*/
+
+    public Employee getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(Employee recipient) {
+        this.recipient = recipient;
     }
 }

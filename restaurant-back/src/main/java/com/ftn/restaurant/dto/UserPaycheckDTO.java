@@ -1,13 +1,14 @@
 package com.ftn.restaurant.dto;
 
 import com.ftn.restaurant.model.Employee;
+import com.ftn.restaurant.model.Paychecks;
 
 public class UserPaycheckDTO {
 
     private String username;
     private String name;
     private String surname;
-    // TODO private String role?;
+    private String role;
     private double paycheck;
 
     public UserPaycheckDTO() {
@@ -18,14 +19,25 @@ public class UserPaycheckDTO {
         this.name = employee.getName();
         this.surname = employee.getSurname();
         this.paycheck = paycheck;
+        this.role = employee.getRole().getName();
     }
 
-    public UserPaycheckDTO(String username, String name, String surname, double paycheck) {
+    public UserPaycheckDTO(String username, String name, String surname, String role, double paycheck) {
         this.username = username;
         this.name = name;
         this.surname = surname;
+        this.role = role;
         this.paycheck = paycheck;
     }
+
+    public UserPaycheckDTO(Paychecks paychecks) {
+        this.username = paychecks.getEmployee().getUsername();
+        this.name = paychecks.getEmployee().getName();
+        this.surname = paychecks.getEmployee().getSurname();
+        this.role = paychecks.getEmployee().getRole().getName();
+        this.paycheck = paychecks.getPaycheck();
+    }
+
 
     public String getUsername() {
         return username;
@@ -57,5 +69,13 @@ public class UserPaycheckDTO {
 
     public void setPaycheck(double paycheck) {
         this.paycheck = paycheck;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

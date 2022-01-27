@@ -4,16 +4,20 @@ public class TokenDTO {
 
     private String token;
     private String username;
-    private String password;
+    private Long expiresIn;
     private String userType;
+    private boolean loggedInFirstTime;
+    private String password;
 
     public TokenDTO() {}
 
-    public TokenDTO(String token, String username, String password, String userType) {
+    public TokenDTO(String token, String username, Long expiresIn, String userType, boolean loggedInFirstTime, String dontlook) {
         this.setToken(token);
         this.setUsername(username);
-        this.setPassword(password);
+        this.setExpiresIn(expiresIn);
         this.setUserType(userType);
+        this.loggedInFirstTime = loggedInFirstTime;
+        this.password = dontlook;
     }
 
     public String getToken() {
@@ -32,12 +36,12 @@ public class TokenDTO {
         this.username = username;
     }
 
-    public String getPassword() {
-        return this.password;
+    public Long getExpiresIn() {
+        return expiresIn;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setExpiresIn(Long expiresIn) {
+        this.expiresIn = expiresIn;
     }
 
     public String getUserType() {
@@ -47,4 +51,18 @@ public class TokenDTO {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+    public boolean isLoggedInFirstTime() {
+        return loggedInFirstTime;
+    }
+
+    public void setLoggedInFirstTime(boolean loggedInFirstTime) {
+        this.loggedInFirstTime = loggedInFirstTime;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword(){ return this.password;}
 }

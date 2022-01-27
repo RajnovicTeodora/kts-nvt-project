@@ -11,7 +11,7 @@ public class UserFactory {
     public static SecurityUser create(User user) {
         Collection<? extends GrantedAuthority> authorities;
         try {
-            authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(user.getRole().toString());
+            authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_" +user.getRole().getName());
         } catch (Exception e) {
             authorities = null;
         }

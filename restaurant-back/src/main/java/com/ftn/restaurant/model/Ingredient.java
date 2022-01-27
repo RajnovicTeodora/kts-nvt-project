@@ -26,6 +26,9 @@ public class Ingredient {
     @ManyToMany(mappedBy = "activeIngredients")
     private List<OrderedItem> orderedItems;
 
+    @ManyToMany(mappedBy = "menuItemIngredients")
+    private List<MenuItem> ingredients;
+
     public Ingredient(IngredientDTO ingredient) {
         this.name = ingredient.getName();
         this.isAlergen = ingredient.isAlergen();
@@ -61,5 +64,5 @@ public class Ingredient {
         isAlergen = alergen;
     }
 
-
+    public void setId(Long id){ this.id = id;}
 }

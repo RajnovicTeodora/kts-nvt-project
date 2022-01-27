@@ -104,4 +104,8 @@ public class TokenUtils {
         final String username = this.getUsernameFromToken(token);
         return (username.equals(user.getUsername()) && !(this.isTokenExpired(token)));
     }
+
+    public Long getExpiration() {
+        return expiration;
+    }
 }

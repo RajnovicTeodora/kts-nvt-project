@@ -8,6 +8,7 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class OrderItemDTO {
 
@@ -15,38 +16,55 @@ public class OrderItemDTO {
     private String status;
     private int priority;
     private int quantity;
-    private boolean deleted;
-    private MenuItemDTO menuItem;
+    private long menuItemId;
     private List<IngredientDTO> activeIngredients;
+    private  String menuItemName;
+    private double price;
 
     public OrderItemDTO() {
     }
 
     public OrderItemDTO(OrderedItem oi){
         this.id = oi.getId();
+        this.status = oi.getStatus().name().toUpperCase(Locale.ROOT);
+        this.priority = oi.getPriority();
+        this.quantity = oi.getQuantity();
+        this.menuItemId = oi.getMenuItem().getId();
+        this.menuItemName = oi.getMenuItem().getName();
+        fillActiveIngredients(oi.getActiveIngredients());
+
+    }
+
+    public OrderItemDTO(OrderedItem oi, String s){ //todo ako budes brisala ovo ne zaboravi i name da stavis
+        this.id = oi.getId();
         this.status = oi.getStatus().toString();
         this.priority = oi.getPriority();
         this.quantity = oi.getQuantity();
-        this.deleted = oi.isDeleted();
-        this.menuItem = new MenuItemDTO(oi.getMenuItem());
-        fillActiveIngredients(oi.getActiveIngredients());
+        this.menuItemName = oi.getMenuItem().getName();
     }
 
-    public OrderItemDTO(String status, int priority, int quantity, boolean deleted, MenuItemDTO menuItem, List<IngredientDTO> activeIngredients) {
+    public OrderItemDTO(String status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
         this.status = status;
         this.priority = priority;
         this.quantity = quantity;
-        this.deleted = deleted;
-        this.menuItem = menuItem;
+        this.menuItemId = menuItemId;
         this.activeIngredients = activeIngredients;
     }
 
-    public OrderItemDTO(OrderedItemStatus status, int priority, int quantity, boolean deleted, MenuItemDTO menuItem, List<IngredientDTO> activeIngredients) {
+    public OrderItemDTO(Long id, String status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
+        this.id = id;
+        this.status = status;
+        this.priority = priority;
+        this.quantity = quantity;
+        this.menuItemId = menuItemId;
+        this.activeIngredients = activeIngredients;
+    }
+
+    public OrderItemDTO(OrderedItemStatus status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
         this.status = status.toString();
         this.priority = priority;
         this.quantity = quantity;
-        this.deleted = deleted;
-        this.menuItem = menuItem;
+        this.menuItemId = menuItemId;
         this.activeIngredients = activeIngredients;
     }
 
@@ -64,13 +82,15 @@ public class OrderItemDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
+/*
     public OrderedItemStatus getStatus() {
         return OrderedItemStatus.valueOf(status);
-    }
+    }*/
 
-    public void setStatus(OrderedItemStatus status) {
-        this.status = status.toString();
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getPriority() {
@@ -81,12 +101,12 @@ public class OrderItemDTO {
         this.priority = priority;
     }
 
-    public MenuItemDTO getMenuItem() {
-        return menuItem;
+    public long getMenuItemId() {
+        return menuItemId;
     }
 
-    public void setMenuItem(MenuItemDTO menuItem) {
-        this.menuItem = menuItem;
+    public void setMenuItemId(long menuItem) {
+        this.menuItemId = menuItem;
     }
 
     public List<IngredientDTO> getActiveIngredients() {
@@ -97,13 +117,6 @@ public class OrderItemDTO {
         this.activeIngredients = activeIngredients;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -112,4 +125,21 @@ public class OrderItemDTO {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getMenuItemName() {
+        return menuItemName;
+    }
+
+    public void setMenuItemName(String menuItemName) {
+        this.menuItemName = menuItemName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
 }

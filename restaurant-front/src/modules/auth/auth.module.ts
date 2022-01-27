@@ -25,6 +25,7 @@ import { MaterialModule } from '../root/material-module';
     AppRoutingModule,
     MaterialModule,
     ToastrModule.forRoot(),
-  ]
+  ],
+  exports:[LoginFormComponent]
 })
 export class AuthModule { }

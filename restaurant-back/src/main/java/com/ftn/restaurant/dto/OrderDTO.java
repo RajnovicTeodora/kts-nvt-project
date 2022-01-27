@@ -3,7 +3,6 @@ package com.ftn.restaurant.dto;
 import com.ftn.restaurant.model.Order;
 import com.ftn.restaurant.model.OrderedItem;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,23 +11,29 @@ public class OrderDTO {
     private Long id;
     private boolean isPaid;
     private double totalPrice;
-    private String date;
     private String note;
-    private String time;
     private List<OrderItemDTO> orderItems;
+    private String waiterUsername;
+    private long tableId;
 
     public OrderDTO() {
         super();
     }
 
-    public OrderDTO(Order o){
+    public OrderDTO(Order o) {
         this.id = o.getId();
         this.isPaid = o.isPaid();
         this.totalPrice = o.getTotalPrice();
-        this.date = (o.getDate() == null) ? null : o.getDate().toString();
         this.note = o.getNote();
-        this.time = o.getTime().toString();
         fillOrderItems(o.getOrderedItems());
+    }
+
+    public OrderDTO(Order o, String without_items) {
+        this.id = o.getId();
+        this.isPaid = o.isPaid();
+        this.totalPrice = o.getTotalPrice();
+        this.note = o.getNote();
+        this.tableId = o.getRestaurantTable().getId();
     }
 
     private void fillOrderItems(List<OrderedItem> orderItems) {
@@ -39,13 +44,38 @@ public class OrderDTO {
 
     }
 
-    public OrderDTO(boolean isPaid, double totalPrice, String date, String note, String time, List<OrderItemDTO> orderItems) {
+    public OrderDTO(boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems) {
         this.isPaid = isPaid;
         this.totalPrice = totalPrice;
-        this.date = date;
         this.note = note;
-        this.time = time;
         this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+    }
+
+    public OrderDTO(Long id, boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
+    }
+
+    public OrderDTO(boolean isPaid, double totalPrice, String note, List<OrderItemDTO> orderItems, long tableId, String waiterUsername) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.orderItems = orderItems;
+        this.tableId = tableId;
+        this.waiterUsername = waiterUsername;
     }
 
     public Long getId() {
@@ -72,14 +102,6 @@ public class OrderDTO {
         this.totalPrice = totalPrice;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getNote() {
         return note;
     }
@@ -88,19 +110,27 @@ public class OrderDTO {
         this.note = note;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public List<OrderItemDTO> getOrderItems() {
         return orderItems;
     }
 
     public void setOrderItems(List<OrderItemDTO> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public String getWaiterUsername() {
+        return waiterUsername;
+    }
+
+    public void setWaiterUsername(String waiterUsername) {
+        this.waiterUsername = waiterUsername;
+    }
+
+    public long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 }

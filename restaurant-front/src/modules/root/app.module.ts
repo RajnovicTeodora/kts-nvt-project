@@ -6,14 +6,19 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import { AuthModule } from '../auth/auth.module';
+import { WaiterModule } from '../waiter/waiter.module';
+import { BartenderModule } from '../bartender/bartender.module';
+import { SharedModule } from '../shared/shared.module';
+import { InterceptorInterceptor } from '../shared/interceptors/interceptor.interceptor';
+import { ManagerModule } from '../manager/manager.module';
+import { ChefModule } from '../chef/chef.module';
+import { HeadChefModule } from '../head-chef/head-chef.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,11 +26,23 @@ import { AuthModule } from '../auth/auth.module';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    FlexLayoutModule ,
+    FlexLayoutModule,
     HttpClientModule,
-    AuthModule
+    AuthModule,
+    WaiterModule,
+    SharedModule,
+    BartenderModule,
+    ManagerModule,
+    ChefModule,
+    HeadChefModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
