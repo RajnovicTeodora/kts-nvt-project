@@ -57,18 +57,6 @@
 
     <mat-divider></mat-divider>
 
-    <div *ngFor="let area of areas">
-      <button
-        mat-button
-        class="areaBttn"
-        (click)="openArea(area)"
-      >
-        {{ area.name }}
-      </button>
-    </div>
-
-    <mat-divider></mat-divider>
-
     <p class="designation">Active accounts</p>
 
     <mat-action-list
@@ -93,16 +81,28 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">
-      <div class="title"><h1 class="text">{{activeArea.name}}</h1></div>
       <div class="boundary">
         <ng-container *ngFor="let table of activeArea.tables">
           <button mat-raised-button cdkDragBoundary=".boundary"
           cdkDrag cdkDragDisabled [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
           (click)="onRestaurantTableShowClicked(table.id)"
-          [class]="table.claimed ? 'claimedTableBttn' : 'unclaimedTableBttn'">
+          [class]="table.waiterUsername === user.username ? 'claimedTableBttn' : 'unclaimedTableBttn'">
           {{table.tableNum}}</button>
         </ng-container>
       </div>
+      <div class="buttonsDiv">
+        <h1 style="color:#424242;">Areas</h1>
+        <div *ngFor="let area of areas">
+          <button
+            mat-raised-button color="accent"
+            class="areaBttn"
+            (click)="openArea(area)"
+          >
+            {{ area.name }}
+          </button>
+        </div>        
+      </div>
+
       <app-table-options
           *ngIf="this.showModalRestaurantTableOptions !== -1"
           [tableNumber]="this.showModalRestaurantTableOptions"

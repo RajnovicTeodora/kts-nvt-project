@@ -1,6 +1,7 @@
 package com.ftn.restaurant.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,13 +62,12 @@ public class AreaService {
         Area area = optArea.get();
         List<RestaurantTable> editedTables = new ArrayList<RestaurantTable>();
 
-        for (int i = 0; i< areaDTO.getTables().size(); i++) {
-            RestaurantTableDTO tableDTO = areaDTO.getTables().get(i);
+        for (RestaurantTableDTO tableDTO : areaDTO.getTables()) {
             if(tableRepository.findById(tableDTO.getId()).isPresent()){
                 RestaurantTable table = tableRepository.findByTableId(tableDTO.getId());
-                if (tableDTO.getTableNum() != i+1){
-                    table.setTableNum(i+1);
-                }
+                // if (tableDTO.getTableNum() != i+1){
+                //     table.setTableNum(i+1);
+                // }
                 table.setPositionX(tableDTO.getX());
                 table.setPositionY(tableDTO.getY());
                 tableRepository.saveAndFlush(table);
@@ -79,9 +79,9 @@ public class AreaService {
         areaRepository.saveAndFlush(area);
 
         return area;
-
-
     }
+
+    
 
     public List<AreaDTO> getAllAreas(){
         List<AreaDTO> areas = new ArrayList<AreaDTO>();

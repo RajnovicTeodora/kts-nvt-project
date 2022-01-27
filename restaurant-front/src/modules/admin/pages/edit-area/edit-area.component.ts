@@ -75,7 +75,7 @@ export class EditAreaComponent implements OnInit {
   refreshArea() {
     this.adminService.getAreaById(this.activeArea.id).subscribe((response) => {
       this.activeArea = response;
-      console.log(this.activeArea);
+      console.log(response);
       this.setTableCoordinates();
     });
   }
@@ -127,8 +127,9 @@ export class EditAreaComponent implements OnInit {
     if(!this.savedChanges){
       this.saveChanges();
     }
+    this.selectedTable = -1;
     this.activeArea = area;
-    this.setTableCoordinates();
+    this.refreshArea();
   }
 
   onDragEnded($event: CdkDragEnd, index: number) {
@@ -171,8 +172,7 @@ export class EditAreaComponent implements OnInit {
         this.toastr.success(
           'Successfully added table'
         );
-        this.activeArea.tables.push(success);
-        this.setTableCoordinates();
+        this.refreshArea();
       },
       error: (error) => {
         this.toastr.error('Unable to add new table');
@@ -221,13 +221,15 @@ export class EditAreaComponent implements OnInit {
   }
 
   onConfirmDeleteTableConfirmedClicked(item: boolean) {
+    console.log(this.selectedTable);
     this.adminService.deleteTable(this.selectedTable).subscribe({
       next: (success) => {
         this.toastr.success(
           'Successfully deleted table'
         );
-        this.refreshArea();
+        this.selectedTable = -1;
         this.selectedDeleteTable = false;
+        this.refreshArea();
       },
       error: (error) => {
         this.toastr.error('Table occupied!');

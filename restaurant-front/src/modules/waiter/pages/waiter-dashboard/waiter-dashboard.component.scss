@@ -24,9 +24,9 @@ mat-sidenav {
   margin: 16px;
   margin-left: 32px;
 
-  // display: flex;
-  justify-content: center;
-  align-items:center;
+  display: flex;
+  justify-content:left;
+  align-items: flex-start;
 
   font-size: 2rem;
   color: lightgray;
@@ -104,30 +104,19 @@ mat-action-list {
   margin-right: 15px;
   width: 60%;
   height: 50px;
+  margin-top: 10%;
+  margin-bottom: 10%;
 }
 
 
 .boundary {
-  height: 80%;
-  width: 97%;
+  height: 95%;
+  width: 75%;
   border: dotted;
   margin-top: 1%;
   margin-left: 1%;
 }
 
-.title {
-  height: 10%;
-  width: 97%;
-  margin-top: 1%;
-  margin-left: 1%;
-  text-emphasis-color: #424242;
-  text-align: center;
-}
-
-.text {
-  text-emphasis-color: #424242;
-  font-size: large;
-}
 
 
 .claimedTableBttn {
@@ -138,4 +127,12 @@ mat-action-list {
 .unclaimedTableBttn {
   border-style: solid;
   border-color: #424242;
+}
+
+.buttonsDiv {
+  height: 90%;
+  width: 25%;
+  margin-top: 5%;
+  margin-left: 1%;
+  text-align: center;
 }
