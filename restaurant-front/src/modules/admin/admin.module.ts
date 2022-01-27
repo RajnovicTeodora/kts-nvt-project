@@ -19,7 +19,6 @@ import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.compo
 import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 import { EditAreaComponent } from './pages/edit-area/edit-area.component';
 import { AddAreaComponent } from './components/add-area/add-employee/add-area.component';
-import { ConfirmComponent } from './components/confirm/delete-area/confirm.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +27,7 @@ import { ConfirmComponent } from './components/confirm/delete-area/confirm.compo
     EditEmployeeComponent,
     DeleteEmployeeComponent,
     EditAreaComponent,
-    AddAreaComponent,
-    ConfirmComponent
+    AddAreaComponent
   ],
   imports: [
     CommonModule,

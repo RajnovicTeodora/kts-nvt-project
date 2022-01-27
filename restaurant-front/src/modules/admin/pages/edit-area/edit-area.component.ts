@@ -18,7 +18,6 @@ import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAreaComponent } from '../../components/add-area/add-employee/add-area.component';
 import { CdkDragDrop, CdkDragEnd, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ConfirmComponent } from '../../components/confirm/delete-area/confirm.component';
 
 @Component({
   selector: 'app-edit-area',
@@ -38,6 +37,7 @@ export class EditAreaComponent implements OnInit {
   selectedDeleteArea: boolean;
   areaToDelete: number;
   messageDeleteArea: string;
+  selectedReturn: boolean;
   
   constructor(  
     private fb: FormBuilder,
@@ -54,7 +54,7 @@ export class EditAreaComponent implements OnInit {
     this.selectedDeleteTable = false;
     this.selectedDeleteArea = false;
     this.areaToDelete -1;
-  
+    this.selectedReturn = false;
    }
 
   ngOnInit(): void {
@@ -106,21 +106,6 @@ export class EditAreaComponent implements OnInit {
     this.areaToDelete = id;
     this.messageDeleteArea = "Are you sure you want to delete area " + name;
     this.selectedDeleteArea = true;
-    // const dialogRef = this.dialog.open(DeleteAreaComponent,  {
-    //   disableClose: true,
-    //   autoFocus: true,
-    //   width: '40%',
-    //   height: '20%',
-    //   data: {
-    //     id: id,
-    //     name: name
-    //   }
-    // });
-
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   console.log(`Dialog result: ${result}`);
-    //   this.getAreas();
-    // });
   }
 
   openAddAreaDialog() {
@@ -155,26 +140,12 @@ export class EditAreaComponent implements OnInit {
   }
 
   return() {
-    if(!this.savedChanges) {
-      const dialogRef = this.dialog.open(ConfirmComponent,  {
-        disableClose: true,
-        autoFocus: true,
-        width: '40%',
-        height: '20%',
-        data: {
-          message: "You have unsaved changes! Are you sure you want to return?",
-        }
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log(`Dialog result: ${result}`);
-        this.getAreas();
-      });
+    if(!this.savedChanges){
+      this.selectedReturn = true;
     }
     else{
       this.router.navigate(['/admin-dashboard']);
     }
-    
   }
 
   addTable(){
@@ -289,6 +260,13 @@ export class EditAreaComponent implements OnInit {
     });
   }
 
+  onConfirmReturnCancelClicked(item: boolean) {
+    this.selectedReturn = false;
+  }
+
+  onConfirmReturnConfirmedClicked(item: boolean) {
+    this.router.navigate(['/admin-dashboard']);
+  }
 
 
 }

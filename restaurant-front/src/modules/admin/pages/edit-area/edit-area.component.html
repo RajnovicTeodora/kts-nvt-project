@@ -97,3 +97,9 @@
   (onConfirmActionCancelled)="onConfirmAreaTableCancelClicked($event)"
   (onConfirmActionConfirmed)="onConfirmDeleteAreaConfirmedClicked($event)"
 ></app-confirm-action>
+<app-confirm-action
+*ngIf="this.selectedReturn && !this.savedChanges"
+confirmActionTitle="You have unsaved changes! Are you sure you want to return?"
+(onConfirmActionCancelled)="onConfirmReturnCancelClicked($event)"
+(onConfirmActionConfirmed)="onConfirmReturnConfirmedClicked($event)"
+></app-confirm-action>
