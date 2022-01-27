@@ -105,6 +105,9 @@ public class TableService {
         if(optTable.get().isOccupied()) {
         	throw new TableOccupiedException("Table is occupied!");
         }
+        Area area = optTable.get().getArea();
+        area.getTables().remove(optTable.get());
+        areaRepository.saveAndFlush(area);
             
         tableRepository.delete(optTable.get());
         return optTable.get();

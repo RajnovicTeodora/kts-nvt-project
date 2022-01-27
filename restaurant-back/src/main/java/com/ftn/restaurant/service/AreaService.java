@@ -61,9 +61,13 @@ public class AreaService {
         Area area = optArea.get();
         List<RestaurantTable> editedTables = new ArrayList<RestaurantTable>();
 
-        for (RestaurantTableDTO tableDTO : areaDTO.getTables()) {
+        for (int i = 0; i< areaDTO.getTables().size(); i++) {
+            RestaurantTableDTO tableDTO = areaDTO.getTables().get(i);
             if(tableRepository.findById(tableDTO.getId()).isPresent()){
                 RestaurantTable table = tableRepository.findByTableId(tableDTO.getId());
+                if (tableDTO.getTableNum() != i+1){
+                    table.setTableNum(i+1);
+                }
                 table.setPositionX(tableDTO.getX());
                 table.setPositionY(tableDTO.getY());
                 tableRepository.saveAndFlush(table);
@@ -102,6 +106,10 @@ public class AreaService {
     	if(!optArea.isPresent()) {
     		throw new AreaNotFoundException("Area not found!");
     	}
-        return optArea.get();
+        Area area = optArea.get();
+        List<RestaurantTable> tables = tableRepository.findByAreaId(area.getId());
+        area.setTables(tables);
+
+        return area;
     }
 }

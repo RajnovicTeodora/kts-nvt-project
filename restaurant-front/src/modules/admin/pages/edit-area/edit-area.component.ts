@@ -15,7 +15,6 @@ import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { AdminService } from 'src/modules/admin/admin-service/admin.service';
 import { Area } from 'src/modules/shared/models/area';
 import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
-import { MatTableDataSource } from '@angular/material/table';
 import { DeleteAreaComponent } from '../../components/delete-area/delete-area.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAreaComponent } from '../../components/add-area/add-employee/add-area.component';
@@ -32,10 +31,11 @@ export class EditAreaComponent implements OnInit {
   sidenav!: MatSidenav;
   data: any[];
   areas: Area[];
-  dataSource: MatTableDataSource<any>;
   activeArea: Area;
   tablePositions: any[];
   savedChanges: boolean;
+  selectedTable: number;
+  selectedDelete: boolean;
   
   constructor(  
     private fb: FormBuilder,
@@ -48,6 +48,8 @@ export class EditAreaComponent implements OnInit {
   ) {
     this.data = [];
     this.savedChanges = true;
+    this.selectedTable = -1;
+    this.selectedDelete = false;
    }
 
   ngOnInit(): void {
@@ -59,12 +61,20 @@ export class EditAreaComponent implements OnInit {
     this.adminService.getAllAreas().subscribe((response) => {
       this.areas = response;
       if(this.areas.length !== 0){
-        console.log(this.areas[0]);
         this.activeArea = this.areas[0];
         this.setTableCoordinates();
       }
     });
   }
+
+  refreshArea() {
+    this.adminService.getAreaById(this.activeArea.id).subscribe((response) => {
+      this.activeArea = response;
+      console.log(this.activeArea);
+      this.setTableCoordinates();
+    });
+  }
+  
 
   setTableCoordinates() {
     this.tablePositions = [];
@@ -212,5 +222,41 @@ export class EditAreaComponent implements OnInit {
       },
     });
   }
+
+  selectTable(id: number) {
+    if(this.selectedTable === id){
+      this.selectedTable = -1;
+    }
+    else{
+      this.selectedTable = id;
+    }
+  }
+
+  deleteTable() {
+    this.selectedDelete = true;
+  }
+
+  onConfirmDeleteCancelClicked(item: boolean) {
+    this.selectedDelete = false;
+    this.selectedTable = -1;
+  }
+
+  onConfirmDeleteConfirmedClicked(item: boolean) {
+    this.adminService.deleteTable(this.selectedTable).subscribe({
+      next: (success) => {
+        this.toastr.success(
+          'Successfully deleted table'
+        );
+        this.refreshArea();
+        this.selectedDelete = false;
+      },
+      error: (error) => {
+        this.toastr.error('Table occupied!');
+        console.log(error);
+        this.selectedDelete = false;
+      },
+    });
+  }
+
 
 }

@@ -68,6 +68,12 @@ export class AdminService {
     );
   }
 
+  getAreaById(id: number) : Observable<any> {
+    return this.http.get(
+      `${environment.baseUrl}/api/area/getById/${id}`
+    );
+  }
+
   deleteArea(id: number): Observable<any> {
     return this.http.delete<any>(
       `${environment.baseUrl}/api/area/deleteArea/${id}`
@@ -104,6 +110,12 @@ export class AdminService {
         headers: this.headers2,
         responseType: 'json',
       }
+    );
+  }
+
+  deleteTable(id: number): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.baseUrl}/api/table/deleteTable/${id}`
     );
   }
 }

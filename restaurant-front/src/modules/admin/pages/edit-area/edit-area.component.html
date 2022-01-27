@@ -51,7 +51,10 @@
         <div class="boundary" id="boundary">
           <ng-container *ngFor="let table of activeArea.tables">
             <button mat-raised-button cdkDragBoundary=".boundary" class="tableBttn" 
-            cdkDrag [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" (cdkDragEnded)="onDragEnded($event, activeArea.tables.indexOf(table))">
+            cdkDrag [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
+            (cdkDragEnded)="onDragEnded($event, activeArea.tables.indexOf(table))"
+            (dblclick)="selectTable(table.id)"
+            [class]="selectedTable === table.id ? 'selectedTableBttn' : 'tableBttn'">
             {{table.tableNum}}</button>
           </ng-container>
         </div>
@@ -69,9 +72,22 @@
               <span> Save changes</span>
             </button>
           </div>
+
+          <div>
+            <button mat-raised-button color="accent" class="deleteBttn" (click)="deleteTable()" [disabled]="selectedTable===-1" >
+              <mat-icon>save</mat-icon>
+              <span> Delete table</span>
+            </button>
+          </div>
           
         </div>
       </div>
     </mat-sidenav-content>
   
   </mat-sidenav-container>
+  <app-confirm-action
+    *ngIf="this.selectedDelete"
+    confirmActionTitle="Are you sure you want to delete table?"
+    (onConfirmActionCancelled)="onConfirmDeleteCancelClicked($event)"
+    (onConfirmActionConfirmed)="onConfirmDeleteConfirmedClicked($event)"
+  ></app-confirm-action>

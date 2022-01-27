@@ -82,7 +82,7 @@ mat-toolbar {
 
   .boundary {
     height: 95%;
-    width: 65%;
+    width: 75%;
     border: dotted;
     margin-top: 1%;
     margin-left: 1%;
@@ -90,7 +90,7 @@ mat-toolbar {
 
   .buttonsDiv {
     height: 90%;
-    width: 35%;
+    width: 25%;
     margin-top: 5%;
     margin-left: 1%;
     text-align: center;
@@ -106,7 +106,17 @@ mat-toolbar {
     margin-bottom: 10%;
   }
 
+  .deleteBttn {
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+
   .addTableBttn {
     margin-top: 10%;
     margin-bottom: 10%;
+  }
+
+  .selectedTableBttn {
+    border-style: solid;
+    border-color: #424242;
   }
