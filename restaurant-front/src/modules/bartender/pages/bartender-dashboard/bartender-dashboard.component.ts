@@ -33,10 +33,11 @@ export class BartenderDashboardComponent implements OnInit {
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
-  waiterList: Array<UserWithBadgeNum>;
+  bartenderList: Array<UserWithBadgeNum>;
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
   currentBadgeContent: number;
+  showNotificationsModal: boolean;
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -62,7 +63,7 @@ export class BartenderDashboardComponent implements OnInit {
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
     this.showModalLogout = false;    
-    this.waiterList = new Array;    
+    this.bartenderList = new Array;    
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
@@ -73,7 +74,27 @@ export class BartenderDashboardComponent implements OnInit {
     this.setBadgeValues();
   }
   setBadgeValues(){
-    this.waiterList = new Array;    
+    this.bartenderList = new Array;    
+    this.setBagdeValueForCurrentUser();
+    const users = new BehaviorSubject<UserList>(
+      JSON.parse(localStorage.getItem('BARTENDER_LIST')!)
+    );
+    users.value.list.forEach((value, index) => {
+      this.notifService.getActiveNotificationsForEmployee(value.username).subscribe(
+        {
+          next: (result) => {
+            let badgeNum = result.length;
+            this.bartenderList.push(new UserWithBadgeNum(badgeNum, value));
+          },
+          error: data => {
+              this.toastr.error(data.error);            
+          }
+        }
+      );      
+    });
+  }
+
+  setBagdeValueForCurrentUser(){
     this.notifService.getActiveNotificationsForEmployee(this.user.username).subscribe(
       {
         next: (result) => {
@@ -84,22 +105,6 @@ export class BartenderDashboardComponent implements OnInit {
         }
       }
     );
-    const users = new BehaviorSubject<UserList>(
-      JSON.parse(localStorage.getItem('WAITER_LIST')!)
-    );
-    users.value.list.forEach((value, index) => {
-      this.notifService.getActiveNotificationsForEmployee(value.username).subscribe(
-        {
-          next: (result) => {
-            let badgeNum = result.length;
-            this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
-          },
-          error: data => {
-              this.toastr.error(data.error);            
-          }
-        }
-      );      
-    });
   }
 
   getData(obj: { pageIndex: any; pageSize: any }) {
@@ -123,6 +128,14 @@ export class BartenderDashboardComponent implements OnInit {
         this.sidenav.open();
       }
     });
+  }
+  onNotificationsClicked(){
+    this.showNotificationsModal = true;
+  }
+
+  onNotificationsCloseClicked(item:boolean){
+    this.showNotificationsModal = false;
+    this.setBadgeValues();
   }
 
   onPasswordChangeClose(item: boolean) {

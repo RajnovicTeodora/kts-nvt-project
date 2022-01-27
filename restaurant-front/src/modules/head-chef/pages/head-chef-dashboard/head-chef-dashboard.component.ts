@@ -26,21 +26,16 @@ export class HeadChefDashboardComponent implements OnInit {
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
-  waiterList: Array<UserWithBadgeNum>;
+  chefList: Array<UserWithBadgeNum>;
   showModalOtherAccounts: boolean;
   showModalLogin: boolean;
   currentBadgeContent: number;
+  showNotificationsModal: boolean;
 
   
-  // isDishView:boolean = false;
-  // isNewOrders: boolean =false;
-  // isAcceptedOrders: boolean =false;
-  // isNewOrderItems: boolean =false;
-  // isAcceptedOrderItems: boolean =false;
   idOrder: any;
   state: number = 0; 
-  // isHeadChef:boolean;
-  // isAdding:boolean;
+  
 
   data2 = [
     { id: 1, url: 'assets/images/floor3.png' },
@@ -62,7 +57,7 @@ export class HeadChefDashboardComponent implements OnInit {
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
     this.showModalLogout = false;    
-    this.waiterList = new Array;    
+    this.chefList = new Array;    
     this.showModalOtherAccounts = false;
     this.showModalLogin = false;
     this.currentBadgeContent = 0;
@@ -75,33 +70,38 @@ export class HeadChefDashboardComponent implements OnInit {
   }
 
   setBadgeValues(){
-    this.waiterList = new Array;    
-    // this.notifService.getNumberOfActiveNotificationsForWaiter(this.user.username).subscribe(
-    //   {
-    //     next: (result) => {
-    //       this.currentBadgeContent = result.length;
-    //     },
-    //     error: data => {
-    //         this.toastr.error(data.error);          
-    //     }
-    //   }
-    // );
+    
+    this.chefList = new Array;    
+    this.setBagdeValueForCurrentUser();
     const users = new BehaviorSubject<UserList>(
-      JSON.parse(localStorage.getItem('WAITER_LIST')!)
+      JSON.parse(localStorage.getItem('CHEF_LIST')!)
     );
     users.value.list.forEach((value, index) => {
-      // this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
-      //   {
-      //     next: (result) => {
-      //       let badgeNum = result.length;
-      //       this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
-      //     },
-      //     error: data => {
-      //         this.toastr.error(data.error);            
-      //     }
-      //   }
-      // );      
+      this.notifService.getActiveNotificationsForEmployee(value.username).subscribe(
+        {
+          next: (result) => {
+            let badgeNum = result.length;
+            this.chefList.push(new UserWithBadgeNum(badgeNum, value));
+          },
+          error: data => {
+              this.toastr.error(data.error);            
+          }
+        }
+      );      
     });
+  }
+
+  setBagdeValueForCurrentUser(){
+    this.notifService.getActiveNotificationsForEmployee(this.user.username).subscribe(
+      {
+        next: (result) => {
+          this.currentBadgeContent = result.length;
+        },
+        error: data => {
+            this.toastr.error(data.error);          
+        }
+      }
+    );
   }
 
   getData(obj: { pageIndex: any; pageSize: any }) {
@@ -126,7 +126,14 @@ export class HeadChefDashboardComponent implements OnInit {
       }
     });
   }
+  onNotificationsClicked(){
+    this.showNotificationsModal = true;
+  }
 
+  onNotificationsCloseClicked(item:boolean){
+    this.showNotificationsModal = false;
+    this.setBadgeValues();
+  }
   onPasswordChangeClose(item: boolean) {
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
@@ -160,7 +167,7 @@ export class HeadChefDashboardComponent implements OnInit {
     } else {
       const data = this.userService.getUserByUsernameAndListName(
         username,
-        'WAITER_LIST'
+        'CHEF_LIST'
       );
       this.userService
         .switchToActiveAccount({
@@ -181,8 +188,8 @@ export class HeadChefDashboardComponent implements OnInit {
                 data.password
               );
               localStorage.setItem('currentUser', JSON.stringify(newUser));
-              //this.router.navigate(['/waiter-dashboard']);
-              //window.location.reload()
+              this.router.navigate(['/head-chef-dashboard']);
+              window.location.reload()
               this.user = newUser;
               this.showModalPasswordChange = this.user.loggedInFirstTime;
               this.setBadgeValues();

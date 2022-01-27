@@ -32,5 +32,12 @@ export class OrderedItemService {
       { responseType: 'text' }
     );
   }
+  getActiveIngredients(orderedItemId: number): Observable<any> {
+    const res = this.http.get("http://localhost:8080/api/orderedItem/getActiveIngredients/"+orderedItemId, {
+        headers: this.headers,
+        responseType: "json",
+      });
+      return res;
+  }
 
 }
