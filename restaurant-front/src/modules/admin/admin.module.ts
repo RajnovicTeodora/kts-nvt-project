@@ -1,5 +1,4 @@
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
-import { EditTablesComponent } from './components/edit-tables/edit-tables.component'; 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
@@ -21,17 +20,18 @@ import { DeleteEmployeeComponent } from './components/delete-employee/delete-emp
 import { EditAreaComponent } from './pages/edit-area/edit-area.component';
 import { DeleteAreaComponent } from './components/delete-area/delete-area.component';
 import { AddAreaComponent } from './components/add-area/add-employee/add-area.component';
+import { ConfirmComponent } from './components/confirm/delete-area/confirm.component';
 
 @NgModule({
   declarations: [
     AdminDashboardComponent,
-    EditTablesComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
     DeleteEmployeeComponent,
     EditAreaComponent,
     DeleteAreaComponent,
-    AddAreaComponent
+    AddAreaComponent,
+    ConfirmComponent
   ],
   imports: [
     CommonModule,

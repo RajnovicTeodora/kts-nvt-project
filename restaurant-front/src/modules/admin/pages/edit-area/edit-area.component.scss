@@ -21,7 +21,7 @@ mat-toolbar {
     margin-left: 32px;
   
     display: flex;
-    justify-content: center;
+    justify-content:left;
     align-items: flex-start;
   
     font-size: 2rem;
@@ -78,4 +78,35 @@ mat-toolbar {
     mat-icon {
       margin-right: 8px;
     }
+  }
+
+  .boundary {
+    height: 95%;
+    width: 65%;
+    border: dotted;
+    margin-top: 1%;
+    margin-left: 1%;
+  }
+
+  .buttonsDiv {
+    height: 90%;
+    width: 35%;
+    margin-top: 5%;
+    margin-left: 1%;
+    text-align: center;
+  }
+
+  .tableBttn {
+    border-style: solid;
+    border-color: hotpink;
+  }
+
+  .saveBttn {
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+
+  .addTableBttn {
+    margin-top: 10%;
+    margin-bottom: 10%;
   }

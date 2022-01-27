@@ -35,8 +35,6 @@ export class AdminDashboardComponent implements OnInit {
   ) {
     this.data = [];
     this.showModalLogout = false;    
-    this.employeesWindowOpen = true;
-    this.tablesWindowOpen = false;
    }
 
   ngOnInit(): void {
@@ -67,8 +65,4 @@ export class AdminDashboardComponent implements OnInit {
     this.router.navigate(['/edit-area']);
   }
 
-  onEmployeesClicked(){
-    this.tablesWindowOpen = false;
-    this.employeesWindowOpen = true;
-  }
 }

@@ -1,0 +1,19 @@
+<div>
+  <h3>
+    {{message}}
+  </h3>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="cancel()"
+    id="submit-button"
+  >
+    Cancel
+  </button>
+  <button mat-stroked-button color="accent" type="submit" class="submit-button" (click)="return()" id="submit-button" >
+    Confirm
+  </button>
+
+</div>

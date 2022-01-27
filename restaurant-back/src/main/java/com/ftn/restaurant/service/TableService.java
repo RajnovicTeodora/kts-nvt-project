@@ -111,8 +111,8 @@ public class TableService {
     }
 
     public RestaurantTable addTable(RestaurantTableDTO tableDTO){
-        if(tableRepository.findByPositionXAndPositionY(tableDTO.getX(), tableDTO.getY()).isPresent())
-            return null; //ovo mozda nece biti moguce pa ne bude greske
+        // if(tableRepository.findByPositionXAndPositionY(tableDTO.getX(), tableDTO.getY()).isPresent())
+        //     return null; //ovo mozda nece biti moguce pa ne bude greske
 
         RestaurantTable newTable = new RestaurantTable(tableDTO);
 

@@ -1,16 +1,15 @@
 <mat-toolbar class="mat-elevation-z8">
-    <span class="span">NOTI</span>
-    <div
-      fxShow="true"
-      fxHide.lt-md="true"
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-    >
-    </div>
-  </mat-toolbar>
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+  </div>
+</mat-toolbar>
   
   <mat-sidenav-container>
-  
     <mat-sidenav class="mat-elevation-z8">
       <span class="span">Areas</span>
       <mat-divider></mat-divider>
@@ -20,6 +19,7 @@
           <button
             mat-button
             class="dugmic-area"
+            (click)="openEditTables(area)"
           >
             {{ area.name }}
           </button>
@@ -46,9 +46,31 @@
       </button>
     </mat-sidenav>
   
-    <mat-sidenav-content>
+    <mat-sidenav-content class="sidenavContent">
       <div class="content mat-elevation-z8">
-        <p>:)</p>
+        <div class="boundary" id="boundary">
+          <ng-container *ngFor="let table of activeArea.tables">
+            <button mat-raised-button cdkDragBoundary=".boundary" class="tableBttn" 
+            cdkDrag [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" (cdkDragEnded)="onDragEnded($event, activeArea.tables.indexOf(table))">
+            {{table.tableNum}}</button>
+          </ng-container>
+        </div>
+        <div class="buttonsDiv">
+          <div>
+            <button mat-raised-button color="accent" class="addTableBttn" (click)="addTable()">
+              <mat-icon>add</mat-icon>
+              <span> Add table</span>
+            </button>
+          </div>
+          
+          <div>
+            <button mat-raised-button color="accent" class="saveBttn" (click)="saveChanges()">
+              <mat-icon>save</mat-icon>
+              <span> Save changes</span>
+            </button>
+          </div>
+          
+        </div>
       </div>
     </mat-sidenav-content>
   

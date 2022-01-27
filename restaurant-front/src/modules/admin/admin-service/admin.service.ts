@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Area } from 'src/modules/shared/models/area';
 import { Employee } from 'src/modules/shared/models/employee';
+import { RestaurantTable } from 'src/modules/shared/models/restaurant-table';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +78,28 @@ export class AdminService {
     return this.http.post(
       `${environment.baseUrl}/api/area/addArea`,
       name,
+      {
+        headers: this.headers2,
+        responseType: 'json',
+      }
+    );
+  }
+
+  addTable(table: RestaurantTable) : Observable<any> {
+    return this.http.post(
+      `${environment.baseUrl}/api/table/addTable`,
+      table,
+      {
+        headers: this.headers2,
+        responseType: 'json',
+      }
+    );
+  }
+
+  editArea(area: Area) : Observable<any> {
+    return this.http.put(
+      `${environment.baseUrl}/api/area/editTables`,
+      area,
       {
         headers: this.headers2,
         responseType: 'json',
