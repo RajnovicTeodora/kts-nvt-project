@@ -14,15 +14,6 @@ public class EmployeesPage {
 
     private WebDriver driver;
 
-    @FindBy(id = "employee-search")
-    private WebElement searchInputField;
-
-    @FindBy(id = "role-filter-input")
-    private WebElement roleSelectField;
-
-    @FindBy(id = "submit-button")
-    private WebElement searchBttn;
-
     @FindBy(className = "addBttn")
     private WebElement addEmployeeBttn;
 
@@ -41,14 +32,11 @@ public class EmployeesPage {
     @FindBy(name = "deleteEmployeeBttn")
     private List<WebElement> deleteEmployeeBttns;
 
-    @FindBy(id = "logout-button")
+    @FindBy(id = "logoutBttn")
     private WebElement logoutButton;
 
     @FindBy(id = "confirm-logout-button")
     private WebElement confirmLogoutButton;
-
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Username')]")
-    private List<WebElement> usernames;
 
     @FindBy(xpath = "//*[@id=\"toast-container\"]/div/div")
     private WebElement toastText;
@@ -74,14 +62,16 @@ public class EmployeesPage {
     }
 
     private String getFirstUsername(){
-        return Utilities.visibilityWait(driver, this.usernames.get(0), 10).getText();
+        List<WebElement> usernames = Utilities.visibilityWait(driver, By.name("username"), 20);
+        return usernames.get(0).getText();
     }
 
     public boolean infoChanged(String name, String surname, String telephone){
         int userIndex = -1;
-        for (WebElement user : this.usernames){
+        List<WebElement> usernames = Utilities.visibilityWait(driver, By.name("username"), 20);
+        for (WebElement user : usernames){
             if(user.getText().equals(getFirstUsername())){
-                userIndex = this.usernames.indexOf(user);
+                userIndex = usernames.indexOf(user);
                 break;
             }
         }
@@ -107,10 +97,10 @@ public class EmployeesPage {
 
     public void clickDeleteTable(String username){
         int userIndex = -1;
-        this.usernames = Utilities.visibilityWait(driver, By.xpath("//td[contains(@class,'cdk-column-Username')]"), 20);
-        for(WebElement user : this.usernames){
+        List<WebElement> usernames = Utilities.visibilityWait(driver, By.name("username"), 20);
+        for(WebElement user : usernames){
             if(user.getText().equals(username)){
-                userIndex = this.usernames.indexOf(user);
+                userIndex = usernames.indexOf(user);
             }
         }
         Utilities.clickableWait(driver, this.deleteEmployeeBttns.get(userIndex), 10).click();
@@ -118,9 +108,8 @@ public class EmployeesPage {
     }
 
     public boolean confirmUserDeleted(String username){
-        this.usernames = Utilities.visibilityWait(driver, By.xpath("//td[contains(@class,'cdk-column-Username')]"), 10);
-        for(WebElement user : this.usernames){
-            System.out.println(user.getText());
+        List<WebElement> usernames = Utilities.visibilityWait(driver, By.name("username"), 20);
+        for(WebElement user : usernames){
             if(user.getText().equals(username)){
                 return false;
             }

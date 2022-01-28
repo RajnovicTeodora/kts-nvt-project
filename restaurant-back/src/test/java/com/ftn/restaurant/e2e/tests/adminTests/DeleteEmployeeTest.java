@@ -37,30 +37,14 @@ public class DeleteEmployeeTest {
     }
 
     @Test
-    public void addEmployeeTest(){
+    public void deleteEmployeeTest(){
 
         //login
-        loginPage.setUsernameInput("admin");
-        loginPage.setPasswordInput("test");
-        loginPage.loginBtnClick();
+        loginPage.login("admin", "test");
         assertTrue(Utilities.urlWait(driver, "http://localhost:4200/admin-dashboard", 10));
 
-        //click button to add employee
-        employeesPage.addEmployeeBttnClicked();
-
-        String username = "abc";
-
-        addEmployeePage.setInputText("username", username);
-        addEmployeePage.setInputText("password", "pass123");
-        addEmployeePage.setInputText("name", "Pera");
-        addEmployeePage.setInputText("surname", "Peric");
-        addEmployeePage.setInputText("telephone", "123456");
-        addEmployeePage.setRole();
-
-        addEmployeePage.saveBttnClick();
-
-        assertTrue(addEmployeePage.usernamesContainsText(username));
-
+        String username = "chef";
+        String password = "test";
 
         //delete employee
         employeesPage.clickDeleteTable(username);
@@ -71,11 +55,9 @@ public class DeleteEmployeeTest {
         employeesPage.confirmLogoutBtnClick();
 
         //try login
-        loginPage.setUsernameInput(username);
-        loginPage.setPasswordInput("pass123");
-        loginPage.loginBtnClick();
+        loginPage.login(username, password);
 
-        assertEquals("User not found. ", employeesPage.getToastrMessage());
+        assertEquals("User not found.", employeesPage.getToastrMessage());
     }
 
     @After
