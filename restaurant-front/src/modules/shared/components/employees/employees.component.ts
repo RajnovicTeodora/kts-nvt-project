@@ -175,8 +175,8 @@ export class EmployeesComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
-    dialogConfig.height = '80%';
+    dialogConfig.width = '50%';
+    dialogConfig.height = '70%';
 
     const dialogRef = this.dialog.open(AddEmployeeComponent, dialogConfig);
 

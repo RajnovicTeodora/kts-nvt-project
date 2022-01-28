@@ -72,9 +72,8 @@ public class AddEmployeePage {
     }
 
     public boolean usernamesContainsText(String text){
-//        this.usernames = Utilities.visibilityWait(driver, By.xpath("//td[contains(@class,'cdk-column-Username')]"), 30);
-        for (WebElement username : this.usernames){
-            System.out.println(username.getText());
+        List<WebElement> usernames = Utilities.visibilityWait(driver, By.name("username"), 30);
+        for (WebElement username : usernames){
             if(username.getText().equals(text)){
                 return true;
             }
