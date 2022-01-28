@@ -17,17 +17,14 @@ public class EmployeesPage {
     @FindBy(className = "addBttn")
     private WebElement addEmployeeBttn;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Name')]")
+    @FindBy(name = "name")
     private List<WebElement> names;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Surname')]")
+    @FindBy(name = "surname")
     private List<WebElement> surnames;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Telephone')]")
+    @FindBy(name = "telephone")
     private List<WebElement> telephones;
-
-    @FindBy(id = "editEmployee")
-    private List<WebElement> editEmployeeBttns;
 
     @FindBy(name = "deleteEmployeeBttn")
     private List<WebElement> deleteEmployeeBttns;
@@ -92,7 +89,8 @@ public class EmployeesPage {
     }
 
     public void clickEditFirstUser(){
-        Utilities.clickableWait(driver, this.editEmployeeBttns.get(0), 10).click();
+        List<WebElement> editButtons = Utilities.visibilityWait(driver, By.id("editEmployee"), 20);
+        Utilities.clickableWait(driver, editButtons.get(0), 10).click();
     }
 
     public void clickDeleteTable(String username){
