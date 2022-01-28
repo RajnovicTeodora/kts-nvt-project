@@ -1,22 +1,18 @@
-package com.ftn.restaurant.e2e.tests;
+package com.ftn.restaurant.e2e.tests.manager;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.ftn.restaurant.e2e.pages.LoginPage;
-import com.ftn.restaurant.e2e.pages.ManagerDashboardPage;
-import com.ftn.restaurant.e2e.pages.ReportsPage;
+import com.ftn.restaurant.e2e.pages.manager.ManagerDashboardPage;
+import com.ftn.restaurant.e2e.pages.manager.ReportsPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class ReportTest {
     private WebDriver browser;
