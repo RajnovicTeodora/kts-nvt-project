@@ -1,9 +1,8 @@
-package com.ftn.restaurant.e2e.tests;
+package com.ftn.restaurant.e2e.tests.manager;
 
-import com.ftn.restaurant.e2e.pages.ItemViewPage;
-import com.ftn.restaurant.e2e.pages.LoginPage;
-import com.ftn.restaurant.e2e.pages.ManagerDashboardPage;
-import com.ftn.restaurant.e2e.pages.MenuViewPage;
+import com.ftn.restaurant.e2e.pages.*;
+import com.ftn.restaurant.e2e.pages.manager.EditPaycheckPage;
+import com.ftn.restaurant.e2e.pages.manager.ManagerDashboardPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,16 +10,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class ItemViewTest {
+public class PaychecksTest {
+
     private WebDriver browser;
 
     private LoginPage loginPage;
     private ManagerDashboardPage managerDashboardPage;
-    private ItemViewPage itemViewPage;
-    private MenuViewPage menuViewPage;
+    private PaychecksPage paychecksPage;
+    private EditPaycheckPage editPaycheckPage;
 
     @Before
     public void setupSelenium() {
@@ -34,12 +34,12 @@ public class ItemViewTest {
 
         loginPage = PageFactory.initElements(browser, LoginPage.class);
         managerDashboardPage = PageFactory.initElements(browser, ManagerDashboardPage.class);
-        itemViewPage = PageFactory.initElements(browser, ItemViewPage.class);
-        menuViewPage = PageFactory.initElements(browser, MenuViewPage.class);
+        paychecksPage = PageFactory.initElements(browser, PaychecksPage.class);
+        editPaycheckPage = PageFactory.initElements(browser, EditPaycheckPage.class);
     }
 
     @Test
-    public void itemViewTest() {
+    public void paychecksTest() {
 
         // set username
         loginPage.setUsernameInput("manager");
@@ -50,32 +50,24 @@ public class ItemViewTest {
 
         assertTrue(managerDashboardPage.urlPresent());
 
-        //Test search
-        itemViewPage.setItemSearchInput("c");
-        itemViewPage.submitBtnClick();
+        managerDashboardPage.paychecksViewBtnClick();
 
-        //Wait till items are showing
-        itemViewPage.waitUntilItemsPresent();
+        //Search and filter
+        paychecksPage.setEmployeeSearchInput("misko");
+        paychecksPage.setRoleFilter();
+        paychecksPage.submitBtnClick();
+        paychecksPage.waitUntilTablePresent();
+        assertTrue(paychecksPage.tableRowsSizeCompare(1));
+        assertTrue(paychecksPage.usernamesContainText("misko"));
+        assertTrue(paychecksPage.rolesContainText("Bartender"));
 
-        // Validate search
-        assertTrue(itemViewPage.itemsTitleTextsSizeCompare(2));
-        assertTrue(itemViewPage.itemsTitleTextsContainText("c"));
+        //Edit found user's paycheck
+        paychecksPage.editPaycheckBtnClick(0);
+        editPaycheckPage.setPaycheckInput("19");
+        editPaycheckPage.submitBtnClick();
 
-        // Approve first item
-        itemViewPage.approveBtnClick(0);
-
-        // Check if fist item is moved to menu
-        managerDashboardPage.menuViewBtnClick();
-        menuViewPage.titleInMenuItemTitleTexts("Caesar salad");
-
-        // Back to items view
-        managerDashboardPage.itemsViewBtnClick();
-        itemViewPage.waitUntilItemsPresent();
-        // Delete item
-        assertTrue(itemViewPage.itemsTitleTextsSizeCompare(2));
-        itemViewPage.deleteBtnClick(0);
-        itemViewPage.waitUntilItemsPresent();
-        assertTrue(itemViewPage.itemsTitleTextsSizeCompare(1));
+        paychecksPage.waitUntilTablePresent();
+        assertTrue(paychecksPage.comparePaychecks("19", 0));
 
         // Log out
         managerDashboardPage.menuViewBtnClick();
@@ -90,6 +82,4 @@ public class ItemViewTest {
         // Shutdown the browser
         browser.quit();
     }
-
-
 }
