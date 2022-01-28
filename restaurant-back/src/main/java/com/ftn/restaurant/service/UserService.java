@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Employee addUser(EmployeeDTO employeeDTO){
-        if(employeeRepository.findByUsername(employeeDTO.getUsername()).isPresent()){
+        if(employeeRepository.findByUsernameAndNotDeleted(employeeDTO.getUsername()).isPresent()){
             throw new UsernameExistsException("Username already exists!");
         }
 
