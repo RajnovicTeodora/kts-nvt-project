@@ -27,11 +27,13 @@
         <div *ngIf="searchName !== '...'">
           <div *ngIf="menuItems.length !== 0; else noSearchResults">
             <button
+              id="search-result-button"
               mat-button
               class="dugmic-item"
               name="menuItem"
               *ngFor="let item of menuItems"
               name="menuItem"
+              (click)="onCustomizeOrderedItemClicked(item.id)"
             >
               {{ item.name }}
             </button>

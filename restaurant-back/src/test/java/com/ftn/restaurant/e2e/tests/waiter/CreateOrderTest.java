@@ -1,9 +1,7 @@
 package com.ftn.restaurant.e2e.tests.waiter;
 
 import com.ftn.restaurant.e2e.pages.LoginPage;
-import com.ftn.restaurant.e2e.pages.waiter.CreateOrderPage;
-import com.ftn.restaurant.e2e.pages.waiter.TableOptionsComponent;
-import com.ftn.restaurant.e2e.pages.waiter.WaiterDashboardPage;
+import com.ftn.restaurant.e2e.pages.waiter.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +19,9 @@ public class CreateOrderTest {
     private WaiterDashboardPage waiterDashboardPage;
     private TableOptionsComponent tableOptionsComponent;
     private CreateOrderPage createOrderPage;
+    private CustomizeOrderedItemComponent customizeOrderedItemComponent;
+    private SearchMenuItemsPage searchMenuItemsPage;
+    private ViewAndPayOrderComponent viewAndPayOrderComponent;
 
     @Before
     public void setupSelenium() {
@@ -36,6 +37,9 @@ public class CreateOrderTest {
         waiterDashboardPage = PageFactory.initElements(browser, WaiterDashboardPage.class);
         tableOptionsComponent = PageFactory.initElements(browser, TableOptionsComponent.class);
         createOrderPage = PageFactory.initElements(browser, CreateOrderPage.class);
+        customizeOrderedItemComponent = PageFactory.initElements(browser, CustomizeOrderedItemComponent.class);
+        searchMenuItemsPage = PageFactory.initElements(browser, SearchMenuItemsPage.class);
+        viewAndPayOrderComponent = PageFactory.initElements(browser, ViewAndPayOrderComponent.class);
     }
 
     @Test
@@ -50,14 +54,65 @@ public class CreateOrderTest {
         waiterDashboardPage.areaTableButtonClicked(2);
         assertTrue(tableOptionsComponent.tableNumberTitlePresent("Table 2"));
 
+        //number of active orders is 6
+        tableOptionsComponent.waitUntilOrderPresent();
+        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
+
         //create new order selected
         tableOptionsComponent.createOrderButtonClick();
 
-        //window create order for table number 2 present
+        //create order for table number 2 window present
         createOrderPage.urlPresent(2);
 
-        //cancel
-        createOrderPage.cancelCreateOrderButtonClick();
+        //no ordered items, total cost is 0
+        assertTrue(createOrderPage.totalCostPresent(0));
+
+        //search  -> Pizza
+        searchMenuItemsPage.insertSearchText("pizza");
+        searchMenuItemsPage.clickSearch();
+        createOrderPage.waitUntilOldResultsNotPresent();
+        createOrderPage.searchResultClick();
+        assertTrue(customizeOrderedItemComponent.menuItemNamePresent("Pizza"));
+        assertTrue(customizeOrderedItemComponent.menuItemPricePresent(25));
+
+        //customize ordered item module present
+        customizeOrderedItemComponent.waitUntilIngredientsPresent();
+
+        //deselect ingredient 'sladoled'
+        customizeOrderedItemComponent.deselectActiveIngredient(2);
+
+        //set quantity to 3
+        customizeOrderedItemComponent.setQuantityInput(3);
+
+        //set priority to 2
+        customizeOrderedItemComponent.prioritySelectClick();
+        customizeOrderedItemComponent.selectPriorityOption(2);
+
+        //add customized ordered item to order
+        customizeOrderedItemComponent.addCustomizedOrderedItemButtonClicked();
+
+        //total cost changed to 75
+        assertTrue(createOrderPage.totalCostPresent(75));
+
+        //add some note
+        createOrderPage.additionalNotesButtonClick();
+        createOrderPage.setAdditionalNotesInput("Some note");
+        createOrderPage.confirmAdditionNotesButtonClick();
+
+        //confirm order
+        createOrderPage.confirmCreateOrderButtonClick();
+
+        //pay now or later -> later
+        viewAndPayOrderComponent.payLaterButtonClick();
+
+        //open table options for table 2
+        waiterDashboardPage.waitUntilTablePresent();
+        waiterDashboardPage.areaTableButtonClicked(2);
+        assertTrue(tableOptionsComponent.tableNumberTitlePresent("Table 2"));
+
+        //number of orders increased
+        tableOptionsComponent.waitUntilOrderPresent();
+        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
 
     }
 

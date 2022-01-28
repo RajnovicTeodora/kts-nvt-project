@@ -37,6 +37,9 @@ public class ViewAndPayOrderComponent {
     @FindBy(xpath = "//*[@id='form-holder-div']/mat-action-list/table//*[@name='ordered-item-status']")
     private List<WebElement> orderedItemStatusList;
 
+    @FindBy(xpath = "//*[@id='pay-order-later-button']")
+    private WebElement payLaterButton;
+
     public ViewAndPayOrderComponent(WebDriver driver){ this.driver = driver;}
 
     public void deliverOrderButtonClick(int itemNumber) { Utilities.clickableWait(driver, this.deliverOrderButtons.get(itemNumber-1), 10).click();}
@@ -48,6 +51,8 @@ public class ViewAndPayOrderComponent {
     public boolean totalCostPresent(int totalCost){ return Utilities.textWait(driver, this.totalCost, String.valueOf(totalCost), 10);}
 
     public void payOrderButtonClick() { Utilities.clickableWait(driver, this.payOrderButton, 10).click();}
+
+    public void payLaterButtonClick() { Utilities.clickableWait(driver, this.payLaterButton, 10).click();}
 
     public void closeViewAndPayOrderWindowClick() { Utilities.clickableWait(driver, this.closeViewAndPayOrderWindow, 10).click();}
 
