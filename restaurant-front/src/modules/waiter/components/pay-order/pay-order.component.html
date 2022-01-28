@@ -3,7 +3,6 @@
     <img
       src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
       alt="”animated”"
-      (click)="this.router.navigate([''])"
     />
   </div>
   <div id="form-holder-div">
@@ -36,7 +35,6 @@
       <img
         src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
         alt="”animated”"
-        (click)="this.router.navigate([''])"
       />
     </div>
     <div id="form-holder-div">
@@ -68,6 +66,7 @@
           <th mat-header-cell *matHeaderCellDef>Deliver</th>
           <td mat-cell *matCellDef="let element">
             <button
+              name="deliver-order-button"
               *ngIf="element.status == 'READY'"
               class="details"
               (click)="deliverOrderedItem(element)"
@@ -76,6 +75,7 @@
               <mat-icon>check_circle</mat-icon>
             </button>
             <button
+              name="deliver-order-button"
               *ngIf="element.status == 'IN_PROGRESS' || element.status == 'ORDERED'"
               matTooltip="Waiting for ordered item to be ready."
             >
@@ -92,14 +92,14 @@
     <mat-divider></mat-divider>
     <div class="row">
       <span style="margin-right: 50%; font-size: 1rem; color: lightgray;">Total cost: </span>
-      <span style="text-align: right; font-size: 1rem; color: lightgray;"
+      <span style="text-align: right; font-size: 1rem; color: lightgray;" id="total-cost-span"
         >$ {{ this.totalCost }}
       </span>
     </div>
 
     <mat-divider></mat-divider>
 
-    <h2 *ngIf="this.orderIsPaid">Order is paid.</h2>
+    <h2 *ngIf="this.orderIsPaid" id="order-is-paid-h2">Order is paid.</h2>
 
     <div class="row" *ngIf="!this.orderIsPaid">
       <mat-form-field class="example-full-width" appearance="fill">
@@ -121,6 +121,7 @@
 
       <div class="modal-footer">
         <button
+          id="pay-order-close-button"
           mat-flat-button
           type="button"
           color="accent"
@@ -130,6 +131,7 @@
           Close
         </button>
         <button
+          id="pay-order-confirm-button"
           *ngIf="!this.orderIsPaid"
           mat-flat-button
           type="button"

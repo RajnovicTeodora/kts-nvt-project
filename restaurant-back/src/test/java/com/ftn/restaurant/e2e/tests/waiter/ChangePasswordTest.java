@@ -44,13 +44,19 @@ public class ChangePasswordTest {
         assertTrue(waiterDashboardPage.urlPresent());
         assertTrue(waiterDashboardPage.currentUsernamePresent("waiter"));
 
+        //clicked changed password option and entered new password "wer"
         waiterDashboardPage.changePasswordButtonClick();
         changePasswordComponent.setNewPasswordInput("wer");
         changePasswordComponent.regularPasswordChangeConfirmClick();
+
+        //logout
         waiterDashboardPage.logoutBtnClick();
+
+        //login with "wer" password
         logoutComponent.confirmLogoutButtonClick();
         loginPage.login("waiter", "wer");
 
+        //successful login
         assertTrue(waiterDashboardPage.urlPresent());
         assertTrue(waiterDashboardPage.currentUsernamePresent("waiter"));
     }
@@ -58,15 +64,20 @@ public class ChangePasswordTest {
     @Test
     public void regularPasswordChangeTest(){
         loginPage.login("Boban123", "test");
-
         assertTrue(waiterDashboardPage.urlPresent());
 
+        //change password option is already open, enter new password "wer"
         changePasswordComponent.setNewPasswordInput("wer");
         changePasswordComponent.firstPasswordChangeConfirmClick();
+
+        //logout
         waiterDashboardPage.logoutBtnClick();
+
+        //login with "wer"
         logoutComponent.confirmLogoutButtonClick();
         loginPage.login("Boban123", "wer");
 
+        //successful login
         assertTrue(waiterDashboardPage.urlPresent());
         assertTrue(waiterDashboardPage.currentUsernamePresent("Boban123"));
     }

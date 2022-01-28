@@ -2,6 +2,7 @@ package com.ftn.restaurant.e2e.pages.waiter;
 
 import com.ftn.restaurant.controller.ReportController;
 import com.ftn.restaurant.e2e.pages.Utilities;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +17,7 @@ public class WaiterDashboardPage {
 
     private static final String URL = "http://localhost:4200/waiter-dashboard";
 
-    @FindBy(id = "notifications-button")
+    @FindBy(xpath = "//*[@id=\"notifications-button\"]")
     private WebElement notificationsButton;
 
     @FindBy(id = "change-password-button")
@@ -33,6 +34,12 @@ public class WaiterDashboardPage {
 
     @FindBy(id = "current-user")
     private WebElement currentUsername;
+
+    @FindBy(xpath = "//*[@id=\"toast-container\"]/div/div")
+    private WebElement toastText;
+
+    @FindBy(xpath = "//*[@id=\"area-tables-container\"]/button")
+    private List<WebElement> areaTablesButtons;
 
     public WaiterDashboardPage(WebDriver driver){ this.driver = driver;}
 
@@ -58,8 +65,14 @@ public class WaiterDashboardPage {
 
     public boolean currentUsernamePresent(String name){ return Utilities.textWait(driver, this.currentUsername, name, 10);}
 
-    public boolean activeAccountsSize(int size){
-        LOG.info(String.valueOf(activeAccountsButtons.size()));
-        return activeAccountsButtons.size() == size;
+    public boolean activeAccountsSize(int size){  return activeAccountsButtons.size() == size;  }
+
+    public boolean toastTextPresent(String text){ return Utilities.textWait(driver, this.toastText, text, 10);}
+
+    public void areaTableButtonClicked(int tableNumber){
+        Utilities.clickableWait(driver, this.areaTablesButtons.get(tableNumber-1), 10).click();}
+
+    public void waitUntilTablePresent(){
+        Utilities.visibilityWaitByLocator(driver, By.xpath("//*[@id=\"area-tables-container\"]/button[1]"), 10);
     }
 }
