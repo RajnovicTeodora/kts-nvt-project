@@ -185,11 +185,11 @@ public class OrderService {
         throw new NotFoundException("Couldn't find order with id: " + id);
     }
 
-    public List<Integer> getActiveOrdersForTable(int tableNum, String waiterUsername) {
-        Optional<RestaurantTable> table = tableService.findByTableNumber(tableNum);
+    public List<Integer> getActiveOrdersForTable(long tableId, String waiterUsername) {
+        Optional<RestaurantTable> table = tableService.findById(tableId);
         List<Integer> retval = new ArrayList<>();
         if (table.isPresent()) {
-            List<Long> orders = orderRepository.getAllActiveOrdersForTable(tableNum, waiterUsername);
+            List<Long> orders = orderRepository.getAllActiveOrdersForTable(tableId, waiterUsername);
             if (orders.size() != 0) {
                 for (Long orderid : orders) {
                     if (orderedItemService.orderContainsActiveOrderedItems(orderid)) {
@@ -201,7 +201,7 @@ public class OrderService {
             }
             return retval;
         }
-        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
+        throw new NotFoundException("Couldn't find table with table id: " + tableId);
     }
 
     public OrderDTO getOrder(int orderNum) {

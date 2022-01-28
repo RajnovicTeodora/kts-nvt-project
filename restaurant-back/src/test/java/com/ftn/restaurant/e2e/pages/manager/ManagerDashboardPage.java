@@ -1,5 +1,6 @@
-package com.ftn.restaurant.e2e.pages;
+package com.ftn.restaurant.e2e.pages.manager;
 
+import com.ftn.restaurant.e2e.pages.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

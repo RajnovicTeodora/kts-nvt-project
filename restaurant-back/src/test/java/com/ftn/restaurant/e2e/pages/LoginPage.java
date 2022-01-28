@@ -19,6 +19,9 @@ public class LoginPage {
     @FindBy(id = "submit-button")
     private WebElement loginButton;
 
+    @FindBy(id="login-button")
+    private WebElement loginBtnForOtherAccounts;
+
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -47,7 +50,17 @@ public class LoginPage {
         Utilities.clickableWait(driver, this.loginButton, 10).click();
     }
 
+    public void loginBtnForOtherAccountsClick(){
+        Utilities.clickableWait(driver, this.loginBtnForOtherAccounts, 10).click();
+    }
+
     public boolean urlPresent() {
         return Utilities.urlWait(driver, URL, 10);
+    }
+
+    public void login(String username, String password) {
+        this.setUsernameInput(username);
+        this.setPasswordInput(password);
+        this.loginBtnClick();
     }
 }

@@ -20,10 +20,11 @@ export class AddDrinkComponent implements OnInit {
   fileName = '';
   url: any;
   isImageSaved: boolean = false;
+  isSaved="false";
 
   drinkTypes: Select[] = [
-    {value: 'COFFEE', viewValue: 'coffee'},
-    {value: 'COLD_DRINK', viewValue: 'cold drink'},
+    {value: 'COFFEE', viewValue: 'Coffee'},
+    {value: 'COLD_DRINK', viewValue: 'Cold drink'},
     {value: 'HOT_DRINK', viewValue: 'Hot drink'},
     {value: 'ALCOHOLIC', viewValue: 'Alcoholic'},
   ];
@@ -63,6 +64,7 @@ export class AddDrinkComponent implements OnInit {
       reader.onload = () => {
         this.url = reader.result;
         this.isImageSaved = true;
+        console.log(this.isImageSaved)
       };
     }
   }
@@ -91,6 +93,7 @@ export class AddDrinkComponent implements OnInit {
       this.drinkService.addDrink(newDrink).subscribe(
         (result)=>{
           this.toastr.success("You added drink!");
+          this.isSaved="true";
       });
       }
   }

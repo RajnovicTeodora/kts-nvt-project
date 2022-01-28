@@ -2,9 +2,13 @@ package com.ftn.restaurant.repository;
 
 import static com.ftn.restaurant.constants.MenuItemPriceConstants.*;
 import static com.ftn.restaurant.constants.DateTimeConstants.*;
+import static org.junit.Assert.*;
 
+import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.MenuItemPrice;
+import com.ftn.restaurant.model.enums.ContainerType;
+import com.ftn.restaurant.model.enums.DrinkType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -34,8 +36,6 @@ public class MenuItemPriceRepositoryTest {
     @Autowired
     private MenuItemRepository menuItemRepository;
 
-    //TODO: add menu item without any prices
-    //TODO T
     @Before
     public void setUp() {
         MenuItemPrice menuItemPrice1 = new MenuItemPrice(TWO_DAYS_AGO, YESTERDAY, 5, false, 3.5, null);
@@ -44,22 +44,36 @@ public class MenuItemPriceRepositoryTest {
         menuItemPrice1.setItem(menuItemRepository.findByIdAndDeletedFalse(DB_MENU_ITEM_ID).get());
         menuItemPrice2.setItem(menuItemRepository.findByIdAndDeletedFalse(DB_MENU_ITEM_ID).get());
 
+        // ID will be 5
+        MenuItem menuItem = new Drink("Name", "image", true, false, new ArrayList<>(), DrinkType.COLD_DRINK, ContainerType.GLASS);
+
         entityManager.persist(menuItemPrice1);
         entityManager.persist(menuItemPrice2);
+        entityManager.persist(menuItem);
     }
 
-    //TODO T
     @Test
     public void testFindByMenuItemIdAndDeletedNotAndApprovedAndHasPrice() {
-        Optional<MenuItemPrice> found = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(2, LocalDate.now());
+        Optional<MenuItemPrice> found = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(DB_MENU_ITEM_ID, LocalDate.now());
         assertEquals(15.0, found.get().getPrice(), 0);
     }
 
-    //TODO T
+    @Test
+    public void testShouldReturnEmptyFindByMenuItemIdAndDeletedNotAndApprovedAndHasPrice() {
+        Optional<MenuItemPrice> found = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(DB_MENU_ITEM_WITHOUT_PRICE, LocalDate.now());
+        assertFalse(found.isPresent());
+    }
+
     @Test
     public void testFindByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull() {
-        Optional<MenuItemPrice> found = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(2);
+        Optional<MenuItemPrice> found = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(DB_MENU_ITEM_ID);
         assertEquals(15.0, found.get().getPrice(), 0);
+    }
+
+    @Test
+    public void testShouldReturnEmptyWhenFindByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull() {
+        Optional<MenuItemPrice> found = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(DB_MENU_ITEM_WITHOUT_PRICE);
+        assertFalse(found.isPresent());
     }
 
 }

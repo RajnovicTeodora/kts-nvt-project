@@ -12,6 +12,7 @@
           placeholder="Search..."
           #searchInputField
           [value]="searchInput"
+          class="searchInput"
         />
       </mat-form-field>
       <button
@@ -19,6 +20,7 @@
         id="searchBttn"
         class="dugmic-search"
         (click)="onSearchClicked(searchInputField.value)"
+        name="searchBttn"
       >
         <mat-icon>search</mat-icon>
       </button>
@@ -31,6 +33,7 @@
               class="dugmic-item"
               name="menuItem"
               *ngFor="let item of menuItems"
+              name="menuItem"
             >
               {{ item.name }}
             </button>
@@ -46,6 +49,7 @@
               class="dugmic-item"
               (click)="onFilterClick('dish')"
               id="dishBttn"
+              name=dish
             >
               <mat-icon> fastfood</mat-icon> Dishes
             </button>
@@ -54,6 +58,7 @@
               class="dugmic-item"
               (click)="onFilterClick('drink')"
               id="drinkBttn"
+              name="drink"
             >
               <mat-icon>free_breakfast</mat-icon> Drinks
             </button>
@@ -67,6 +72,7 @@
                   class="dugmic-item"
                   *ngFor="let item of dishTypes"
                   (click)="onFilterClick(item)"
+                  name="dishType"
                 >
                   {{ editGroupName(item) }}
                 </button>
@@ -75,7 +81,7 @@
                 <button
                   mat-button
                   class="dugmic-item"
-                  name="menuItem"
+                  name="drinkType"
                   *ngFor="let item of drinkTypes"
                   (click)="onFilterClick(item)"
                 >

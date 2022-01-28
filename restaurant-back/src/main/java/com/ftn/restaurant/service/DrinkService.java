@@ -7,24 +7,25 @@ import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.Ingredient;
-import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.DrinkRepository;
+import com.ftn.restaurant.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class DrinkService {
 
-    private DrinkRepository drinkRepository;
+    private final DrinkRepository drinkRepository;
+    private IngredientRepository ingredientRepository;
 
     @Autowired
-    public DrinkService(DrinkRepository drinkRepository) {
+    public DrinkService(DrinkRepository drinkRepository, IngredientRepository ingredientRepository) {
         this.drinkRepository = drinkRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     public List<DrinkDTO> getDrinks(){
@@ -41,8 +42,7 @@ public class DrinkService {
         Optional<Drink> drink = this.drinkRepository.findById(id);
         if(drink.isPresent()){
             if(drink.get().isApproved() && !drink.get().isDeleted()){
-                DrinkDTO dto = new DrinkWithIngredientsDTO(drink.get());//DrinkDTO(drink.get(), "");
-                return dto;
+                return new DrinkWithIngredientsDTO(drink.get());
             }
         }
         return null;
@@ -56,6 +56,7 @@ public class DrinkService {
         for (IngredientDTO ingredient : drinkDTO.getIngredients()){
             Ingredient newIngredient = new Ingredient(ingredient);
             drink.getIngredients().add(newIngredient);
+            this.ingredientRepository.save(newIngredient);
             }
         }
         return drinkRepository.save(drink);
@@ -75,8 +76,7 @@ public class DrinkService {
         if (maybeDrink.isPresent())
             throw new DrinkExistsException("Drink already exists!");
 
-        Drink drink = new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<MenuItemPrice>(), drinkDTO.getDrinkType(), drinkDTO.getContainerType());
-        return drink;
+        return new Drink(drinkDTO.getName(), drinkDTO.getImage(), true, false, new ArrayList<>(), drinkDTO.getDrinkType(), drinkDTO.getContainerType(), new ArrayList<>());
     }
 
     public List<Drink> getSearchedOrFiltered(String searchName, String filterName) {
@@ -84,7 +84,7 @@ public class DrinkService {
         List<Drink> searchedDrinks = new ArrayList<>();
         if(!searchName.equals("")){
             for(Drink drink : drinks){
-                if(drink.getName().toLowerCase().equals(searchName.toLowerCase())){
+                if(drink.getName().equalsIgnoreCase(searchName)){
                     searchedDrinks.add(drink);
                 }
             }drinks = searchedDrinks;

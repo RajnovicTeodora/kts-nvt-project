@@ -1,7 +1,4 @@
-<mat-card
-  *ngIf="this.item"
-  style="width: fit-content; margin-left: 10%; margin-top: 10px"
->
+<mat-card *ngIf="this.item">
   <mat-card-header>
     <img
       mat-card-avatar
@@ -18,22 +15,30 @@
   </mat-card-header>
   <mat-card-content>
     <img mat-card-md-image [src]="this.image" alt="Photo of item" />
-    <div *ngIf="this.itemType === 'Dish'">
-      <p>Dish type: {{ getDish(this.item).dishType | titlecase }}</p>
+    <div *ngIf="this.itemType === 'Dish'" style="height: 60px">
+      <p>Type: {{ getDish(this.item).dishType | titlecase }}</p>
     </div>
-    <div *ngIf="this.itemType === 'Drink'">
-      <p>Drink type:{{ getDrink(this.item).drinkType | titlecase }}</p>
+    <div *ngIf="this.itemType === 'Drink'" style="height: 60px">
       <p>
-        Drink container:
+        Type:
+        {{ getDrink(this.item).drinkType | titlecase | replaceUnderscore }}
+      </p>
+      <p>
+        Container:
         {{ getDrink(this.item).containerType | titlecase }}
       </p>
     </div>
 
     <mat-divider></mat-divider>
-    <mat-card-subtitle style="margin-top: 30px">Ingredients</mat-card-subtitle>
-    <mat-list *ngFor="let ingredient of this.item.ingredients">
-      <mat-list-item>
-        <img mat-list-icon src="assets/images/4260850.png" />
+    <mat-card-subtitle style="margin-top: 20px">
+      <img
+        class="custom-icon"
+        mat-list-icon
+        src="assets/images/4260850.png"
+      />Ingredients</mat-card-subtitle
+    >
+    <mat-list class="custom-scroll-bar">
+      <mat-list-item *ngFor="let ingredient of this.item.ingredients">
         {{ ingredient.name }}
       </mat-list-item>
     </mat-list>

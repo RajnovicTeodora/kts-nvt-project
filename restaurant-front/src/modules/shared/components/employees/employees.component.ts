@@ -1,11 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import {
-  Component,
-  OnInit,
-  Output,
-  ViewChild
-} from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Component, OnInit, Output, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user-service/user.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -19,8 +14,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Select } from 'src/modules/shared/models/select';
 import { UserWithPaycheck } from 'src/modules/shared/models/paycheck-models/user-with-paycheck';
-import { PaycheckService } from 'src/modules/manager/services/paycheck-service/paycheck.service';  
-import { EditPaycheckDialogComponent } from 'src/modules/manager/components/edit-paycheck-dialog/edit-paycheck-dialog.component';  
+import { PaycheckService } from 'src/modules/manager/services/paycheck-service/paycheck.service';
+import { EditPaycheckDialogComponent } from 'src/modules/manager/components/edit-paycheck-dialog/edit-paycheck-dialog.component';
 import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-paycheck';
 import { AddEmployeeComponent } from 'src/modules/admin/pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from 'src/modules/admin/pages/edit-employee/edit-employee.component';
@@ -29,7 +24,7 @@ import { Employee } from '../../models/employee';
 @Component({
   selector: 'app-employees',
   templateUrl: './employees.component.html',
-  styleUrls: ['./employees.component.scss']
+  styleUrls: ['./employees.component.scss'],
 })
 export class EmployeesComponent implements OnInit {
   data: any[];
@@ -46,16 +41,11 @@ export class EmployeesComponent implements OnInit {
   deleteEmployeeDialogOpen = false;
   usernameToDelete = "";
   messageForDialog = "";
- 
+  
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  displayedColumns: string[] = [
-    'Username',
-    'Name',
-    'Surname',
-    'Role'
-  ];
+  displayedColumns: string[] = ['Username', 'Name', 'Surname', 'Role'];
 
   roles: Select[] = [
     { value: '', viewValue: 'All' },
@@ -66,15 +56,12 @@ export class EmployeesComponent implements OnInit {
     { value: 'WAITER', viewValue: 'Waiter' },
   ];
 
-
-  constructor(  
+  constructor(
     private fb: FormBuilder,
     private paycheckService: PaycheckService,
-    private observer: BreakpointObserver,
     public router: Router,
     private toastr: ToastrService,
     private liveAnnouncer: LiveAnnouncer,
-    private userService: UserService,
     private adminService: AdminService,
     private dialog: MatDialog
   ) {
@@ -83,20 +70,22 @@ export class EmployeesComponent implements OnInit {
       search: [null],
       filter: [null],
     });
-    const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
+    const temp = new BehaviorSubject<UserWithToken>(
+      JSON.parse(localStorage.getItem('currentUser')!)
+    );
     this.user = temp.value;
-   }
+  }
 
   ngOnInit(): void {
-    if (this.user.userType === "ADMIN"){
-      this.adminService.getAllEmployees("", "").subscribe((response) => {
+    if (this.user.userType === 'ADMIN') {
+      this.adminService.getAllEmployees('', '').subscribe((response) => {
         this.setData(response.body);
       });
       this.displayedColumns.push('Telephone');
       this.displayedColumns.push('Edit employee');
       this.displayedColumns.push('Delete');
     }
-    if(this.user.userType === "MANAGER"){
+    if (this.user.userType === 'MANAGER') {
       this.paycheckService.getAll('', '').subscribe((response) => {
         this.setData(response.body);
         console.log(this.dataSource);
@@ -120,18 +109,20 @@ export class EmployeesComponent implements OnInit {
         ? this.searchForm.value.filter
         : '';
 
-    if (this.user.userType === "MANAGER"){
+    if (this.user.userType === 'MANAGER') {
       this.paycheckService
-      .getAll(this.searchSting, this.filterString)
-      .subscribe((response) => {
-        this.dataSource.data = response.body;
-      });
+        .getAll(this.searchSting, this.filterString)
+        .subscribe((response) => {
+          this.dataSource.data = response.body;
+        });
     }
 
-    if(this.user.userType === "ADMIN"){
-      this.adminService.getAllEmployees(this.searchSting, this.filterString).subscribe((response) => {
-        this.dataSource.data = response.body;
-      });
+    if (this.user.userType === 'ADMIN') {
+      this.adminService
+        .getAllEmployees(this.searchSting, this.filterString)
+        .subscribe((response) => {
+          this.dataSource.data = response.body;
+        });
     }
   }
 
@@ -179,28 +170,26 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  
   openAddEmployeeDialog() {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
+    dialogConfig.width = '30%';
     dialogConfig.height = '80%';
 
-    const dialogRef = this.dialog.open(AddEmployeeComponent,  dialogConfig);
+    const dialogRef = this.dialog.open(AddEmployeeComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
-      this.adminService.getAllEmployees("", "").subscribe((response) => {
+      this.adminService.getAllEmployees('', '').subscribe((response) => {
         this.setData(response.body);
       });
     });
   }
 
   openEditEmployeeDialog(element: Employee) {
-
-    const dialogRef = this.dialog.open(EditEmployeeComponent,  {
+    const dialogRef = this.dialog.open(EditEmployeeComponent, {
       disableClose: true,
       autoFocus: true,
       width: '50%',
@@ -213,12 +202,12 @@ export class EmployeesComponent implements OnInit {
         telephone: element.telephone,
         image: element.image,
         role: element.role,
-      }
+      },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
-      this.adminService.getAllEmployees("", "").subscribe((response) => {
+      this.adminService.getAllEmployees('', '').subscribe((response) => {
         this.setData(response.body);
       });
     });
@@ -255,4 +244,3 @@ export class EmployeesComponent implements OnInit {
 }
 
 }
-

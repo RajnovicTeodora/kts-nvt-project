@@ -86,13 +86,13 @@ public class OrderController {
     }
 
     @ResponseBody
-    @GetMapping(value = "/getActiveOrdersForTable/{tableNum}/{waiterUsername}")
+    @GetMapping(value = "/getActiveOrdersForTable/{tableId}/{waiterUsername}")
     @PreAuthorize("hasRole('WAITER')")
-    public ResponseEntity<?>  getActiveOrdersForTable(@PathVariable("tableNum") int tableNum, @PathVariable("waiterUsername") String waiterUsername) {
+    public ResponseEntity<?>  getActiveOrdersForTable(@PathVariable("tableId") long tableId, @PathVariable("waiterUsername") String waiterUsername) {
         try {
-            return new ResponseEntity(orderService.getActiveOrdersForTable(tableNum, waiterUsername), HttpStatus.OK);
+            return new ResponseEntity(orderService.getActiveOrdersForTable(tableId, waiterUsername), HttpStatus.OK);
         } catch (NotFoundException e) {
-            return new ResponseEntity("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Couldn't find table with table id: " + tableId, HttpStatus.NOT_FOUND);
         }
     }
 

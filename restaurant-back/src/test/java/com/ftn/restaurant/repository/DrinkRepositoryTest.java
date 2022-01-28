@@ -2,8 +2,6 @@ package com.ftn.restaurant.repository;
 
 import static com.ftn.restaurant.constants.DrinkConstants.*;
 import com.ftn.restaurant.model.Drink;
-import com.ftn.restaurant.model.enums.ContainerType;
-import com.ftn.restaurant.model.enums.DrinkType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
