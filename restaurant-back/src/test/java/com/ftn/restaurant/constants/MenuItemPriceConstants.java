@@ -8,6 +8,7 @@ public class MenuItemPriceConstants {
 
     //TODO change to menu item without a price
     public static final long DB_MENU_ITEM_ID = 2;
+    public static final long DB_MENU_ITEM_WITHOUT_PRICE = 5;
 
     //TODO menu item with active price ( date: now, null ), and potentially not approved
     public static final long DB_MENU_ITEM_ID1 = 1;
