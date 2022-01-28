@@ -3,7 +3,6 @@ package com.ftn.restaurant.repository;
 import com.ftn.restaurant.model.MenuItemPrice;
 
 import static com.ftn.restaurant.constants.MenuItemPriceConstants.*;
-import static com.ftn.restaurant.constants.DateTimeConstants.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -22,16 +21,16 @@ public class MenuItemPriceRepositoryTest_SQL {
     @Autowired
     private MenuItemPriceRepository menuItemPriceRepository;
 
-    //TODO T
     @Test
     public void testFindByMenuItemIdAndDeletedNotAndApprovedAndHasPrice() {
 
         Optional<MenuItemPrice> found = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(DB_MENU_ITEM_ID1, DB_MENU_ITEM_DATE1);
         assertTrue(found.isPresent());
 
+        Optional<MenuItemPrice> notFound = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(DB_MENU_ITEM_ID2);
+        assertFalse(notFound.isPresent());
     }
 
-    //TODO T
     @Test
     public void testFindByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull() {
 
