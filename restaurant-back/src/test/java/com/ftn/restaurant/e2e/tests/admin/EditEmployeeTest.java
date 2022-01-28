@@ -1,25 +1,24 @@
-package com.ftn.restaurant.e2e.tests.adminTests;
+package com.ftn.restaurant.e2e.tests.admin;
 
 import com.ftn.restaurant.e2e.pages.LoginPage;
 import com.ftn.restaurant.e2e.pages.Utilities;
-import com.ftn.restaurant.e2e.pages.adminPages.AddEmployeePage;
-import com.ftn.restaurant.e2e.pages.adminPages.EmployeesPage;
+import com.ftn.restaurant.e2e.pages.admin.EditEmployeePage;
+import com.ftn.restaurant.e2e.pages.admin.EmployeesPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AddEmployeeTest {
+public class EditEmployeeTest {
     private WebDriver driver;
 
     private EmployeesPage employeesPage;
-    private AddEmployeePage addEmployeePage;
+    private EditEmployeePage editEmployeePage;
     private LoginPage loginPage;
 
     @Before
@@ -33,31 +32,36 @@ public class AddEmployeeTest {
 
         loginPage = PageFactory.initElements(driver, LoginPage.class);
         employeesPage = PageFactory.initElements(driver, EmployeesPage.class);
-        addEmployeePage = PageFactory.initElements(driver, AddEmployeePage.class);
+        editEmployeePage = PageFactory.initElements(driver, EditEmployeePage.class);
+
     }
 
     @Test
-    public void addEmployeeTest(){
-
+    public void editEmployeeTest(){
         //login
         loginPage.setUsernameInput("admin");
         loginPage.setPasswordInput("test");
         loginPage.loginBtnClick();
-        assertTrue(Utilities.urlWait(driver, "http://localhost:4200/admin-dashboard", 10));
 
-        //click button to add employee
-        employeesPage.addEmployeeBttnClicked();
+        String url = "http://localhost:4200/admin-dashboard";
 
-        addEmployeePage.setInputText("username", "waiter2");
-        addEmployeePage.setInputText("password", "pass123");
-        addEmployeePage.setInputText("name", "Pera");
-        addEmployeePage.setInputText("surname", "Peric");
-        addEmployeePage.setInputText("telephone", "123456");
-        addEmployeePage.setRole();
+        assertTrue(Utilities.urlWait(driver, url, 10));
 
-        addEmployeePage.saveBttnClick();
+        //click button to edit employee
+        employeesPage.clickEditFirstUser();
 
-        assertTrue(addEmployeePage.usernamesContainsText("waiter2"));
+        String newName = "Pera";
+        String newSurname = "Peric";
+        String newTelephone = "123456789";
+
+        editEmployeePage.setInputText("name", newName);
+        editEmployeePage.setInputText("surname", newSurname);
+        editEmployeePage.setInputText("telephone", newTelephone);
+
+        editEmployeePage.saveBttnClick();
+
+        assertTrue(employeesPage.infoChanged(newName, newSurname, newTelephone));
+
     }
 
     @After
@@ -65,5 +69,6 @@ public class AddEmployeeTest {
         // Shutdown the browser
         driver.quit();
     }
+
 
 }

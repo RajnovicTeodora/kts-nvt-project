@@ -1,9 +1,9 @@
-package com.ftn.restaurant.e2e.tests.adminTests;
+package com.ftn.restaurant.e2e.tests.admin;
 
 import com.ftn.restaurant.e2e.pages.LoginPage;
 import com.ftn.restaurant.e2e.pages.Utilities;
-import com.ftn.restaurant.e2e.pages.adminPages.AddEmployeePage;
-import com.ftn.restaurant.e2e.pages.adminPages.EmployeesPage;
+import com.ftn.restaurant.e2e.pages.admin.AddEmployeePage;
+import com.ftn.restaurant.e2e.pages.admin.EmployeesPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.ftn.restaurant.e2e.pages.adminPages;
+package com.ftn.restaurant.e2e.pages.admin;
 
 import com.ftn.restaurant.e2e.pages.Utilities;
 import org.openqa.selenium.By;
