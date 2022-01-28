@@ -361,7 +361,6 @@ INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)
 VALUES (21, 9);
 
 
-
 -- AREA
 INSERT INTO area (name)
 VALUES ('First');
