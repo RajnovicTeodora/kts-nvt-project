@@ -1,6 +1,5 @@
 package com.ftn.restaurant.service;
 
-import com.ftn.restaurant.controller.ReportController;
 import com.ftn.restaurant.dto.reports.IncomeReportDTO;
 import com.ftn.restaurant.dto.reports.PaychecksReportDTO;
 import com.ftn.restaurant.dto.reports.PreparationCostReportDTO;
@@ -10,14 +9,11 @@ import com.ftn.restaurant.model.Paychecks;
 import com.ftn.restaurant.repository.OrderRepository;
 import com.ftn.restaurant.repository.OrderedItemRepository;
 import com.ftn.restaurant.repository.PaycheckRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.temporal.ChronoField;
 import java.time.temporal.IsoFields;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +26,6 @@ public class ReportService {
     private final OrderedItemRepository orderedItemRepository;
     private final PaycheckRepository paycheckRepository;
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReportService.class);
     @Autowired
     public ReportService(OrderRepository orderRepository, OrderedItemRepository orderedItemRepository,
                          PaycheckRepository paycheckRepository) {
@@ -152,7 +147,7 @@ public class ReportService {
 
         List<PaychecksReportDTO> paychecks = new ArrayList<>();
 
-        //No paid orders in system
+        //No paychecks in system
         if (!minPaycheck.isPresent())
             return paychecks;
 

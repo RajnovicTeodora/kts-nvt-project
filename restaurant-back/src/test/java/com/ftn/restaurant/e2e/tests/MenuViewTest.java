@@ -10,6 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class MenuViewTest {
 
@@ -55,7 +56,6 @@ public class MenuViewTest {
         addDrinkPage.setNameInput("Test");
         addDrinkPage.setDrinkType();
         addDrinkPage.setDrinkContainer();
-        //addDrinkPage.fileInputBtnClick();
         addDrinkPage.setFileInput("C:\\Users\\rajno\\Desktop\\3.jpg");
         addDrinkPage.submitDrinkBtnClick();
 
@@ -71,11 +71,26 @@ public class MenuViewTest {
         assertTrue(menuViewPage.menuItemsContainText("Test"));
 
         // Change price
+        // Button should be disabled
+        assertFalse(menuViewPage.isSetOnMenuEnabled(0));
+
+        menuViewPage.setMenuItemPrice("22");
+        menuViewPage.setMenuItemPurchasePrice("12");
+        menuViewPage.savePricesBtnClick();
+
+        menuViewPage.waitUntilItemsPresent();
+        // Button should be disabled because the price is valid from tomorrow
+        assertTrue(menuViewPage.isSetOnMenuEnabled(0));
 
         // Set as active menu item
+        menuViewPage.setOnMenuBtnClick(0);
 
         // Delete item
+        menuViewPage.deleteBtnClick(0);
+        menuViewPage.waitUntilItemsPresent();
 
+        assertTrue(menuViewPage.menuItemsTitleTextsSizeCompare(0));
+        assertFalse(menuViewPage.menuItemsContainText("Test"));
         // Search and confirm no results found for deleted item
 
         // Log out
