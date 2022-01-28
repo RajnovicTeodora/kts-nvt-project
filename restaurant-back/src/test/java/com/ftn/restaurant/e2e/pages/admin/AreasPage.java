@@ -46,8 +46,6 @@ public class AreasPage {
     @FindBy(id = "tableBttn")
     private List<WebElement> tableBttns;
 
-
-
     public AreasPage(WebDriver driver){
         this.driver = driver;
     }
@@ -58,6 +56,9 @@ public class AreasPage {
 
     public void deleteAreaClick(int areaNum){
         Utilities.clickableWait(driver, this.deleteAreaBttns.get(areaNum), 10).click();
+    }
+
+    public void confirmDeleteClicked(){
         Utilities.clickableWait(driver, this.confirmBttn, 10).click();
     }
 
@@ -107,7 +108,8 @@ public class AreasPage {
     }
 
     public int countTables(){
-        return this.tableBttns.size();
+
+        return Utilities.visibilityWait(driver, By.id("tableBttn"), 10).size();
     }
 
     public boolean checkAreaExists(String name){

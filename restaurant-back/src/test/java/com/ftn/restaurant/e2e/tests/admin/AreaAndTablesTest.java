@@ -11,8 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AreaAndTablesTest {
 
@@ -62,6 +61,34 @@ public class AreaAndTablesTest {
 
         //check if deleted
         assertFalse(areasPage.checkAreaExists("garden"));
+
+    }
+
+    @Test
+    public void addSaveDeleteTableTest(){
+        //login
+        loginPage.login("admin", "test");
+        assertTrue(Utilities.urlWait(driver, "http://localhost:4200/admin-dashboard", 10));
+
+        //open restaurant preview
+        employeesPage.restaurantPreviewClick();
+
+        assertTrue(Utilities.urlWait(driver, "http://localhost:4200/edit-area", 20));
+
+        areasPage.clickOnArea(1);
+
+        areasPage.addTableClick();
+        areasPage.addTableClick();
+        areasPage.addTableClick();
+
+        areasPage.saveChangesClick();
+
+        assertEquals(3, areasPage.countTables());
+
+        areasPage.doubleClickTable(4);
+        areasPage.deleteTableClick();
+        areasPage.confirmDeleteClicked();
+        assertEquals(2, areasPage.countTables());
 
     }
 
