@@ -173,36 +173,33 @@ public class OrderedItemService {
         throw new NotFoundException("Couldn't find ordered item.");
     }
 
-    public String updateOrderedItem(long id, OrderItemDTO orderItemDTO){
-        Order order = orderService.findOne(id);
-        if(order != null) {
-            if (order.isPaid()) {
-                throw new OrderAlreadyPaidException("Can't change order that is already paid.");
-            }
-            OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(orderItemDTO.getId());
-            if (orderItem.isDeleted()) {
-                throw new BadRequestException("Can't update deleted ordered item with id: " + id);
-            }
-            if (orderItem.getStatus() != OrderedItemStatus.ORDERED) {
-                throw new ForbiddenException("Can't change ordered item in preparation.");
-            }
-            orderItem.setQuantity(orderItemDTO.getQuantity());
-            orderItem.setPriority(orderItemDTO.getPriority());
-            orderItem.setActiveIngredients(new ArrayList<>());
-            for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-                Ingredient i = ingredientService.findOne(ingredientDTO.getId());
-                if(i != null){
-                    orderItem.addActiveIngredients(i);
-                }else
-                    throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
-            }
-            save(orderItem);
-            return "Successfully updated ordered item with id: "+ orderItemDTO.getId();
+    public String updateOrderedItem( OrderItemDTO orderItemDTO){
+        OrderedItem orderItem = this.orderedItemRepository.findOneWithActiveIngredients(orderItemDTO.getId());
+        if(orderItem == null){
+            throw new OrderedItemNotFoundException("Couldn't find ordered item.");
         }
-        throw new NotFoundException("Couldn't find order.");
+        if (orderItem.isDeleted()) {
+            throw new BadRequestException("Can't update deleted ordered item with id: " + orderItemDTO.getId());
+        }
+        if (orderItem.getStatus() != OrderedItemStatus.ORDERED) {
+            throw new ForbiddenException("Can't change ordered item in preparation.");
+        }
+        orderItem.setQuantity(orderItemDTO.getQuantity());
+        orderItem.setPriority(orderItemDTO.getPriority());
+        orderItem.setActiveIngredients(new ArrayList<>());
+        for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
+            Optional<Ingredient> i = ingredientService.findByIngredientId(ingredientDTO.getId());
+            if(!i.isPresent()){
+                throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
+            }else
+                orderItem.addActiveIngredients(i.get());
+        }
+        save(orderItem);
+        return "Successfully updated ordered item with id: "+ orderItemDTO.getId();
+
     }
 
-    public OrderedItem addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
+    public String addOrderItemToOrder(long id, OrderItemDTO orderItemDTO){
         Order order = orderService.findOne(id);
         if(order != null) {
             if (order.isPaid()) {
@@ -221,17 +218,17 @@ public class OrderedItemService {
             orderItem.setStatus(OrderedItemStatus.ORDERED);
             orderItem.setActiveIngredients(new ArrayList<>());
             for (IngredientDTO ingredientDTO : orderItemDTO.getActiveIngredients()) {
-                Ingredient i = ingredientService.findOne(ingredientDTO.getId());
-                if(i == null){
+                Optional<Ingredient> i = ingredientService.findByIngredientId(ingredientDTO.getId());
+                if(!i.isPresent()){
                     throw new IngredientNotFoundException("Couldn't find ingredient with id: " + ingredientDTO.getId());
-                }
-                orderItem.addActiveIngredients(i);
+                }else
+                    orderItem.addActiveIngredients(i.get());
             }
+            save(orderItem);
             /*order.addOrderedItem(orderItem);
             orderService.save(order);*/
-            save(orderItem);
 
-            return orderItem;
+            return "Successfully added new ordered item to order id: " + id;
         }
         throw new NotFoundException("Couldn't find order.");
     }

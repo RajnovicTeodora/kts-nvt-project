@@ -3,14 +3,12 @@ package com.ftn.restaurant.controller;
 import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +42,7 @@ public class MenuController {
     @ResponseBody
     @GetMapping(path = "/searchMenuItems/{group}/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> searchMenuItems(@PathVariable(value = "group") String group, @PathVariable(value = "name") String name) {
+    public List<MenuItemDTO> searchMenuItems(@PathVariable(value = "group") String group, @PathVariable(value = "name") String name){
         LOG.info("searching menu items...");
         LOG.info("group: " + group);
         LOG.info("name: " + name);

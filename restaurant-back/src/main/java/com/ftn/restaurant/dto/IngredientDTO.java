@@ -24,6 +24,12 @@ public class IngredientDTO {
         this.isAlergen = b;
     }
 
+    public IngredientDTO(Long id, String name, boolean b) {
+        this.id = id;
+        this.name = name;
+        this.isAlergen = b;
+    }
+
     public Long getId() {
         return id;
     }

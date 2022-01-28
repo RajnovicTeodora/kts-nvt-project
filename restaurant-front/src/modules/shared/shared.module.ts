@@ -20,6 +20,7 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
 import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
+import { EmployeesComponent } from './components/employees/employees.component';
 import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
@@ -47,6 +48,7 @@ import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    EmployeesComponent,
     AfterLogoutComponent,
     ConfirmActionComponent,
     DeleteIngredientDialogComponent,
@@ -86,6 +88,7 @@ import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    EmployeesComponent,
     DeleteIngredientDialogComponent,
     NewOrdersComponent,
     AcceptedOrdersComponent,

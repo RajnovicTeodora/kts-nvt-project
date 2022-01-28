@@ -42,6 +42,8 @@ export class ReportComponent implements OnInit {
 
     this.chartOptions = {
       colors: ['#f55997', '#424242'],
+      series: [],
+      xaxi: [],
       chart: {
         height: 350,
         type: 'bar',

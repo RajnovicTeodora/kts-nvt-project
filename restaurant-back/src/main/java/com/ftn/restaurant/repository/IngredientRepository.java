@@ -20,4 +20,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     @Query("select m from Ingredient m left join fetch m.orderedItems ord where ord.id = ?1")
     List<Ingredient> findByOrderedItemId(long id);
+
+    @Query("select m from Ingredient m where m.id = ?1")
+    Optional<Ingredient> findByIngredientId(long id);
 }

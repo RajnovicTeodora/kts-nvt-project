@@ -1,5 +1,9 @@
+import { Injectable } from "@angular/core";
+
+// @Injectable()
 export class RestaurantTable {
 
+    public id: number;
     public tableNum: number;
     public x: number;
     public y: number;
@@ -9,6 +13,7 @@ export class RestaurantTable {
     public claimed: boolean;
 
     constructor(tableNum: number, x: number, y: number, areaId: number, waiter: string, occupied: boolean) {
+        this.id = 0;
         this.tableNum = tableNum;
         this.x = x;
         this.y = y;

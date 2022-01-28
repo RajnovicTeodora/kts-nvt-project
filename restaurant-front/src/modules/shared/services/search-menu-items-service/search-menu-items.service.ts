@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MenuItemTypes } from '../../models/menu-item-types';
-import { MenuItemPriceDTO } from '../../models/menu-item-price';
+import { MenuItemDTO } from '../../models/menu-item';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,8 @@ export class SearchMenuItemsService {
 
   constructor(private http: HttpClient) { }
 
-  searchAndFilterItem(group : string, name : string) : Observable<Array<MenuItemPriceDTO>>{
-    return this.http.get<Array<MenuItemPriceDTO>>(
+  searchAndFilterItem(group : string, name : string) : Observable<Array<MenuItemDTO>>{
+    return this.http.get<Array<MenuItemDTO>>(
       `${environment.baseUrl}/api/menu/searchMenuItems/${group}/${name}`
     );
   }

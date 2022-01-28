@@ -36,7 +36,12 @@
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onLogoutButtonClicked()"
+      id="logout-button"
+    >
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -52,23 +57,15 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">
-      <div class="row">
-        <div class="col">
-          <div fxLayout="row wrap">
-            <ng-container>
-              <app-item-view *ngIf="this.activeView == '1'"></app-item-view>
-              <app-menu-view *ngIf="this.activeView == '2'"></app-menu-view>
-              <app-paycheck-table
-                *ngIf="this.activeView == '3'"
-              ></app-paycheck-table>
-              <app-report *ngIf="this.activeView == '4'"></app-report>
-            </ng-container>
-          </div>
-        </div>
-      </div>
+      <app-item-view class="items" *ngIf="this.activeView == '1'"></app-item-view>
+      <app-menu-view *ngIf="this.activeView == '2'"></app-menu-view>
+      <app-employees class="paychecks" *ngIf="this.activeView == '3'"></app-employees>
+      <app-report *ngIf="this.activeView == '4'"></app-report>
+
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 <app-change-password
   *ngIf="this.showModalPasswordChange"
   (onClose)="onPasswordChangeClose()"

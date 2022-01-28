@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { UserList } from '../../models/user-list';
 import { UserLogin } from '../../models/user-login';
 import { UserWithToken } from '../../models/user-with-token';
@@ -53,7 +54,7 @@ export class UserService {
 
   changePasswordFirst(data: UserLogin): Observable<string> {
     return this.http.post(
-      'http://localhost:8080/auth/firstTimeChangePassword',
+      `${environment.baseUrl}/auth/firstTimeChangePassword`,
       data,
       { responseType: 'text' }
     );
@@ -61,17 +62,15 @@ export class UserService {
 
   switchToActiveAccount(user: UserLogin): Observable<string> {
     return this.http.post(
-      'http://localhost:8080/auth/switchToActiveAccount',
+      `${environment.baseUrl}/auth/switchToActiveAccount`,
       user,
       { responseType: 'text' }
     );
   }
 
   changePassword(data: UserLogin): Observable<string> {
-    return this.http.post(
-      'http://localhost:8080/auth/changePassword',
-      data,
-      { responseType: 'text' }
-    );
+    return this.http.post(`${environment.baseUrl}/auth/changePassword`, data, {
+      responseType: 'text',
+    });
   }
 }
