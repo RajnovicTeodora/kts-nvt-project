@@ -79,7 +79,7 @@ public class AuthenticationController {
                 authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         login.getUsername(), login.getPassword()));
             } catch (BadCredentialsException e) {
-                throw new BadRequestException("Your credentials are bad. Please, try again");
+                return  new ResponseEntity<>("Your credentials are bad. Please, try again", HttpStatus.BAD_REQUEST);
             }
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -87,7 +87,9 @@ public class AuthenticationController {
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>("Wrong password!", HttpStatus.BAD_REQUEST);
         } catch (NotFoundException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+        } catch(BadRequestException e){
+            return new ResponseEntity<>("Unauthorized.", HttpStatus.BAD_REQUEST);
         }
     }
 

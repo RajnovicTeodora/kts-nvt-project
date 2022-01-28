@@ -46,4 +46,10 @@ export class RestaurantTableService {
       { responseType: 'text' }
     );
   }
+
+  getRestaurantTableId(tableNum: number): Observable<number> {
+    return this.http.get<number>(
+      `${environment.baseUrl}/${environment.table}/getTableIdByTableNumber/${tableNum}`
+    );
+  }
 }
