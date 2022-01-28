@@ -4,7 +4,6 @@ import com.ftn.restaurant.model.enums.OrderedItemStatus;
 
 import javax.persistence.*;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,81 +12,24 @@ public class OrderedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name="id", unique=true, nullable=false)
     private Long id;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable=false)
     @Enumerated(EnumType.STRING)
     private OrderedItemStatus status;
 
-    @Column(name = "priority", nullable = false)
+    @Column(name = "priority", nullable=false)
     private int priority;
 
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
+    @OneToOne(cascade = CascadeType.ALL)
+    private MenuItem manuItem;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "menu_item_id")
-    private MenuItem menuItem;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "activeIngredients",
-            joinColumns = @JoinColumn(name = "ordered_item_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
     private List<Ingredient> activeIngredients;
 
-    @Column(name = "deleted")
-    private boolean deleted;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "employ_id", nullable = false) todo proveri, i dodaj u servis
-    private Employee employee;
-
-
-    /*
-    @OneToMany(fetch = FetchType.LAZY,  cascade= CascadeType.ALL)
-    private List<Notification> notificationList;*/
-
-    public void addActiveIngredients(Ingredient ingredient) {
-        if (ingredient == null)
-            return;
-        if (this.activeIngredients == null)
-            this.activeIngredients = new ArrayList<>();
-        if (!this.activeIngredients.contains(ingredient)) {
-            this.activeIngredients.add(ingredient);
-        }
-    }
-
-    public OrderedItem() {
-    }
-
-    public OrderedItem(OrderedItemStatus status, int priority, int quantity, MenuItem menuItem, List<Ingredient> activeIngredients, boolean deleted) {
-        this.status = status;
-        this.priority = priority;
-        this.quantity = quantity;
-        this.menuItem = menuItem;
-        this.activeIngredients = activeIngredients;
-        this.deleted = deleted;
-    }
-
-    public OrderedItem(OrderedItemStatus status, int priority, int quantity, Order order, MenuItem menuItem, List<Ingredient> activeIngredients, boolean deleted, Employee whoPreapiring) {
-        this.status = status;
-        this.priority = priority;
-        this.quantity = quantity;
-        this.order = order;
-        this.menuItem = menuItem;
-        this.activeIngredients = activeIngredients;
-        this.deleted = deleted;
-        this.employee = whoPreapiring;
-    }
-
-
-    public MenuItem getMenuItem() {
-        return menuItem;
+    public MenuItem getManuItem() {
+        return manuItem;
     }
 
     public List<Ingredient> getActiveIngredients() {
@@ -98,8 +40,8 @@ public class OrderedItem {
         this.activeIngredients = activeIngredients;
     }
 
-    public void setMenuItem(MenuItem menuItem) {
-        this.menuItem = menuItem;
+    public void setManuItem(MenuItem manuItem) {
+        this.manuItem = manuItem;
     }
 
     public Long getId() {
@@ -124,37 +66,5 @@ public class OrderedItem {
 
     public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Employee getWhoPreapiring() {
-        return employee;
-    }
-
-    public void setWhoPreapiring(Employee whoPreapiring) {
-        this.employee = whoPreapiring;
     }
 }
