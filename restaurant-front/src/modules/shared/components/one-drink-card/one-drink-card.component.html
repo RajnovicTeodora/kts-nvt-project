@@ -1,15 +1,19 @@
 <div id="container-div">
     <div id="form-holder-div">
-      <h2 >{{drink.name}}</h2>
+      <h2 id={{drink.name}}>{{drink.name}}</h2>
       <div>
-        <div id="img-div">
+        <ng-container>
             <img
-                src="https://media.giphy.com/media/JrNJ7nwRenWeHLcnzX/giphy.gif"
-                alt="”animated”"
+                mat-card-avatar
+                [src]="'assets/images/2309358.png'"
+                alt="Photo of item"
+                style="margin-bottom: 10px"
                 />
-            </div>
+            </ng-container>
+            
             <div>
                 <mat-label >Container:  {{drink.containerType}}</mat-label><br/>
+                <mat-label >Drink type:  {{drink.drinkType}}</mat-label><br/>
             </div>
             <div>
                 <mat-divider></mat-divider>

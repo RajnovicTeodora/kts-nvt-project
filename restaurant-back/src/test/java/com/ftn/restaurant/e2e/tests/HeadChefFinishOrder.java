@@ -40,7 +40,7 @@ public class HeadChefFinishOrder {
     }
 
     @Test
-    public void singInTest() {
+    public void finishOrderTest() {
 
         // set username
         loginPage.setUsernameInput("slavkoo");
@@ -66,13 +66,11 @@ public class HeadChefFinishOrder {
         tableOfOrderedItemsPage.clickAccept();
         //accepted
         tableOfOrderedItemsPage.clickAcceptDialog();
-        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/chef-dashboard"));
-        //checking is accepted
-        chefDashboardPage.clickNewOrders();
-        chefDashboardPage.clickNewOrders();
-        chefDashboardPage.clickAccOrders(); //ovo se dewsi prebrzo
-        chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders();
-        chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders();chefDashboardPage.clickAccOrders();
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
+
+
+        chefDashboardPage.clickAccOrders();
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
         chefDashboardPage.clickAccOrders();
         assertTrue(chefDashboardPage.getContainerWithOrders()!=null);
 
@@ -83,7 +81,7 @@ public class HeadChefFinishOrder {
         tableOfAcceptedOrdersPage.clickFinish();
         //finish
         tableOfAcceptedOrdersPage.clickAcceptDialog();
-        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/chef-dashboard"));
+        assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
         //nesto logicno
     }
 

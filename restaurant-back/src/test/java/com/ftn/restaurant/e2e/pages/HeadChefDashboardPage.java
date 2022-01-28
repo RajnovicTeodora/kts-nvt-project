@@ -22,12 +22,14 @@ public class HeadChefDashboardPage {
 
     @FindBy(id = "container-div")
     private WebElement containerWithOrders;
+    @FindBy(id = "add-dish")
+    private WebElement addDishBtn;
 
     public HeadChefDashboardPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public boolean urlPresent(){ return Utilities.urlWait(driver, URL, 10);}
+    public boolean urlPresent(){ return Utilities.urlWait(driver, URL, 50);}
 
     public void setInputNewPassword(String newPassword){
         WebElement input = this.getInputNewPassword();
@@ -35,21 +37,24 @@ public class HeadChefDashboardPage {
         input.sendKeys(newPassword);
     }
     public WebElement getInputNewPassword() {
-        return Utilities.visibilityWait(this.driver, this.inputNewPassword, 40);
+        return Utilities.visibilityWait(this.driver, this.inputNewPassword, 50);
     }
     public void clickSubmitBtn(){
-        Utilities.clickableWait(this.driver, this.submitPasswordBtn, 40).click();
+        Utilities.clickableWait(this.driver, this.submitPasswordBtn, 50).click();
     }
 
     public void clickNewOrders(){
-        Utilities.clickableWait(this.driver, this.newOrdersField, 40).click();
+        Utilities.clickableWait(this.driver, this.newOrdersField, 50).click();
     }
 
     public void clickAccOrders(){
-        Utilities.clickableWait(this.driver, this.acceptedOrdersField, 40).click();
+        Utilities.clickableWait(this.driver, this.acceptedOrdersField, 50).click();
     }
 
     public WebElement getContainerWithOrders() {
-        return Utilities.visibilityWait(this.driver, this.containerWithOrders, 40);
+        return Utilities.visibilityWait(this.driver, this.containerWithOrders, 50);
+    }
+
+    public void addDishBtnClick() { Utilities.clickableWait(this.driver, this.addDishBtn, 50).click();
     }
 }

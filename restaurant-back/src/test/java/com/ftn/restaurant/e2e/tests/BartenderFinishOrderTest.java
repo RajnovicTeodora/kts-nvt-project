@@ -40,7 +40,7 @@ public class BartenderFinishOrderTest {
     }
 
     @Test
-    public void singInTest() {
+    public void finishOrderTest() {
 
         // set username
         loginPage.setUsernameInput("misko");
@@ -86,7 +86,7 @@ public class BartenderFinishOrderTest {
         //finish
         tableOfAcceptedOrdersPage.clickAcceptDialog();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/bartender-dashboard"));
-        //nesto logicno
+
     }
 
     @After

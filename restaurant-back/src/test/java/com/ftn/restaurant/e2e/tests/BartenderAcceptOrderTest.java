@@ -38,7 +38,7 @@ public class BartenderAcceptOrderTest {
     }
 
     @Test
-    public void singInTest() {
+    public void acceptOrderTest() {
 
         // set username
         loginPage.setUsernameInput("misko");

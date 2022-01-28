@@ -1,6 +1,8 @@
 package com.ftn.restaurant.e2e.tests;
 
-import com.ftn.restaurant.e2e.pages.*;
+import com.ftn.restaurant.e2e.pages.ChefDashboardPage;
+import com.ftn.restaurant.e2e.pages.DishTablePage;
+import com.ftn.restaurant.e2e.pages.LoginPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +12,8 @@ import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertTrue;
 
-public class DishTableTestChef {
+public class ViewOneDishChefTest {
+
     private WebDriver browser;
 
     private LoginPage loginPage;
@@ -35,7 +38,7 @@ public class DishTableTestChef {
     }
 
     @Test
-    public void dishTableElementsTest() {
+    public void oneDishElementsViewTest() {
 
         // set username
         loginPage.setUsernameInput("chef");
@@ -49,23 +52,10 @@ public class DishTableTestChef {
         assertTrue(chefDashboardPage.urlPresent());
 
         chefDashboardPage.clickDishTableBtn();
-        //clicked on drinkTable
-        dishTablePage.setSearchInput("Pizza");
-        dishTablePage.clickSubmitBtn();
-        try{
-            assertTrue(dishTablePage.getRow().getText().equals("Pizza"));}
-        catch(org.openqa.selenium.StaleElementReferenceException ex){
-            assertTrue(dishTablePage.getRow().getText().equals("Pizza"));
-        }
+        //clicked on view for pizza
+        dishTablePage.clickPizzaViewBtn();
+        assertTrue(dishTablePage.getRowIngredient().getText().equals("plazma"));
 
-        dishTablePage.setSearchInput("Pizza");
-        dishTablePage.setRoleFilter();
-        dishTablePage.clickSubmitBtn();
-        try{
-            assertTrue(dishTablePage.getRow().getText().equals("Pizza"));}
-        catch(org.openqa.selenium.StaleElementReferenceException ex){
-            assertTrue(dishTablePage.getRow().getText().equals("Pizza"));
-        }
 
     }
 

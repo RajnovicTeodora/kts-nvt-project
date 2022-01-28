@@ -27,6 +27,9 @@ public class BartenderDashboardPage {
     @FindBy(id = "drink-table")
     private WebElement drinkTableBtn;
 
+    @FindBy(id = "add-drink")
+    private WebElement addDrinkBtn;
+
     public BartenderDashboardPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -58,5 +61,8 @@ public class BartenderDashboardPage {
     }
     public void clickDrinkTableBtn(){
         Utilities.clickableWait(this.driver, this.drinkTableBtn, 40).click();
+    }
+
+    public void addDrinkBtnClick() { Utilities.clickableWait(this.driver, this.addDrinkBtn, 40).click();
     }
 }

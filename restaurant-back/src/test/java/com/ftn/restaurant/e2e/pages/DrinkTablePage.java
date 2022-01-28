@@ -27,6 +27,12 @@ public class DrinkTablePage {
     @FindBy(id = "Cockta")
     private WebElement rowsInTableCockta;
 
+    @FindBy(name = "btnSprite")
+    private WebElement btnSpriteView;
+
+    @FindBy(id = "Sprite")
+    private WebElement titleOfCard;
+
     public DrinkTablePage(WebDriver driver) {
         this.driver = driver;
     }
@@ -53,5 +59,11 @@ public class DrinkTablePage {
 
     public WebElement getRow() {
         return Utilities.visibilityWait(this.driver, this.rowsInTableCockta, 40);
+    }
+    public void clickSpriteBtn(){
+        Utilities.clickableWait(this.driver, this.btnSpriteView, 40).click();
+    }
+    public WebElement getTitleCard() {
+        return Utilities.visibilityWait(this.driver, this.titleOfCard, 40);
     }
 }

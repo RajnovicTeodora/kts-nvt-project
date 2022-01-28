@@ -21,7 +21,13 @@ public class DishTablePage {
     private WebElement searchInput;
 
     @FindBy(id = "Pizza")
-    private WebElement rowsInTableCockta;
+    private WebElement rowsInTablePizza;
+
+    @FindBy(name = "btnPizza")
+    private WebElement btnPizzaView;
+
+    @FindBy(id = "ingplazma")
+    private WebElement rowIngredient;
 
     public DishTablePage(WebDriver driver) {
         this.driver = driver;
@@ -38,6 +44,10 @@ public class DishTablePage {
         return Utilities.visibilityWait(this.driver, this.searchInput, 40);
     }
 
+    public WebElement getRowIngredient() {
+        return Utilities.visibilityWait(this.driver, this.rowIngredient, 40);
+    }
+
     public void setRoleFilter() {
         Utilities.clickableWait(driver, this.roleContainer, 10).click();
         Utilities.clickableWait(driver, this.roleOption, 10).click();
@@ -47,7 +57,11 @@ public class DishTablePage {
         Utilities.clickableWait(this.driver, this.submitBtn, 40).click();
     }
 
+    public void clickPizzaViewBtn(){
+        Utilities.clickableWait(this.driver, this.btnPizzaView, 40).click();
+    }
+
     public WebElement getRow() {
-        return Utilities.visibilityWait(this.driver, this.rowsInTableCockta, 40);
+        return Utilities.visibilityWait(this.driver, this.rowsInTablePizza, 40);
     }
 }

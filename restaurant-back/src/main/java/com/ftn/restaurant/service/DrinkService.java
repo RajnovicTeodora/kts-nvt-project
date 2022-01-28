@@ -9,6 +9,7 @@ import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.Ingredient;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.DrinkRepository;
+import com.ftn.restaurant.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,12 @@ public class DrinkService {
 
     private DrinkRepository drinkRepository;
 
+    private IngredientRepository ingredientRepository;
+
     @Autowired
-    public DrinkService(DrinkRepository drinkRepository) {
+    public DrinkService(DrinkRepository drinkRepository, IngredientRepository ingredientRepository) {
         this.drinkRepository = drinkRepository;
+        this.ingredientRepository = ingredientRepository;
     }
 
     public List<DrinkDTO> getDrinks(){
@@ -56,6 +60,7 @@ public class DrinkService {
         for (IngredientDTO ingredient : drinkDTO.getIngredients()){
             Ingredient newIngredient = new Ingredient(ingredient);
             drink.getIngredients().add(newIngredient);
+            this.ingredientRepository.save(newIngredient);
             }
         }
         return drinkRepository.save(drink);

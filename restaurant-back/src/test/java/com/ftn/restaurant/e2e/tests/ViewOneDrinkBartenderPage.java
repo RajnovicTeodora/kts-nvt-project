@@ -1,6 +1,8 @@
 package com.ftn.restaurant.e2e.tests;
 
-import com.ftn.restaurant.e2e.pages.*;
+import com.ftn.restaurant.e2e.pages.BartenderDashboardPage;
+import com.ftn.restaurant.e2e.pages.DrinkTablePage;
+import com.ftn.restaurant.e2e.pages.LoginPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,10 +10,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DrinkTableTest {
-
+public class ViewOneDrinkBartenderPage {
     private WebDriver browser;
 
     private LoginPage loginPage;
@@ -36,7 +38,7 @@ public class DrinkTableTest {
     }
 
     @Test
-    public void drinkTableTest() {
+    public void oneDrinkCardTest() {
 
         // set username
         loginPage.setUsernameInput("misko");
@@ -48,29 +50,15 @@ public class DrinkTableTest {
         assertTrue(bartenderDashboardPage.urlPresent());
 
         //input new password
-//        bartenderDashboardPage.setInputNewPassword("test");
-//        bartenderDashboardPage.clickSubmitBtn();
+        bartenderDashboardPage.setInputNewPassword("test");
+        bartenderDashboardPage.clickSubmitBtn();
 
         assertTrue(bartenderDashboardPage.urlPresent());
 
         bartenderDashboardPage.clickDrinkTableBtn();
         //clicked on drinkTable
-        drinkTablePage.setSearchInput("Cockta");
-        drinkTablePage.clickSubmitBtn();
-        try{
-        assertTrue(drinkTablePage.getRow().getText().equals("Cockta"));}
-        catch(org.openqa.selenium.StaleElementReferenceException ex){
-            assertTrue(drinkTablePage.getRow().getText().equals("Cockta"));
-        }
-
-        drinkTablePage.setSearchInput("Cockta");
-        drinkTablePage.setRoleFilter();
-        drinkTablePage.clickSubmitBtn();
-        try{
-            assertTrue(drinkTablePage.getRow().getText().equals("Cockta"));}
-        catch(org.openqa.selenium.StaleElementReferenceException ex){
-            assertTrue(drinkTablePage.getRow().getText().equals("Cockta"));
-        }
+        drinkTablePage.clickSpriteBtn();
+        assertEquals(drinkTablePage.getTitleCard().getText(), "Sprite");
 
     }
 

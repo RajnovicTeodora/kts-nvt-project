@@ -37,11 +37,11 @@ public class ChefFinishOrderTest {
         tableOfOrderedItemsPage = PageFactory.initElements(browser, TableOfOrderedItemsPage.class);
         acceptedOrdersPage = PageFactory.initElements(browser, AcceptedOrdersPage.class);
         tableOfAcceptedOrdersPage = PageFactory.initElements(browser, TableOfAcceptedOrdersPage.class);
-        //todo dokaz da je gotovo
+
     }
 
     @Test
-    public void singInTest() {
+    public void acceptOrderTest() {
 
         // set username
         loginPage.setUsernameInput("chef");
@@ -85,7 +85,7 @@ public class ChefFinishOrderTest {
         //finish
         tableOfAcceptedOrdersPage.clickAcceptDialog();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/chef-dashboard"));
-        //nesto logicno
+
     }
 
     @After
