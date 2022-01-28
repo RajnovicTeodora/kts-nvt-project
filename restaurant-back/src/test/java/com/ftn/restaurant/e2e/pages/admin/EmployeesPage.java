@@ -41,6 +41,9 @@ public class EmployeesPage {
     @FindBy(className = "btn-primary")
     private WebElement confirmDelete;
 
+    @FindBy(id = "restaurantBttn")
+    private WebElement areasBttn;
+
 
     public EmployeesPage(WebDriver driver) {
         this.driver = driver;
@@ -117,5 +120,9 @@ public class EmployeesPage {
 
     public String getToastrMessage(){
         return Utilities.visibilityWait(driver, this.toastText, 10).getText();
+    }
+
+    public void restaurantPreviewClick(){
+        Utilities.clickableWait(driver, this.areasBttn, 10).click();
     }
 }

@@ -27,7 +27,7 @@
             mat-button
             color="accent"
             type="submit"
-            class="submit-button"
+            class="delete-button"
             (click)="openDeleteAreaDialog(area.name, area.id)"
           >
           <mat-icon>delete</mat-icon>
@@ -35,12 +35,12 @@
         </div>
       </ng-template>
       <mat-divider></mat-divider>
-      <button mat-raised-button color="accent" class="toolbarBttn" (click)="openAddAreaDialog()">
+      <button mat-raised-button color="accent" class="toolbarBttn" name="addArea" (click)="openAddAreaDialog()">
         <mat-icon>add</mat-icon>
         <span> Add area</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-raised-button color="accent" class="toolbarBttn" (click)="return()">
+      <button mat-raised-button color="accent" class="toolbarBttn" name="return" (click)="return()">
         <mat-icon>keyboard_backspace</mat-icon>
         <span> Return</span>
       </button>
@@ -50,7 +50,7 @@
       <div class="content mat-elevation-z8">
         <div class="boundary" id="boundary">
           <ng-container *ngFor="let table of activeArea.tables">
-            <button mat-raised-button cdkDragBoundary=".boundary" class="tableBttn" 
+            <button mat-raised-button cdkDragBoundary=".boundary" id="tableBttn" 
             cdkDrag [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
             (cdkDragEnded)="onDragEnded($event, activeArea.tables.indexOf(table))"
             (dblclick)="selectTable(table.id)"
