@@ -1,5 +1,6 @@
 package com.ftn.restaurant.controller;
 
+import com.ftn.restaurant.dto.CurrentMenuItemPriceDTO;
 import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
@@ -54,7 +55,7 @@ public class MenuController {
     @GetMapping(path = "/getAll")
     @PreAuthorize("hasRole('MANAGER')")
     @ResponseStatus(HttpStatus.OK)
-    public List<MenuItemPriceDTO> getActiveMenuItems(@RequestParam(name = "searchName", required = false, defaultValue = "") String searchName) {
+    public List<CurrentMenuItemPriceDTO> getActiveMenuItems(@RequestParam(name = "searchName", required = false, defaultValue = "") String searchName) {
         LOG.info("Getting active menu items...");
 
         return menuService.getActiveMenuItem(searchName);

@@ -4,12 +4,10 @@ import com.ftn.restaurant.dto.UpdateMenuItemPriceDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.MenuItemNotFoundException;
 
-import com.ftn.restaurant.exception.MenuItemPriceNotFoundException;
 import com.ftn.restaurant.model.MenuItem;
 import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.repository.MenuItemPriceRepository;
 import com.ftn.restaurant.repository.MenuItemRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
