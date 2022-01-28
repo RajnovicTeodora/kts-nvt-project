@@ -8,13 +8,13 @@
       type="text"
       placeholder="Search..."
       formControlName="search"
-      id="itemSearch"
+      id="employee-search"
       name="itemSearch"
     />
   </mat-form-field>
   <mat-form-field class="form_input">
     <mat-label>User role</mat-label>
-    <mat-select formControlName="filter">
+    <mat-select formControlName="filter" id="role-filter-input">
       <mat-option *ngFor="let role of roles" [value]="role.value">
         {{ role.viewValue }}
       </mat-option>
@@ -44,6 +44,7 @@
     matSort
     (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8"
+    id="userTable"
   >
     <!-- Username Column -->
     <ng-container matColumnDef="Username">
@@ -138,6 +139,7 @@
           type="submit"
           class="submit-button"
           (click)="openEditEmployeeDialog(element)"
+          name="editEmployeeBttn"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -150,6 +152,7 @@
       <th mat-header-cell *matHeaderCellDef>Delete</th>
       <td mat-cell *matCellDef="let element; let i = index">
         <button
+          name="deleteEmployeeBttn"
           mat-button
           color="accent"
           type="submit"
@@ -183,5 +186,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </mat-card>
+<app-confirm-action
+*ngIf="this.deleteEmployeeDialogOpen"
+[confirmActionTitle]="this.messageForDialog"
+(onConfirmActionCancelled)="onConfirmDeleteUserCancelClicked($event)"
+(onConfirmActionConfirmed)="onConfirmDeleteUserConfirmedClicked($event)"
+></app-confirm-action>
 
 
