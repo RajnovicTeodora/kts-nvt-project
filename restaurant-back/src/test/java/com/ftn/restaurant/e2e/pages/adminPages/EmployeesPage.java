@@ -25,9 +25,16 @@ public class EmployeesPage {
     @FindBy(className = "addBttn")
     private WebElement addEmployeeBttn;
 
-    //tabela usera (mozda nece trebati)
+    @FindBy(xpath = "//td[contains(@class,'cdk-column-Name')]")
+    private List<WebElement> names;
 
-    @FindBy(name = "editEmployeeBttn")
+    @FindBy(xpath = "//td[contains(@class,'cdk-column-Surname')]")
+    private List<WebElement> surnames;
+
+    @FindBy(xpath = "//td[contains(@class,'cdk-column-Telephone')]")
+    private List<WebElement> telephones;
+
+    @FindBy(id = "editEmployee")
     private List<WebElement> editEmployeeBttns;
 
     @FindBy(name = "deleteEmployeeBttn")
@@ -38,6 +45,9 @@ public class EmployeesPage {
 
     @FindBy(id = "confirm-logout-button")
     private WebElement confirmLogoutButton;
+
+    @FindBy(xpath = "//td[contains(@class,'cdk-column-Username')]")
+    private List<WebElement> usernames;
 
 
     public EmployeesPage(WebDriver driver) {
@@ -73,6 +83,39 @@ public class EmployeesPage {
 
     public void addEmployeeBttnClicked(){
         Utilities.clickableWait(driver, this.addEmployeeBttn, 10).click();
+    }
+
+    private String getFirstUsername(){
+
+        return Utilities.visibilityWait(driver, this.usernames.get(0), 10).getText();
+    }
+
+    public boolean infoChanged(String name, String surname, String telephone){
+        int userIndex = -1;
+        for (WebElement user : this.usernames){
+            if(user.getText().equals(getFirstUsername())){
+                userIndex = this.usernames.indexOf(user);
+                break;
+            }
+        }
+        if(userIndex == -1) return false;
+        String currentName = Utilities.visibilityWait(driver, this.names.get(userIndex), 20).getText();
+        String currentSurname = Utilities.visibilityWait(driver, this.surnames.get(userIndex), 20).getText();
+        String currentTelephone = Utilities.visibilityWait(driver, this.telephones.get(userIndex), 20).getText();
+        if (!currentName.equalsIgnoreCase(name)){
+            return false;
+        }
+        if (!currentSurname.equals(surname)){
+            return false;
+        }
+        if (!currentTelephone.equals(telephone)){
+            return false;
+        }
+        return true;
+    }
+
+    public void clickEditFirstUser(){
+        Utilities.clickableWait(driver, this.editEmployeeBttns.get(0), 10).click();
     }
 
 
