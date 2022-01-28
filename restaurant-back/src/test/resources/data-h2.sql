@@ -53,6 +53,7 @@ INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (9, 9, 4, false, 1, 4);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (7, 7, 4, true, 1, 5);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (3, 3, 4, false, 1, 6);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (3, 3, 4, false, 1, 7);
 
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4, 2, 1);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4, 2, 2);
