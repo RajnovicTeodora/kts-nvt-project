@@ -4,19 +4,19 @@
     <!-- profilna slika -->
     <mat-grid-tile rowspan="5">
       <div class="img-space">
-        <ng-container *ngIf="isImageSaved; else elseTemplate">
-          <img
-            style="max-width: 50%; max-height: 50%"
-            [src]="url"
-            alt="Image"
-          />
-        </ng-container>
-        <ng-template #elseTemplate>
+        <ng-container *ngIf="!isImageChanged; else elseTemplate">
           <img
             style="max-width: 50%; max-height: 50%"
             src="assets/images/profile_default.png"
             class="img-responsive"
             alt="Default image"
+          />
+        </ng-container>
+        <ng-template #elseTemplate>
+          <img
+          style="max-width: 50%; max-height: 50%"
+          [src]="url"
+          alt="no images"
           />
         </ng-template>
         <input
@@ -25,12 +25,13 @@
           type="file"
           (change)="fileChangeEvent($event)"
           #fileInput
+          id="photo"
         />
       </div>
     </mat-grid-tile>
     <!-- username -->
     <mat-grid-tile>
-      <mat-form-field id="username" class="input">
+      <mat-form-field class="input">
         <input
           matInput
           type="text"
@@ -43,7 +44,7 @@
     </mat-grid-tile>
     <!-- password -->
     <mat-grid-tile>
-      <mat-form-field id="password" class="input">
+      <mat-form-field class="input">
         <input
           matInput
           type="text"
@@ -56,7 +57,7 @@
     </mat-grid-tile>
     <!-- name -->
     <mat-grid-tile>
-      <mat-form-field id="name" class="input">
+      <mat-form-field class="input">
         <input
           matInput
           type="text"
@@ -69,7 +70,7 @@
     </mat-grid-tile>
     <!-- surname -->
     <mat-grid-tile>
-      <mat-form-field id="surname" class="input">
+      <mat-form-field class="input">
         <input
           matInput
           type="text"
@@ -82,7 +83,7 @@
     </mat-grid-tile>
     <!-- telephone -->
     <mat-grid-tile>
-      <mat-form-field id="telephone" class="input">
+      <mat-form-field class="input">
         <input
           matInput
           type="text"
@@ -95,15 +96,15 @@
     </mat-grid-tile>
     <!-- dugmici -->
     <mat-grid-tile>
-      <button mat-flat-button color="accent" (click)="fileInput.click()">
+      <button mat-flat-button color="accent" (click)="fileInput.click()" id="addPhotoBttn">
         <mat-icon>add_a_photo</mat-icon>
       </button>
     </mat-grid-tile>
     <!-- role -->
     <mat-grid-tile>
-      <mat-form-field id="role" class="input">
+      <mat-form-field class="input">
         <mat-label>Role</mat-label>
-        <mat-select formControlName="role">
+        <mat-select formControlName="role" id="role">
           <mat-option *ngFor="let role of roles" [value]="role.value">
             {{ role.viewValue }}
           </mat-option>
@@ -120,7 +121,7 @@
     type="submit"
     class="submit-button"
     (click)="cancel()"
-    id="submit-button"
+    id="cancel-button"
   >
     Cancel
   </button>
@@ -130,8 +131,8 @@
     type="submit"
     class="submit-button"
     (click)="saveEmployee()"
-    [disabled]="addEmployeeForm.invalid || !this.isImageSaved"
-    id="submit-button"
+    [disabled]="addEmployeeForm.invalid"
+    id="save-button"
   >
     Save
   </button>

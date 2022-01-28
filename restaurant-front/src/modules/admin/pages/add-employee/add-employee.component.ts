@@ -21,7 +21,7 @@ export class AddEmployeeComponent implements OnInit {
     { value: 'WAITER', viewValue: 'Waiter' },
   ];
 
-  isImageSaved: boolean = false;
+  isImageChanged = false;
   url: any;
 
   constructor(
@@ -49,19 +49,23 @@ export class AddEmployeeComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.url = reader.result;
-        this.isImageSaved = true;
+        this.isImageChanged = true;
       };
     }
   }
 
   saveEmployee() {
+    let image = "";
+    if(this.isImageChanged){
+      image = this.url.split(',')[1];
+    }
     const employee: Employee = {
       username: this.addEmployeeForm.value.username,
       password: this.addEmployeeForm.value.password,
       name: this.addEmployeeForm.value.name,
       surname: this.addEmployeeForm.value.surname,
       telephone: this.addEmployeeForm.value.telephone,
-      image: this.url.split(',')[1],
+      image: image,
       role: this.addEmployeeForm.value.role,
     };
     console.log(employee);
