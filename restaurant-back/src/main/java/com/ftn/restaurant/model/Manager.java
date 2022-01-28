@@ -1,9 +1,18 @@
 package com.ftn.restaurant.model;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
 
 @Entity
-@Table(name = "manager")
 public class Manager extends Employee{
+
+    public Manager(EmployeeDTO employeeDTO){
+        super(employeeDTO);
+    }
+
+
+    public Manager() {
+    }
+
 }

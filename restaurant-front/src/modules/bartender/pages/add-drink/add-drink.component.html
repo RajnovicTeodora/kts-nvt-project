@@ -1,0 +1,87 @@
+<div id="container-div">
+    <!-- <div id="img-div">
+      <img
+        src="https://media.giphy.com/media/JrNJ7nwRenWeHLcnzX/giphy.gif"
+        alt="”animated”"
+        (click)="this.router.navigate([''])"
+      />
+    </div> -->
+    <div id="form-holder-div">
+      <h3>Form for adding drinks</h3>
+      <form class="example-form" [formGroup]="addDrinkForm">
+        <div>
+        <mat-card-content>
+          <mat-form-field class="example-full-width" id="name-field">
+            <input
+              matInput
+              class="form-control"
+              type="text"
+              formControlName="name"
+              id="name"
+              name="name"
+              required
+              placeholder="Inut name of drink"
+            />
+          </mat-form-field>
+  
+        
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select [(value)]="selectedValue" required>
+              <mat-option *ngFor="let drinkType of drinkTypes" [value]="drinkType.value">
+                {{drinkType.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Container</mat-label>
+            <mat-select [(value)]="selectedContainer" required>
+              <mat-option *ngFor="let container of containers" [value]="container.value">
+                {{container.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+         
+  
+          <input type="file" class="file-input"
+         (change)="onFileSelected($event)" #fileUpload/>
+  
+          <div class="file-upload">
+  
+            {{fileName || "No file uploaded yet."}}
+  
+              <button mat-mini-fab color="primary" class="upload-btn"
+                (click)="fileUpload.click()">
+                  <mat-icon>attach_file</mat-icon>
+              </button>
+          </div>
+  
+        </mat-card-content>
+        </div>
+        <div>
+          <app-ingredients-table
+           (onAddIngredient)="onAddIngredient($event)"
+           (onDeleteIngredient)="onDeleteIngredient($event)"
+            [items] = "this.listIngredients"
+            ></app-ingredients-table>
+        </div> 
+        <div id="button-div">
+          <button
+            mat-flat-button
+            color="accent" 
+            type="submit"
+            class="submit-button"
+            (click)="saveDrink()"
+            id="submit-button" 
+            [disabled]="addDrinkForm.invalid"
+          >
+            Save drink
+          </button>
+        </div>
+      </form>
+    </div>
+  </div> 
+
+  
+  
