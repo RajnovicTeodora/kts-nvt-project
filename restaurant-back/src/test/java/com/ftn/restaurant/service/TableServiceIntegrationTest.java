@@ -22,38 +22,38 @@ public class TableServiceIntegrationTest {
 
     @Test
     public void occupyTableTest(){
-        Assert.assertEquals("Successfully occupied table with table number: 1",tableService.occupyTable("waiter", 1));
-        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.occupyTable("waiter", 2);});
-        Assertions.assertThrows(NotFoundException.class, () -> {tableService.occupyTable("waiter", 1000);});
+        Assert.assertEquals("Successfully occupied table with table id: 1",tableService.occupyTable("waiter", 1L));
+        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.occupyTable("waiter", 2L);});
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.occupyTable("waiter", 1000L);});
     }
 
     @Test
     public void clearTableTest(){
-        Assert.assertEquals("Successfully cleared table with table number: 5",tableService.clearTable("waiter", 5));
-        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.clearTable("waiter", 4);});
-        Assertions.assertThrows(NotFoundException.class, () -> {tableService.clearTable("waiter", 1000);});
-        Assertions.assertThrows(ActiveOrdersPresentException.class, () -> {tableService.clearTable("waiter", 2);});
+        Assert.assertEquals("Successfully cleared table with table id: 5",tableService.clearTable("waiter", 5L));
+        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.clearTable("waiter", 4L);});
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.clearTable("waiter", 1000L);});
+        Assertions.assertThrows(ActiveOrdersPresentException.class, () -> {tableService.clearTable("waiter", 2L);});
     }
 
     @Test
     public void claimTableTest(){
-        Assert.assertEquals("Successfully claimed table with table number: 3",tableService.claimTable("waiter", 3));
-        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.claimTable("waiter", 2);});
-        Assertions.assertThrows(NotFoundException.class, () -> {tableService.claimTable("waiter", 1000);});
+        Assert.assertEquals("Successfully claimed table with table id: 3",tableService.claimTable("waiter", 3L));
+        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.claimTable("waiter", 2L);});
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.claimTable("waiter", 1000L);});
     }
 
     @Test
     public void leaveTableTest(){
-        Assert.assertEquals("Successfully left table with table number: 6",tableService.leaveTable("waiter", 6));
-        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.leaveTable("waiter", 2);});
-        Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000);});
+        Assert.assertEquals("Successfully left table with table id: 6",tableService.leaveTable("waiter", 6L));
+        Assertions.assertThrows(ForbiddenException.class, () -> {tableService.leaveTable("waiter", 2L);});
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000L);});
     }
 
     @Test
-    public void getTableByTableNumberTest(){
-        Assert.assertFalse(tableService.getTableByTableNumber(6).isOccupied());
-        Assert.assertEquals(tableService.getTableByTableNumber(6).getClass(), RestaurantTableDTO.class);
-        Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000);});
+    public void getTableByTableIdTest(){
+        Assert.assertFalse(tableService.getTableByTableId(6L).isOccupied());
+        Assert.assertEquals(tableService.getTableByTableId(6L).getClass(), RestaurantTableDTO.class);
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000L);});
     }
 
     @Test

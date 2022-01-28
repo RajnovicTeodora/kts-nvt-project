@@ -176,8 +176,8 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalPasswordChange = true;
   }
 
-  onRestaurantTableShowClicked(tableNum: number){
-    this.showModalRestaurantTableOptions = tableNum;
+  onRestaurantTableShowClicked(tableId: number){
+    this.showModalRestaurantTableOptions = tableId;
   }
 
   onRestaurantTableCloseClicked(item: boolean){

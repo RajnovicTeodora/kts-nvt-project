@@ -12,37 +12,37 @@ export class RestaurantTableService {
 
   constructor(private http: HttpClient) {}
 
-  getRestaurantTable(tableNum: number): Observable<RestaurantTable> {
+  getRestaurantTable(tableId: number): Observable<RestaurantTable> {
     return this.http.get<RestaurantTable>(
-      `${environment.baseUrl}/${environment.table}/getTableByTableNumber/${tableNum}`,
+      `${environment.baseUrl}/${environment.table}/getTableByTableId/${tableId}`,
       { responseType: 'json' }
     );
   }
 
-  occupyTable(tableNum: number, waiter: string): Observable<string> {
+  occupyTable(tableId: number, waiter: string): Observable<string> {
     return this.http.get(
-      `${environment.baseUrl}/${environment.table}/${tableNum}/occupyTable/${waiter}`,
+      `${environment.baseUrl}/${environment.table}/${tableId}/occupyTable/${waiter}`,
       { responseType: 'text' }
     );
   }
 
-  unoccupyTable(tableNum: number, waiter: string): Observable<string> {
+  unoccupyTable(tableId: number, waiter: string): Observable<string> {
     return this.http.get(
-      `${environment.baseUrl}/${environment.table}/${tableNum}/clearTable/${waiter}`,
+      `${environment.baseUrl}/${environment.table}/${tableId}/clearTable/${waiter}`,
       { responseType: 'text' }
     );
   }
 
-  claimTable(tableNum: number, waiter: string): Observable<string> {
+  claimTable(tableId: number, waiter: string): Observable<string> {
     return this.http.get(
-      `${environment.baseUrl}/${environment.table}/${tableNum}/claimTable/${waiter}`,
+      `${environment.baseUrl}/${environment.table}/${tableId}/claimTable/${waiter}`,
       { responseType: 'text' }
     );
   }
 
-  unclaimTable(tableNum: number, waiter: string): Observable<string> {
+  unclaimTable(tableId: number, waiter: string): Observable<string> {
     return this.http.get(
-      `${environment.baseUrl}/${environment.table}/${tableNum}/leaveTable/${waiter}`,
+      `${environment.baseUrl}/${environment.table}/${tableId}/leaveTable/${waiter}`,
       { responseType: 'text' }
     );
   }
@@ -50,6 +50,12 @@ export class RestaurantTableService {
   getRestaurantTableId(tableNum: number): Observable<number> {
     return this.http.get<number>(
       `${environment.baseUrl}/${environment.table}/getTableIdByTableNumber/${tableNum}`
+    );
+  }
+
+  getRestaurantTableNumber(tableId: number): Observable<number> {
+    return this.http.get<number>(
+      `${environment.baseUrl}/${environment.table}/getTableNumberByTableId/${tableId}`
     );
   }
 }

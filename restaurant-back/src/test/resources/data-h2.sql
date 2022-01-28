@@ -29,14 +29,23 @@ insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021
 INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (1, 'Pizza', 'todo', true, false);
 INSERT INTO dish(id, dish_type) VALUES (1, 'MAIN_DISH');
 
-INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (4, 'Meatballs', 'todo', true, false);
-INSERT INTO dish(id, dish_type) VALUES (4, 'MAIN_DISH');
-
 INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (2, 'Ice Latte', 'todo', true, false);
 INSERT INTO drink (id, drink_type, container_type) VALUES (2, 'COLD_DRINK', 'BOTTLE');
 
 INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (3, 'Lemonade', 'todo', true, false);
 INSERT INTO drink (id, drink_type, container_type) VALUES (3, 'COLD_DRINK', 'BOTTLE');
+
+INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (4, 'Meatballs', 'todo', true, false);
+INSERT INTO dish(id, dish_type) VALUES (4, 'MAIN_DISH');
+
+INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (5, 'Ice Coffee', 'todo', false, false);
+INSERT INTO drink (id, drink_type, container_type) VALUES (5, 'COLD_DRINK', 'BOTTLE');
+
+INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (6, 'Hot chocolate', 'todo', false, true);
+INSERT INTO drink (id, drink_type, container_type) VALUES (6, 'COLD_DRINK', 'BOTTLE');
+
+INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (7, 'Ice Tea', 'todo', false, false);
+INSERT INTO drink (id, drink_type, container_type) VALUES (7, 'COLD_DRINK', 'BOTTLE');
 
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-08-02', '2020-10-10', 10, 16, false, 1);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-10-11', null, 10, 16, false, 1);
@@ -53,6 +62,7 @@ INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (9, 9, 4, false, 1, 4);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (7, 7, 4, true, 1, 5);
 INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (3, 3, 4, false, 1, 6);
+INSERT INTO restaurant_table (positionX, positionY, waiter_id, occupied, area_id, tableNum) VALUES (3, 3, 4, false, 1, 7);
 
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4, 2, 1);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number) VALUES (true, 1, '2021-10-22', 'x', '18:18', 4, 2, 2);

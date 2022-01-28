@@ -212,7 +212,7 @@ public class OrderControllerIntegrationTest {
     public void getActiveOrdersForTableTest() throws Exception {
         mockMvc.perform(get("/api/order/getActiveOrdersForTable/-1/waiter"))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("Couldn't find table with table number: -1" ));
+                .andExpect(content().string("Couldn't find table with table id: -1" ));
 
         /////////////////////////////////////////
 

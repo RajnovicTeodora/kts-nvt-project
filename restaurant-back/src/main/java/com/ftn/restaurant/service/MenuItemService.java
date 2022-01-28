@@ -28,7 +28,7 @@ public class MenuItemService {
     }
 
     public Optional<MenuItem> findByMenuItemId(long id) {
-        return menuItemRepository.findByMenuItemId(id);
+        return menuItemRepository.findById(id);
     }
 
 
