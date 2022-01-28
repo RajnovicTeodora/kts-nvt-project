@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MenuItem {
-  id: number;
+  id: string;
   name: string;
   image: string;
 }
