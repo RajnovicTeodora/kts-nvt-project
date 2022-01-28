@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ftn.restaurant.constants.DishConstants.LIST_DISHES;
 import static com.ftn.restaurant.constants.DrinkConstants.*;
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
 import static org.junit.Assert.assertEquals;
@@ -54,8 +55,8 @@ public class DrinkServiceUnitTest {
         given(drinkRepository.findByNameAndDrinkTypeAndContainerType("Bloody Mary", DrinkType.ALCOHOLIC, ContainerType.GLASS))
                 .willReturn(java.util.Optional.of(null));
         Drink drink = new Drink("Bloody Mary","a",false,false,new ArrayList<>(), DrinkType.ALCOHOLIC, ContainerType.GLASS, new ArrayList<>() );
-        given(drinkRepository.save(any())).willReturn(drink);
-        when(drinkRepository.save(any())).thenReturn(drink);
+        //given(drinkRepository.save(any())).willReturn(drink);
+        //when(drinkRepository.save(any())).thenReturn(drink);
     }
     @Test
     public void addDrinkByBartenderTest(){
@@ -67,10 +68,7 @@ public class DrinkServiceUnitTest {
                 newDrinkDTO.getDrinkType(),
                 newDrinkDTO.getContainerType());
 
-        verify(drinkRepository, times(1)).save(any());//pitanje da li prvo dobijem created
-
-        //assertEquals(newDrinkDTO.getName(), created.getName());
-
+        verify(drinkRepository, times(1)).save(any());
     }
 
     // TODO T
@@ -95,5 +93,31 @@ public class DrinkServiceUnitTest {
         verify(drinkRepository, times(1)).findByNameAndDrinkTypeAndContainerType(NEW_DRINK_NAME, NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
         assertNotNull(drink);
         assertEquals(NEW_DRINK_NAME, drink.getName());
+    }
+    @Test
+    public void testSearchDrink(){
+        given(drinkRepository.getApprovedDrinks()).willReturn(DRINK_LIST);
+
+        List<Drink> searched =drinkService.getSearchedOrFiltered("","");
+        assertEquals(searched.size(), 2);
+
+        searched =drinkService.getSearchedOrFiltered("","COLD_DRINK");
+        assertEquals(1, searched.size());
+        assertEquals("COLD_DRINK", searched.get(0).getDrinkType().name());
+
+        searched =drinkService.getSearchedOrFiltered("milk sejk2","");
+        assertEquals(1, searched.size());
+        assertEquals("milk sejk2", searched.get(0).getName());
+
+        searched =drinkService.getSearchedOrFiltered("milk sejk","COLD_DRINK");
+        assertEquals(1, searched.size());
+        assertEquals("COLD_DRINK", searched.get(0).getDrinkType().name());
+        assertEquals("milk sejk", searched.get(0).getName());
+
+        searched =drinkService.getSearchedOrFiltered("aaaa","aaaa");
+        assertEquals(0, searched.size());
+
+
+        //assertEquals(newDishDTO.getName(), created.getName()); //ovo mi vraca nulltj created je null
     }
 }
