@@ -58,7 +58,7 @@ public class OrderServiceIntegrationTest {
 
     @Test
     public void getActiveOrdersForTableTest(){
-        Assert.assertFalse(orderService.getActiveOrdersForTable(2, "waiter").isEmpty());
+        Assert.assertFalse(orderService.getActiveOrdersForTable(2L, "waiter").isEmpty());
         Assertions.assertThrows(NotFoundException.class, () -> {orderService.getActiveOrdersForTable(-1, "waiter");});
     }
 

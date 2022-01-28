@@ -104,7 +104,7 @@
             [cdkDragFreeDragPosition]="
               tablePositions[activeArea.tables.indexOf(table)]
             "
-            (click)="onRestaurantTableShowClicked(table.tableNum)"
+            (click)="onRestaurantTableShowClicked(table.id)"
             [class]="
               table.waiterUsername === user.username
                 ? 'claimedTableBttn'
@@ -131,7 +131,7 @@
 
       <app-table-options
         *ngIf="this.showModalRestaurantTableOptions !== -1"
-        [tableNumber]="this.showModalRestaurantTableOptions"
+        [tableId]="this.showModalRestaurantTableOptions"
         [refreshRequired]="this.refreshRestaurantTableRequired"
         (refreshFinished)="this.onRefreshFinished($event)"
         (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
