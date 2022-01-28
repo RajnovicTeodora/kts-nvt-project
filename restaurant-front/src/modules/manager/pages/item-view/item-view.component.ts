@@ -84,19 +84,4 @@ export class ItemTableComponent implements OnInit {
       (item) => item.id !== id
     );
   }
-
-  openDialog() {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '60%';
-    dialogConfig.height = '65%';
-
-    const dialogRef = this.dialog.open(AddDrinkManagerComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
 }

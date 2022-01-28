@@ -2,11 +2,11 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SafeUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-import { MenuItemPrice } from 'src/modules/shared/models/menu-models/menu-item-price';
 import { UpdateMenuItemPrice } from 'src/modules/shared/models/menu-models/update-menu-item-price';
 import { HelperService } from 'src/modules/shared/services/helper/helper.service';
 import { EventEmitter } from '@angular/core';
 import { MenuService } from '../../services/menu-service/menu.service';
+import { CurrentMenuItemPrice } from 'src/modules/shared/models/menu-models/current-menu-item-prices';
 
 @Component({
   selector: 'app-menu-item-card',
@@ -15,7 +15,7 @@ import { MenuService } from '../../services/menu-service/menu.service';
 })
 export class MenuItemCardComponent implements OnInit {
   @Input()
-  item: MenuItemPrice;
+  item: CurrentMenuItemPrice;
   image: SafeUrl;
   priceForm: FormGroup;
 
