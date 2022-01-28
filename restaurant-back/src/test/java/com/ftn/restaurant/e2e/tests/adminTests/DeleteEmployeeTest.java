@@ -8,14 +8,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AddEmployeeTest {
+public class DeleteEmployeeTest {
+
     private WebDriver driver;
 
     private EmployeesPage employeesPage;
@@ -48,7 +48,9 @@ public class AddEmployeeTest {
         //click button to add employee
         employeesPage.addEmployeeBttnClicked();
 
-        addEmployeePage.setInputText("username", "waiter2");
+        String username = "abc";
+
+        addEmployeePage.setInputText("username", username);
         addEmployeePage.setInputText("password", "pass123");
         addEmployeePage.setInputText("name", "Pera");
         addEmployeePage.setInputText("surname", "Peric");
@@ -57,7 +59,23 @@ public class AddEmployeeTest {
 
         addEmployeePage.saveBttnClick();
 
-        assertTrue(addEmployeePage.usernamesContainsText("waiter2"));
+        assertTrue(addEmployeePage.usernamesContainsText(username));
+
+
+        //delete employee
+        employeesPage.clickDeleteTable(username);
+        assertTrue(employeesPage.confirmUserDeleted(username));
+
+        //logout
+        employeesPage.logoutBtnClick();
+        employeesPage.confirmLogoutBtnClick();
+
+        //try login
+        loginPage.setUsernameInput(username);
+        loginPage.setPasswordInput("pass123");
+        loginPage.loginBtnClick();
+
+        assertEquals("User not found. ", employeesPage.getToastrMessage());
     }
 
     @After
@@ -65,5 +83,4 @@ public class AddEmployeeTest {
         // Shutdown the browser
         driver.quit();
     }
-
 }

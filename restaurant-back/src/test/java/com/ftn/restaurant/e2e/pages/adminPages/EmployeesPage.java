@@ -1,6 +1,7 @@
 package com.ftn.restaurant.e2e.pages.adminPages;
 
 import com.ftn.restaurant.e2e.pages.Utilities;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -49,32 +50,19 @@ public class EmployeesPage {
     @FindBy(xpath = "//td[contains(@class,'cdk-column-Username')]")
     private List<WebElement> usernames;
 
+    @FindBy(xpath = "//*[@id=\"toast-container\"]/div/div")
+    private WebElement toastText;
+
+    @FindBy(className = "btn-primary")
+    private WebElement confirmDelete;
+
 
     public EmployeesPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public boolean urlPresent() {
-        return Utilities.urlWait(driver, URL, 10);
-    }
-
-    public WebElement getEmployeeSearchInput() {
-        return Utilities.visibilityWait(driver, this.searchInputField, 10);
-    }
-
-    public void setEmployeeSearchInput(String text) {
-        WebElement we = getEmployeeSearchInput();
-        we.clear();
-        we.sendKeys(text);
-    }
-
-    public void submitBtnClick() {
-        Utilities.clickableWait(driver, this.searchBttn, 10).click();
-    }
-
-
     public void logoutBtnClick() {
-        Utilities.clickableWait(driver, this.logoutButton, 10).click();
+        Utilities.clickableWait(driver, this.logoutButton, 20).click();
     }
 
     public void confirmLogoutBtnClick() {
@@ -86,7 +74,6 @@ public class EmployeesPage {
     }
 
     private String getFirstUsername(){
-
         return Utilities.visibilityWait(driver, this.usernames.get(0), 10).getText();
     }
 
@@ -118,5 +105,30 @@ public class EmployeesPage {
         Utilities.clickableWait(driver, this.editEmployeeBttns.get(0), 10).click();
     }
 
+    public void clickDeleteTable(String username){
+        int userIndex = -1;
+        this.usernames = Utilities.visibilityWait(driver, By.xpath("//td[contains(@class,'cdk-column-Username')]"), 20);
+        for(WebElement user : this.usernames){
+            if(user.getText().equals(username)){
+                userIndex = this.usernames.indexOf(user);
+            }
+        }
+        Utilities.clickableWait(driver, this.deleteEmployeeBttns.get(userIndex), 10).click();
+        Utilities.clickableWait(driver, this.confirmDelete, 10).click();
+    }
 
+    public boolean confirmUserDeleted(String username){
+        this.usernames = Utilities.visibilityWait(driver, By.xpath("//td[contains(@class,'cdk-column-Username')]"), 10);
+        for(WebElement user : this.usernames){
+            System.out.println(user.getText());
+            if(user.getText().equals(username)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String getToastrMessage(){
+        return Utilities.visibilityWait(driver, this.toastText, 10).getText();
+    }
 }
