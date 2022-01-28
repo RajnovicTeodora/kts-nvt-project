@@ -16,12 +16,15 @@ public class MenuViewPage {
     @FindBy(id = "submit-button")
     private WebElement submitButton;
 
+    @FindBy(id = "add-drink-button")
+    private WebElement addDrinkButton;
+
     @FindBy(xpath = "//div[@class='card-deck']//mat-list//mat-card-title")
     private List<WebElement> menuItemTitleTexts;
 
     //TODO
     @FindBy(xpath = "//div[@class='card-deck']//mat-list//button[span[contains(text(),'Approve')]]")
-    private List<WebElement> onMenuButtons;
+    private List<WebElement> setOnMenuButtons;
 
     //TODO
     @FindBy(xpath = "//div[@class='card-deck']//mat-list//button[span[contains(text(),'Delete')]]")
@@ -43,10 +46,6 @@ public class MenuViewPage {
 
     public void submitBtnClick() {
         Utilities.clickableWait(driver, this.submitButton, 10).click();
-    }
-
-    public boolean menuItemTitleTextsContain(int number) {
-        return this.menuItemTitleTexts.size() == number;
     }
 
     public boolean menuItemsTitleTextsSizeCompare(int number) {
@@ -75,12 +74,16 @@ public class MenuViewPage {
         Utilities.visibilityWaitByLocator(driver, By.className("card-deck"), 10);
     }
 
-    public void onMenuBtnClick(int index){
-        Utilities.clickableWait(driver, this.onMenuButtons.get(index), 10).click();
+    public void setOnMenuBtnClick(int index){
+        Utilities.clickableWait(driver, this.setOnMenuButtons.get(index), 10).click();
     }
 
     public void deleteBtnClick(int index){
         Utilities.clickableWait(driver, this.deleteItemButton.get(index), 10).click();
+    }
+
+    public void addDrinkBtnClick(){
+        Utilities.clickableWait(driver, this.addDrinkButton, 10).click();
     }
 
 }

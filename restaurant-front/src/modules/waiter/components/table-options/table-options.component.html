@@ -81,7 +81,7 @@
         <span >Active orders</span>
         
         <mat-action-list class="custom-scroll-bar">
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <table mat-table #tableorders [dataSource]="dataSource" class="mat-elevation-z8">
             <ng-container matColumnDef="orderNumber">
               <th mat-header-cell *matHeaderCellDef>Order#</th>
               <td mat-cell *matCellDef="let element">Order {{ element}}</td>

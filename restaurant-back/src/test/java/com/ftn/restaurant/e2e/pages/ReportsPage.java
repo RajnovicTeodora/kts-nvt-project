@@ -61,6 +61,9 @@ public class ReportsPage {
         Utilities.clickableWait(driver, this.annualButton, 10).click();
     }
 
+    public void waitUntilReportPresent(){
+        Utilities.visibilityWaitByLocator(driver, By.className("content"), 10);
+    }
 
     public boolean seriesContainersCountEqual(int number) {
 

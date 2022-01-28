@@ -20,7 +20,7 @@ public class Bartender extends Employee{
     }
 
     public Bartender() {
-        this.setRole(new UserRole("BARTENDER"));
+        super();
     }
 
     public void setOrderedItems(List<OrderedItem> orderedItems) {
@@ -29,6 +29,5 @@ public class Bartender extends Employee{
 
     public Bartender(EmployeeDTO employeeDTO){
         super(employeeDTO);
-        this.setRole(new UserRole("BARTENDER"));
     }
 }

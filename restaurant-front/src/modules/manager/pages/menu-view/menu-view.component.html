@@ -24,25 +24,18 @@
   </mat-form-field>
 </form>
 
-<button mat-button (click)="openDialog()">
+<button mat-button (click)="openDialog()" id="add-drink-button">
   Add Drink <mat-icon>plus</mat-icon>
 </button>
 
-<div class="card-deck">
-  <mat-list
-    matSort
-    matSortActive="seqNo"
-    matSortDirection="asc"
-    matSortDisableClear
-    class="example-card"
-    *ngFor="let item of observable | async"
-  >
+<div class="card-deck" fxLayout="row wrap" fxLayoutGap="1em">
+  <div fxFlex="0 0 calc(20% - 0.8em)" *ngFor="let item of observable | async">
     <app-menu-item-card
       id="{{ item.menuItem.id }}"
       [item]="item"
       (deleteClicked)="onDeleteClicked($event)"
     >
     </app-menu-item-card>
-  </mat-list>
+  </div>
 </div>
 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

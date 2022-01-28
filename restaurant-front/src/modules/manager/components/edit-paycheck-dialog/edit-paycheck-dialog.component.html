@@ -11,9 +11,9 @@
       step=".5"
       max="999999"
       formControlName="paycheck"
-      id="paycheck"
+      id="paycheck-input"
       required
-      placeholder="paycheck"
+      placeholder="Paycheck"
     />
 
     <mat-dialog-actions>
@@ -34,7 +34,7 @@
         class="submit-button"
         (click)="save()"
         [disabled]="editPaycheckForm.invalid"
-        id="submit-button"
+        id="submit-paycheck-button"
       >
         Save
       </button>

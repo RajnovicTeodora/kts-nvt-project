@@ -12,6 +12,8 @@ import com.ftn.restaurant.repository.TableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TableService {
 
@@ -105,23 +107,52 @@ public class TableService {
         if(optTable.get().isOccupied()) {
         	throw new TableOccupiedException("Table is occupied!");
         }
+        Area area = optTable.get().getArea();
+        area.getTables().remove(optTable.get());
+        areaRepository.saveAndFlush(area);
             
         tableRepository.delete(optTable.get());
+
+        sortTableNumbers();
         return optTable.get();
     }
 
-    public RestaurantTable addTable(RestaurantTableDTO tableDTO){
-        if(tableRepository.findByPositionXAndPositionY(tableDTO.getX(), tableDTO.getY()).isPresent())
-            return null; //ovo mozda nece biti moguce pa ne bude greske
+    private void sortTableNumbers(){
+        List<RestaurantTable> tables = tableRepository.findAll();
+        for (int i = 0; i< tables.size(); i++){
+            RestaurantTable table = tables.get(i);
+            if(i==0){
+                if(table.getTableNum() != 1){
+                    table.setTableNum(1);
+                }
+            }
+            else{
+                if(tables.get(i-1).getTableNum() != table.getTableNum() - 1){
+                    table.setTableNum(tables.get(i-1).getTableNum() + 1);
+                }
+            }
+            tableRepository.saveAndFlush(table);
+        }
+        tableRepository.saveAllAndFlush(tables);
 
+        List<Area> allAreas = areaRepository.findAll();
+        for(Area area : allAreas){
+            area.setTables(tableRepository.findByAreaId(area.getId()));
+            areaRepository.saveAndFlush(area);
+        }
+    }
+
+    public RestaurantTable addTable(RestaurantTableDTO tableDTO){
         RestaurantTable newTable = new RestaurantTable(tableDTO);
 
         Optional<Area> area = areaRepository.findById(tableDTO.getAreaId());
 
         if(!area.isPresent()) {throw new AreaNotFoundException("Area with id "+tableDTO.getAreaId()+" not found!");}
+
         newTable.setArea(area.get());
-        //area.get().addTable(newTable);
-        //areaRepository.saveAndFlush(area.get());
+
+        RestaurantTable lastTable = tableRepository.findAll().get(tableRepository.findAll().size() - 1);
+        newTable.setTableNum(lastTable.getTableNum()+1);
         tableRepository.saveAndFlush(newTable);
         return newTable;
     }
@@ -147,5 +178,13 @@ public class TableService {
 
     public Optional<RestaurantTable> findByTableNumber(int tableNum){
         return tableRepository.getTableByTableNumber(tableNum);
+    }
+
+    public long getTableIdByTableNumber(int tableNum){
+        Optional<RestaurantTable> res = findByTableNumber(tableNum);
+        if(res.isPresent()){
+            return res.get().getId();
+        }
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
     }
 }

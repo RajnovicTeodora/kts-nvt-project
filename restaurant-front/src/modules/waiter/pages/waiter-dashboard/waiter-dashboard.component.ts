@@ -10,6 +10,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
+import { AdminService } from 'src/modules/admin/admin-service/admin.service';
+import { Area } from 'src/modules/shared/models/area';
 import { UserList } from 'src/modules/shared/models/user-list';
 import { UserWithBadgeNum } from 'src/modules/shared/models/user-with-badgenum';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
@@ -24,10 +26,6 @@ import { UserService } from 'src/modules/shared/services/user-service/user.servi
 export class WaiterDashboardComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
-  pageSize: number;
-  currentPage: number;
-  data: any[];
-  imagePath: string;
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
@@ -39,25 +37,20 @@ export class WaiterDashboardComponent implements OnInit {
   currentOrderViewed: number;
   refreshRestaurantTableRequired = false;
   showNotificationsModal: boolean;
-  ////////////////TODO isidora
   showModalRestaurantTableOptions: number;
+  areas: Area[];
+  activeArea: Area;
+  tablePositions: any[];
 
-  data2 = [
-    { id: 1, url: 'assets/images/floor3.png' },
-    { id: 2, url: 'assets/images/floor2.png' },
-  ];
 
   constructor(
     private observer: BreakpointObserver,
     public router: Router,
     private toastr: ToastrService,
     private userService: UserService,
+    private adminService: AdminService,
     private notifService: NotificationService
   ) {
-    this.pageSize = 1;
-    this.currentPage = 0;
-    this.data = [];
-    this.imagePath = 'assets/images/floor3.png';
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
@@ -69,12 +62,38 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = false;
     this.showNotificationsModal = false;
+    this.getAreas();
   }
 
   ngOnInit() {
-    this.getData({ pageIndex: this.currentPage, pageSize: this.pageSize });
     this.setBadgeValues();
+    this.getAreas();
   }
+
+  getAreas() {
+    this.tablePositions = [];
+    this.adminService.getAllAreas().subscribe((response) => {
+      this.areas = response;
+      if(this.areas.length !== 0){
+        this.activeArea = this.areas[0];
+        this.setTableCoordinates();
+      }
+    });
+  }
+
+  openArea(area: Area) {
+    this.activeArea = area;
+    this.setTableCoordinates();
+  }
+
+  setTableCoordinates() {
+    this.tablePositions = [];
+    this.activeArea.tables.sort((n1,n2) => n1.tableNum - n2.tableNum);
+    this.activeArea.tables.forEach(table => {
+      this.tablePositions.push({x: table.x, y: table.y});
+    });
+  }
+
 
   setBadgeValues(){
     this.waiterList = new Array;    
@@ -110,17 +129,6 @@ export class WaiterDashboardComponent implements OnInit {
     );
   }
 
-  getData(obj: { pageIndex: any; pageSize: any }) {
-    let index = 0,
-      startingIndex = obj.pageIndex * obj.pageSize,
-      endingIndex = startingIndex + obj.pageSize;
-
-    this.data = this.data2.filter(() => {
-      index++;
-      return index > startingIndex && index <= endingIndex ? true : false;
-    });
-  }
-
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {
@@ -141,10 +149,6 @@ export class WaiterDashboardComponent implements OnInit {
 
   onLogoutButtonClicked() {
     this.showModalLogout = true;
-  }
-
-  onSearchItemsButtonClicked(){
-    this.router.navigate(['/select-menu-items']);
   }
 
   onLogoutCloseClicked(item: boolean) {
@@ -178,6 +182,7 @@ export class WaiterDashboardComponent implements OnInit {
 
   onRestaurantTableCloseClicked(item: boolean){
     this.showModalRestaurantTableOptions = -1;
+    this.getAreas();
   }
 
   onPayOrderCloseClicked(item:boolean){

@@ -49,6 +49,7 @@ public class RestaurantTable {
     public RestaurantTable(RestaurantTableDTO table){
         this.positionX = table.getX();
         this.positionY = table.getY();
+        this.tableNum = table.getTableNum();
         this.occupied = false;
     }
     
