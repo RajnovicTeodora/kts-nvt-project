@@ -1,6 +1,7 @@
 package com.ftn.restaurant.e2e.pages.waiter;
 
 import com.ftn.restaurant.e2e.pages.Utilities;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -34,12 +35,11 @@ public class TableOptionsComponent {
     @FindBy(xpath = "//*[@name='view-order-button']")
     private List<WebElement> viewActiveOrderButtons;
 
-    @FindBy(xpath = "//*[@name='order-number-text']")
-    private List<WebElement> orderNumberTexts;
-
     @FindBy(xpath = "//*[@id=\"create-order-button\"]")
     private WebElement createOrderButton;
 
+    @FindBy(xpath = "//*[@id=\"close-table-options-button\"]")
+    private WebElement closeTableOptionsButton;
 
     public TableOptionsComponent(WebDriver driver){ this.driver = driver;}
 
@@ -55,17 +55,19 @@ public class TableOptionsComponent {
 
     public boolean activeOrdersTitlePresent(){ return Utilities.textWait(driver, this.activeOrdersTitle, "Active orders", 10);}
 
-    public void viewActiveOrderButtonClicked(int orderNumber) { Utilities.clickableWait(driver, this.viewActiveOrderButtons.get(orderNumber-1), 10).click();   }
+    public void viewActiveOrderButtonClicked(int tablePosition) { Utilities.clickableWait(driver, this.viewActiveOrderButtons.get(tablePosition-1), 10).click();   }
 
     public void editActiveOrderButtonClicked(int orderNumber) { Utilities.clickableWait(driver, this.editActiveOrderButtons.get(orderNumber-1), 10).click();   }
 
     public void createOrderButtonClick() { Utilities.clickableWait(driver, this.createOrderButton, 10).click();}
 
+    public void closeTableOptionsButtonClick() { Utilities.clickableWait(driver, this.closeTableOptionsButton, 10).click();}
+
     public boolean activeOrdersPresent(int numberOfOrders){
         return this.viewActiveOrderButtons.size() == numberOfOrders;
     }
 
-    public boolean orderNumberTextPresent(int orderNumber){
-        return Utilities.textWait(driver, this.orderNumberTexts.get(orderNumber-1), "Order " + orderNumber, 10);
+    public void waitUntilOrderPresent(){
+        Utilities.visibilityWaitByLocator(driver, By.xpath("//*[@name='order-number-text'][1]"), 10);
     }
 }
