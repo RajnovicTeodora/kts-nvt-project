@@ -2,11 +2,7 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.constants.NewTableDTOConstants;
 import com.ftn.restaurant.dto.RestaurantTableDTO;
-import com.ftn.restaurant.exception.AreaNotFoundException;
-import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.exception.NotFoundException;
-import com.ftn.restaurant.exception.TableNotFoundException;
-import com.ftn.restaurant.exception.TableOccupiedException;
+import com.ftn.restaurant.exception.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +32,7 @@ public class TableServiceIntegrationTest {
         Assert.assertEquals("Successfully cleared table with table number: 5",tableService.clearTable("waiter", 5));
         Assertions.assertThrows(ForbiddenException.class, () -> {tableService.clearTable("waiter", 4);});
         Assertions.assertThrows(NotFoundException.class, () -> {tableService.clearTable("waiter", 1000);});
+        Assertions.assertThrows(ActiveOrdersPresentException.class, () -> {tableService.clearTable("waiter", 2);});
     }
 
     @Test
@@ -49,6 +46,13 @@ public class TableServiceIntegrationTest {
     public void leaveTableTest(){
         Assert.assertEquals("Successfully left table with table number: 6",tableService.leaveTable("waiter", 6));
         Assertions.assertThrows(ForbiddenException.class, () -> {tableService.leaveTable("waiter", 2);});
+        Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000);});
+    }
+
+    @Test
+    public void getTableByTableNumberTest(){
+        Assert.assertFalse(tableService.getTableByTableNumber(6).isOccupied());
+        Assert.assertEquals(tableService.getTableByTableNumber(6).getClass(), RestaurantTableDTO.class);
         Assertions.assertThrows(NotFoundException.class, () -> {tableService.leaveTable("waiter", 1000);});
     }
 

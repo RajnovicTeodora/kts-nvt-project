@@ -18,12 +18,12 @@ import { ItemTableComponent } from './pages/item-view/item-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EmployeesComponent } from '../shared/components/employees/employees.component';
 import { AddDrinkManagerComponent } from './components/add-drink-manager/add-drink-manager.component';
-import { PaycheckTableComponent } from './pages/paycheck-table/paycheck-table.component';
 import { EditPaycheckDialogComponent } from './components/edit-paycheck-dialog/edit-paycheck-dialog.component';
 import { ReportComponent } from './pages/report/report.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MenuViewComponent } from './pages/menu-view/menu-view.component';
-import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.component';
+import { MenuItemCardComponent } from './components/menu-item-card/menu-item-card.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,6 @@ import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.com
     ItemCardComponent,
     ItemTableComponent,
     AddDrinkManagerComponent,
-    PaycheckTableComponent,
     EditPaycheckDialogComponent,
     ReportComponent,
     MenuViewComponent,
@@ -49,6 +48,7 @@ import { MenuItemCardComponent } from './pages/menu-item-card/menu-item-card.com
     HttpClientModule,
     MaterialModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',

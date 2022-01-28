@@ -51,6 +51,15 @@ public class OrderItemDTO {
         this.activeIngredients = activeIngredients;
     }
 
+    public OrderItemDTO(Long id, String status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
+        this.id = id;
+        this.status = status;
+        this.priority = priority;
+        this.quantity = quantity;
+        this.menuItemId = menuItemId;
+        this.activeIngredients = activeIngredients;
+    }
+
     public OrderItemDTO(OrderedItemStatus status, int priority, int quantity, long menuItemId, List<IngredientDTO> activeIngredients) {
         this.status = status.toString();
         this.priority = priority;
@@ -73,12 +82,12 @@ public class OrderItemDTO {
     public void setId(Long id) {
         this.id = id;
     }
-
+/*
     public OrderedItemStatus getStatus() {
         return OrderedItemStatus.valueOf(status);
-    }
+    }*/
 
-    public String getStatusAsString() { return status; }
+    public String getStatus() { return status; }
 
     public void setStatus(String status) {
         this.status = status;

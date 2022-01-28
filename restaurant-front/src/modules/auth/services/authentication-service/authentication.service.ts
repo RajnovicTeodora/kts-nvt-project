@@ -19,14 +19,14 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {}
 
   login(auth: UserLogin): Observable<UserWithToken> {
-    return this.http.post<UserWithToken>('http://localhost:8080/login', auth, {
+    return this.http.post<UserWithToken>(`${environment.baseUrl}/login`, auth, {
       headers: this.headers,
       responseType: "json",
     });
   }
 
   logout(): Observable<string> {
-    return this.http.get('http://localhost:8080/logout', {
+    return this.http.get(`${environment.baseUrl}/logout`, {
       headers: this.headers,
       responseType: "text",
     });

@@ -28,6 +28,13 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="activeIng">
+        <th mat-header-cell *matHeaderCellDef> Active ingredients </th>
+        <td mat-cell *matCellDef="let element" >
+             <button mat-button (click)="openIng(element)">see</button>
+        </td>
+      </ng-container>
+
        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

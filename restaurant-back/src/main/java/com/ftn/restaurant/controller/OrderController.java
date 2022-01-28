@@ -1,18 +1,16 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.OrderDTO;
-import com.ftn.restaurant.dto.OrderItemDTO;
 import com.ftn.restaurant.exception.*;
-import com.ftn.restaurant.model.Order;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -29,8 +27,14 @@ public class OrderController {
             return new ResponseEntity(orderService.createOrder(orderDTO), HttpStatus.CREATED);
         } catch (ForbiddenException e){
             return new ResponseEntity("Order has to contain ordered items.", HttpStatus.FORBIDDEN);
-        } catch (NotFoundException e){
-            return new ResponseEntity("Couldn't find menu item/ingredient", HttpStatus.NOT_FOUND);
+        } catch (IngredientNotFoundException e){
+            return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
+        } catch (MenuItemNotFoundException e){
+            return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
+        } catch (RestaurantTableNotFoundException e){
+            return new ResponseEntity("Couldn't find restaurant table.", HttpStatus.NOT_FOUND);
+        } catch (EmployeeNotFoundException e){
+            return new ResponseEntity("Couldn't find waiter.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -52,6 +56,8 @@ public class OrderController {
             return new ResponseEntity("Couldn't find ingredient.", HttpStatus.NOT_FOUND);
         }catch (MenuItemNotFoundException e){
             return new ResponseEntity("Couldn't find menu item.", HttpStatus.NOT_FOUND);
+        }catch (OrderedItemNotFoundException e){
+            return new ResponseEntity("Couldn't find ordered item.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -92,12 +98,26 @@ public class OrderController {
 
     @ResponseBody
     @GetMapping(value = "/getNote/{id}")
-    @PreAuthorize("hasRole('BARTENDER')")
+    @PreAuthorize("hasAnyRole('BARTENDER', 'CHEF', 'HEAD_CHEF')")
     public String getNote( @PathVariable long id){
         return this.orderService.getNote(id);
 
     }
+    @ResponseBody
+    @GetMapping(value = "/getNewOrders")
+    @PreAuthorize("hasAnyRole('CHEF' , 'HEAD_CHEF', 'BARTENDER')")
+    public List<OrderDTO> getNewOrders(){
+        return this.orderService.getNewOrders();
 
+    }
+    //getAcceptedOrders
+    @ResponseBody
+    @GetMapping(value = "/getAcceptedOrders/{username}")
+    @PreAuthorize("hasAnyRole('CHEF' , 'HEAD_CHEF', 'BARTENDER')")
+    public List<OrderDTO> getAcceptedOrders(@PathVariable("username") String username) {
+        return this.orderService.getAcceptedOrders(username);
+
+    }
     @ResponseBody
     @GetMapping(value = "/getOrder/{orderNum}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('WAITER')")

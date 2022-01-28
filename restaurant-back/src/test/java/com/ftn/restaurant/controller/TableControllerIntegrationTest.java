@@ -81,6 +81,12 @@ public class TableControllerIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Couldn't find table with table number: 1000"));
 
+        /////////////////////////////
+
+        mockMvc.perform(get("/api/table/2/clearTable/waiter"))
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Can't unoccupy table when there are active orders."));
+
     }
 
     @Test
@@ -118,6 +124,19 @@ public class TableControllerIntegrationTest {
         //////////////////////////////
 
         mockMvc.perform(get("/api/table/1000/leaveTable/waiter"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Couldn't find table with table number: 1000"));
+
+    }
+
+    @Test
+    public void getTableByTableNumberTest() throws Exception {
+        mockMvc.perform(get("/api/table/getTableByTableNumber/6"))
+                .andExpect(status().isOk());
+
+        /////////////////////////////
+
+        mockMvc.perform(get("/api/table/getTableByTableNumber/1000"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Couldn't find table with table number: 1000"));
 

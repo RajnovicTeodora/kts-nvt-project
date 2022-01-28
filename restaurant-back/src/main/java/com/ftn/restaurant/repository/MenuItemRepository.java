@@ -23,9 +23,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     @Query("select m from MenuItem m where m.id = :id")
     Optional<MenuItem> findByMenuItemId(long id);
 
-    @Query("select m from MenuItem m where m.name = :name and m.image = :img")
-    Optional<MenuItem> findByMenuItemNameAndImage(String name, String img);
-
     @Query("select m from MenuItem m where m.deleted = false and m.approved = false and ( lower(m.name) like lower(concat('%', :searchName,'%')))")
     List<MenuItem> findAll(String searchName);
 

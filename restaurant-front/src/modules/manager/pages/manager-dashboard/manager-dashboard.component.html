@@ -36,7 +36,12 @@
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onLogoutButtonClicked()"
+      id="logout-button"
+    >
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -77,6 +82,7 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 <app-change-password
   *ngIf="this.showModalPasswordChange"
   (onClose)="onPasswordChangeClose()"

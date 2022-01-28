@@ -25,7 +25,6 @@ export class IngredientsTableComponent implements OnInit {
   displayedColumns: string[] = ['name', "isAlergen","delete"];
   dataSource: MatTableDataSource<Ingredient> = new MatTableDataSource();
   observable: Observable<any>;
-
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 

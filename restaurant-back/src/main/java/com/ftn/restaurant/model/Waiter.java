@@ -1,7 +1,5 @@
 package com.ftn.restaurant.model;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 
 import com.ftn.restaurant.dto.EmployeeDTO;
@@ -25,11 +23,10 @@ public class Waiter extends Employee{
 
     public Waiter(EmployeeDTO employeeDTO){
         super(employeeDTO);
-        this.setRole(new UserRole("WAITER"));
     }
 
     public Waiter() {
-        this.setRole(new UserRole("WAITER"));
+        super();
     }
 
     public Waiter(String username, String password, boolean deleted) {

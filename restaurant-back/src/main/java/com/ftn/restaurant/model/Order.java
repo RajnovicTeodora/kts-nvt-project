@@ -66,6 +66,16 @@ public class Order {
         this.orderedItems = orderedItems;
     }
 
+    public Order(boolean isPaid, double totalPrice, LocalDate date, String note, LocalTime time, List<OrderedItem> orderedItems, int orderNumber) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.note = note;
+        this.time = time;
+        this.orderedItems = orderedItems;
+        this.orderNumber = orderNumber;
+    }
+
     public void addOrderedItem(OrderedItem orderItem) {
         if (orderItem == null)
             return;

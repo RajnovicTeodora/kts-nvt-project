@@ -10,6 +10,7 @@ import { Order } from 'src/modules/shared/models/order';
 import { OrderedItem } from 'src/modules/shared/models/ordered-item';
 import { UserWithToken } from 'src/modules/shared/models/user-with-token';
 import { OrderService } from 'src/modules/shared/services/order-service/order.service';
+import { RestaurantTableService } from 'src/modules/shared/services/restaurant-table-service/restaurant-table.service';
 
 @Component({
   selector: 'app-create-order',
@@ -37,7 +38,8 @@ export class CreateOrderComponent implements OnInit {
     private observer: BreakpointObserver,
     private toastr: ToastrService,
     private orderService: OrderService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private restaurantTableService: RestaurantTableService
   ) {
     this.totalCost = 0;
     this.showOrderedItemDetails = false;
@@ -106,19 +108,28 @@ export class CreateOrderComponent implements OnInit {
       const temp = new BehaviorSubject<UserWithToken>(
         JSON.parse(localStorage.getItem('currentUser')!)
       );
-      let tableId = this.activatedRoute.snapshot.paramMap.get('parameter');
+      let tableNum = this.activatedRoute.snapshot.paramMap.get('parameter');
       order.waiterUsername = temp.value.username;
-      order.tableId = Number(tableId);
-      this.orderService.createOrder(order).subscribe({
-        next: (result) => {
-          this.toastr.success('Succesfully added new order.');
-          this.createdOrderId = result;
-          this.showPaymentModal = true;
-        },
-        error: (data) => {
-          this.toastr.error(data.error);
-        },
-      });
+      this.restaurantTableService
+        .getRestaurantTableId(Number(tableNum))
+        .subscribe({
+          next: (result) => {
+            order.tableId = result;
+            this.orderService.createOrder(order).subscribe({
+              next: (result) => {
+                this.toastr.success('Succesfully added new order.');
+                this.createdOrderId = result;
+                this.showPaymentModal = true;
+              },
+              error: (data) => {
+                this.toastr.error(data.error);
+              },
+            });
+          },
+          error: (data) => {
+            this.toastr.error(data.error);
+          },
+        });
     }
   }
 

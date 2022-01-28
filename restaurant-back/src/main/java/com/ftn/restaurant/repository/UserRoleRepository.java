@@ -15,4 +15,6 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
     @Query("select res from UserRole res left join fetch res.users w where w.username =?1")
     Optional<UserRole> findByUsername(String username);
 
+    Optional<UserRole> findByName(@Param("name") String name);
+
 }

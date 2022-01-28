@@ -1,5 +1,6 @@
 package com.ftn.restaurant.service;
 
+import com.ftn.restaurant.dto.CurrentMenuItemPriceDTO;
 import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
 import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
@@ -48,62 +49,66 @@ public class MenuService {
     public MenuItemPrice toggleIsMenuItemActive(long id) {
 
         Optional<MenuItemPrice> maybePrice = menuItemPriceRepository
-                    .findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(id, LocalDate.now());
+                .findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(id, LocalDate.now());
         if (!maybePrice.isPresent())
             throw new ForbiddenException("Approved menu item with " + id + " and active price not found.");
         maybePrice.get().setActive(!maybePrice.get().isActive()); //toggle
         return menuItemPriceRepository.save(maybePrice.get());
     }
 
-    public List<MenuItemPriceDTO> searchMenuItems(String group, String name){
-        List<MenuItem> menuItems = new ArrayList<MenuItem>(); 
+    public List<MenuItemDTO> searchMenuItems(String group, String name) {
+        List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-        if (group.equalsIgnoreCase("...")){
+        if (group.equalsIgnoreCase("...")) {
             List<MenuItem> all = menuItemRepository.findAll();
             for (MenuItem item : all) {
-                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
-                    if(item.isDeleted() == false && item.isApproved() == true){
+                if (item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) {
+                    if (item.isDeleted() == false && item.isApproved() == true) {
                         menuItems.add(item);
                     }
                 }
-            };
+            }
+            ;
             return collectPrices(menuItems);
         }
 
-        if (group.equalsIgnoreCase("drink")){
+        if (group.equalsIgnoreCase("drink")) {
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
-                    if(item.isDeleted() == false && item.isApproved() == true){
+                if (item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) {
+                    if (item.isDeleted() == false && item.isApproved() == true) {
                         menuItems.add(item);
                     }
                 }
-            };
+            }
+            ;
             return collectPrices(menuItems);
-        } 
+        }
 
-        if (group.equalsIgnoreCase("dish")){
+        if (group.equalsIgnoreCase("dish")) {
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if(item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")){
-                    if(item.isDeleted() == false && item.isApproved() == true){
+                if (item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) {
+                    if (item.isDeleted() == false && item.isApproved() == true) {
                         menuItems.add(item);
                     }
                 }
-            };
+            }
+            ;
             return collectPrices(menuItems);
-        } 
+        }
 
         int groupIndex = DrinkType.isValid(group);
         if (groupIndex != -1) {
             List<Drink> allDrinks = drinkRepository.findAll();
             for (Drink item : allDrinks) {
-                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)){
-                    if(item.isDeleted() == false && item.isApproved() == true){
+                if ((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDrinkType() == DrinkType.valueOf(group)) {
+                    if (item.isDeleted() == false && item.isApproved() == true) {
                         menuItems.add(item);
                     }
                 }
-            };
+            }
+            ;
             return collectPrices(menuItems);
         }
 
@@ -111,40 +116,47 @@ public class MenuService {
         if (groupIndex != -1) {
             List<Dish> allDishes = dishRepository.findAll();
             for (Dish item : allDishes) {
-                if((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)){
-                    if(item.isDeleted() == false && item.isApproved() == true){
+                if ((item.getName().toLowerCase().contains(name.toLowerCase()) || name.equalsIgnoreCase("...")) && item.getDishType() == DishType.valueOf(group)) {
+                    if (item.isDeleted() == false && item.isApproved() == true) {
                         menuItems.add(item);
                     }
                 }
-            };
+            }
+            ;
             return collectPrices(menuItems);
         }
 
         throw new MenuItemNotFoundException("Invalid group for filtering menu items!");
     }
 
-    private List<MenuItemPriceDTO> collectPrices(List<MenuItem> menuItems){
-        List<MenuItemPriceDTO> itemsDTOs = new ArrayList<MenuItemPriceDTO>(); 
+    private List<MenuItemDTO> collectPrices(List<MenuItem> menuItems) {
+        List<MenuItemDTO> itemsDTOs = new ArrayList<MenuItemDTO>();
 
         for (MenuItem item : menuItems) {
             Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
             if (optionalPrice.isPresent() && optionalPrice.get().isActive() == true) {
-                itemsDTOs.add(new MenuItemPriceDTO(optionalPrice.get()));
-            } 
+                itemsDTOs.add(new MenuItemDTO(item));
+            }
         }
 
         return itemsDTOs;
     }
 
-    public List<MenuItemPriceDTO> getActiveMenuItem(String searchName) {
-        List<MenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
+    public List<CurrentMenuItemPriceDTO> getActiveMenuItem(String searchName) {
+        List<CurrentMenuItemPriceDTO> menuItemPriceDTOS = new ArrayList<>();
         menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria(searchName).forEach(item -> {
             Optional<MenuItemPrice> price = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
-            if(price.isPresent()){
-                menuItemPriceDTOS.add(new MenuItemPriceDTO(price.get()));
-            }else{
+            Optional<MenuItemPrice> currentPrice = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(item.getId(), LocalDate.now());
+            if (price.isPresent()) {
+                if (currentPrice.isPresent()) {
+                    menuItemPriceDTOS.add(new CurrentMenuItemPriceDTO(price.get(), currentPrice.get().getPrice(), currentPrice.get().getPurchasePrice()));
+                } else {
+                    //Item was added today
+                    menuItemPriceDTOS.add(new CurrentMenuItemPriceDTO(price.get(), 0, 0));
+                }
+            } else {
                 MenuItemDTO menuItemDTO = new MenuItemDTO(item);
-                menuItemPriceDTOS.add(new MenuItemPriceDTO(menuItemDTO, 0, 0, false, true));
+                menuItemPriceDTOS.add(new CurrentMenuItemPriceDTO(menuItemDTO, 0, 0, false, true, 0, 0));
             }
         });
         return menuItemPriceDTOS;
@@ -158,10 +170,10 @@ public class MenuService {
         //Get last price
         Optional<MenuItemPrice> menuItemPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(id);
 
-        if (menuItemPrice.isPresent()){
-           menuItemPrice.get().setActive(false);
-           menuItemPrice.get().setDateTo(LocalDate.now());
-           menuItemPriceRepository.save(menuItemPrice.get());
+        if (menuItemPrice.isPresent()) {
+            menuItemPrice.get().setActive(false);
+            menuItemPrice.get().setDateTo(LocalDate.now());
+            menuItemPriceRepository.save(menuItemPrice.get());
         }
         menuItem.get().setDeleted(true);
         return menuItemRepository.save(menuItem.get());

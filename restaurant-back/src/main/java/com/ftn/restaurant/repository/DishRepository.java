@@ -22,4 +22,11 @@ public interface DishRepository extends JpaRepository<Dish, Long> {
     @Query("SELECT d from Dish d where" +
             " (lower(d.name) LIKE lower(concat('%',:name,'%')) OR :name = '...') AND (:type = null or :type = d.dishType ) AND d.deleted = false")
     List<MenuItem> findByNameAndType(@Param("name") String name, @Param("type") DishType type);
+
+    @Query("SELECT d from Dish d where" +
+            " d.approved = true AND d.deleted = false")
+    List<Dish> findAproved();
+
+    @Query("SELECT d from Dish d where d.approved = true AND d.deleted = false")
+    List<Dish> getApprovedDishes();
 }

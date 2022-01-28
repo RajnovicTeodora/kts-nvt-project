@@ -20,9 +20,16 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
 import { InputIngredientDialogComponent } from './components/input-ingredient-dialog/input-ingredient-dialog.component';
 import { BadgeComponent } from './components/badge/badge.component';
 import { ReplaceUnderscorePipe } from './pipes/replace-underscore.pipe';
+import { EmployeesComponent } from './components/employees/employees.component';
 import { AfterLogoutComponent } from './components/after-logout/after-logout.component';
 import { ConfirmActionComponent } from './components/confirm-action/confirm-action.component';
 import { DeleteIngredientDialogComponent } from './components/delete-ingredient-dialog/delete-ingredient-dialog.component';
+import { DishTableComponent } from './components/dish-table/dish-table.component';
+import { NewOrdersComponent } from './components/new-orders/new-orders.component';
+import { AcceptedOrdersComponent } from './components/accepted-orders/accepted-orders.component';
+import { TableIngredientsDialogComponent } from './components/table-ingredients-dialog/table-ingredients-dialog.component';
+import { ListNewOrdersComponent } from './components/list-new-orders/list-new-orders.component';
+import { ListAcceptedOrdersComponent } from './components/list-accepted-orders/list-accepted-orders.component';
 import { ViewNotificationsComponent } from './components/view-notifications/view-notifications.component';
 import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
 
@@ -41,9 +48,16 @@ import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    EmployeesComponent,
     AfterLogoutComponent,
     ConfirmActionComponent,
     DeleteIngredientDialogComponent,
+    DishTableComponent,
+    NewOrdersComponent,
+    AcceptedOrdersComponent,
+    TableIngredientsDialogComponent,
+    ListNewOrdersComponent,
+    ListAcceptedOrdersComponent,
     ViewNotificationsComponent,
     ShortenStringPipe,
   ],
@@ -74,9 +88,16 @@ import { ShortenStringPipe } from './pipes/shorten-string/shorten-string.pipe';
     IngredientsTableComponent, 
     InputIngredientDialogComponent,
     ReplaceUnderscorePipe,
+    EmployeesComponent,
+    DeleteIngredientDialogComponent,
+    NewOrdersComponent,
+    AcceptedOrdersComponent,
+    DishTableComponent,
     AfterLogoutComponent,
     ConfirmActionComponent,
     DeleteIngredientDialogComponent,
+    ListNewOrdersComponent,
+    ListAcceptedOrdersComponent,
     ViewNotificationsComponent,
   ],
   providers: [

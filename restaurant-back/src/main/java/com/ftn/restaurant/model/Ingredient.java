@@ -64,5 +64,5 @@ public class Ingredient {
         isAlergen = alergen;
     }
 
-
+    public void setId(Long id){ this.id = id;}
 }
