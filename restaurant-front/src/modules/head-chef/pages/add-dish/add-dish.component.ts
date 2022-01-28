@@ -19,13 +19,14 @@ export class AddDishComponent implements OnInit {
   fileName = '';
   url: any;
   isImageSaved: boolean = false;
+  isSaved="false";
 
   dishTypes: Select[] = [
-    {value: 'DESERT', viewValue: 'desert'},
-    {value: 'ENTREE', viewValue: 'entree'},
-    {value: 'MAIN_DISH', viewValue: 'main dish'},
-    {value: 'SALAD', viewValue: 'salad'},
-    {value: 'SOUP', viewValue: 'soup'},
+    {value: 'DESERT', viewValue: 'Desert'},
+    {value: 'ENTREE', viewValue: 'Entree'},
+    {value: 'MAIN_DISH', viewValue: 'Main dish'},
+    {value: 'SALAD', viewValue: 'Salad'},
+    {value: 'SOUP', viewValue: 'Soup'},
 ];
 
   selectedType: string;
@@ -77,10 +78,19 @@ export class AddDishComponent implements OnInit {
         ingredients: this.listIngredients
       }
       this.dishService.addDish(newDish).subscribe(
-        (result: any)=>{
-          this.toastr.success("You added dish!");
-          console.log(result);
-      });
+      {
+        next: (success) => {
+          this.toastr.success(
+            'Successfully added ' + success.name
+          );
+          this.isSaved = "true";
+        },
+        error: (error) => {
+          this.toastr.error('Item already exists!');
+          console.log(error);this.isSaved = "false";
+        },
+      }
+      );
       }
   }
 
