@@ -85,7 +85,7 @@
         <ng-container *ngFor="let table of activeArea.tables">
           <button mat-raised-button cdkDragBoundary=".boundary"
           cdkDrag cdkDragDisabled [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
-          (click)="onRestaurantTableShowClicked(table.id)"
+          (click)="onRestaurantTableShowClicked(table.tableNum)"
           [class]="table.waiterUsername === user.username ? 'claimedTableBttn' : 'unclaimedTableBttn'">
           {{table.tableNum}}</button>
         </ng-container>

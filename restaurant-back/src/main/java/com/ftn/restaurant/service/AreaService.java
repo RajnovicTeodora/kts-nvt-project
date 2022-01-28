@@ -11,6 +11,7 @@ import com.ftn.restaurant.exception.AreaAlreadyExistsException;
 import com.ftn.restaurant.exception.AreaNotFoundException;
 import com.ftn.restaurant.model.Area;
 import com.ftn.restaurant.model.RestaurantTable;
+import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 
@@ -28,6 +29,9 @@ public class AreaService {
     
     @Autowired
     private TableService tableService;
+
+    @Autowired
+    private WaiterService waiterService;
 
     public Area addArea(String name) throws AreaAlreadyExistsException{
         if(areaRepository.findByName(name).isPresent()){
@@ -92,7 +96,13 @@ public class AreaService {
             List<RestaurantTable> tables = tableRepository.findByAreaId(area.getId());
             List<RestaurantTableDTO> tableDTOs = new ArrayList<RestaurantTableDTO>();
             for (RestaurantTable table : tables) {
-                tableDTOs.add(new RestaurantTableDTO(table));
+                RestaurantTableDTO restaurantTableDTO = new RestaurantTableDTO(table);
+                if(table.getWaiter() != null){
+                    Optional<Waiter> waiter = waiterService.findById(table.getWaiter().getId());
+                    waiter.ifPresent(value -> restaurantTableDTO.setWaiterUsername(waiter.get().getUsername()));
+                }else
+                    restaurantTableDTO.setWaiterUsername("");
+                tableDTOs.add(restaurantTableDTO);
             }
             areaDto.setTables(tableDTOs);
             areas.add(areaDto);

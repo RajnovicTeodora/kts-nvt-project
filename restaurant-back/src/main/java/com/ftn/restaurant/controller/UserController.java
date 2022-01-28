@@ -59,7 +59,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER')")
+    //@PreAuthorize("hasAnyRole('CHEF', 'BARTENDER', 'HEAD_CHEF', 'WAITER', 'ADMIN', 'MANAGER')")
     @PostMapping(value = "/switchToActiveAccount", consumes = "application/json")
     public ResponseEntity<?> switchToActiveAccount(@RequestBody LoginDTO loginDTO){
         try {

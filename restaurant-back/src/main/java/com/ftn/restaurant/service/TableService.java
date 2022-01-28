@@ -179,4 +179,12 @@ public class TableService {
     public Optional<RestaurantTable> findByTableNumber(int tableNum){
         return tableRepository.getTableByTableNumber(tableNum);
     }
+
+    public long getTableIdByTableNumber(int tableNum){
+        Optional<RestaurantTable> res = findByTableNumber(tableNum);
+        if(res.isPresent()){
+            return res.get().getId();
+        }
+        throw new NotFoundException("Couldn't find table with table number: " + tableNum);
+    }
 }

@@ -26,10 +26,6 @@ import { UserService } from 'src/modules/shared/services/user-service/user.servi
 export class WaiterDashboardComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
-  pageSize: number;
-  currentPage: number;
-  data: any[];
-  imagePath: string;
   user: UserWithToken;
   showModalPasswordChange: boolean;
   showModalLogout: boolean;
@@ -47,11 +43,6 @@ export class WaiterDashboardComponent implements OnInit {
   tablePositions: any[];
 
 
-  data2 = [
-    { id: 1, url: 'assets/images/floor3.png' },
-    { id: 2, url: 'assets/images/floor2.png' },
-  ];
-
   constructor(
     private observer: BreakpointObserver,
     public router: Router,
@@ -60,10 +51,6 @@ export class WaiterDashboardComponent implements OnInit {
     private adminService: AdminService,
     private notifService: NotificationService
   ) {
-    this.pageSize = 1;
-    this.currentPage = 0;
-    this.data = [];
-    this.imagePath = 'assets/images/floor3.png';
     const temp = new BehaviorSubject<UserWithToken>(JSON.parse(localStorage.getItem('currentUser')!));
     this.user = temp.value;
     this.showModalPasswordChange = this.user.loggedInFirstTime;
@@ -75,10 +62,10 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = false;
     this.showNotificationsModal = false;
+    this.getAreas();
   }
 
   ngOnInit() {
-    this.getData({ pageIndex: this.currentPage, pageSize: this.pageSize });
     this.setBadgeValues();
     this.getAreas();
   }
@@ -142,17 +129,6 @@ export class WaiterDashboardComponent implements OnInit {
     );
   }
 
-  getData(obj: { pageIndex: any; pageSize: any }) {
-    let index = 0,
-      startingIndex = obj.pageIndex * obj.pageSize,
-      endingIndex = startingIndex + obj.pageSize;
-
-    this.data = this.data2.filter(() => {
-      index++;
-      return index > startingIndex && index <= endingIndex ? true : false;
-    });
-  }
-
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {
@@ -206,6 +182,7 @@ export class WaiterDashboardComponent implements OnInit {
 
   onRestaurantTableCloseClicked(item: boolean){
     this.showModalRestaurantTableOptions = -1;
+    this.getAreas();
   }
 
   onPayOrderCloseClicked(item:boolean){

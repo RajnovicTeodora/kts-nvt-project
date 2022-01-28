@@ -30,7 +30,7 @@ export class TableOptionsComponent implements OnInit {
     'view',
   ];
   dataSource = [...this.element_data];
-  @ViewChild(MatTable) matTable: MatTable<number>;
+  @ViewChild('tableorders') matTable: MatTable<number>;
 
   constructor(
     private observer: BreakpointObserver,
