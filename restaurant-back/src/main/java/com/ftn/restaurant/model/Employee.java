@@ -1,16 +1,11 @@
 package com.ftn.restaurant.model;
 
-import static javax.persistence.InheritanceType.JOINED;
 import javax.persistence.*;
-
-import com.ftn.restaurant.dto.EmployeeDTO;
-
 import java.util.List;
 
 @Entity
-@Table(name = "employees")
-@Inheritance(strategy=JOINED)
-public abstract class Employee extends User {
+@Table(name = "employee")
+public class Employee extends User {
 
     @Column(name = "name")
     private String name;
@@ -18,7 +13,7 @@ public abstract class Employee extends User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "image", nullable = false, columnDefinition="text", length=10485760)
+    @Column(name = "image")
     private String image;
 
     @Column(name = "telephone")
@@ -26,20 +21,6 @@ public abstract class Employee extends User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
     private List<Paychecks> paychecksList;
-
-    @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY, cascade= CascadeType.ALL)
-    private List<Notification> notifications;
-
-    public Employee() {
-    }
-
-    public Employee(String name, String surname, String image, String telephone, List<Paychecks> paychecksList) {
-        this.name = name;
-        this.surname = surname;
-        this.image = image;
-        this.telephone = telephone;
-        this.paychecksList = paychecksList;
-    }
 
     public List<Paychecks> getPaychecksList() {
         return paychecksList;
@@ -79,26 +60,5 @@ public abstract class Employee extends User {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public Employee(EmployeeDTO employeeDTO){
-        super(employeeDTO.getUsername(), employeeDTO.getPassword(), false);
-        this.name = employeeDTO.getName();
-        this.surname = employeeDTO.getSurname();
-        this.image = employeeDTO.getImage();
-        this.telephone = employeeDTO.getTelephone();
-    }
-
-    public Employee(String username, String password, boolean deleted) {
-        super(username, password, deleted);
-    }
-
-
-    public List<Notification> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(List<Notification> notifications) {
-        this.notifications = notifications;
     }
 }
