@@ -36,7 +36,6 @@ public class MenuItemPriceRepositoryTest {
     @Autowired
     private MenuItemRepository menuItemRepository;
 
-    //TODO T
     @Before
     public void setUp() {
         MenuItemPrice menuItemPrice1 = new MenuItemPrice(TWO_DAYS_AGO, YESTERDAY, 5, false, 3.5, null);

@@ -2,8 +2,7 @@ package com.ftn.restaurant.repository;
 
 import com.ftn.restaurant.model.MenuItem;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,9 +18,6 @@ public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
     Optional<MenuItem> findById(@Param("id") long id);
 
     Optional<MenuItem> findByIdAndDeletedFalse(@Param("id") long id);
-
-    @Query("select m from MenuItem m where m.id = :id")
-    Optional<MenuItem> findByMenuItemId(long id);
 
     @Query("select m from MenuItem m where m.deleted = false and m.approved = false and ( lower(m.name) like lower(concat('%', :searchName,'%')))")
     List<MenuItem> findAll(String searchName);
