@@ -57,34 +57,23 @@ export class AddDrinkManagerComponent implements OnInit {
   }
 
   saveDrink() {
-    if (
-      this.addDrinkForm.value.name === null ||
-      this.addDrinkForm.get('container')?.value === '' ||
-      this.addDrinkForm.get('drinkType')?.value === '' ||
-      this.isImageSaved == false
-    ) {
-      this.toastr.error('All fields must be filled in!');
-    } else {
-      const newDrink: AddManagerDrink = {
-        name: this.addDrinkForm.value.name,
-        image: this.url.split(',')[1],
-        drinkType: this.addDrinkForm.value.drinkType,
-        containerType: this.addDrinkForm.value.container,
-        ingredients: new Array<Ingredient>(),
-      };
-      this.itemService.saveMenuItem(newDrink).subscribe({
-        next: (success) => {
-          this.toastr.success(
-            'Successfully added and approved ' + success.name
-          );
-          this.dialogRef.close(success);
-        },
-        error: (error) => {
-          this.toastr.error('Unable to add new item');
-          console.log(error);
-        },
-      });
-    }
+    const newDrink: AddManagerDrink = {
+      name: this.addDrinkForm.value.name,
+      image: this.url.split(',')[1],
+      drinkType: this.addDrinkForm.value.drinkType,
+      containerType: this.addDrinkForm.value.container,
+      ingredients: new Array<Ingredient>(),
+    };
+    this.itemService.saveMenuItem(newDrink).subscribe({
+      next: (success) => {
+        this.toastr.success('Successfully added and approved ' + success.name);
+        this.dialogRef.close(success);
+      },
+      error: (error) => {
+        this.toastr.error('Unable to add new item');
+        console.log(error);
+      },
+    });
   }
 
   cancel() {

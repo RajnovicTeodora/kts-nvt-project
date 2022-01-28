@@ -17,8 +17,8 @@
       id="price-form"
       [formGroup]="priceForm"
     >
+      <p>Current price: {{ this.item.currentPrice }}</p>
       <mat-form-field>
-        <p>Current price: {{ this.item.currentPrice }}</p>
         <input
           matInput
           class="form-control"
@@ -31,8 +31,8 @@
           min="0"
         />
       </mat-form-field>
+      <p>Current purchase price: {{ this.item.currentPurchasePrice }}</p>
       <mat-form-field>
-        <p>Current purchase price: {{ this.item.currentPurchasePrice }}</p>
         <input
           matInput
           class="form-control"
