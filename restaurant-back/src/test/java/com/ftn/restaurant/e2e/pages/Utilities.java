@@ -43,6 +43,10 @@ public class Utilities {
 		return new WebDriverWait(driver, wait).until(ExpectedConditions.elementToBeClickable(element));
 	}
 
+	public static Boolean invisibilityWait(WebDriver driver, int wait, String xpath){
+		return new WebDriverWait(driver, wait).until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(xpath)));
+	}
+
 	public static boolean isPresent(WebDriver driver, By locator) {
 
 		try {

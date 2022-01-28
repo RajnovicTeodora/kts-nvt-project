@@ -17,9 +17,9 @@ export class OtherAccountsComponent implements OnInit {
   @Output() onOtherAccountsClose = new EventEmitter();
   @Output() onLoginOpen = new EventEmitter();
   closeButtonShow: boolean;
-  waiterList: UserList;//Array<UserWithBadgeNum>;
-  bartenderList: UserList;//Array<UserWithBadgeNum>;
-  chefList: UserList;//Array<UserWithBadgeNum>;
+  waiterList: UserList;
+  bartenderList: UserList;
+  chefList: UserList;
   loggedUser = new BehaviorSubject<UserWithToken>(
     JSON.parse(localStorage.getItem('currentUser')!)
   );
@@ -39,41 +39,6 @@ export class OtherAccountsComponent implements OnInit {
     //this.setBadgeValues();
   }
 
-  /*setBadgeValues(){
-    this.waiterList = new Array; 
-    this.bartenderList = new Array; 
-    this.chefList = new Array; 
-    const listnames = ['WAITER_LIST', 'BARTENDER_LIST', 'CHEF_LIST'];
-    for(let i in listnames){
-      const users = new BehaviorSubject<UserList>(
-        JSON.parse(localStorage.getItem(listnames[i])!)
-      );
-      if(users.value === null){
-        if(listnames[i] === 'WAITER_LIST') this.waiterList = new Array; 
-        else if(listnames[i] === 'BARTENDER_LIST' ) this.bartenderList = new Array;
-        else  this.chefList = new Array; 
-      }
-      else
-        users.value.list.forEach((value, index) => {
-          this.notifService.getNumberOfActiveNotificationsForWaiter(value.username).subscribe(
-            {
-              next: (result) => {
-                let badgeNum = result.length;
-                if(listnames[i] === 'WAITER_LIST') this.waiterList.push(new UserWithBadgeNum(badgeNum, value));
-                else if(listnames[i] === 'BARTENDER_LIST' ) this.bartenderList.push(new UserWithBadgeNum(badgeNum, value));
-                else  this.chefList.push(new UserWithBadgeNum(badgeNum, value));          
-              },
-              error: data => {
-                  this.toastr.error(data.error);            
-              }
-            }
-          );      
-        });
-    }
-    
-  }*/
-
-
   login() {
     this.onLoginOpen.emit(true);
   }
@@ -90,7 +55,7 @@ export class OtherAccountsComponent implements OnInit {
   }
 
   changeAccount(username: string, listName: string) {
-    if (username === this.loggedUser.value.username) {
+    if (this.loggedUser.value != null && username === this.loggedUser.value.username) {
       this.toastr.info('Already logged in as ' + username);
     } else {
       const data = this.userService.getUserByUsernameAndListName(

@@ -108,4 +108,16 @@ public class TableController {
             return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
         }
     }
+
+    @ResponseBody
+    @GetMapping(value = "/getTableIdByTableNumber/{tableNum}")
+    @PreAuthorize("hasRole('WAITER')")
+    public ResponseEntity<?> getTableIdByTableNumber( @PathVariable("tableNum") int tableNum) {
+        try {
+            return new ResponseEntity<>(tableService.getTableIdByTableNumber(tableNum), HttpStatus.OK);
+        }
+        catch (NotFoundException e){
+            return new ResponseEntity<>("Couldn't find table with table number: " + tableNum, HttpStatus.NOT_FOUND);
+        }
+    }
 }

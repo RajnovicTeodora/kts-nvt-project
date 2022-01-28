@@ -49,31 +49,40 @@
     <mat-divider></mat-divider>
 
     <mat-action-list>
-      <mat-list-item (click)="this.activeView = '1'">Item view</mat-list-item>
-      <mat-list-item (click)="this.activeView = '2'">Menu</mat-list-item>
-      <mat-list-item (click)="this.activeView = '3'">Paychecks</mat-list-item>
-      <mat-list-item (click)="this.activeView = '4'">Reports</mat-list-item>
+      <mat-list-item (click)="this.activeView = '1'">
+        <img mat-icon [src]="'assets/images/3272747.png'" class="side-icon" />
+        Item view
+      </mat-list-item>
+      <mat-list-item (click)="this.activeView = '2'">
+        <img mat-icon [src]="'assets/images/6606806.png'" class="side-icon" />
+        Menu</mat-list-item
+      >
+      <mat-list-item (click)="this.activeView = '3'">
+        <img mat-icon [src]="'assets/images/4150997.png'" class="side-icon" />
+        Paychecks</mat-list-item
+      >
+      <mat-list-item (click)="this.activeView = '4'">
+        <img mat-icon [src]="'assets/images/3109544.png'" class="side-icon" />
+        Reports</mat-list-item
+      >
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="content mat-elevation-z8">
-      <div class="row">
-        <div class="col">
-          <div fxLayout="row wrap">
-            <ng-container>
-              <app-item-view *ngIf="this.activeView === '1'"></app-item-view>
-              <app-menu-view *ngIf="this.activeView === '2'"></app-menu-view>
-              <app-paycheck-table
-                *ngIf="this.activeView === '3'"
-              ></app-paycheck-table>
-              <app-report *ngIf="this.activeView === '4'"></app-report>
-            </ng-container>
-          </div>
-        </div>
-      </div>
+    <div class="content">
+      <app-item-view
+        class="items"
+        *ngIf="this.activeView === '1'"
+      ></app-item-view>
+      <app-menu-view *ngIf="this.activeView === '2'"></app-menu-view>
+      <app-employees
+        class="paychecks"
+        *ngIf="this.activeView === '3'"
+      ></app-employees>
+      <app-report *ngIf="this.activeView === '4'"></app-report>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 <app-change-password
   *ngIf="this.showModalPasswordChange"
   (onClose)="onPasswordChangeClose()"

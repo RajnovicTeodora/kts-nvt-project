@@ -1,6 +1,7 @@
 package com.ftn.restaurant.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import com.ftn.restaurant.exception.AreaAlreadyExistsException;
 import com.ftn.restaurant.exception.AreaNotFoundException;
 import com.ftn.restaurant.model.Area;
 import com.ftn.restaurant.model.RestaurantTable;
+import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.AreaRepository;
 import com.ftn.restaurant.repository.TableRepository;
 
@@ -27,6 +29,9 @@ public class AreaService {
     
     @Autowired
     private TableService tableService;
+
+    @Autowired
+    private WaiterService waiterService;
 
     public Area addArea(String name) throws AreaAlreadyExistsException{
         if(areaRepository.findByName(name).isPresent()){
@@ -64,6 +69,9 @@ public class AreaService {
         for (RestaurantTableDTO tableDTO : areaDTO.getTables()) {
             if(tableRepository.findById(tableDTO.getId()).isPresent()){
                 RestaurantTable table = tableRepository.findByTableId(tableDTO.getId());
+                // if (tableDTO.getTableNum() != i+1){
+                //     table.setTableNum(i+1);
+                // }
                 table.setPositionX(tableDTO.getX());
                 table.setPositionY(tableDTO.getY());
                 tableRepository.saveAndFlush(table);
@@ -75,9 +83,9 @@ public class AreaService {
         areaRepository.saveAndFlush(area);
 
         return area;
-
-
     }
+
+    
 
     public List<AreaDTO> getAllAreas(){
         List<AreaDTO> areas = new ArrayList<AreaDTO>();
@@ -88,7 +96,13 @@ public class AreaService {
             List<RestaurantTable> tables = tableRepository.findByAreaId(area.getId());
             List<RestaurantTableDTO> tableDTOs = new ArrayList<RestaurantTableDTO>();
             for (RestaurantTable table : tables) {
-                tableDTOs.add(new RestaurantTableDTO(table));
+                RestaurantTableDTO restaurantTableDTO = new RestaurantTableDTO(table);
+                if(table.getWaiter() != null){
+                    Optional<Waiter> waiter = waiterService.findById(table.getWaiter().getId());
+                    waiter.ifPresent(value -> restaurantTableDTO.setWaiterUsername(waiter.get().getUsername()));
+                }else
+                    restaurantTableDTO.setWaiterUsername("");
+                tableDTOs.add(restaurantTableDTO);
             }
             areaDto.setTables(tableDTOs);
             areas.add(areaDto);
@@ -102,6 +116,10 @@ public class AreaService {
     	if(!optArea.isPresent()) {
     		throw new AreaNotFoundException("Area not found!");
     	}
-        return optArea.get();
+        Area area = optArea.get();
+        List<RestaurantTable> tables = tableRepository.findByAreaId(area.getId());
+        area.setTables(tables);
+
+        return area;
     }
 }

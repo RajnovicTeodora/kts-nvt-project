@@ -1,7 +1,6 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.UpdatePaycheckDTO;
-import com.ftn.restaurant.dto.UserPaycheckDTO;
 import com.ftn.restaurant.exception.EmployeeNotFoundException;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Employee;

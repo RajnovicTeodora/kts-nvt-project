@@ -13,14 +13,14 @@ import { WaiterDashboardComponent } from '../waiter/pages/waiter-dashboard/waite
 import { EditOrderComponent } from '../waiter/pages/edit-order/edit-order.component';
 import { AfterLogoutComponent } from '../shared/components/after-logout/after-logout.component';
 import { BartenderDashboardComponent } from '../bartender/pages/bartender-dashboard/bartender-dashboard.component';
-import { PaycheckTableComponent } from '../manager/pages/paycheck-table/paycheck-table.component';
+import { EditAreaComponent } from '../admin/pages/edit-area/edit-area.component';
+import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
 import { ChefDashboardComponent } from '../chef/pages/chef-dashboard/chef-dashboard.component';
 import { AddDishComponent } from '../head-chef/pages/add-dish/add-dish.component';
 import { HeadChefDashboardComponent } from '../head-chef/pages/head-chef-dashboard/head-chef-dashboard.component';
 import { SelectMenuItemsComponent } from '../waiter/components/select-menu-items/select-menu-items.component';
 import { MenuViewComponent } from '../manager/pages/menu-view/menu-view.component';
 import { ReportComponent } from '../manager/pages/report/report.component';
-import { AddDrinkComponent } from '../bartender/pages/add-drink/add-drink.component';
 import { NewOrdersComponent } from '../shared/components/new-orders/new-orders.component';
 import { AcceptedOrdersComponent } from '../shared/components/accepted-orders/accepted-orders.component';
 import { CreateOrderComponent } from '../waiter/pages/create-order/create-order.component';
@@ -119,18 +119,11 @@ const routes: Routes = [
     data: { expectedRoles: 'MANAGER' },
   },
   {
-    path: 'paychecks',
+    path: 'edit-area',
     pathMatch: 'full',
-    component: PaycheckTableComponent,
+    component: EditAreaComponent,
     canActivate: [RoleGuard],
-    data: { expectedRoles: 'MANAGER' },
-  },
-  {
-    path: 'select-menu-items',
-    pathMatch: 'full',
-    component: SelectMenuItemsComponent,
-    canActivate: [RoleGuard],
-    data: { expectedRoles: 'WAITER' },
+    data: { expectedRoles: 'ADMIN' },
   },
   {
     path: 'add-dish',

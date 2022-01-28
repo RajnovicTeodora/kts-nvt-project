@@ -11,7 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +34,7 @@ import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.Waiter;
 import com.ftn.restaurant.repository.EmployeeRepository;
 import com.ftn.restaurant.repository.UserRepository;
+import com.ftn.restaurant.repository.UserRoleRepository;
 
 
 @Service
@@ -45,6 +45,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -85,10 +88,13 @@ public class UserService implements UserDetailsService {
             default:
                 throw new BadUserRoleException("Unknown user role!");
         }
+        newEmployee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
+        newEmployee.setRole(userRoleRepository.findByName(employeeDTO.getRole()).get());
         ArrayList<Paychecks> paycheckList = new ArrayList<Paychecks>();
         paycheckList.add(new Paychecks(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1), null, 100, newEmployee));
         newEmployee.setPaychecksList(paycheckList);
 
+        userRepository.saveAndFlush(newEmployee);
         employeeRepository.saveAndFlush(newEmployee);
         return newEmployee;
     }
@@ -97,15 +103,25 @@ public class UserService implements UserDetailsService {
         Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
         if(!optEmployee.isPresent()) return null;
         Employee employee = optEmployee.get();
-        if(employee.getPassword()!= employeeDTO.getPassword()) employee.setPassword(employeeDTO.getPassword());
-        if(employee.getName()!= employeeDTO.getName()) employee.setName(employeeDTO.getName());
-        if(employee.getSurname()!= employeeDTO.getSurname()) employee.setSurname(employeeDTO.getSurname());
-        if(employee.getImage()!= employeeDTO.getImage()) employee.setImage(employeeDTO.getImage());
-        if(employee.getTelephone()!= employeeDTO.getTelephone()) employee.setTelephone(employeeDTO.getTelephone());
+        if(!employee.getName().equals(employeeDTO.getName())) employee.setName(employeeDTO.getName());
+        if(!employee.getSurname().equals(employeeDTO.getSurname())) employee.setSurname(employeeDTO.getSurname());
+        if(!employee.getImage().equals(employeeDTO.getImage())) employee.setImage(employeeDTO.getImage());
+        if(!employee.getTelephone().equals(employeeDTO.getTelephone())) employee.setTelephone(employeeDTO.getTelephone());
 
         employeeRepository.saveAndFlush(employee);
 
         return employee;
+    }
+
+    public Employee deleteUser(String username){
+        Optional<Employee> optEmployee = employeeRepository.findByUsername(username);
+        if(optEmployee.isPresent()){
+            Employee employee = optEmployee.get();
+            employee.setDeleted(true);
+            employeeRepository.saveAndFlush(employee);
+            return employee;
+        }
+        throw new UsernameNotFoundException("User not found!");
     }
     
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -160,6 +176,13 @@ public class UserService implements UserDetailsService {
     public List<UserDTO> getAllUsers(){
         List<UserDTO> users = new ArrayList<UserDTO>();
         userRepository.findAll().forEach(item -> users.add(new UserDTO(item)));
+        return users;
+    }
+
+    public List<EmployeeDTO> searchAndFilterEmployees(String search, String filter) {
+        List<EmployeeDTO> users = new ArrayList<EmployeeDTO>();
+        employeeRepository.findBySearchCriteriaAndUserRoleAndNotDeleted(search, filter).forEach(item -> users.add(new EmployeeDTO(item)));
+
         return users;
     }
 
