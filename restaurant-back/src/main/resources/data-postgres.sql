@@ -35,6 +35,10 @@ insert into employees (id, name, surname, image, telephone) values (7, 'slavkoo'
 insert into chef (id) values (7);
 insert into headchef (id) values (7);
 
+insert into system_user (username, password, deleted, loggedFirstTime, role_id) values ('otherWaiter', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False',  6);
+insert into employees (id, name, surname, image, telephone) values (8, 'OtherWaiter', 'Waiterric', 'nestodrr', '123654');
+insert into waiter (id) values (8);
+
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-11-01', null, 10, 2);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-09-01', '2021-09-30', 10, 3);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-10-01', null, 10, 3);
