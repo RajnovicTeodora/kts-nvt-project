@@ -1,12 +1,15 @@
 package com.ftn.restaurant.model;
 
 import javax.persistence.*;
+
+import com.ftn.restaurant.dto.EmployeeDTO;
+
 import java.util.List;
 
 @Entity
 public class Chef extends Employee {
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderedItem> orderedItems;
 
     public List<OrderedItem> getOrderedItems() {
@@ -16,4 +19,14 @@ public class Chef extends Employee {
     public void setOrderedItems(List<OrderedItem> orderedItems) {
         this.orderedItems = orderedItems;
     }
+
+    public Chef(EmployeeDTO employeeDTO){
+        super(employeeDTO);
+    }
+
+
+    public Chef() {
+        super();
+    }
+
 }

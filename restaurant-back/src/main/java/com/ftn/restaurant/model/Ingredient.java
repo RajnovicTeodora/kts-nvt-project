@@ -1,7 +1,11 @@
 package com.ftn.restaurant.model;
 
+import com.ftn.restaurant.dto.IngredientDTO;
+
 import javax.persistence.*;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -19,6 +23,31 @@ public class Ingredient {
     @Column(name = "alergen", nullable=false)
     private boolean isAlergen;
 
+    @ManyToMany(mappedBy = "activeIngredients")
+    private List<OrderedItem> orderedItems;
+
+    @ManyToMany(mappedBy = "menuItemIngredients")
+    private List<MenuItem> ingredients;
+
+    public Ingredient(IngredientDTO ingredient) {
+        this.name = ingredient.getName();
+        this.isAlergen = ingredient.isAlergen();
+        this.orderedItems = new ArrayList<>();
+    }
+
+    public Ingredient() {
+    }
+
+    public Ingredient(String name, boolean b) {
+        this.name = name;
+        this.isAlergen = b;
+        this.orderedItems = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -35,5 +64,5 @@ public class Ingredient {
         isAlergen = alergen;
     }
 
-
+    public void setId(Long id){ this.id = id;}
 }

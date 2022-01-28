@@ -1,0 +1,109 @@
+<div id="container-div">
+  <div id="img-div">
+    <img
+      src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+  </div>
+  <div id="form-holder-div">
+    <h3>Switch to other active account</h3>
+    <div class="row">
+      <mat-icon matBadgeColor="primary" matBadgePosition="before"
+        >information</mat-icon
+      >
+      <span >If account is not listed then continue to login</span>
+      <button
+        mat-flat-button
+        type="button"
+        color="primary"
+        class="btn btn-primary"
+        (click)="login()"
+      >
+        Login
+      </button>
+    </div>
+    <mat-tab-group>
+      <mat-tab *ngIf="waiterList != null ">
+        <ng-template mat-tab-label> Waiters </ng-template>
+        <mat-action-list
+          class="custom-scroll-bar"
+          *ngFor="let waiter of waiterList.list"
+        >
+          <button
+            mat-list-item
+            (click)="changeAccount(waiter.username, 'WAITER_LIST')"
+            matTooltip="Change account"
+          >
+            <span>{{ waiter.username }}</span>
+            <mat-icon
+              matBadgePosition="after"
+              color="primary"
+              *ngIf="this.loggedUser.value != null && waiter.username === this.loggedUser.value.username"
+              >check</mat-icon
+            >
+          </button>
+        </mat-action-list>
+      </mat-tab>
+      <mat-tab *ngIf="bartenderList != null ">
+        <ng-template mat-tab-label> Bartenders </ng-template>
+        <mat-action-list
+          class="custom-scroll-bar"
+          *ngFor="let barmen of bartenderList.list"
+        >
+          <button
+            mat-list-item
+            (click)="changeAccount(barmen.username, 'BARTENDER_LIST')"
+            matTooltip="Change account"
+          >
+            <span>{{ barmen.username }}</span>
+            <mat-icon
+              matBadgePosition="after"
+              color="primary"
+              *ngIf="this.loggedUser.value != null && barmen.username === this.loggedUser.value.username"
+              >check</mat-icon
+            >
+          </button>
+        </mat-action-list>
+      </mat-tab>
+      <mat-tab *ngIf="chefList != null ">
+        <ng-template mat-tab-label> Chefs </ng-template>
+        <mat-action-list
+          class="custom-scroll-bar"
+          *ngFor="let chef of chefList.list"
+        >
+          <button
+            mat-list-item
+            (click)="changeAccount(chef.username, 'CHEF_LIST')"
+            matTooltip="Change account"
+          >
+            <mat-icon
+              matBadge="8"
+              matBadgeColor="primary"
+              matBadgePosition="before"
+              >notifications</mat-icon
+            >
+            <span>{{ chef.username }}</span>
+            <mat-icon
+              matBadgePosition="after"
+              color="primary"
+              *ngIf="this.loggedUser.value != null && chef.username === this.loggedUser.value.username"
+              >check</mat-icon
+            >
+          </button>
+        </mat-action-list>
+      </mat-tab>
+    </mat-tab-group>
+    <button
+      mat-flat-button
+      *ngIf="this.closeButtonShow"
+      type="button"
+      color="accent"
+      class="btn btn-danger"
+      (click)="close()"
+    >
+      Close
+    </button>
+  </div>
+</div>
+<div class="jw-modal-background"></div>

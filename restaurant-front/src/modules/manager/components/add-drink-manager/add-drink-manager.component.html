@@ -1,0 +1,94 @@
+<h2 mat-dialog-title class="title">Add new drink</h2>
+<mat-dialog-content [formGroup]="addDrinkForm" style="white-space: pre-line">
+  <mat-grid-list cols="2" rowHeight="4:1">
+    <mat-grid-tile rowspan="2">
+      <div class="img-space">
+        <ng-container *ngIf="isImageSaved; else elseTemplate">
+          <img
+            style="max-width: 50%; max-height: 50%"
+            [src]="url"
+            alt="Image"
+          />
+        </ng-container>
+        <ng-template #elseTemplate>
+          <img
+            style="max-width: 50%; max-height: 50%"
+            src="assets/images/1176381.png"
+            class="img-responsive"
+            alt="Default image"
+          />
+        </ng-template>
+        <input
+          accept=".png, .jpg"
+          type="file"
+          id="file-upload"
+          (change)="fileChangeEvent($event)"
+          #fileInput
+        />
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field id="name" class="nameInput">
+        <input
+          matInput
+          type="text"
+          formControlName="name"
+          id="name-field"
+          required
+          placeholder="Name"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="typeInput">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="drinkType" id="drink-type-select">
+          <mat-option
+            *ngFor="let drinkType of drinkTypes"
+            [value]="drinkType.value"
+          >
+            {{ drinkType.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field class="containerInput">
+        <mat-label>Container</mat-label>
+        <mat-select formControlName="container" id="drink-container-select">
+          <mat-option
+            *ngFor="let container of containers"
+            [value]="container.value"
+          >
+            {{ container.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="cancel()"
+    id="cancel-button"
+  >
+    Cancel
+  </button>
+  <button
+    mat-flat-button
+    color="accent"
+    type="submit"
+    class="submit-button"
+    (click)="saveDrink()"
+    [disabled]="addDrinkForm.invalid || !this.isImageSaved"
+    id="submit-drink-button"
+  >
+    Save
+  </button>
+</mat-dialog-actions>

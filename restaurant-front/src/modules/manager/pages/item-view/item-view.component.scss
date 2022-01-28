@@ -1,0 +1,23 @@
+.card-deck {
+  display: flex;
+}
+
+.example-form {
+  width: 100%;
+  align-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.example-container {
+  width: 75%;
+  margin-left: 10px;
+  font-size: large;
+}
+
+.addBttn {
+  width: 20%;
+  margin-left: 10px;
+  // color: hotpink;
+  
+}

@@ -1,0 +1,145 @@
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  >
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onOtherAccountsButtonClicked()"
+    >
+      <mat-icon>login</mat-icon>
+      <span>Other account</span>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img
+      class="avatar mat-elevation-z8"
+      src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+      alt="”animated”"
+      (click)="this.router.navigate([''])"
+    />
+
+    <h4 class="name">{{ this.user.username }}</h4>
+
+    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
+      <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
+      <span>Notifications</span>
+    </button>
+
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onPasswordChangeButtonClicked()"
+    >
+      <mat-icon>settings</mat-icon>
+      <span>Change password</span>
+    </button>
+
+    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <p class="designation">Active accounts</p>
+
+    <mat-action-list
+      class="custom-scroll-bar"
+      *ngFor="let waiter of waiterList"
+    >
+      <button
+        mat-list-item
+        (click)="changeAccount(waiter.user.username)"
+        matTooltip="Change account"
+      >
+        <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
+        <span>{{ waiter.user.username }}</span>
+        <mat-icon
+          matBadgePosition="after"
+          color="primary"
+          *ngIf="waiter.user.username === this.user.username"
+          >check</mat-icon
+        >
+      </button>
+    </mat-action-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <div class="boundary">
+        <ng-container *ngFor="let table of activeArea.tables">
+          <button mat-raised-button cdkDragBoundary=".boundary"
+          cdkDrag cdkDragDisabled [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
+          (click)="onRestaurantTableShowClicked(table.tableNum)"
+          [class]="table.waiterUsername === user.username ? 'claimedTableBttn' : 'unclaimedTableBttn'">
+          {{table.tableNum}}</button>
+        </ng-container>
+      </div>
+      <div class="buttonsDiv">
+        <h1 style="color:#424242;">Areas</h1>
+        <div *ngFor="let area of areas">
+          <button
+            mat-raised-button color="accent"
+            class="areaBttn"
+            (click)="openArea(area)"
+          >
+            {{ area.name }}
+          </button>
+        </div>        
+      </div>
+
+      <app-table-options
+          *ngIf="this.showModalRestaurantTableOptions !== -1"
+          [tableNumber]="this.showModalRestaurantTableOptions"
+          [refreshRequired]="this.refreshRestaurantTableRequired"
+          (refreshFinished)="this.onRefreshFinished($event)"
+          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+        ></app-table-options>
+
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-change-password
+  *ngIf="this.showModalPasswordChange"
+  (onClose)="onPasswordChangeClose($event)"
+></app-change-password>
+<app-logout
+  *ngIf="this.showModalLogout"
+  (onLogoutClose)="onLogoutCloseClicked($event)"
+></app-logout>
+<app-other-accounts
+  *ngIf="this.showModalOtherAccounts"
+  (onOtherAccountsClose)="onOtherAccountsCloseClicked($event)"
+  (onLoginOpen)="onLoginOpenClicked($event)"
+></app-other-accounts>
+<app-login-form
+  *ngIf="this.showModalLogin"
+  (onLoginClose)="onLoginCloseClicked($event)"
+></app-login-form>
+<app-pay-order
+  *ngIf="this.showPaymentModal"
+  [currentOrderId]="this.currentOrderViewed"
+  [showPaymentQuestion]="false"
+  (onPayOrderClose)="onPayOrderCloseClicked($event)"
+></app-pay-order>
+<app-view-notifications
+  *ngIf="this.showNotificationsModal"
+  [currentUsername]="this.user.username"
+  (onNotificationsClose)="onNotificationsCloseClicked($event)"
+></app-view-notifications>
