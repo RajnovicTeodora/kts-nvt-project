@@ -13,7 +13,7 @@ public class AreasPage {
 
     private WebDriver driver;
 
-    @FindBy(className = "dugmic-area")
+    @FindBy(name = "dugmic-area")
     private List<WebElement> areaBttns;
 
     @FindBy(className = "btn-primary")
