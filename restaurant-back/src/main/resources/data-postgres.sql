@@ -77,6 +77,16 @@ values (7);
 insert into headchef (id)
 values (7);
 
+insert into system_user (username, password, deleted, loggedFirstTime, role_id)
+values ('otherWaiter', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'False', 'False', 6);
+insert into employees (id, name, surname, image, telephone)
+values (8, 'otherWaiter', 'Waiterric',
+        'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==',
+        '123654');
+insert into waiter (id)
+values (8);
+
 insert into paychecks (date_from, date_to, paycheck, employee_id)
 values ('2021-11-01', null, 10, 2);
 insert into paychecks (date_from, date_to, paycheck, employee_id)

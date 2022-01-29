@@ -31,6 +31,13 @@ public class RestaurantTableDTO {
     }
 
 
+    public RestaurantTableDTO(int x, int y, long areaId, int tableNumber) {
+        this.x = x;
+        this.y = y;
+        this.areaId = areaId;
+        this.tableNum = tableNumber;
+    }
+    
     public RestaurantTableDTO(int x, int y, long areaId) {
         this.x = x;
         this.y = y;

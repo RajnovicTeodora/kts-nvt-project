@@ -1,6 +1,7 @@
 package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.*;
+import com.ftn.restaurant.exception.MenuItemNotFoundException;
 import com.ftn.restaurant.service.DrinkService;
 import com.ftn.restaurant.service.MenuItemService;
 import org.slf4j.Logger;
@@ -84,7 +85,7 @@ public class MenuItemController {
         try {
             return new ResponseEntity<>(menuItemService.getWithIngredientsById(id), HttpStatus.OK);
         }
-        catch (Exception e){
+        catch (MenuItemNotFoundException e){
             return new ResponseEntity<>("An error has occurred!", HttpStatus.FORBIDDEN);
         }
     }

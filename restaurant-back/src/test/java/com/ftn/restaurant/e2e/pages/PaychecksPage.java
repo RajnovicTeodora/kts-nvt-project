@@ -10,10 +10,10 @@ import java.util.List;
 public class PaychecksPage {
     private WebDriver driver;
 
-    @FindBy(id = "employee-search")
+    @FindBy(id = "itemSearch")
     private WebElement employeeSearchInput;
 
-    @FindBy(id = "role-filter-input")
+    @FindBy(id = "mat-select-2")
     private WebElement roleContainer;
 
     @FindBy(xpath = "//span[contains(text(),'Bartender')]")
@@ -25,16 +25,16 @@ public class PaychecksPage {
     @FindBy(xpath = "//tbody//tr")
     private  List<WebElement> tableRows;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Username')]")
+    @FindBy(xpath = "//td[contains(@class,'Username')]")
     private List<WebElement> usernames;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Role')]")
+    @FindBy(xpath = "//td[contains(@class,'Role')]")
     private List<WebElement> roles;
 
     @FindBy(xpath = "//td//button")
     private List<WebElement> editPaycheckButton;
 
-    @FindBy(xpath = "//td[contains(@class,'cdk-column-Paycheck')]")
+    @FindBy(xpath = "//td[contains(@class,'Paycheck')]")
     private List<WebElement> paychecks;
 
     public PaychecksPage(WebDriver driver) {
@@ -92,7 +92,11 @@ public class PaychecksPage {
     }
 
     public boolean comparePaychecks(String paycheck, int index){
-        return this.paychecks.get(index).getText().equals(paycheck);
+        Utilities.visibilityWait(driver, this.paychecks.get(index), 10);
+        return this.paychecks.get(index).getText().contains(paycheck);
     }
 
+    public void invisibilityWait(){
+        Utilities.invisibilityWait(driver, 10, "//*[@id='mat-dialog-0']");
+    }
 }

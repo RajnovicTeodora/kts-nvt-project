@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertTrue;
 
 public class HeadChefFinishOrder {
@@ -65,6 +67,7 @@ public class HeadChefFinishOrder {
         //table of ordered items
         assertTrue(tableOfOrderedItemsPage.isRow().getText().equals("Spaghetti"));
         tableOfOrderedItemsPage.clickAccept();
+
         //accepted
         tableOfOrderedItemsPage.clickAcceptDialog();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
@@ -72,6 +75,8 @@ public class HeadChefFinishOrder {
 
         chefDashboardPage.clickAccOrders();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
+
+        browser.navigate().refresh();
         chefDashboardPage.clickAccOrders();
         assertTrue(chefDashboardPage.getContainerWithOrders()!=null);
 
@@ -89,6 +94,6 @@ public class HeadChefFinishOrder {
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 }

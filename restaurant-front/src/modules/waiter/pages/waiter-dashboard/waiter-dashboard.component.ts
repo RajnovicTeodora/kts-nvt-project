@@ -62,20 +62,20 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = false;
     this.showNotificationsModal = false;
-    this.getAreas();
+    this.getAreas(0);
   }
 
   ngOnInit() {
     this.setBadgeValues();
-    this.getAreas();
+    this.getAreas(0);
   }
 
-  getAreas() {
+  getAreas(areaId: number) {
     this.tablePositions = [];
     this.adminService.getAllAreas().subscribe((response) => {
       this.areas = response;
       if(this.areas.length !== 0){
-        this.activeArea = this.areas[0];
+        this.activeArea = this.areas[areaId];
         this.setTableCoordinates();
       }
     });
@@ -182,7 +182,7 @@ export class WaiterDashboardComponent implements OnInit {
 
   onRestaurantTableCloseClicked(item: boolean){
     this.showModalRestaurantTableOptions = -1;
-    this.getAreas();
+    this.getAreas(this.areas.indexOf(this.activeArea));
   }
 
   onPayOrderCloseClicked(item:boolean){

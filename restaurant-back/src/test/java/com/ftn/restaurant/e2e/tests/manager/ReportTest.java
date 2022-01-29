@@ -1,6 +1,5 @@
 package com.ftn.restaurant.e2e.tests.manager;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.ftn.restaurant.e2e.pages.LoginPage;

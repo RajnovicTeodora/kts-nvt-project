@@ -40,16 +40,16 @@ public class MenuControllerIntergationTest {
     @Test
     public void searchMenuItemsTest_Success() throws Exception {
     	
-    	mockMvc.perform(get("/api/menu/searchMenuItems/.../...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
+    	mockMvc.perform(get("/api/menu/searchMenuItems/.../...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(3)));
     	
     	
     	mockMvc.perform(get("/api/menu/searchMenuItems/drink/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
     	
     	
-    	mockMvc.perform(get("/api/menu/searchMenuItems/dish/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+    	mockMvc.perform(get("/api/menu/searchMenuItems/dish/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     	
     	
-    	mockMvc.perform(get("/api/menu/searchMenuItems/MAIN_DISH/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));
+    	mockMvc.perform(get("/api/menu/searchMenuItems/MAIN_DISH/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
     	
     	
     	mockMvc.perform(get("/api/menu/searchMenuItems/COLD_DRINK/...")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(1)));

@@ -58,11 +58,14 @@ public class MenuViewTest {
         addDrinkPage.setNameInput("Test");
         addDrinkPage.setDrinkType();
         addDrinkPage.setDrinkContainer();
-        addDrinkPage.setFileInput("C:\\Users\\rajno\\Desktop\\3.jpg");
+        addDrinkPage.setFileInput("C:\\Users\\rajno\\Desktop\\3.png");
         addDrinkPage.submitDrinkBtnClick();
+
+        menuViewPage.waitUntilItemsPresent();
 
         //Test search for added drink
         menuViewPage.setMenuItemSearchInput("Test");
+        menuViewPage.waitUntilItemsPresent();
         menuViewPage.submitBtnClick();
 
         //Wait till items are showing
@@ -74,26 +77,32 @@ public class MenuViewTest {
 
         // Change price
         // Button should be disabled
-        assertFalse(menuViewPage.isSetOnMenuEnabled(0));
+        assertTrue(menuViewPage.isSetOnMenuDisabled(0));
 
         menuViewPage.setMenuItemPrice("22");
         menuViewPage.setMenuItemPurchasePrice("12");
         menuViewPage.savePricesBtnClick();
 
         menuViewPage.waitUntilItemsPresent();
-        // Button should be disabled because the price is valid from tomorrow
-        assertTrue(menuViewPage.isSetOnMenuEnabled(0));
-
-        // Set as active menu item
-        menuViewPage.setOnMenuBtnClick(0);
+        assertFalse(menuViewPage.isSetOnMenuDisabled(0));
 
         // Delete item
         menuViewPage.deleteBtnClick(0);
         menuViewPage.waitUntilItemsPresent();
 
-        assertTrue(menuViewPage.menuItemsTitleTextsSizeCompare(0));
-        assertFalse(menuViewPage.menuItemsContainText("Test"));
         // Search and confirm no results found for deleted item
+        menuViewPage.setMenuItemSearchInput("Te");
+        menuViewPage.submitBtnClick();
+        menuViewPage.waitUntilItemsPresent();
+        assertTrue(menuViewPage.menuItemsTitleTextsSizeCompare(2));
+        assertFalse(menuViewPage.menuItemsContainText("Test"));
+
+        // Set as active menu item
+        menuViewPage.setMenuItemSearchInput("Chicken soup");
+        menuViewPage.submitBtnClick();
+        menuViewPage.waitUntilItemsPresent();
+        assertFalse(menuViewPage.isSetOnMenuDisabled(0));
+        menuViewPage.setOnMenuBtnClick(0);
 
         // Log out
         managerDashboardPage.menuViewBtnClick();
@@ -106,7 +115,7 @@ public class MenuViewTest {
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 
 }

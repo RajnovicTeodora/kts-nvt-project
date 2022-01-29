@@ -34,7 +34,7 @@ public class TableRepositoryTest_SQL {
     @Test
     public void findByAreaIdTest(){
         List<RestaurantTable> areaTables = tableRepository.findByAreaId(1L);
-        Assert.assertEquals(6, areaTables.size());
+        Assert.assertEquals(7, areaTables.size());
         
         List<RestaurantTable> areaTables2 = tableRepository.findByAreaId(100L);
         Assert.assertEquals(0, areaTables2.size());

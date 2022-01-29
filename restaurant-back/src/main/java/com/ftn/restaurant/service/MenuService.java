@@ -131,7 +131,7 @@ public class    MenuService {
         List<MenuItemDTO> itemsDTOs = new ArrayList<MenuItemDTO>();
 
         for (MenuItem item : menuItems) {
-            Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
+            Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(item.getId(), LocalDate.now());
             if (optionalPrice.isPresent() && optionalPrice.get().isActive() == true) {
                 itemsDTOs.add(new MenuItemDTO(item));
             }
