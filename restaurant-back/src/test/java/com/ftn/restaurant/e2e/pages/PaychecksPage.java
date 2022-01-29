@@ -93,7 +93,10 @@ public class PaychecksPage {
 
     public boolean comparePaychecks(String paycheck, int index){
         Utilities.visibilityWait(driver, this.paychecks.get(index), 10);
-        return this.paychecks.get(index).getText().equals(paycheck);
+        return this.paychecks.get(index).getText().contains(paycheck);
     }
 
+    public void invisibilityWait(){
+        Utilities.invisibilityWait(driver, 10, "//*[@id='mat-dialog-0']");
+    }
 }
