@@ -37,7 +37,7 @@ public class MenuItemRepositoryTest_SQL {
     @Test
     public void testFindByDeletedFalseAndApprovedTrueAndBySearchCriteria() {
         List<MenuItem> found = menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria("");
-        assertEquals(4, found.size());
+        assertEquals(5, found.size());
 
         found = menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria("Ice");
         assertEquals(1, found.size());

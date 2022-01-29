@@ -1,20 +1,15 @@
 package com.ftn.restaurant.service;
 
-import com.ftn.restaurant.RestaurantApplication;
 import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.exception.DrinkExistsException;
 import com.ftn.restaurant.exception.ForbiddenException;
-import com.ftn.restaurant.model.Dish;
 import com.ftn.restaurant.model.Drink;
-import com.ftn.restaurant.model.MenuItemPrice;
 import com.ftn.restaurant.model.enums.ContainerType;
-import com.ftn.restaurant.model.enums.DishType;
 import com.ftn.restaurant.model.enums.DrinkType;
 import com.ftn.restaurant.repository.DrinkRepository;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ftn.restaurant.constants.DishConstants.LIST_DISHES;
 import static com.ftn.restaurant.constants.DrinkConstants.*;
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -43,9 +38,9 @@ public class DrinkServiceUnitTest {
     private DrinkService drinkService;
 
     @MockBean
-    private DrinkRepository drinkRepository;//mockBean
+    private DrinkRepository drinkRepository;
 
-    @BeforeAll
+    @Before
     public void setup() {
         List<Drink> drinkList = new ArrayList<>();
         drinkList.add(DRINK_1);
@@ -53,7 +48,7 @@ public class DrinkServiceUnitTest {
         given(drinkRepository.findAll()).willReturn(drinkList);
 
         given(drinkRepository.findByNameAndDrinkTypeAndContainerType("Bloody Mary", DrinkType.ALCOHOLIC, ContainerType.GLASS))
-                .willReturn(java.util.Optional.of(null));
+                .willReturn(java.util.Optional.empty());
         Drink drink = new Drink("Bloody Mary","a",false,false,new ArrayList<>(), DrinkType.ALCOHOLIC, ContainerType.GLASS, new ArrayList<>() );
         //given(drinkRepository.save(any())).willReturn(drink);
         //when(drinkRepository.save(any())).thenReturn(drink);
@@ -71,7 +66,6 @@ public class DrinkServiceUnitTest {
         verify(drinkRepository, times(1)).save(any());
     }
 
-    // TODO T
     @Test(expected = DrinkExistsException.class)
     public void testAddDrinkAndExpectDrinkExistsExceptionWhenDrinkAlreadyExists(){
         NewDrinkDTO existingDrinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
@@ -81,7 +75,22 @@ public class DrinkServiceUnitTest {
         drinkService.addDrink(existingDrinkDTO);
     }
 
-    // TODO T
+    @Test(expected = ForbiddenException.class)
+    public void testAddDrinkAndExpectForbiddenExceptionWhenImageInNone()
+    {
+        NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
+
+        Drink drink = drinkService.addDrink(drinkDTO);
+
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testAddDrinkAndExpectForbiddenExceptionWhenNameInNone()
+    {
+        NewDrinkDTO drinkDTO = new NewDrinkDTO("", "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
+        Drink drink = drinkService.addDrink(drinkDTO);
+    }
+
     @Test
     public void testAddDrink()
     {
@@ -94,6 +103,7 @@ public class DrinkServiceUnitTest {
         assertNotNull(drink);
         assertEquals(NEW_DRINK_NAME, drink.getName());
     }
+
     @Test
     public void testSearchDrink(){
         given(drinkRepository.getApprovedDrinks()).willReturn(DRINK_LIST);
