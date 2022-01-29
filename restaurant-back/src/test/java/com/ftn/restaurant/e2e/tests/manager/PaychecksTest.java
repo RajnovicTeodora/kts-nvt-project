@@ -49,24 +49,32 @@ public class PaychecksTest {
         loginPage.loginBtnClick();
 
         assertTrue(managerDashboardPage.urlPresent());
-
         managerDashboardPage.paychecksViewBtnClick();
+
+        paychecksPage.waitUntilTablePresent();
 
         //Search and filter
         paychecksPage.setEmployeeSearchInput("misko");
         paychecksPage.setRoleFilter();
         paychecksPage.submitBtnClick();
+
         paychecksPage.waitUntilTablePresent();
+        paychecksPage.waitUntilTablePresent();
+
         assertTrue(paychecksPage.tableRowsSizeCompare(1));
         assertTrue(paychecksPage.usernamesContainText("misko"));
         assertTrue(paychecksPage.rolesContainText("Bartender"));
 
         //Edit found user's paycheck
         paychecksPage.editPaycheckBtnClick(0);
+        
+        paychecksPage.waitUntilTablePresent();
         editPaycheckPage.setPaycheckInput("19");
         editPaycheckPage.submitBtnClick();
-
+        
+        paychecksPage.invisibilityWait();
         paychecksPage.waitUntilTablePresent();
+
         assertTrue(paychecksPage.comparePaychecks("19", 0));
 
         // Log out
