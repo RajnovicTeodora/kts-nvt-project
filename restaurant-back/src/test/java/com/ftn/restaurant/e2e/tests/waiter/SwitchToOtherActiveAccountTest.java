@@ -43,6 +43,7 @@ public class SwitchToOtherActiveAccountTest {
     public void test(){
         loginPage.login("waiter", "test");
         assertTrue(waiterDashboardPage.urlPresent());
+        waiterDashboardPage.waitUntilActiveAccountPresent();
 
         //current account is "waiter" and number of active accounts is 1
         assertTrue(waiterDashboardPage.currentUsernamePresent("waiter"));
@@ -54,6 +55,7 @@ public class SwitchToOtherActiveAccountTest {
         loginPage.setUsernameInput("otherWaiter");
         loginPage.setPasswordInput("test");
         loginPage.loginBtnForOtherAccountsClick();
+        waiterDashboardPage.waitUntilActiveAccountPresent();
 
         //current account is "otherWaiter" and number of active accounts is 2
         assertTrue(waiterDashboardPage.currentUsernamePresent("otherWaiter"));

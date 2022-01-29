@@ -36,10 +36,7 @@ public class DishService {
     }
 
     public Dish addDish(NewDishDTO dishDTO) {
-        System.out.println(dishDTO == null);
-        System.out.println("jej1");
-        System.out.println(dishDTO.getName());
-        System.out.println(dishDTO.getImage());
+
         if(dishDTO == null)
             throw new ForbiddenException("Dish must have some values.");
         System.out.println("jej");
@@ -74,6 +71,7 @@ public class DishService {
 
     public List<Dish> getSearchedOrFiltered(String searchName, String filterName) {
         List<Dish> dishes = dishRepository.getApprovedDishes();
+        System.out.println("moj filter "+filterName+" searched "+dishes.size());
         List<Dish> searchedDishes = new ArrayList<>();
         if(!searchName.equals("")){
             for(Dish dish : dishes){
@@ -84,10 +82,10 @@ public class DishService {
         }
 
         searchedDishes = new ArrayList<>();
-        System.out.println("moj filter"+filterName);
+
         if(!filterName.equals("")){
             for(Dish dish : dishes){
-                System.out.println("yoj filter"+dish.getDishType().name());
+                System.out.println("dish filter "+dish.getDishType().name());
                 if(dish.getDishType().name().equals(filterName)){
                     searchedDishes.add(dish);
                 }

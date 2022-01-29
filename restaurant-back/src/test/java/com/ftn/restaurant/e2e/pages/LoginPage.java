@@ -19,7 +19,7 @@ public class LoginPage {
     @FindBy(id = "submit-button")
     private WebElement loginButton;
 
-    @FindBy(id="login-button")
+    @FindBy(xpath = "//*[@id='login-button']")
     private WebElement loginBtnForOtherAccounts;
 
     public LoginPage(WebDriver driver) {

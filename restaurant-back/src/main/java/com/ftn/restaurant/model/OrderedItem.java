@@ -73,6 +73,16 @@ public class OrderedItem {
         this.activeIngredients = activeIngredients;
         this.deleted = deleted;
     }
+    public OrderedItem(OrderedItemStatus status, int priority, int quantity, MenuItem menuItem, List<Ingredient> activeIngredients, boolean deleted, MenuItem item, Order order) {
+        this.status = status;
+        this.priority = priority;
+        this.quantity = quantity;
+        this.menuItem = menuItem;
+        this.activeIngredients = activeIngredients;
+        this.deleted = deleted;
+        this.menuItem = item;
+        this.order = order;
+    }
 
     public OrderedItem(OrderedItemStatus status, int priority, int quantity, Order order, MenuItem menuItem, List<Ingredient> activeIngredients, boolean deleted, Employee whoPreapiring) {
         this.status = status;
