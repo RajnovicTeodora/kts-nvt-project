@@ -10,9 +10,8 @@
     <mat-divider></mat-divider>
     <div class="row">
       <span style="margin-right: 50%">Price: </span>
-      <span style="text-align: right"
-        >$ {{ this.menuItemWithIngredients.price }}
-      </span>
+      <span style="text-align: right" id="menu-item-price"
+        >$ {{ this.menuItemWithIngredients.price }}</span>
     </div>
 
     <mat-divider></mat-divider>
@@ -36,7 +35,7 @@
             >({{ this.menuItemWithIngredients.container }})</span
           ></mat-label
         >
-        <input matInput type="number" min="1" #quantity [value]="this.currentQ"/>
+        <input matInput type="number" min="1" #quantity [value]="this.currentQ" id="quantity-input"/>
       </mat-form-field>
     </div>
 
@@ -46,8 +45,8 @@
         style="background-color: rgb(0 0 0 / 0%)"
       >
         <mat-label style="color: #b3b3b3">Priority</mat-label>
-        <mat-select [value]="this.menuItemWithIngredients.priority" #priority>
-          <mat-option *ngFor="let p of priorities" [value]="p">
+        <mat-select [value]="this.menuItemWithIngredients.priority" #priority id="mat-select-priority">
+          <mat-option *ngFor="let p of priorities" [value]="p" id="priority-options">
             {{ p }}
           </mat-option>
         </mat-select>

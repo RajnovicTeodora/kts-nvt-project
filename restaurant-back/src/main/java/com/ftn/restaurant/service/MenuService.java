@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MenuService {
+public class    MenuService {
 
     private final MenuItemPriceRepository menuItemPriceRepository;
 

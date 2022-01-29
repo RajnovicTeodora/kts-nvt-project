@@ -87,7 +87,10 @@ export class TableOptionsComponent implements OnInit {
   getActiveTableOrderNumbers(){
     this.orderService.getActiveOrdersForTable(this.tableId, this.currentUser.username).subscribe({
       next: (result) => {
-        result.forEach(value =>{
+        let temp1 = result.sort(function (a, b) {
+          return a - b;
+        });
+        temp1.forEach(value =>{
           this.element_data.push(value);
           this.dataSource.push(value);
           this.matTable.renderRows();

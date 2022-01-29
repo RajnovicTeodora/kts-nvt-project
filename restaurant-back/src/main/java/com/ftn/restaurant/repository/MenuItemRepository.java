@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 
-    @Query("select m from MenuItem m left join fetch m.menuItemIngredients where m.id = :id")
+    @Query("select m from MenuItem m left join fetch m.menuItemIngredients where m.id = :id and m.deleted = false")
     Optional<MenuItem> findById(@Param("id") long id);
 
     Optional<MenuItem> findByIdAndDeletedFalse(@Param("id") long id);

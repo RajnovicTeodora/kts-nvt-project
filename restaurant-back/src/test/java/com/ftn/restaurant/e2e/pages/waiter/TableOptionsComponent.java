@@ -55,9 +55,9 @@ public class TableOptionsComponent {
 
     public boolean activeOrdersTitlePresent(){ return Utilities.textWait(driver, this.activeOrdersTitle, "Active orders", 10);}
 
-    public void viewActiveOrderButtonClicked(int tablePosition) { Utilities.clickableWait(driver, this.viewActiveOrderButtons.get(tablePosition-1), 10).click();   }
+    public void viewActiveOrderButtonClicked(int tableRow) { Utilities.clickableWait(driver, this.viewActiveOrderButtons.get(tableRow-1), 10).click();   }
 
-    public void editActiveOrderButtonClicked(int orderNumber) { Utilities.clickableWait(driver, this.editActiveOrderButtons.get(orderNumber-1), 10).click();   }
+    public void editActiveOrderButtonClicked(int rowNumber) { Utilities.clickableWait(driver, this.editActiveOrderButtons.get(rowNumber-1), 10).click();   }
 
     public void createOrderButtonClick() { Utilities.clickableWait(driver, this.createOrderButton, 10).click();}
 

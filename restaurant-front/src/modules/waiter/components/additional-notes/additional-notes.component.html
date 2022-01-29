@@ -10,11 +10,12 @@
       <form class="example-form">      
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label style="color: #b3b3b3">Write a note</mat-label>
-          <textarea style="color: #b3b3b3" matInput placeholder="Ex. Serve it cold..." #notes [value]="this.currentNotes"></textarea>
+          <textarea style="color: #b3b3b3" matInput placeholder="Ex. Serve it cold..." #notes [value]="this.currentNotes" id="additional-notes-input"></textarea>
         </mat-form-field>
       </form>
       <div class="modal-footer">
         <button
+          id="close-additional-notes-button"
           mat-flat-button
           type="button"
           color="accent"
@@ -24,6 +25,7 @@
           Cancel
         </button>
         <button
+          id="confirm-additional-notes-button"
           mat-flat-button
           type="button"
           color="primary"

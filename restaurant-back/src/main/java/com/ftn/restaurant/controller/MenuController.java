@@ -3,7 +3,6 @@ package com.ftn.restaurant.controller;
 import com.ftn.restaurant.dto.CurrentMenuItemPriceDTO;
 import com.ftn.restaurant.dto.MenuItemDTO;
 import com.ftn.restaurant.dto.MenuItemPriceDTO;
-import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.service.MenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

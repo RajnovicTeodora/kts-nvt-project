@@ -1,8 +1,5 @@
 package com.ftn.restaurant.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,16 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
-import static com.ftn.restaurant.constants.MenuConstants.*;
 
 @WithMockUser(username = "manager", roles = {"MANAGER"})
 @RunWith(SpringRunner.class)
@@ -34,7 +25,7 @@ import static com.ftn.restaurant.constants.MenuConstants.*;
 public class MenuControllerIntegrationTest {
 
     private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(), StandardCharsets.UTF_8);
+            MediaType.APPLICATION_JSON.getSubtype());
 
     private MockMvc mockMvc;
 
@@ -47,39 +38,71 @@ public class MenuControllerIntegrationTest {
     }
 
     @Test
-    public void testSetActiveMenuItems() throws Exception {
+    public void testToggleIsMenuItemActive() throws Exception {
 
-        SelectedMenuItemsDTO selectedMenuItemsDTO = new SelectedMenuItemsDTO(ITEM_ID_LIST);
-        SelectedMenuItemsDTO invalidSelectedMenuItemsDTO = new SelectedMenuItemsDTO(INVALID_ITEM_ID_LIST);
-        SelectedMenuItemsDTO emptySelectedMenuItemsDTO = new SelectedMenuItemsDTO(EMPTY_ITEM_ID_LIST);
-
-        String json = json(selectedMenuItemsDTO);
-        String invalidJson = json(invalidSelectedMenuItemsDTO);
-        String emptyJson = json(emptySelectedMenuItemsDTO);
-
-        mockMvc.perform(put("/api/menu/activateItems").contentType(contentType).content(json))
-                .andExpect(status().isOk());
-
-        //////////////////////////////
-
-        mockMvc.perform(put("/api/menu/activateItems").content(invalidJson).contentType(contentType))
+        // Id invalid
+        mockMvc.perform(put("/api/menu/toggleIsActive").param("id", "15").contentType(contentType))
                 .andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(content().string("Approved menu item with id 16 and active price not found."));
+                .andExpect(status().isForbidden());
 
-        //////////////////////////////
+        // Item doesn't have a price
+        mockMvc.perform(put("/api/menu/toggleIsActive").param("id", "2").contentType(contentType))
+                .andDo(print())
+                .andExpect(status().isForbidden());
 
-        mockMvc.perform(put("/api/menu/activateItems").content(emptyJson).contentType(contentType))
-                .andExpect(status().isOk());
+        // False to True
+        mockMvc.perform(put("/api/menu/toggleIsActive").param("id", "1").contentType(contentType))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.active").value(true));
+
+        // True to False
+        mockMvc.perform(put("/api/menu/toggleIsActive").param("id", "3").contentType(contentType))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.active").value(false));
     }
 
-    // *******************************************
-    public static String json(Object object)
-            throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    @Test
+    public void testGetActiveMenuItems() throws Exception {
+        mockMvc.perform(get("/api/menu/getAll").param("searchName", "").contentType(contentType))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(5)));
 
-        return mapper.writeValueAsString(object);
+        mockMvc.perform(get("/api/menu/getAll").param("searchName", "Ice").contentType(contentType))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$.[0].menuItem.name").value("Ice Latte"));
+
+        mockMvc.perform(get("/api/menu/getAll").param("searchName", "random").contentType(contentType))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(0)));
+
     }
+
+    @Test
+    public void testDeleteMenuItems() throws Exception {
+        mockMvc.perform(delete("/api/menu/deleteMenuItem/9").contentType(contentType))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+
+        mockMvc.perform(delete("/api/menu/deleteMenuItem/6").contentType(contentType))
+                .andExpect(status().isForbidden());
+
+
+        mockMvc.perform(delete("/api/menu/deleteMenuItem/5").contentType(contentType))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentType(contentType));
+    }
+
 
 }

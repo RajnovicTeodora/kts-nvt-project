@@ -58,7 +58,7 @@ public class ViewAndPayOrderTest {
 
         //6 active orders for table 2
         tableOptionsComponent.waitUntilOrderPresent();
-        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
+        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
 
         //view order 7
         tableOptionsComponent.viewActiveOrderButtonClicked(6);
@@ -67,6 +67,7 @@ public class ViewAndPayOrderTest {
         viewAndPayOrderComponent.waitUntilOrderedItemPresent();
         assertTrue(viewAndPayOrderComponent.numberOfActiveOrderedItems(1));
         assertTrue(viewAndPayOrderComponent.containsItemsReadyToDeliver(0));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Pizza", "ORDERED", 1, 25));
 
         //total cost is 25
         assertTrue(viewAndPayOrderComponent.totalCostPresent(25));
@@ -81,15 +82,19 @@ public class ViewAndPayOrderTest {
 
         //number of orders is unchanged
         tableOptionsComponent.waitUntilOrderPresent();
-        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
+        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
 
         //view order 7
         viewAndPayOrderComponent.waitUntilToastTextNotPresent();
         tableOptionsComponent.viewActiveOrderButtonClicked(6);
         viewAndPayOrderComponent.waitUntilOrderedItemPresent();
+        viewAndPayOrderComponent.waitUntilIsPaidPresent();
 
         //order is paid
         assertTrue(viewAndPayOrderComponent.orderIsPaid());
+        assertTrue(viewAndPayOrderComponent.numberOfActiveOrderedItems(1));
+        assertTrue(viewAndPayOrderComponent.containsItemsReadyToDeliver(0));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Pizza", "ORDERED", 1, 25));
 
         //close payment module
         viewAndPayOrderComponent.closeViewAndPayOrderWindowClick();
@@ -114,9 +119,9 @@ public class ViewAndPayOrderTest {
         waiterDashboardPage.areaTableButtonClicked(2);
         assertTrue(tableOptionsComponent.tableNumberTitlePresent("Table 2"));
 
-        //6 active orders for table 2
+        //7 active orders for table 2
         tableOptionsComponent.waitUntilOrderPresent();
-        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
+        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
 
         //view order 2
         tableOptionsComponent.viewActiveOrderButtonClicked(2);
@@ -125,6 +130,7 @@ public class ViewAndPayOrderTest {
         viewAndPayOrderComponent.waitUntilOrderedItemPresent();
         assertTrue(viewAndPayOrderComponent.numberOfActiveOrderedItems(1));
         assertTrue(viewAndPayOrderComponent.containsItemsReadyToDeliver(1));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Pizza", "READY", 5, 25));
 
         //order is paid
         assertTrue(viewAndPayOrderComponent.orderIsPaid());
@@ -135,13 +141,14 @@ public class ViewAndPayOrderTest {
         //no active ordered items, order is finished
         viewAndPayOrderComponent.waitUntilToastTextNotPresent();
         assertTrue(viewAndPayOrderComponent.numberOfActiveOrderedItems(0));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Pizza", "DELIVERED", 5, 25));
 
         //close payment
         viewAndPayOrderComponent.closeViewAndPayOrderWindowClick();
         tableOptionsComponent.waitUntilOrderPresent();
 
-        //number of active orders for table 2 has been reduced
-        assertTrue(tableOptionsComponent.activeOrdersPresent(5));
+        //number of active orders for table 2 has been reduced by 1
+        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
 
         //close table options
         tableOptionsComponent.closeTableOptionsButtonClick();

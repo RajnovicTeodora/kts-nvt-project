@@ -18,6 +18,7 @@
         Now
       </button>
       <button
+        id="pay-order-later-button"
         mat-flat-button
         type="button"
         color="primary"
@@ -44,17 +45,17 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.menuItemName }}</td>
+          <td mat-cell *matCellDef="let element" name="ordered-item-name">{{ element.menuItemName }}</td>
         </ng-container>
 
         <ng-container matColumnDef="quantity">
           <th mat-header-cell *matHeaderCellDef>Quantity</th>
-          <td mat-cell *matCellDef="let element">{{ element.quantity }}x</td>
+          <td mat-cell *matCellDef="let element" name="ordered-item-quantity">{{ element.quantity }}x</td>
         </ng-container>
 
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Price</th>
-          <td mat-cell *matCellDef="let element">$ {{ element.price }}</td>
+          <td mat-cell *matCellDef="let element" name="ordered-item-price">$ {{ element.price }}</td>
         </ng-container>
 
         <ng-container matColumnDef="status">

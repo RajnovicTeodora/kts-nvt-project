@@ -31,5 +31,9 @@ public class MenuItemPriceConstants {
     public static final String NEW_DISH_NAME1 = "French fries";
     public static final DishType NEW_DISH_TYPE1 = DishType.ENTREE;
 
+    public static final long NEW_DISH_ID2 = 17;
+    public static final String NEW_DISH_NAME2 = "Eggs on toast";
+    public static final DishType NEW_DISH_TYPE2 = DishType.ENTREE;
+
     public static final long NON_EXISTENT_MENU_ITEM_ID = 22;
 }
