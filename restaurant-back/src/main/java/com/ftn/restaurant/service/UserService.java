@@ -4,6 +4,7 @@ import com.ftn.restaurant.dto.LoginDTO;
 import com.ftn.restaurant.dto.UserDTO;
 import com.ftn.restaurant.exception.BadRequestException;
 import com.ftn.restaurant.exception.BadUserRoleException;
+import com.ftn.restaurant.exception.EmployeeNotFoundException;
 import com.ftn.restaurant.exception.NotFoundException;
 import com.ftn.restaurant.exception.UsernameExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class UserService implements UserDetailsService {
 
     public Employee editUser(EmployeeDTO employeeDTO){
         Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
-        if(!optEmployee.isPresent()) return null;
+        if(!optEmployee.isPresent()) throw new EmployeeNotFoundException("Username not found!");
         Employee employee = optEmployee.get();
         if(!employee.getName().equals(employeeDTO.getName())) employee.setName(employeeDTO.getName());
         if(!employee.getSurname().equals(employeeDTO.getSurname())) employee.setSurname(employeeDTO.getSurname());
@@ -121,7 +122,7 @@ public class UserService implements UserDetailsService {
             employeeRepository.saveAndFlush(employee);
             return employee;
         }
-        throw new UsernameNotFoundException("User not found!");
+        throw new EmployeeNotFoundException("User not found!");
     }
     
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
