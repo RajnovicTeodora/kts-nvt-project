@@ -84,7 +84,7 @@ public class DishControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$.[0].name").value("Pizza"));
 
     }
