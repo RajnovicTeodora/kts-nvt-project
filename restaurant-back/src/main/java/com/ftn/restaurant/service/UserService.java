@@ -101,7 +101,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Employee editUser(EmployeeDTO employeeDTO){
-        Optional<Employee> optEmployee = employeeRepository.findByUsername(employeeDTO.getUsername());
+        Optional<Employee> optEmployee = employeeRepository.findByUsernameAndNotDeleted(employeeDTO.getUsername());
         if(!optEmployee.isPresent()) throw new EmployeeNotFoundException("Username not found!");
         Employee employee = optEmployee.get();
         if(!employee.getName().equals(employeeDTO.getName())) employee.setName(employeeDTO.getName());

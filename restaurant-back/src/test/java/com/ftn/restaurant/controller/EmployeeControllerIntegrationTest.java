@@ -74,7 +74,7 @@ public class EmployeeControllerIntegrationTest {
     
     @Test
     public void editEmployeeTest() throws IOException, Exception {
-    	EmployeeDTO user = new EmployeeDTO(0L, "chef", "123", "perica", "peric", "img", "123654", "CHEF");
+    	EmployeeDTO user = new EmployeeDTO(0L, "waiter", "123", "perica", "peric", "img", "123654", "CHEF");
 		mockMvc.perform(post("/api/employees/editUser").content(json(user)).contentType(contentType)).andExpect(status().isOk());
 		
     }

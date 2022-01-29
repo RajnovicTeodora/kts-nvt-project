@@ -85,7 +85,7 @@ public class EmployeeServiceUnitTest {
 	public void editEmployeeTest_Success() {
 		EmployeeDTO editedDTO = new EmployeeDTO(0L, "waiter", "pas123", "perica", "mikic", "img", "123", "WAITER");
 		Waiter waiter = new Waiter(editedDTO);
-		Mockito.when(employeeRepository.findByUsername("waiter")).thenReturn(Optional.of(waiter));
+		Mockito.when(employeeRepository.findByUsernameAndNotDeleted("waiter")).thenReturn(Optional.of(waiter));
 		Assert.assertEquals("perica", employeeService.editUser(editedDTO).getName());
 	}
 	
