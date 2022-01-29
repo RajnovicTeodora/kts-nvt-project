@@ -59,7 +59,7 @@ public class OrderedItemService {
     }
 
     public String acceptOrderedItem(long id, String username) {
-
+        System.out.println("usloo");
         Optional<OrderedItem> item = this.orderedItemRepository.findWithId(id);
         if (item.isPresent()){
           if(item.get().getStatus() != OrderedItemStatus.ORDERED && !item.get().isDeleted()){

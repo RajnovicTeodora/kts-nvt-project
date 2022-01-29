@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ftn.restaurant.constants.DishConstants.DISH_1;
+import static com.ftn.restaurant.constants.DishConstants.LIST_DISHES;
 import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_ITEM_DTO_1;
 import static com.ftn.restaurant.constants.OrderedItemConstants.*;
 import static com.ftn.restaurant.constants.UserConstants.*;
@@ -111,6 +112,14 @@ public class OrderedItemUnitTest {
 
         Assert.assertEquals("You can't accept order if it is not in status ordered.",
                 orderedItemService.acceptOrderedItem(3, "Sima"));
+    }
+    @Test
+    public void findAcceptedOrdersTest(){
+        ITEM_1.setStatus(OrderedItemStatus.IN_PROGRESS);
+        ITEM_1.getOrder().setId(1l);
+        ((Chef)CHEF_1).setOrderedItems(new ArrayList<>(Arrays.asList(ITEM_1)));
+        given(userService.findByUsername("Sima")).willReturn(CHEF_1);
+        Assert.assertEquals(1,orderedItemService.findAllAcceptedByOrderIdDTO(1, "Sima").size());
     }
 
     @Test

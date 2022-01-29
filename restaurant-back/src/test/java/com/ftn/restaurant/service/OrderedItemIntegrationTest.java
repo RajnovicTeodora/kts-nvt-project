@@ -1,6 +1,8 @@
 package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.exception.*;
+import com.ftn.restaurant.model.Chef;
+import com.ftn.restaurant.model.enums.OrderedItemStatus;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +12,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static com.ftn.restaurant.constants.OrderDTOConstants.*;
+import static com.ftn.restaurant.constants.OrderedItemConstants.ITEM_1;
+import static com.ftn.restaurant.constants.UserConstants.CHEF_1;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,6 +37,12 @@ public class OrderedItemIntegrationTest {
                 orderedItemService.acceptOrderedItem(2, "chef"));
         Assert.assertEquals("You can't accept order if it is not in status ordered.",
                 orderedItemService.acceptOrderedItem(3, "chef"));
+
+        Assert.assertEquals(1,orderedItemService.findAllAcceptedByOrderIdDTO(3, "chef").size());
+    }
+    @Test
+    public void findAcceptedOrdersTest(){//up is when have accepted
+        Assert.assertEquals(0,orderedItemService.findAllAcceptedByOrderIdDTO(3, "chef").size());
     }
 
     @Test
