@@ -90,4 +90,11 @@ public class MenuServiceIntegrationTest {
 
     }
 
+    @Test(expected = ForbiddenException.class)
+    public void testDeleteMenuItemShouldReturnMenuItemNotFound(){
+        MenuItem menuItem = menuService.deleteMenuItem(6L);
+        assertTrue(menuItem.isDeleted());
+
+    }
+
 }
