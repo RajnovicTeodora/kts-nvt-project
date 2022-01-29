@@ -56,6 +56,8 @@ public class AddEmployeeTest {
 
         addEmployeePage.saveBttnClick();
 
+        driver.navigate().refresh();
+
         assertTrue(addEmployeePage.usernamesContainsText("waiter2"));
     }
 

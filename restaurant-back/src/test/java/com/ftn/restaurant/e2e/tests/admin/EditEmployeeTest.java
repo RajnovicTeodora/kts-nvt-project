@@ -59,7 +59,7 @@ public class EditEmployeeTest {
         editEmployeePage.setInputText("telephone", newTelephone);
 
         editEmployeePage.saveBttnClick();
-
+        driver.navigate().refresh();
         assertTrue(employeesPage.infoChanged(newName, newSurname, newTelephone));
 
     }

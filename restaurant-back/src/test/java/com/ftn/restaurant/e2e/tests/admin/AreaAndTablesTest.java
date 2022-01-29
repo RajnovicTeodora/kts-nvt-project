@@ -53,6 +53,7 @@ public class AreaAndTablesTest {
 
         assertTrue(Utilities.urlWait(driver, "http://localhost:4200/edit-area", 20));
 
+        driver.navigate().refresh();
         //check if area exists
         assertEquals(3, areasPage.countAreas());
 
@@ -60,8 +61,8 @@ public class AreaAndTablesTest {
         areasPage.deleteAreaClick(2);
         areasPage.confirmDeleteClicked();
 
+        driver.navigate().refresh();
         //check if deleted
-//        assertFalse(areasPage.checkAreaExists("garden"));
         assertEquals(2, areasPage.countAreas());
     }
 

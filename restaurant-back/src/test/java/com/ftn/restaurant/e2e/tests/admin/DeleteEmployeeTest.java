@@ -48,6 +48,7 @@ public class DeleteEmployeeTest {
 
         //delete employee
         employeesPage.clickDeleteTable(username);
+        driver.navigate().refresh();
         assertTrue(employeesPage.confirmUserDeleted(username));
 
         //logout
