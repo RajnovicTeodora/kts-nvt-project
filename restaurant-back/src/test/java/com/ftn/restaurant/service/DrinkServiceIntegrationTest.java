@@ -4,6 +4,7 @@ import static com.ftn.restaurant.constants.DrinkConstants.*;
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
 import com.ftn.restaurant.exception.DrinkExistsException;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Drink;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
@@ -40,15 +41,6 @@ public class DrinkServiceIntegrationTest {
         //added existing drink
         assertEquals(newDrinkDTO.getName(), created.getName());
     }
-//    @Test
-//    public void getDrinkTest(){
-//        DrinkDTO foundDrink = drinkService.getDrink(2);
-//        assertNotNull(foundDrink);
-//        assertEquals("Ice Latte",foundDrink.getName());
-//
-//        foundDrink = drinkService.getDrink(-1);
-//        assertNull(foundDrink);
-//    }
 
     @Test
     public void getDrinksTest(){
@@ -57,7 +49,7 @@ public class DrinkServiceIntegrationTest {
         assertEquals(NUMBER_OF_DRINKS, foundDrinks.size());
     }
 
-    // TODO T
+
     @Test
     public void testAddDrinkByManager(){
         NewDrinkDTO drinkDTO = new NewDrinkDTO(NEW_DRINK_NAME, "some image", NEW_DRINK_TYPE, NEW_CONTAINER_TYPE);
@@ -65,10 +57,21 @@ public class DrinkServiceIntegrationTest {
         assertEquals(NEW_DRINK_NAME, created.getName());
     }
 
-    // TODO T
     @Test(expected = DrinkExistsException.class)
     public void testAddDrinkByManagerAndExpectDrinkExistsException(){
         NewDrinkDTO drinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
+        drinkService.addDrinkByManager(drinkDTO);
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testAddDrinkByManagerAndExpectForbiddenExceptionWhenImageIsEmpty(){
+        NewDrinkDTO drinkDTO = new NewDrinkDTO(EXISTING_DRINK_NAME, "", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
+        drinkService.addDrinkByManager(drinkDTO);
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testAddDrinkByManagerAndExpectForbiddenExceptionWhenNameIsEmpty(){
+        NewDrinkDTO drinkDTO = new NewDrinkDTO("", "some image", EXISTING_DRINK_TYPE, EXISTING_CONTAINER_TYPE);
         drinkService.addDrinkByManager(drinkDTO);
     }
 

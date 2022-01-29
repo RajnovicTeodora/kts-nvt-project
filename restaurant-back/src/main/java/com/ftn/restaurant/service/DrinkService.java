@@ -20,7 +20,7 @@ import java.util.Optional;
 public class DrinkService {
 
     private final DrinkRepository drinkRepository;
-    private IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
 
     @Autowired
     public DrinkService(DrinkRepository drinkRepository, IngredientRepository ingredientRepository) {
