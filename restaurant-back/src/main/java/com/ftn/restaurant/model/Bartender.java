@@ -30,4 +30,9 @@ public class Bartender extends Employee{
     public Bartender(EmployeeDTO employeeDTO){
         super(employeeDTO);
     }
+
+    public Bartender(String username, String password, boolean deleted, List<OrderedItem> orderedItems) {
+        super(username, password, deleted);
+        this.orderedItems = orderedItems;
+    }
 }

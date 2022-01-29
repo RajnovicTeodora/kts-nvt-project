@@ -58,6 +58,12 @@ public class RestaurantTable {
 		this.positionY = positionY;
 		this.area = area;
 	}
+    public RestaurantTable(int positionX, int positionY, Area area, int num) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.area = area;
+        this.tableNum = num;
+    }
 
 
 	public void setId(Long id) {
