@@ -32,7 +32,7 @@ public class CustomizeOrderedItemComponent {
     @FindBy(xpath = "//*[@id=\"priority-options\"]")
     private List<WebElement> priorityOptions;
 
-    @FindBy(xpath = "//*[@id=\"mat-select-0\"]")
+    @FindBy(xpath = "//*[@id='mat-select-priority']")
     private WebElement prioritySelect;
 
     @FindBy(xpath = "//*[@id=\"menu-item-price\"]")

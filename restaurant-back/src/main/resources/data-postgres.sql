@@ -111,6 +111,13 @@ VALUES ('Croutons', true);
 INSERT INTO ingredient (name, alergen)
 VALUES ('Oat milk', true);
 
+INSERT INTO ingredient (name, alergen)
+VALUES ('Cheese', false);
+INSERT INTO ingredient (name, alergen)
+VALUES ('Tomato sauce', false);
+INSERT INTO ingredient (name, alergen)
+VALUES ('Lasagna noodles', false);
+
 --PIZZA
 INSERT INTO menu_item (name, image, approved, deleted)
 VALUES ('Pizza',
@@ -375,6 +382,23 @@ VALUES (21, 7);
 INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)
 VALUES (21, 9);
 
+--LASAGNA
+INSERT INTO menu_item (name, image, approved, deleted)
+VALUES ('Lasagna', 'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==', true, false);
+
+INSERT INTO dish(id, dish_type)
+VALUES (22, 'MAIN_DISH');
+INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)
+VALUES (22, 10);
+INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)
+VALUES (22, 11);
+INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)
+VALUES (22, 12);
+
+INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id)
+VALUES ('2021-06-20', null, 10, 15, true, 22);
+
 
 -- AREA
 INSERT INTO area (name)
@@ -405,6 +429,8 @@ INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id,
 VALUES (true, 1, '2021-12-11', 'x', '18:18', 4, 2, 6);
 INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number)
 VALUES (false, 1, '2021-12-11', 'x', '18:18', 4, 2, 7);
+INSERT INTO restaurant_order (is_paid, total_price, date, note, time, waiter_id, restaurant_table_id, order_number)
+VALUES (false, 60, '2021-12-11', 'Old note', '18:18', 4, 2, 8);
 
 INSERT INTO ordered_item (status, priority, quantity, order_id, deleted, menu_item_id, employee_id)
 VALUES ('IN_PROGRESS', 1, 5, 1, false, 1, 2);
@@ -424,6 +450,22 @@ INSERT INTO ordered_item (status, priority, quantity, order_id, deleted, menu_it
 VALUES ('ORDERED', 1, 3, 1, true, 1, 2);
 INSERT INTO ordered_item (status, priority, quantity, order_id, deleted, menu_item_id, employee_id)
 VALUES ('ORDERED', 1, 1, 7, false, 1, 2);
+---
+INSERT INTO ordered_item (status, priority, quantity, order_id, deleted, menu_item_id, employee_id)
+VALUES ('ORDERED', 3, 1, 8, false, 22, 2);
+INSERT INTO ordered_item (status, priority, quantity, order_id, deleted, menu_item_id, employee_id)
+VALUES ('ORDERED', 1, 2, 8, false, 1, 2);
+
+INSERT INTO activeIngredients (ordered_item_id, ingredient_id)
+VALUES (10, 10);
+INSERT INTO activeIngredients (ordered_item_id, ingredient_id)
+VALUES (10, 11);
+INSERT INTO activeIngredients (ordered_item_id, ingredient_id)
+VALUES (10, 12);
+INSERT INTO activeIngredients (ordered_item_id, ingredient_id)
+VALUES (11, 1);
+INSERT INTO activeIngredients (ordered_item_id, ingredient_id)
+VALUES (11, 3);
 
 
 INSERT INTO menuItemIngredients (menu_item_id, ingredient_id)

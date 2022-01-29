@@ -54,9 +54,9 @@ public class CreateOrderTest {
         waiterDashboardPage.areaTableButtonClicked(2);
         assertTrue(tableOptionsComponent.tableNumberTitlePresent("Table 2"));
 
-        //number of active orders is 6
+        //number of active orders is 7
         tableOptionsComponent.waitUntilOrderPresent();
-        assertTrue(tableOptionsComponent.activeOrdersPresent(6));
+        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
 
         //create new order selected
         tableOptionsComponent.createOrderButtonClick();
@@ -78,7 +78,7 @@ public class CreateOrderTest {
         //customize ordered item module present
         customizeOrderedItemComponent.waitUntilIngredientsPresent();
 
-        //deselect ingredient 'sladoled'
+        //deselect second ingredient ('sladoled')
         customizeOrderedItemComponent.deselectActiveIngredient(2);
 
         //set quantity to 3
@@ -110,9 +110,9 @@ public class CreateOrderTest {
         waiterDashboardPage.areaTableButtonClicked(2);
         assertTrue(tableOptionsComponent.tableNumberTitlePresent("Table 2"));
 
-        //number of orders increased
+        //number of active orders increased by 1
         tableOptionsComponent.waitUntilOrderPresent();
-        assertTrue(tableOptionsComponent.activeOrdersPresent(7));
+        assertTrue(tableOptionsComponent.activeOrdersPresent(8));
 
     }
 
