@@ -146,6 +146,8 @@ public class EditOrderTest {
         assertTrue(viewAndPayOrderComponent.numberOfActiveOrderedItems(2));
         assertTrue(viewAndPayOrderComponent.containsItemsReadyToDeliver(0));
         assertTrue(viewAndPayOrderComponent.totalCostPresent(120));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Lasagna", "ORDERED", 5, 15));
+        assertTrue(viewAndPayOrderComponent.orderedItemPresent("Tea", "ORDERED", 3, 15));
 
     }
 

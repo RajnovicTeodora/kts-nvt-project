@@ -22,7 +22,7 @@ public class ViewAndPayOrderComponent {
     @FindBy(id = "total-cost-span")
     private WebElement totalCost;
 
-    @FindBy(id = "order-is-paid-h2")
+    @FindBy(xpath = "//*[@id='order-is-paid-h2']")
     private WebElement orderIsPaidText;
 
     @FindBy(id = "pay-order-confirm-button")
@@ -36,6 +36,15 @@ public class ViewAndPayOrderComponent {
 
     @FindBy(xpath = "//*[@id='form-holder-div']/mat-action-list/table//*[@name='ordered-item-status']")
     private List<WebElement> orderedItemStatusList;
+
+    @FindBy(xpath = "//*[@id='form-holder-div']/mat-action-list/table//*[@name='ordered-item-price']")
+    private List<WebElement> orderedItemPriceList;
+
+    @FindBy(xpath = "//*[@id='form-holder-div']/mat-action-list/table//*[@name='ordered-item-name']")
+    private List<WebElement> orderedItemNameList;
+
+    @FindBy(xpath = "//*[@id='form-holder-div']/mat-action-list/table//*[@name='ordered-item-quantity']")
+    private List<WebElement> orderedItemQuantityList;
 
     @FindBy(xpath = "//*[@id='pay-order-later-button']")
     private WebElement payLaterButton;
@@ -74,8 +83,8 @@ public class ViewAndPayOrderComponent {
 
     public boolean orderIsPaid(){ return driver.findElement(By.id("order-is-paid-h2")).isDisplayed();}
 
-    public boolean numberOfActiveOrderedItems(int value){
-        return this.deliverOrderButtons.size() == value;
+    public boolean numberOfActiveOrderedItems(int activeItems){
+        return this.deliverOrderButtons.size() == activeItems;
     }
 
     public void waitUntilOrderedItemPresent(){
@@ -84,6 +93,10 @@ public class ViewAndPayOrderComponent {
 
     public void waitUntilToastTextNotPresent(){
         Utilities.invisibilityWait(driver, 10, "//*[@id=\"toast-container\"]/div/div");
+    }
+
+    public void waitUntilIsPaidPresent(){
+        Utilities.visibilityWaitByLocator(driver, By.xpath("//*[@id='order-is-paid-h2']"), 10);
     }
 
     public void setReceivedAmountInput(int value) {
@@ -112,5 +125,17 @@ public class ViewAndPayOrderComponent {
                 Utilities.clickableWait(driver, itemButton, 10).click();
             }
         }
+    }
+
+    public boolean orderedItemPresent(String itemName, String status, int quantity, int price){
+        for(int index = 0; index < this.orderedItemNameList.size(); index++){
+            if(this.orderedItemNameList.get(index).getText().equals(itemName)
+                    && this.orderedItemStatusList.get(index).getText().equals(status)
+                    && this.orderedItemQuantityList.get(index).getText().equals(String.valueOf(quantity)+"x")
+                    && this.orderedItemPriceList.get(index).getText().equals("$ "+String.valueOf(price))){
+                return true;
+            }
+        }
+        return false;
     }
 }
