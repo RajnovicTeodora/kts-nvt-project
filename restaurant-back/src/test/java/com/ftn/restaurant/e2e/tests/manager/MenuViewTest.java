@@ -58,7 +58,7 @@ public class MenuViewTest {
         addDrinkPage.setNameInput("Test");
         addDrinkPage.setDrinkType();
         addDrinkPage.setDrinkContainer();
-        addDrinkPage.setFileInput("C:\\Users\\rajno\\Desktop\\3.png");
+        addDrinkPage.setFileInput("C:\\Users\\Olivera Mirilovic\\Documents\\GitHub\\kts-nvt-project\\restaurant-front\\src\\assets\\images\\fruit.jpg");
         addDrinkPage.submitDrinkBtnClick();
 
         menuViewPage.waitUntilItemsPresent();

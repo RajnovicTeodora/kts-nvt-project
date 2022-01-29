@@ -59,7 +59,7 @@ public class BartenderAddDrinkTest {
         addDrinkPage.setNameInput("Test");
         addDrinkPage.setDrinkType();
         addDrinkPage.setDrinkContainer();
-        addDrinkPage.setFileInput("C:\\Users\\rajta\\Desktop\\Screenshot_1.png");
+        addDrinkPage.setFileInput("C:\\Users\\Olivera Mirilovic\\Documents\\GitHub\\kts-nvt-project\\restaurant-front\\src\\assets\\images\\fruit.jpg");
 
         addDrinkPage.inputIngredientBtnClick();
         addDrinkPage.setNameIngredient("Test");

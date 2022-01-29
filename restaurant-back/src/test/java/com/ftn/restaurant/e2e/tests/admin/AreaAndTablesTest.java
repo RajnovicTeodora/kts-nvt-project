@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -22,8 +23,10 @@ public class AreaAndTablesTest {
 
     @Before
     public void setupSelenium() {
-        System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\firefoxdriver.exe");
-        driver = new FirefoxDriver();
+        /*System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\firefoxdriver.exe");
+        driver = new FirefoxDriver();*/
+        System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver.exe");
+        driver = new ChromeDriver();
         // maximize window
         driver.manage().window().maximize();
         // navigate
@@ -77,6 +80,8 @@ public class AreaAndTablesTest {
 
         assertTrue(Utilities.urlWait(driver, "http://localhost:4200/edit-area", 20));
 
+        areasPage.waitUntilAreaPresent();
+
         areasPage.clickOnArea(1);
 
         areasPage.addTableClick();
@@ -90,6 +95,8 @@ public class AreaAndTablesTest {
         areasPage.doubleClickTable(4);
         areasPage.deleteTableClick();
         areasPage.confirmDeleteClicked();
+
+        areasPage.waitInvisibility();
         assertEquals(2, areasPage.countTables());
 
     }

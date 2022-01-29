@@ -10,10 +10,10 @@ import java.util.List;
 public class PaychecksPage {
     private WebDriver driver;
 
-    @FindBy(id = "itemSearch")
+    @FindBy(xpath = "//*[@id=\"employee-search\"]")
     private WebElement employeeSearchInput;
 
-    @FindBy(id = "mat-select-2")
+    @FindBy(xpath = "//*[@id=\"role-filter-input\"]")
     private WebElement roleContainer;
 
     @FindBy(xpath = "//span[contains(text(),'Bartender')]")

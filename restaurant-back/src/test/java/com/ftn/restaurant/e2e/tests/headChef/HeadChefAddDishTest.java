@@ -52,7 +52,7 @@ public class HeadChefAddDishTest {
         headChefDashboardPage.addDishBtnClick();
         addDishPage.setNameInput("Test");
         addDishPage.setDrinkType();
-        addDishPage.setFileInput("C:\\Users\\rajta\\Desktop\\Screenshot_1.png");
+        addDishPage.setFileInput("C:\\Users\\Olivera Mirilovic\\Documents\\GitHub\\kts-nvt-project\\restaurant-front\\src\\assets\\images\\fruit.jpg");
 
         addDishPage.inputIngredientBtnClick();
         addDishPage.setNameIngredient("Test");

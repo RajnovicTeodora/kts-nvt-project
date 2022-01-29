@@ -29,8 +29,10 @@ public class SearchMenuItemsTest {
     @Before
     public void setupSelenium() {
         // instantiate browser
-        System.setProperty("webdriver.gecko.driver", "src//test//resources//firefoxdriver.exe");
-        browser = new FirefoxDriver();
+        /*System.setProperty("webdriver.gecko.driver", "src\\test\\resources\\firefoxdriver.exe");
+        driver = new FirefoxDriver();*/
+        System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver.exe");
+        browser = new ChromeDriver();
         // maximize window
         browser.manage().window().maximize();
         // navigate

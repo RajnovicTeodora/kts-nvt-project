@@ -122,4 +122,12 @@ public class AreasPage {
         }
         return false;
     }
+
+    public void waitUntilAreaPresent(){
+        Utilities.visibilityWaitByLocator(driver, By.xpath("//*[@name=\"dugmic-area\"][1]"), 10);
+    }
+
+    public void waitInvisibility(){
+        Utilities.invisibilityWait(driver, 10, "//*[@id='tableBttn'][3]");
+    }
 }
