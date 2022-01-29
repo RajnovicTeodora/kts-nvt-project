@@ -25,13 +25,13 @@ public class AreasPage {
     @FindBy(name = "return")
     private WebElement returnBttn;
 
-    @FindBy(className = "addTableBttn")
+    @FindBy(name = "addTableBttn")
     private WebElement addTableBttn;
 
-    @FindBy(className = "saveBttn")
+    @FindBy(name = "saveTableBttn")
     private WebElement saveChangesBttn;
 
-    @FindBy(className = "deleteBttn")
+    @FindBy(name = "deleteTableBttn")
     private WebElement deleteTableBttn;
 
     @FindBy(id = "name")
@@ -52,7 +52,7 @@ public class AreasPage {
     }
 
     public void deleteAreaClick(int areaNum){
-        List<WebElement> deleteBttns = Utilities.visibilityWait(driver, By.className("delete-area-button"), 10);
+        List<WebElement> deleteBttns = Utilities.visibilityWait(driver, By.name("delete-area-button"), 10);
         Utilities.clickableWait(driver, deleteBttns.get(areaNum), 10).click();
     }
 
@@ -110,11 +110,11 @@ public class AreasPage {
     }
 
     public int countAreas(){
-        return Utilities.visibilityWait(driver, By.className("dugmic-area"), 30).size();
+        return Utilities.visibilityWait(driver, By.name("dugmic-area"), 30).size();
     }
 
     public boolean checkAreaExists(String name){
-        List<WebElement> areas = Utilities.visibilityWait(driver, By.className("dugmic-area"), 20);
+        List<WebElement> areas = Utilities.visibilityWait(driver, By.name("dugmic-area"), 20);
         for(WebElement area : areas){
             if(area.getText().equals(name)){
                 return true;

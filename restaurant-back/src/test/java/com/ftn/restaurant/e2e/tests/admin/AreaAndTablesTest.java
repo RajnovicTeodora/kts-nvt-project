@@ -56,7 +56,7 @@ public class AreaAndTablesTest {
         driver.navigate().refresh();
         //check if area exists
         assertEquals(3, areasPage.countAreas());
-
+        driver.navigate().refresh();
         //delete area
         areasPage.deleteAreaClick(2);
         areasPage.confirmDeleteClicked();
