@@ -20,11 +20,16 @@ insert into system_user (username, password, deleted, loggedFirstTime) values ('
 insert into employees (id, name, surname, image, telephone) values (4, 'Waiter', 'Waiterric', 'nestodrr', '123654');
 insert into waiter (id) values (4);
 
+insert into system_user (username, password, deleted, loggedFirstTime) values ('Deleted', '$2y$10$t4NZP3qGGdzGakospEzFHOPQngmjvi7dZeZSiwfiNz.1rv/smO0Ce', 'True', 'False');
+insert into employees (id, name, surname, image, telephone) values (5, 'Deleted', 'Deleted', 'Deleted', 'Deleted');
+insert into waiter (id) values (5);
+
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-11-01', null, 10, 2);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-09-01', '2021-09-30', 10, 3);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-10-01', null, 10, 3);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-09-01', '2021-10-31', 10, 4);
 insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2021-11-01', null, 10, 4);
+insert into paychecks (date_from , date_to, paycheck, employee_id) values ('2022-01-01', null, 10, 5);
 
 INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (1, 'Pizza', 'todo', true, false);
 INSERT INTO dish(id, dish_type) VALUES (1, 'MAIN_DISH');
@@ -47,10 +52,14 @@ INSERT INTO drink (id, drink_type, container_type) VALUES (6, 'COLD_DRINK', 'BOT
 INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (7, 'Ice Tea', 'todo', false, false);
 INSERT INTO drink (id, drink_type, container_type) VALUES (7, 'COLD_DRINK', 'BOTTLE');
 
+INSERT INTO menu_item (id, name, image, approved, deleted) VALUES (8, 'Fish n chips', 'todo', true, false);
+INSERT INTO dish (id, dish_type) VALUES (8, 'MAIN_DISH');
+
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-08-02', '2020-10-10', 10, 16, false, 1);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-10-11', null, 10, 16, false, 1);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-10-11', null, 10, 16, true, 3);
 INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2020-10-11', null, 10, 16, true, 4);
+INSERT INTO menu_item_price (date_from, date_to, purchase_price, price, active, item_id) VALUES ('2022-01-29', null, 11, 11, true, 8);
 
 INSERT INTO area (id, name) VALUES (1, 'First floor');
 INSERT INTO area (id, name) VALUES (2, 'Second floor');
