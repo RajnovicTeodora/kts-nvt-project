@@ -26,7 +26,7 @@ public interface PaycheckRepository extends JpaRepository<Paychecks, Long> {
 
     List<Paychecks> findByEmployeeUsername(@Param("username") String username);
 
-    @Query("SELECT p FROM Paychecks p WHERE (p.employee.username != :username AND p.employee.deleted = false)" +
+    @Query("SELECT p FROM Paychecks p WHERE (p.employee.username not like :username AND p.employee.deleted = false)" +
             "AND (( lower(p.employee.name) like lower(concat('%', :searchName,'%')))" +
             "OR ( lower(p.employee.username) like lower(concat('%', :searchName,'%')))" +
             "OR ( lower(p.employee.surname) like lower(concat('%', :searchName,'%'))))" +
