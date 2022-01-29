@@ -62,7 +62,7 @@ public class MenuItemRepositoryTest {
     @Test
     public void testFindByDeletedFalseAndApprovedTrueAndBySearchCriteria() {
         List<MenuItem> found = menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria("");
-        assertEquals(6, found.size());
+        assertEquals(7, found.size());
 
         found = menuItemRepository.findByDeletedFalseAndApprovedTrueAndBySearchCriteria("Drink");
         assertEquals(0, found.size());
