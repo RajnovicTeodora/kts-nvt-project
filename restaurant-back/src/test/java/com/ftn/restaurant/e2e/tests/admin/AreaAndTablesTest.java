@@ -54,14 +54,15 @@ public class AreaAndTablesTest {
         assertTrue(Utilities.urlWait(driver, "http://localhost:4200/edit-area", 20));
 
         //check if area exists
-        assertTrue(areasPage.checkAreaExists("garden"));
+        assertEquals(3, areasPage.countAreas());
 
         //delete area
         areasPage.deleteAreaClick(2);
+        areasPage.confirmDeleteClicked();
 
         //check if deleted
-        assertFalse(areasPage.checkAreaExists("garden"));
-
+//        assertFalse(areasPage.checkAreaExists("garden"));
+        assertEquals(2, areasPage.countAreas());
     }
 
     @Test

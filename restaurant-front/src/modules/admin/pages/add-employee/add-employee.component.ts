@@ -77,6 +77,7 @@ export class AddEmployeeComponent implements OnInit {
       error: (error) => {
         this.toastr.error('Unable to add new employee');
         console.log(error);
+        this.dialogRef.close();
       },
     });
   }

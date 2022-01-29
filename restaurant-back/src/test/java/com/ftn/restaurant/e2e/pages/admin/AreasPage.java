@@ -16,9 +16,6 @@ public class AreasPage {
     @FindBy(className = "dugmic-area")
     private List<WebElement> areaBttns;
 
-    @FindBy(className = "delete-button")
-    private List<WebElement> deleteAreaBttns;
-
     @FindBy(className = "btn-primary")
     private WebElement confirmBttn;
 
@@ -55,7 +52,8 @@ public class AreasPage {
     }
 
     public void deleteAreaClick(int areaNum){
-        Utilities.clickableWait(driver, this.deleteAreaBttns.get(areaNum), 10).click();
+        List<WebElement> deleteBttns = Utilities.visibilityWait(driver, By.className("delete-area-button"), 10);
+        Utilities.clickableWait(driver, deleteBttns.get(areaNum), 10).click();
     }
 
     public void confirmDeleteClicked(){
@@ -108,8 +106,11 @@ public class AreasPage {
     }
 
     public int countTables(){
-
         return Utilities.visibilityWait(driver, By.id("tableBttn"), 10).size();
+    }
+
+    public int countAreas(){
+        return Utilities.visibilityWait(driver, By.className("dugmic-area"), 30).size();
     }
 
     public boolean checkAreaExists(String name){
