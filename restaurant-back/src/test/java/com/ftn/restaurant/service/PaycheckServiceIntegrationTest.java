@@ -1,6 +1,7 @@
 package com.ftn.restaurant.service;
 
 import static com.ftn.restaurant.constants.PaycheckConstants.*;
+import static com.ftn.restaurant.constants.DateTimeConstants.*;
 import com.ftn.restaurant.dto.UpdatePaycheckDTO;
 import com.ftn.restaurant.exception.EmployeeNotFoundException;
 import com.ftn.restaurant.exception.ForbiddenException;
@@ -28,6 +29,14 @@ public class PaycheckServiceIntegrationTest {
         Paychecks paychecks = paycheckService.updatePaycheck(updatePaycheckDTO);
 
         assertEquals(NEW_PAYCHECK, paychecks.getPaycheck(), 0);
+        assertEquals(3, paychecks.getEmployee().getPaychecksList().size());
+        assertEquals(FIRST_DAY_OF_THE_MONTH, paychecks.getDateFrom());
+
+        updatePaycheckDTO = new UpdatePaycheckDTO(DB_EMPLOYEE_USERNAME, NEW_PAYCHECK1);
+        paychecks = paycheckService.updatePaycheck(updatePaycheckDTO);
+
+        assertEquals(NEW_PAYCHECK1, paychecks.getPaycheck(), 0);
+        assertEquals(FIRST_DAY_OF_THE_MONTH, paychecks.getDateFrom());
     }
 
     @Test(expected = EmployeeNotFoundException.class)
@@ -39,7 +48,7 @@ public class PaycheckServiceIntegrationTest {
 
     @Test(expected = ForbiddenException.class)
     public void testUpdatePaycheckAndExpectForbiddenException(){
-        UpdatePaycheckDTO updatePaycheckDTO = new UpdatePaycheckDTO(DB_EMPLOYEE_USERNAME, 0);
+        UpdatePaycheckDTO updatePaycheckDTO = new UpdatePaycheckDTO(DB_EMPLOYEE_USERNAME, INVALID_PAYCHECK);
 
         paycheckService.updatePaycheck(updatePaycheckDTO);
     }

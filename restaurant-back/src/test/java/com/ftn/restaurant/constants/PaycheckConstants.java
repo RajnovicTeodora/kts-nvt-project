@@ -21,4 +21,6 @@ public class PaycheckConstants {
 
     public static double OLD_PAYCHECK = 199.9;
     public static double NEW_PAYCHECK = 500;
+    public static double NEW_PAYCHECK1 = 400;
+    public static double INVALID_PAYCHECK = 0;
 }
