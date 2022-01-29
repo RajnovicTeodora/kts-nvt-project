@@ -8,21 +8,12 @@
     <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
   </button>
   <span class="span">NOTI</span>
-  <div
+ <!-- <div
     fxShow="true"
     fxHide.lt-md="true"
     fxLayout="row"
     fxLayoutAlign="space-between center"
-  >
-    <button
-      mat-button
-      class="menu-button"
-      (click)="onOtherAccountsButtonClicked()"
-    >
-      <mat-icon>login</mat-icon>
-      <span>Other account</span>
-    </button>
-  </div>
+  ></div>-->
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -31,17 +22,22 @@
       class="avatar mat-elevation-z8"
       src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
       alt="”animated”"
-      (click)="this.router.navigate([''])"
     />
 
-    <h4 class="name">{{ this.user.username }}</h4>
+    <h4 class="name" id="current-user">{{ this.user.username }}</h4>
 
-    <button mat-button class="menu-button" (click)="onNotificationsClicked()">
+    <button
+      id="notifications-button"
+      mat-button
+      class="menu-button"
+      (click)="onNotificationsClicked()"
+    >
       <app-badge [badgeContent]="this.currentBadgeContent"></app-badge>
       <span>Notifications</span>
     </button>
 
     <button
+      id="change-password-button"
       mat-button
       class="menu-button"
       (click)="onPasswordChangeButtonClicked()"
@@ -50,7 +46,22 @@
       <span>Change password</span>
     </button>
 
-    <button mat-button class="menu-button" (click)="onLogoutButtonClicked()">
+    <button
+      id="other-account-button"
+      mat-button
+      class="menu-button"
+      (click)="onOtherAccountsButtonClicked()"
+    >
+      <mat-icon>login</mat-icon>
+      <span>Other account</span>
+    </button>
+
+    <button
+      mat-button
+      class="menu-button"
+      (click)="onLogoutButtonClicked()"
+      id="logout-button"
+    >
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -63,55 +74,69 @@
       class="custom-scroll-bar"
       *ngFor="let waiter of waiterList"
     >
-      <button
-        mat-list-item
-        (click)="changeAccount(waiter.user.username)"
-        matTooltip="Change account"
-      >
-        <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
-        <span>{{ waiter.user.username }}</span>
-        <mat-icon
-          matBadgePosition="after"
-          color="primary"
-          *ngIf="waiter.user.username === this.user.username"
-          >check</mat-icon
+      <mat-list-item>
+        <button
+          mat-list-item
+          (click)="changeAccount(waiter.user.username)"
+          matTooltip="Change account"
         >
-      </button>
+          <app-badge [badgeContent]="waiter.badgeNum"></app-badge>
+          <span>{{ waiter.user.username }}</span>
+          <mat-icon
+            matBadgePosition="after"
+            color="primary"
+            *ngIf="waiter.user.username === this.user.username"
+            >check</mat-icon
+          >
+        </button>
+      </mat-list-item>
     </mat-action-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="content mat-elevation-z8">
-      <div class="boundary">
+      <div class="boundary" id="area-tables-container">
         <ng-container *ngFor="let table of activeArea.tables">
-          <button mat-raised-button cdkDragBoundary=".boundary"
-          cdkDrag cdkDragDisabled [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
-          (click)="onRestaurantTableShowClicked(table.tableNum)"
-          [class]="table.waiterUsername === user.username ? 'claimedTableBttn' : 'unclaimedTableBttn'">
-          {{table.tableNum}}</button>
+          <button
+            mat-raised-button
+            cdkDragBoundary=".boundary"
+            cdkDrag
+            cdkDragDisabled
+            [cdkDragFreeDragPosition]="
+              tablePositions[activeArea.tables.indexOf(table)]
+            "
+            (click)="onRestaurantTableShowClicked(table.id)"
+            [class]="
+              table.waiterUsername === user.username
+                ? 'claimedTableBttn'
+                : 'unclaimedTableBttn'
+            "
+          >
+            {{ table.tableNum }}
+          </button>
         </ng-container>
       </div>
       <div class="buttonsDiv">
-        <h1 style="color:#424242;">Areas</h1>
+        <h1 style="color: #424242">Areas</h1>
         <div *ngFor="let area of areas">
           <button
-            mat-raised-button color="accent"
+            mat-raised-button
+            color="accent"
             class="areaBttn"
             (click)="openArea(area)"
           >
             {{ area.name }}
           </button>
-        </div>        
+        </div>
       </div>
 
       <app-table-options
-          *ngIf="this.showModalRestaurantTableOptions !== -1"
-          [tableNumber]="this.showModalRestaurantTableOptions"
-          [refreshRequired]="this.refreshRestaurantTableRequired"
-          (refreshFinished)="this.onRefreshFinished($event)"
-          (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
-          (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
-        ></app-table-options>
-
+        *ngIf="this.showModalRestaurantTableOptions !== -1"
+        [tableId]="this.showModalRestaurantTableOptions"
+        [refreshRequired]="this.refreshRestaurantTableRequired"
+        (refreshFinished)="this.onRefreshFinished($event)"
+        (onRestaurantTableClose)="onRestaurantTableCloseClicked($event)"
+        (onViewOrderAndBill)="onViewOrderAndBillClicked($event)"
+      ></app-table-options>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

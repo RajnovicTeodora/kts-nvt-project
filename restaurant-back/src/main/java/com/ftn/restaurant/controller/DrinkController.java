@@ -2,15 +2,12 @@ package com.ftn.restaurant.controller;
 
 import com.ftn.restaurant.dto.DrinkDTO;
 import com.ftn.restaurant.dto.NewDrinkDTO;
-import com.ftn.restaurant.dto.UserPaycheckDTO;
-import com.ftn.restaurant.model.User;
 import com.ftn.restaurant.model.enums.ContainerType;
 import com.ftn.restaurant.model.enums.DrinkType;
 import com.ftn.restaurant.service.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +26,7 @@ public class DrinkController {
         this.drinkService = drinkService;
     }
 
-    @ResponseBody //todo autorizacija, i ono nesto sa ing
+    @ResponseBody
     @GetMapping(path = "/getDrinks")
     @ResponseStatus(HttpStatus.OK)
     public List<DrinkDTO> getDrinks(){

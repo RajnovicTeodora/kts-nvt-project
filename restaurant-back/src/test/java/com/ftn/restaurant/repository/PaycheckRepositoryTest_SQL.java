@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,17 +25,20 @@ public class PaycheckRepositoryTest_SQL {
     @Autowired
     public PaycheckRepository paycheckRepository;
 
-    //TODO T
     @Test
     public void testSumTotalPaychecksAndDateBetween(){
-        double result = paycheckRepository.sumTotalPaychecksAndDateBetween(DB_DATE_FROM, DB_DATE_TO);
-        assertEquals(SUM_PAYCHECKS1, result, 0);
+        double result = paycheckRepository.sumTotalPaychecksAndDateBetween(DB_DATE_FROM_NOV, DB_DATE_TO);
+        assertEquals(SUM_PAYCHECKS2, result, 0);
+
     }
 
-    //TODO T
     @Test
     public void testFindByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(){
         Optional<Paychecks> found = paycheckRepository.findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(DB_EMPLOYEE_USERNAME);
         assertTrue(found.isPresent());
+
+        found = paycheckRepository.findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(DELETED_EMPLOYEE_USERNAME);
+        assertFalse(found.isPresent());
+
     }
 }

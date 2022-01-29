@@ -24,7 +24,11 @@ import { MaterialModule } from '../root/material-module';
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }),
   ],
   exports:[LoginFormComponent]
 })

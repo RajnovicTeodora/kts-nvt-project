@@ -29,4 +29,8 @@ public class Chef extends Employee {
         super();
     }
 
+    public Chef(String username, String password, boolean deleted, List<OrderedItem> orderedItems) {
+        super(username, password, deleted);
+        this.orderedItems = orderedItems;
+    }
 }

@@ -16,7 +16,7 @@ import { ManagerRoutes } from './manager.routes';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ItemTableComponent } from './pages/item-view/item-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { EmployeesComponent } from '../shared/components/employees/employees.component'; 
+import { EmployeesComponent } from '../shared/components/employees/employees.component';
 import { AddDrinkManagerComponent } from './components/add-drink-manager/add-drink-manager.component';
 import { EditPaycheckDialogComponent } from './components/edit-paycheck-dialog/edit-paycheck-dialog.component';
 import { ReportComponent } from './pages/report/report.component';
@@ -34,7 +34,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     EditPaycheckDialogComponent,
     ReportComponent,
     MenuViewComponent,
-    MenuItemCardComponent
+    MenuItemCardComponent,
   ],
   imports: [
     CommonModule,

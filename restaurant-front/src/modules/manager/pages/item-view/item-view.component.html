@@ -1,41 +1,46 @@
-<form class="example-form" [formGroup]="searchForm">
-  <mat-form-field class="example-container">
-    <span matPrefix> </span>
-    <input
-      matInput
-      class="form-control"
-      type="text"
-      placeholder="Search..."
-      formControlName="search"
-      id="item-search"
-      name="item-search"
-    />
-    <button
-      color="accent"
-      type="submit"
-      class="submit-button"
-      (click)="search()"
-      id="submit-button"
-      matSuffix
-      mat-button
-    >
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
-  <button mat-stroked-button color="accent" class="addBttn" (click)="openDialog()"><mat-icon>add</mat-icon>
-    Add Drink 
-  </button>
-</form>
-
-<div class="card-deck">
-  <mat-list class="example-card" *ngFor="let item of observable | async">
-    <app-item-card
-      id="{{ item.id }}"
-      [itemId]="item.id"
-      (approveClicked)="onApproved($event)"
-      (deleteClicked)="onDeleted($event)"
-    >
-    </app-item-card>
-  </mat-list>
+<div class="menu-content">
+  <form class="example-form" [formGroup]="searchForm">
+    <mat-form-field class="example-container">
+      <span matPrefix> </span>
+      <input
+        matInput
+        class="form-control"
+        type="text"
+        placeholder="Search..."
+        formControlName="search"
+        id="item-search"
+        name="item-search"
+      />
+      <button
+        color="accent"
+        type="submit"
+        class="submit-button"
+        (click)="search()"
+        id="submit-button"
+        matSuffix
+        mat-button
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
 </div>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<div class="contnet">
+  <div class="card-deck" fxLayout="row wrap" fxLayoutGap="10px grid">
+    <div
+      fxFlex="25%"
+      fxFlex.xs="100%"
+      fxFlex.sm="33%"
+      *ngFor="let item of observable | async"
+    >
+      <app-item-card
+        id="{{ item.id }}"
+        [itemId]="item.id"
+        (approveClicked)="onApproved($event)"
+        (deleteClicked)="onDeleted($event)"
+      >
+      </app-item-card>
+    </div>
+  </div>
+  <mat-paginator [pageSizeOptions]="[4, 12, 24, 48]"></mat-paginator>
+</div>

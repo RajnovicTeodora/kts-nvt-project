@@ -40,7 +40,7 @@ public class OrderedItemRepositoryTest {
         OrderedItem orderedItem = new OrderedItem(OrderedItemStatus.DELIVERED, 2, 5, null, null, new ArrayList<>(), false, null);
         ArrayList<OrderedItem> orderedItems = new ArrayList<>();
         orderedItems.add(orderedItem);
-        Order order = new Order(true, 75, LocalDate.now(), "some note...", LocalTime.now(), orderedItems, null);
+        Order order = new Order(true, 75, LocalDate.now(), "some note...", LocalTime.now(), orderedItems);
         orderedItem.setOrder(order);
         MenuItemPrice menuItemPrice = new MenuItemPrice(LocalDate.now(), null, 15, true, 5.5, null);
 

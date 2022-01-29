@@ -27,6 +27,19 @@ public class DrinkConstants {
             ContainerType.GLASS,
             INGREDIENTS_1);
 
+    public static final Drink DRINK_2 = new Drink(
+            "milk sejk2",
+            "a",
+            true,
+            true,
+            new ArrayList<MenuItemPrice>(),
+            DrinkType.HOT_DRINK,
+            ContainerType.BOTTLE,
+            INGREDIENTS_1);
+
+    public static final ArrayList<Drink> DRINK_LIST = new ArrayList<>(
+            Arrays.asList(DRINK_1, DRINK_2));
+
     public static final String NEW_DRINK_NAME = "Hot dark chocolate";
     public static final DrinkType NEW_DRINK_TYPE = DrinkType.HOT_DRINK;
     public static final ContainerType NEW_CONTAINER_TYPE = ContainerType.GLASS;
@@ -35,4 +48,7 @@ public class DrinkConstants {
     public static final DrinkType EXISTING_DRINK_TYPE = DrinkType.COLD_DRINK;
     public static final ContainerType EXISTING_CONTAINER_TYPE = ContainerType.BOTTLE;
 
+    public static final String NEW_DRINK_NAME1 = "Coffee";
+    public static final DrinkType NEW_DRINK_TYPE1 = DrinkType.COLD_DRINK;
+    public static final ContainerType NEW_CONTAINER_TYPE1 = ContainerType.GLASS;
 }

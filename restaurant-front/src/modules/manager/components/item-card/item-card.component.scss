@@ -1,0 +1,24 @@
+mat-list {
+  max-height: 100px;
+  overflow: auto;
+  padding-bottom: 1.34375em;
+}
+
+.custom-scroll-bar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scroll-bar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.26);
+}
+
+.custom-icon {
+  width: 30px;
+  height: 30px;
+
+  background-size: cover;
+
+  background-position: bottom center;
+
+  padding-right: 10px;
+}

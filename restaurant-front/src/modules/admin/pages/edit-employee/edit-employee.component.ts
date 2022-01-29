@@ -17,7 +17,7 @@ export class EditEmployeeComponent implements OnInit {
   editEmployeeForm: FormGroup;
   selectedEmployee: Employee;
 
-  isImageSaved: boolean = true;
+  isImageChanged = false;
   url: any;
   image: SafeUrl;
 
@@ -51,20 +51,24 @@ export class EditEmployeeComponent implements OnInit {
       reader.readAsDataURL(file);
       reader.onload = () => {
         this.url = reader.result;
-        this.isImageSaved = true;
+        this.isImageChanged = true;
         this.image = this.url;
       };
     }
   }
 
   saveEmployee() {
+    let image = this.selectedEmployee.image;
+    if(this.isImageChanged){
+      image = this.url.split(',')[1];
+    }
     const employee: Employee = {
       username: this.editEmployeeForm.value.username,
       password: this.editEmployeeForm.value.password,
       name: this.editEmployeeForm.value.name,
       surname: this.editEmployeeForm.value.surname,
       telephone: this.editEmployeeForm.value.telephone,
-      image: this.url.split(',')[1],
+      image: image,
       role: '',
     };
     console.log(employee);
