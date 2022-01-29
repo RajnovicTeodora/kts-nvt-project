@@ -20,7 +20,6 @@ import { EditPaycheck } from 'src/modules/shared/models/paycheck-models/edit-pay
 import { AddEmployeeComponent } from 'src/modules/admin/pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from 'src/modules/admin/pages/edit-employee/edit-employee.component';
 import { Employee } from '../../models/employee';
-import { DeleteEmployeeComponent } from 'src/modules/admin/components/delete-employee/delete-employee.component';
 
 @Component({
   selector: 'app-employees',
@@ -39,7 +38,10 @@ export class EmployeesComponent implements OnInit {
   filterString: string;
   enableEdit = false;
   enableEditIndex = null;
-
+  deleteEmployeeDialogOpen = false;
+  usernameToDelete = "";
+  messageForDialog = "";
+  
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -79,9 +81,9 @@ export class EmployeesComponent implements OnInit {
       this.adminService.getAllEmployees('', '').subscribe((response) => {
         this.setData(response.body);
       });
+      this.displayedColumns.push('Telephone');
       this.displayedColumns.push('Edit employee');
       this.displayedColumns.push('Delete');
-      this.displayedColumns.push('Telephone');
     }
     if (this.user.userType === 'MANAGER') {
       this.paycheckService.getAll('', '').subscribe((response) => {
@@ -173,8 +175,8 @@ export class EmployeesComponent implements OnInit {
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '30%';
-    dialogConfig.height = '80%';
+    dialogConfig.width = '50%';
+    dialogConfig.height = '70%';
 
     const dialogRef = this.dialog.open(AddEmployeeComponent, dialogConfig);
 
@@ -212,22 +214,33 @@ export class EmployeesComponent implements OnInit {
   }
 
   openDeleteEmployeeDialog(username: string) {
-    console.log(username);
-    const dialogRef = this.dialog.open(DeleteEmployeeComponent, {
-      disableClose: true,
-      autoFocus: true,
-      width: '40%',
-      height: '20%',
-      data: {
-        username: username,
+    this.deleteEmployeeDialogOpen = true;
+    this.usernameToDelete = username;
+    this.messageForDialog = "Are you sure you want to delete user: "+username+"?";
+  }
+
+  onConfirmDeleteUserCancelClicked(item: boolean) {
+    this.deleteEmployeeDialogOpen = false;
+    this.usernameToDelete = "";
+    this.messageForDialog = "";
+  }
+
+  onConfirmDeleteUserConfirmedClicked(item: boolean) {
+    this.adminService.deleteEmployee(this.usernameToDelete).subscribe({
+      next: (success) => {
+        this.toastr.success(
+          'Successfully deleted ' + success.username
+        );
+        this.search();
+      },
+      error: (error) => {
+        this.toastr.error('Unable to delete employee');
+        console.log(error);
       },
     });
+    this.deleteEmployeeDialogOpen = false;
+    this.usernameToDelete = "";
+    this.messageForDialog = "";
+}
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-      this.adminService.getAllEmployees('', '').subscribe((response) => {
-        this.setData(response.body);
-      });
-    });
-  }
 }
