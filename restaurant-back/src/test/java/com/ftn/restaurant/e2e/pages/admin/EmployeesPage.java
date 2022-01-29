@@ -14,7 +14,7 @@ public class EmployeesPage {
 
     private WebDriver driver;
 
-    @FindBy(className = "addBttn")
+    @FindBy(name = "addEmployeeBttn")
     private WebElement addEmployeeBttn;
 
     @FindBy(name = "name")

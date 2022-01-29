@@ -32,7 +32,7 @@
     <mat-icon>search</mat-icon>
   </button>
   <div class="addEmployeeBttn" *ngIf="user.userType == 'ADMIN'">
-    <button mat-stroked-button color="accent" class="addBttn" (click)="openAddEmployeeDialog()"><mat-icon>add</mat-icon>
+    <button mat-stroked-button color="accent" class="addBttn" name="addEmployeeBttn" (click)="openAddEmployeeDialog()"><mat-icon>add</mat-icon>
       Add Employee 
     </button>
   </div>
