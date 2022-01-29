@@ -2,8 +2,6 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.CurrentMenuItemPriceDTO;
 import com.ftn.restaurant.dto.MenuItemDTO;
-import com.ftn.restaurant.dto.MenuItemPriceDTO;
-import com.ftn.restaurant.dto.SelectedMenuItemsDTO;
 import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.exception.MenuItemNotFoundException;
 import com.ftn.restaurant.model.Dish;
@@ -133,7 +131,7 @@ public class MenuService {
         List<MenuItemDTO> itemsDTOs = new ArrayList<MenuItemDTO>();
 
         for (MenuItem item : menuItems) {
-            Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(item.getId());
+            Optional<MenuItemPrice> optionalPrice = menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(item.getId(), LocalDate.now());
             if (optionalPrice.isPresent() && optionalPrice.get().isActive() == true) {
                 itemsDTOs.add(new MenuItemDTO(item));
             }
