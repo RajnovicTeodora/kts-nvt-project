@@ -5,12 +5,19 @@ import com.ftn.restaurant.e2e.pages.waiter.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertTrue;
 
+@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class CreateOrderTest {
 
     private WebDriver browser;
@@ -25,13 +32,8 @@ public class CreateOrderTest {
 
     @Before
     public void setupSelenium() {
-        // instantiate browser
         System.setProperty("webdriver.chrome.driver", "src//test//resources//chromedriver.exe");
         browser = new ChromeDriver();
-        // maximize window
-        browser.manage().window().maximize();
-        // navigate
-        browser.navigate().to("http://localhost:4200/");
 
         loginPage = PageFactory.initElements(browser, LoginPage.class);
         waiterDashboardPage = PageFactory.initElements(browser, WaiterDashboardPage.class);
@@ -40,6 +42,10 @@ public class CreateOrderTest {
         customizeOrderedItemComponent = PageFactory.initElements(browser, CustomizeOrderedItemComponent.class);
         searchMenuItemsPage = PageFactory.initElements(browser, SearchMenuItemsPage.class);
         viewAndPayOrderComponent = PageFactory.initElements(browser, ViewAndPayOrderComponent.class);
+
+        browser.manage().window().maximize();
+        // navigate
+        browser.navigate().to("http://localhost:4200/");
     }
 
     @Test
@@ -72,13 +78,13 @@ public class CreateOrderTest {
         searchMenuItemsPage.clickSearch();
         createOrderPage.waitUntilOldResultsNotPresent();
         createOrderPage.searchResultClick();
-        assertTrue(customizeOrderedItemComponent.menuItemNamePresent("Pizza"));
-        assertTrue(customizeOrderedItemComponent.menuItemPricePresent(25));
 
         //customize ordered item module present
+        assertTrue(customizeOrderedItemComponent.menuItemNamePresent("Pizza"));
+        assertTrue(customizeOrderedItemComponent.menuItemPricePresent(25));
         customizeOrderedItemComponent.waitUntilIngredientsPresent();
 
-        //deselect second ingredient ('sladoled')
+        //deselect second ingredient
         customizeOrderedItemComponent.deselectActiveIngredient(2);
 
         //set quantity to 3

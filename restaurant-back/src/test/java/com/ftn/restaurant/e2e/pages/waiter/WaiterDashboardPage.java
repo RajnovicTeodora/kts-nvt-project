@@ -75,4 +75,8 @@ public class WaiterDashboardPage {
     public void waitUntilTablePresent(){
         Utilities.visibilityWaitByLocator(driver, By.xpath("//*[@id=\"area-tables-container\"]/button[1]"), 10);
     }
+
+    public void waitUntilActiveAccountPresent(){
+        Utilities.visibilityWaitByLocator(driver, By.xpath("//mat-list-item[1]"), 10);
+    }
 }
