@@ -5,11 +5,10 @@ import com.ftn.restaurant.exception.*;
 import com.ftn.restaurant.model.*;
 import com.ftn.restaurant.model.enums.DishType;
 import com.ftn.restaurant.model.enums.OrderedItemStatus;
-import com.ftn.restaurant.repository.IngredientRepository;
-import com.ftn.restaurant.repository.OrderRepository;
-import com.ftn.restaurant.repository.OrderedItemRepository;
+import com.ftn.restaurant.repository.*;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ftn.restaurant.constants.DishConstants.DISH_1;
 import static com.ftn.restaurant.constants.OrderDTOConstants.ORDER_ITEM_DTO_1;
+import static com.ftn.restaurant.constants.OrderedItemConstants.*;
+import static com.ftn.restaurant.constants.UserConstants.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,6 +39,15 @@ public class OrderedItemUnitTest {
 
     @Autowired
     private OrderedItemService orderedItemService;
+
+    @MockBean
+    private BartenderRepository bartenderRepository;
+
+    @MockBean
+    private NotificationRepository notificationRepository;
+
+    @MockBean
+    private ChefRepository chefRepository;
 
     @MockBean
     private OrderedItemRepository orderedItemRepository;
@@ -52,27 +67,71 @@ public class OrderedItemUnitTest {
     @MockBean
     private MenuItemPriceService menuItemPriceService;
 
+    @MockBean
+    private UserService userService;
+
+
     @Test
     public void acceptOrderedItemTest(){
-//        Assert.assertEquals("You accepted order with id: 7",orderedItemService.acceptOrderedItem(7, username));
-//        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(10000000, username));
-//        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(-10, username));
-//        Assert.assertEquals("You can't accept order if it is not in status ordered.",
-//                orderedItemService.acceptOrderedItem(2, username));
-//        Assert.assertEquals("You can't accept order if it is not in status ordered.",
-//                orderedItemService.acceptOrderedItem(3, username));
+        given(orderedItemRepository.findWithId(7)).willReturn(Optional.of(ITEM_4));
+        given(orderedItemRepository.findWithId(2)).willReturn(Optional.of(ITEM_2));
+        given(orderedItemRepository.findWithId(3)).willReturn(Optional.of(ITEM_3));
+        given(orderedItemRepository.findWithId(10000000)).willReturn(Optional.empty());
+        given(orderedItemRepository.findWithId(-10)).willReturn(Optional.empty());
+        given(userService.findByUsername("Pera")).willReturn(BARTENDER_1);
+        given(userService.findByUsername("Sima")).willReturn(CHEF_1);
+
+        Assert.assertEquals("You accepted order pizza",orderedItemService.acceptOrderedItem(7, "Pera"));
+
+        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(10000000, "Pera"));
+        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(-10, "Pera"));
+
+        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+                orderedItemService.acceptOrderedItem(2, "Pera"));
+
+        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+                orderedItemService.acceptOrderedItem(3, "Pera"));
+    }
+    @Test
+    public void acceptOrderedItemChefTest(){
+        given(orderedItemRepository.findWithId(7)).willReturn(Optional.of(ITEM_1));
+        given(orderedItemRepository.findWithId(2)).willReturn(Optional.of(ITEM_2));
+        given(orderedItemRepository.findWithId(3)).willReturn(Optional.of(ITEM_3));
+        given(orderedItemRepository.findWithId(10000000)).willReturn(Optional.empty());
+        given(orderedItemRepository.findWithId(-10)).willReturn(Optional.empty());
+        given(userService.findByUsername("Sima")).willReturn(CHEF_1);
+
+        Assert.assertEquals("You accepted order pizza",orderedItemService.acceptOrderedItem(7, "Sima"));
+
+        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(10000000, "Sima"));
+        Assert.assertEquals("Order doesn't exists",orderedItemService.acceptOrderedItem(-10, "Sima"));
+
+        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+                orderedItemService.acceptOrderedItem(2, "Sima"));
+
+        Assert.assertEquals("You can't accept order if it is not in status ordered.",
+                orderedItemService.acceptOrderedItem(3, "Sima"));
     }
 
     @Test
     public void finishOrderedItemTest(){
-        Assert.assertEquals("You finished order with id: 1",orderedItemService.finishOrderedItem(1));
+        ITEM_3.setWhoPreapiring((Chef)CHEF_1);
+        ITEM_1.setStatus(OrderedItemStatus.ORDERED);
+        ((Chef)CHEF_1).setOrderedItems(new ArrayList<>(Arrays.asList(ITEM_3)));
+        given(orderedItemRepository.findById(7)).willReturn(Optional.of(ITEM_1));
+        given(orderedItemRepository.findById(2)).willReturn(Optional.of(ITEM_2));
+        given(orderedItemRepository.findById(3)).willReturn(Optional.of(ITEM_3));
+        given(orderedItemRepository.findById(10000000)).willReturn(Optional.empty());
+        given(orderedItemRepository.findById(-10)).willReturn(Optional.empty());
+
+        Assert.assertEquals("You finished order pizza",orderedItemService.finishOrderedItem(3));
         Assert.assertEquals("Order doesn't exists",orderedItemService.finishOrderedItem(10000000));
         Assert.assertEquals("Order doesn't exists",orderedItemService.finishOrderedItem(-10));
         Assert.assertEquals("You can't finish order if it is not in status in progres.",
                 orderedItemService.finishOrderedItem(2));
         Assert.assertEquals("You can't finish order if it is not in status in progres.",
-                orderedItemService.finishOrderedItem(3));
-    } //todo vrv verify?
+                orderedItemService.finishOrderedItem(7));
+    }
 
 
     @Test(expected = NotFoundException.class )

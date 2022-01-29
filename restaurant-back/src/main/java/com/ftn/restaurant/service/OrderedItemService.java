@@ -58,11 +58,7 @@ public class OrderedItemService {
         this.chefRepository  = chefRepository;
     }
 
-    public String acceptOrderedItem(long id, String username) { //setovati i uloge todo
-        for(OrderedItem it: this.orderedItemRepository.findAll()){
-            System.out.println(it.getId());
-            System.out.println(it.getStatus());
-        }
+    public String acceptOrderedItem(long id, String username) {
 
         Optional<OrderedItem> item = this.orderedItemRepository.findWithId(id);
         if (item.isPresent()){
