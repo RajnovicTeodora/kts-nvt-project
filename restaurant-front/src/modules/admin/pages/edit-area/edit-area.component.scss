@@ -99,6 +99,8 @@ mat-toolbar {
   .tableBttn {
     border-style: solid;
     border-color: hotpink;
+    height: 50px;
+    width: 65px;
   }
 
   .saveBttn {
@@ -119,4 +121,6 @@ mat-toolbar {
   .selectedTableBttn {
     border-style: solid;
     border-color: #424242;
+    height: 50px;
+    width: 65px;
   }
