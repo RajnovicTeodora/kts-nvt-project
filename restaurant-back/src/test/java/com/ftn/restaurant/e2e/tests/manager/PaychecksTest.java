@@ -52,6 +52,8 @@ public class PaychecksTest {
 
         managerDashboardPage.paychecksViewBtnClick();
 
+        paychecksPage.waitUntilTablePresent();
+
         //Search and filter
         paychecksPage.setEmployeeSearchInput("misko");
         paychecksPage.setRoleFilter();
@@ -63,6 +65,8 @@ public class PaychecksTest {
 
         //Edit found user's paycheck
         paychecksPage.editPaycheckBtnClick(0);
+        
+        paychecksPage.waitUntilTablePresent();
         editPaycheckPage.setPaycheckInput("19");
         editPaycheckPage.submitBtnClick();
 
