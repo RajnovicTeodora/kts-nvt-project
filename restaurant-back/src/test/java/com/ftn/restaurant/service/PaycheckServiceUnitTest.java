@@ -2,10 +2,10 @@ package com.ftn.restaurant.service;
 
 import com.ftn.restaurant.dto.UpdatePaycheckDTO;
 import com.ftn.restaurant.exception.EmployeeNotFoundException;
+import com.ftn.restaurant.exception.ForbiddenException;
 import com.ftn.restaurant.model.Employee;
 import com.ftn.restaurant.model.Manager;
 import com.ftn.restaurant.model.Paychecks;
-import com.ftn.restaurant.repository.MenuItemPriceRepository;
 import com.ftn.restaurant.repository.PaycheckRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +24,7 @@ import java.util.Optional;
 import static com.ftn.restaurant.constants.PaycheckConstants.*;
 import static com.ftn.restaurant.constants.DateTimeConstants.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +47,7 @@ public class PaycheckServiceUnitTest {
         given(paycheckRepository
                 .findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(NON_EXISTENT_EMPLOYEE_USERNAME)).willReturn(Optional.empty());
 
-        //
+        // Existent employee
         Employee employee = new Manager();
 
         Paychecks paycheck = new Paychecks(FIRST_DAY_OF_THE_MONTH, null, OLD_PAYCHECK, employee);
@@ -61,7 +62,14 @@ public class PaycheckServiceUnitTest {
         employee.setPaychecksList(paychecksList);
 
         when(paycheckRepository.findByEmployeeUsernameAndEmployeeDeletedFalseAndDateToIsNull(DB_EMPLOYEE_USERNAME)).thenReturn(Optional.of(paycheck));
-        when(paycheckRepository.save(savedPaycheck)).thenReturn(savedPaycheck);
+        when(paycheckRepository.save(any())).thenReturn(savedPaycheck);
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testUpdatePaycheckShouldReturnForbiddenExceptionWhenPaycheckIsLessThanOne(){
+        UpdatePaycheckDTO updatePaycheckDTO = new UpdatePaycheckDTO(DB_EMPLOYEE_USERNAME, INVALID_PAYCHECK);
+        Paychecks paychecks = paycheckService.updatePaycheck(updatePaycheckDTO);
+
     }
 
     @Test
