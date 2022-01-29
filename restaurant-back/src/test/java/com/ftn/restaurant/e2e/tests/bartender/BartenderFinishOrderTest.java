@@ -1,7 +1,7 @@
 package com.ftn.restaurant.e2e.tests.bartender;
 
-import com.ftn.restaurant.e2e.pages.*;
 import com.ftn.restaurant.e2e.pages.bartender.BartenderDashboardPage;
+import com.ftn.restaurant.e2e.pages.shared.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

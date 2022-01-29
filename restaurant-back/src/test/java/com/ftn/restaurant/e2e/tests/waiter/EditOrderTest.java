@@ -1,6 +1,6 @@
 package com.ftn.restaurant.e2e.tests.waiter;
 
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.waiter.*;
 import org.junit.After;
 import org.junit.Before;

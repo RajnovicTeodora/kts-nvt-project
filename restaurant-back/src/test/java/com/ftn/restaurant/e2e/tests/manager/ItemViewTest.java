@@ -1,7 +1,7 @@
 package com.ftn.restaurant.e2e.tests.manager;
 
 import com.ftn.restaurant.e2e.pages.manager.ItemViewPage;
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.manager.ManagerDashboardPage;
 import com.ftn.restaurant.e2e.pages.manager.MenuViewPage;
 import org.junit.After;

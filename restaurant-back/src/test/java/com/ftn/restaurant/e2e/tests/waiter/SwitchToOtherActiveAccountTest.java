@@ -1,9 +1,8 @@
 package com.ftn.restaurant.e2e.tests.waiter;
 
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.components.ChangePasswordComponent;
 import com.ftn.restaurant.e2e.pages.components.OtherAccountsComponent;
-import com.ftn.restaurant.e2e.pages.components.ViewNotificationsComponent;
 import com.ftn.restaurant.e2e.pages.waiter.WaiterDashboardPage;
 import org.junit.After;
 import org.junit.Before;

@@ -1,6 +1,6 @@
 package com.ftn.restaurant.e2e.tests.bartender;
 
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.bartender.BartenderDashboardPage;
 import com.ftn.restaurant.e2e.pages.bartender.DrinkTablePage;
 import org.junit.After;

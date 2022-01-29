@@ -1,8 +1,9 @@
 package com.ftn.restaurant.e2e.tests.manager;
 
-import com.ftn.restaurant.e2e.pages.*;
 import com.ftn.restaurant.e2e.pages.manager.EditPaycheckPage;
 import com.ftn.restaurant.e2e.pages.manager.ManagerDashboardPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.PaychecksPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

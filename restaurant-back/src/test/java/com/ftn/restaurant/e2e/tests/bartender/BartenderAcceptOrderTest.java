@@ -1,8 +1,10 @@
 package com.ftn.restaurant.e2e.tests.bartender;
 
-import com.ftn.restaurant.e2e.pages.*;
 import com.ftn.restaurant.e2e.pages.bartender.BartenderDashboardPage;
-import org.checkerframework.checker.units.qual.A;
+import com.ftn.restaurant.e2e.pages.shared.AcceptedOrdersPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.NewOrdersPage;
+import com.ftn.restaurant.e2e.pages.shared.TableOfOrderedItemsPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,18 +1,18 @@
-package com.ftn.restaurant.e2e.pages;
+package com.ftn.restaurant.e2e.pages.shared;
 
+import com.ftn.restaurant.e2e.pages.Utilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class NewOrdersPage {
-
+public class AcceptedOrdersPage {
     private WebDriver driver;
     private static String URL = "http://localhost:4200/bartender-dashboard";
 
     @FindBy(id = "title1")
     private WebElement titleOfFirstOrder;
 
-    public NewOrdersPage(WebDriver driver) {
+    public AcceptedOrdersPage(WebDriver driver) {
         this.driver = driver;
     }
 
@@ -27,5 +27,3 @@ public class NewOrdersPage {
     }
 
 }
-
-

@@ -1,15 +1,13 @@
 package com.ftn.restaurant.e2e.tests.headChef;
 
-import com.ftn.restaurant.e2e.pages.*;
 import com.ftn.restaurant.e2e.pages.headChef.HeadChefDashboardPage;
+import com.ftn.restaurant.e2e.pages.shared.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 

@@ -17,7 +17,6 @@
     <mat-divider></mat-divider>
     <div class="row">
       <mat-selection-list #ingredients class="custom-scroll-bar">
-        <!--NOTE isAlergen is actually isElementSelected-->
         <mat-list-option
           *ngFor="let i of this.menuItemWithIngredients.ingredients"
           [selected]="i.isAlergen"

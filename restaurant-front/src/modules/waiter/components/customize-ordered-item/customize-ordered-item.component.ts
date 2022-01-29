@@ -29,7 +29,7 @@ export class CustomizeOrderedItemComponent implements OnInit {
   @ViewChild('quantity') quantity: ElementRef;
   @ViewChild('priority') matSelect: MatSelect;
   @Input() menuItemId = -1;
-  @Input() orderedItemDetails : MenuItemWithIngredients;
+  @Input() orderedItemDetails: MenuItemWithIngredients;
   @Input() editModeMenuItemId = -1;
   @Output() onCustomizeOrderedItemClose = new EventEmitter();
   @Output() onAddToOrder = new EventEmitter();
@@ -39,7 +39,6 @@ export class CustomizeOrderedItemComponent implements OnInit {
   selectedPriority: number;
   currentQ: number;
   editMode: boolean;
-
 
   constructor(
     private menuItemService: MenuItemWithIngredientsService,
@@ -57,12 +56,11 @@ export class CustomizeOrderedItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.menuItemId != -1){
+    if (this.menuItemId != -1) {
       this.getMenuItemWithIngredients();
       this.currentQ = 1;
       this.editMode = false;
-    }
-    else if(this.orderedItemDetails != undefined){
+    } else if (this.orderedItemDetails != undefined) {
       this.editMode = true;
       this.setOrderedItemDetails();
       this.selectedPriority = this.orderedItemDetails.priority;
@@ -76,38 +74,39 @@ export class CustomizeOrderedItemComponent implements OnInit {
     });
   }
 
-  setOrderedItemDetails(){
+  setOrderedItemDetails() {
     let searchedId = -1;
-    if(this.editModeMenuItemId != -1){
+    if (this.editModeMenuItemId != -1) {
       searchedId = this.editModeMenuItemId;
-    }else{
+    } else {
       searchedId = this.orderedItemDetails.id;
     }
     this.menuItemService.getMenuItem(searchedId).subscribe({
       next: (result) => {
         this.menuItemWithIngredients = new MenuItemWithIngredients(
-          this.orderedItemDetails.id, //if editModeMenuItemId active => then this id is orderedItemId else its menuItemId
+          this.orderedItemDetails.id,
           this.orderedItemDetails.price,
           this.orderedItemDetails.name,
           result.type,
           result.ingredients
         );
-        this.menuItemWithIngredients.ingredients.forEach((value, index) =>{
+        this.menuItemWithIngredients.ingredients.forEach((value, index) => {
           let found = false;
-          this.orderedItemDetails.ingredients.forEach((value1, index1) =>{
-            if(value.id == value1.id){
+          this.orderedItemDetails.ingredients.forEach((value1, index1) => {
+            if (value.id == value1.id) {
               this.menuItemWithIngredients.ingredients[index].isAlergen = true;
               found = true;
             }
           });
-          if(found == false){
+          if (found == false) {
             this.menuItemWithIngredients.ingredients[index].isAlergen = false;
           }
         });
-        this.menuItemWithIngredients.quantity = this.orderedItemDetails.quantity;
-        this.menuItemWithIngredients.priority = this.orderedItemDetails.priority;
+        this.menuItemWithIngredients.quantity =
+          this.orderedItemDetails.quantity;
+        this.menuItemWithIngredients.priority =
+          this.orderedItemDetails.priority;
         this.menuItemWithIngredients.container = result.container;
-        
       },
       error: (data) => {
         this.toastr.error(data.error);
@@ -125,9 +124,9 @@ export class CustomizeOrderedItemComponent implements OnInit {
           result.type,
           result.ingredients
         );
-        //NOTE isAlergen is actually isOptionSelected
-        this.menuItemWithIngredients.ingredients.forEach((value, index) =>{
-          this.menuItemWithIngredients.ingredients[index].isAlergen = true;          
+
+        this.menuItemWithIngredients.ingredients.forEach((value, index) => {
+          this.menuItemWithIngredients.ingredients[index].isAlergen = true;
         });
         this.menuItemWithIngredients.priority = result.priority;
         this.menuItemWithIngredients.container = result.container;
@@ -166,22 +165,20 @@ export class CustomizeOrderedItemComponent implements OnInit {
     newOrderedItem.priority = this.selectedPriority;
     newOrderedItem.quantity = this.quantity.nativeElement.value;
     this.onAddToOrder.emit(newOrderedItem);
-
   }
 
-  saveChanges(){
+  saveChanges() {
     let activeIngredientsArray = Array<Ingredient>();
-      if (this.menuItemWithIngredients.ingredients.length != 0) {
-        if (this.ingredients.selectedOptions.selected.length == 0) {
-          this.toastr.error('Must have at least one ingredient.');
-        } else {
-          this.ingredients.selectedOptions.selected.forEach((value) => {
-            activeIngredientsArray.push(value.value);
-          });
-        }
+    if (this.menuItemWithIngredients.ingredients.length != 0) {
+      if (this.ingredients.selectedOptions.selected.length == 0) {
+        this.toastr.error('Must have at least one ingredient.');
+      } else {
+        this.ingredients.selectedOptions.selected.forEach((value) => {
+          activeIngredientsArray.push(value.value);
+        });
       }
-    if(this.editModeMenuItemId == -1){
-      
+    }
+    if (this.editModeMenuItemId == -1) {
       let newOrderedItem = new MenuItemWithIngredients(
         this.menuItemWithIngredients.id,
         this.menuItemWithIngredients.price,
@@ -193,15 +190,18 @@ export class CustomizeOrderedItemComponent implements OnInit {
       newOrderedItem.priority = this.selectedPriority;
       newOrderedItem.quantity = this.quantity.nativeElement.value;
       this.onEditOrderedItem.emit(newOrderedItem);
-    }
-    else{
-      let editedOrderedItem = new OrderedItem(this.selectedPriority, this.quantity.nativeElement.value, this.editModeMenuItemId, activeIngredientsArray);
+    } else {
+      let editedOrderedItem = new OrderedItem(
+        this.selectedPriority,
+        this.quantity.nativeElement.value,
+        this.editModeMenuItemId,
+        activeIngredientsArray
+      );
       editedOrderedItem.id = this.menuItemWithIngredients.id;
       editedOrderedItem.menuItemName = this.menuItemWithIngredients.name;
       editedOrderedItem.price = this.menuItemWithIngredients.price;
-      editedOrderedItem.status = "PENDING";
+      editedOrderedItem.status = 'PENDING';
       this.onEditOrderedItem.emit(editedOrderedItem);
     }
   }
-
 }

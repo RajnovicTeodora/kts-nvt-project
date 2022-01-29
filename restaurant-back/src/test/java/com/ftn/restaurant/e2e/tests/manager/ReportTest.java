@@ -2,7 +2,7 @@ package com.ftn.restaurant.e2e.tests.manager;
 
 import static org.junit.Assert.assertTrue;
 
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.manager.ManagerDashboardPage;
 import com.ftn.restaurant.e2e.pages.manager.ReportsPage;
 import org.junit.After;

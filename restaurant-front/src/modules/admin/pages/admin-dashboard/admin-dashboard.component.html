@@ -1,39 +1,56 @@
 <mat-toolbar class="mat-elevation-z8">
-    <span class="span">NOTI</span>
-    <div
-      fxShow="true"
-      fxHide.lt-md="true"
-      fxLayout="row"
-      fxLayoutAlign="space-between center"
-    >
+  <span class="span">NOTI</span>
+  <div
+    fxShow="true"
+    fxHide.lt-md="true"
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+  ></div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav class="mat-elevation-z8">
+    <div class="row">
+      <img
+        class="avatar mat-elevation-z8"
+        src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
+        alt="”animated”"
+      />
     </div>
-  </mat-toolbar>
-  
-  <mat-sidenav-container>
-  
-    <mat-sidenav class="mat-elevation-z8">
-      <span class="span">Options</span>
-      <mat-divider></mat-divider>
-      <button mat-button class="menu-button" id="employeesBttn">
-        <mat-icon>person</mat-icon>
-        <span>Employees</span>
-      </button>
-      <button mat-button class="menu-button" id="restaurantBttn" (click)="onRestaurantTablesClicked()">
-        <mat-icon> restaurant</mat-icon>
-        <span>Restaurant preview</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-button class="menu-button" id="logoutBttn" (click)="onLogoutButtonClicked()" >
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-sidenav>
-  
-    <mat-sidenav-content>
-      <div class="content mat-elevation-z8">
-          <app-employees class="employees"></app-employees>
-      </div>
-    </mat-sidenav-content>
-  
-  </mat-sidenav-container>
-  <app-logout *ngIf="this.showModalLogout" (onLogoutClose)='onLogoutCloseClicked($event)'></app-logout>
+    <span class="span">Options</span>
+    <mat-divider></mat-divider>
+    <button mat-button class="menu-button" id="employeesBttn">
+      <mat-icon>person</mat-icon>
+      <span>Employees</span>
+    </button>
+    <button
+      mat-button
+      class="menu-button"
+      id="restaurantBttn"
+      (click)="onRestaurantTablesClicked()"
+    >
+      <mat-icon> restaurant</mat-icon>
+      <span>Restaurant preview</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button
+      mat-button
+      class="menu-button"
+      id="logoutBttn"
+      (click)="onLogoutButtonClicked()"
+    >
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <app-employees class="employees"></app-employees>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<app-logout
+  *ngIf="this.showModalLogout"
+  (onLogoutClose)="onLogoutCloseClicked($event)"
+></app-logout>

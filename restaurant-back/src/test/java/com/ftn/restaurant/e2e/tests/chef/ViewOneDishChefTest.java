@@ -1,7 +1,7 @@
 package com.ftn.restaurant.e2e.tests.chef;
 
-import com.ftn.restaurant.e2e.pages.DishTablePage;
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.DishTablePage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.chef.ChefDashboardPage;
 import org.junit.After;
 import org.junit.Before;

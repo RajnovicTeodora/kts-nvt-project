@@ -1,6 +1,6 @@
 package com.ftn.restaurant.e2e.tests.waiter;
 
-import com.ftn.restaurant.e2e.pages.LoginPage;
+import com.ftn.restaurant.e2e.pages.shared.LoginPage;
 import com.ftn.restaurant.e2e.pages.components.LogoutComponent;
 import com.ftn.restaurant.e2e.pages.waiter.TableOptionsComponent;
 import com.ftn.restaurant.e2e.pages.waiter.ViewAndPayOrderComponent;
@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
-
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;

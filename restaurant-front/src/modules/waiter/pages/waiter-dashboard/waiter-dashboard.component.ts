@@ -62,6 +62,8 @@ export class WaiterDashboardComponent implements OnInit {
     this.showModalRestaurantTableOptions = -1;
     this.showPaymentModal = false;
     this.showNotificationsModal = false;
+    this.tablePositions = [];
+    this.activeArea = new Area;
     this.getAreas(0);
   }
 
