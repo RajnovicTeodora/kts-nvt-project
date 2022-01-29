@@ -41,10 +41,10 @@ public class DishServiceIntegrationTest {
     public void testSearchDish(){
 
         List<Dish> searched =dishService.getSearchedOrFiltered("","");
-        assertEquals(searched.size(), 2);
+        assertEquals(3,searched.size());
 
         searched =dishService.getSearchedOrFiltered("","MAIN_DISH");
-        assertEquals(2, searched.size());
+        assertEquals(3, searched.size());
         assertEquals(searched.get(0).getDishType().name(), "MAIN_DISH");
 
         searched =dishService.getSearchedOrFiltered("Pizza","");

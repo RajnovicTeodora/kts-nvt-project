@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertTrue;
 
 public class HeadChefAcceptOrderTest {
@@ -67,11 +69,13 @@ public class HeadChefAcceptOrderTest {
         tableOfOrderedItemsPage.clickAcceptDialog();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/head-chef-dashboard"));
         //checking is accepted
-        chefDashboardPage.clickNewOrders();
-//        chefDashboardPage.clickNewOrders();
-//        chefDashboardPage.clickAccOrders(); //ovo se dewsi prebrzo
-//        chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders(); chefDashboardPage.clickAccOrders();
-//        chefDashboardPage.clickAccOrders();chefDashboardPage.clickAccOrders();
+
+        try {
+            TimeUnit.SECONDS.sleep(2); //OBJASNICU ZASTO
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        chefDashboardPage.clickAccOrders();
         assertTrue(chefDashboardPage.getContainerWithOrders()!=null);
 
         assertTrue(acceptedOrdersPage.isTitleOfOrder().getText().equals("Order number: 1"));
@@ -80,6 +84,6 @@ public class HeadChefAcceptOrderTest {
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 }

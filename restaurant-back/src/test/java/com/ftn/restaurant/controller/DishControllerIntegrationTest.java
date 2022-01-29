@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import static org.hamcrest.Matchers.hasSize;
 import static com.ftn.restaurant.constants.NewDishDTOConstants.*;
 import static com.ftn.restaurant.constants.NewDrinkDTOConstants.NEW_DRINK_DTO_1;
-import static com.ftn.restaurant.controller.DrinkControllerUnitTest.json;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

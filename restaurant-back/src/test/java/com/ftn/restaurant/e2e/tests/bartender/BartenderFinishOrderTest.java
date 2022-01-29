@@ -9,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.assertTrue;
 
 public class BartenderFinishOrderTest {
@@ -73,10 +75,12 @@ public class BartenderFinishOrderTest {
         tableOfOrderedItemsPage.clickAcceptDialog();
         assertTrue(this.browser.getCurrentUrl().equals("http://localhost:4200/bartender-dashboard"));
         //checking is accepted
-        bartenderDashboardPage.clickNewOrders();
-        bartenderDashboardPage.clickNewOrders();
-        bartenderDashboardPage.clickAccOrders(); //ovo se dewsi prebrzo
-        bartenderDashboardPage.clickAccOrders(); bartenderDashboardPage.clickAccOrders(); bartenderDashboardPage.clickAccOrders();
+        try {
+            TimeUnit.SECONDS.sleep(2); //OBJASNICU ZASTO
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        bartenderDashboardPage.clickAccOrders();
         assertTrue(bartenderDashboardPage.getContainerWithOrders()!=null);
 
         assertTrue(acceptedOrdersPage.isTitleOfOrder().getText().equals("Order number: 1"));
@@ -93,6 +97,6 @@ public class BartenderFinishOrderTest {
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 }

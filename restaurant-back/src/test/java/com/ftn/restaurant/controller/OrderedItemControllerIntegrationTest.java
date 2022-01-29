@@ -53,65 +53,6 @@ public class OrderedItemControllerIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
-    public void acceptOrderedItemTest(){
-//        ResponseEntity<String> responseEntity = restTemplate
-//                .postForEntity("/api/orderedItem/acceptOrderedItem/1", 1,String.class);
-//
-//        String message = responseEntity.getBody();
-//
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        Assert.assertEquals("You can't accept order if it is not in status ordered.", message);
-//
-//
-//        //////////////////
-//        responseEntity = restTemplate
-//                .postForEntity("/api/orderedItem/acceptOrderedItem/-1", -1,String.class);
-//
-//         message = responseEntity.getBody();
-//
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        Assert.assertEquals("Order doesn't exists", message);
-//        ///////////////////
-//
-//        responseEntity = restTemplate
-//                .postForEntity("/api/orderedItem/acceptOrderedItem/7", 7,String.class);
-//
-//        message = responseEntity.getBody();
-//
-//        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        Assert.assertEquals("You accepted order with id: 7", message);
-    }
-
-    @Test
-    public void finishOrderedItemTest(){
-        ResponseEntity<String> responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/finishOrderedItem/1", 1,String.class);
-
-        String message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("You finished order with id: 1", message);
-
-
-        //////////////////
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/finishOrderedItem/-1", -1,String.class);
-
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("Order doesn't exists", message);
-        ///////////////////
-
-        responseEntity = restTemplate
-                .postForEntity("/api/orderedItem/finishOrderedItem/6", 6,String.class);
-
-        message = responseEntity.getBody();
-
-        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assert.assertEquals("You can't finish order if it is not in status in progres.", message);
-    }
 
     @Test
     public void confirmPickupTest() throws Exception {

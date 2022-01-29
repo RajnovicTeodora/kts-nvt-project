@@ -65,6 +65,6 @@ public class ViewOneDrinkBartenderPage {
     @After
     public void closeSelenium() {
         // Shutdown the browser
-        //browser.quit();
+        browser.quit();
     }
 }

@@ -1,6 +1,5 @@
 package com.ftn.restaurant.controller;
 
-import static com.ftn.restaurant.controller.DrinkControllerUnitTest.json;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
