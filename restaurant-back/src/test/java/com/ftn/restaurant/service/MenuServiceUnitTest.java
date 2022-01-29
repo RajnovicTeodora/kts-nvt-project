@@ -135,8 +135,8 @@ public class MenuServiceUnitTest {
         Mockito.when(drinkRepository.findAll()).thenReturn(allDrinks);
         Mockito.when(dishRepository.findAll()).thenReturn(allDishes);
         
-        Mockito.when(menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(1L)).thenReturn(Optional.of(price1));
-        Mockito.when(menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(2L)).thenReturn(Optional.of(price2));
+        Mockito.when(menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(1L, LocalDate.now())).thenReturn(Optional.of(price1));
+        Mockito.when(menuItemPriceRepository.findByMenuItemIdAndDeletedNotAndApprovedAndHasPrice(2L, LocalDate.now())).thenReturn(Optional.of(price2));
 
         // Delete
         MenuItem itemDelete = new Drink();

@@ -29,7 +29,7 @@ public class MenuViewPage {
     @FindBy(xpath = "//input[@id='purchase-price']")
     private WebElement menuItemPurchasePrice;
 
-    @FindBy(xpath = "//form[@id='price-form']//*//button")
+    @FindBy(xpath = "//form[@id='price-form']//button")
     private WebElement savePricesButton;
 
     @FindBy(xpath = "//*[@class='mat-card-actions']//button[span[*[contains(text(), 'check_box_outline_blank')]]]")
@@ -37,6 +37,9 @@ public class MenuViewPage {
 
     @FindBy(xpath = "//*[@class='mat-card-actions']//button[span[*[contains(text(), 'delete')]]]")
     private List<WebElement> deleteItemButton;
+
+    @FindBy(xpath = "//*[@id='toast-container']//div//div")
+    private List<WebElement> toast;
 
     public MenuViewPage(WebDriver driver) {
         this.driver = driver;
@@ -106,8 +109,8 @@ public class MenuViewPage {
         Utilities.clickableWait(driver, this.savePricesButton, 10).click();
     }
 
-    public boolean isSetOnMenuEnabled(int index){
-        return Boolean.parseBoolean(this.setOnMenuButtons.get(index).getAttribute("ng-reflect-disabled"));
+    public boolean isSetOnMenuDisabled(int index) {
+        return Boolean.parseBoolean(this.setOnMenuButtons.get(index).getAttribute("disabled"));
     }
 
     public void setOnMenuBtnClick(int index) {
@@ -122,4 +125,11 @@ public class MenuViewPage {
         Utilities.clickableWait(driver, this.addDrinkButton, 10).click();
     }
 
+    public boolean doesToastTextContain(String text) {
+        for(WebElement we : toast){
+            if(we.getText().contains(text))
+                return true;
+        }
+        return false;
+    }
 }

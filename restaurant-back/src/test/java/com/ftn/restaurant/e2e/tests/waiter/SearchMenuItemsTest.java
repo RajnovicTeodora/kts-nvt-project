@@ -47,6 +47,7 @@ public class SearchMenuItemsTest {
     public void searchMenuItemsTest(){
         loginPage.login("waiter", "test");
         assertTrue(Utilities.urlWait(browser, "http://localhost:4200/waiter-dashboard",10));
+        browser.navigate().refresh();
         waiterDashboardPage.areaTableButtonClicked(2);
         searchMenuItemsPage.clickNewOrder();
         searchMenuItemsPage.insertSearchText("sp");
@@ -58,6 +59,7 @@ public class SearchMenuItemsTest {
     public void drinkTypesTest(){
         loginPage.login("waiter", "test");
         assertTrue(Utilities.urlWait(browser, "http://localhost:4200/waiter-dashboard",10));
+        browser.navigate().refresh();
         waiterDashboardPage.areaTableButtonClicked(2);
         searchMenuItemsPage.clickNewOrder();
         searchMenuItemsPage.drinkClick();
@@ -68,6 +70,7 @@ public class SearchMenuItemsTest {
     public void dishesTest(){
         loginPage.login("waiter", "test");
         assertTrue(Utilities.urlWait(browser, "http://localhost:4200/waiter-dashboard",10));
+        browser.navigate().refresh();
         waiterDashboardPage.areaTableButtonClicked(2);
         searchMenuItemsPage.clickNewOrder();
         searchMenuItemsPage.dishClick();

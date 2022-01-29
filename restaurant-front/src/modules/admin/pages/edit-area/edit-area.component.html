@@ -19,6 +19,7 @@
           <button
             mat-button
             class="dugmic-area"
+            name="dugmic-area"
             (click)="openEditTables(area)"
           >
             {{ area.name }}
@@ -27,7 +28,8 @@
             mat-button
             color="accent"
             type="submit"
-            class="submit-button"
+            name="delete-area-button"
+            class="delete-area-button"
             (click)="openDeleteAreaDialog(area.name, area.id)"
           >
           <mat-icon>delete</mat-icon>
@@ -35,12 +37,12 @@
         </div>
       </ng-template>
       <mat-divider></mat-divider>
-      <button mat-raised-button color="accent" class="toolbarBttn" (click)="openAddAreaDialog()">
+      <button mat-raised-button color="accent" class="toolbarBttn" name="addArea" (click)="openAddAreaDialog()">
         <mat-icon>add</mat-icon>
         <span> Add area</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-raised-button color="accent" class="toolbarBttn" (click)="return()">
+      <button mat-raised-button color="accent" class="toolbarBttn" name="return" (click)="return()">
         <mat-icon>keyboard_backspace</mat-icon>
         <span> Return</span>
       </button>
@@ -50,7 +52,7 @@
       <div class="content mat-elevation-z8">
         <div class="boundary" id="boundary">
           <ng-container *ngFor="let table of activeArea.tables">
-            <button mat-raised-button cdkDragBoundary=".boundary" class="tableBttn" 
+            <button mat-raised-button cdkDragBoundary=".boundary" id="tableBttn" 
             cdkDrag [cdkDragFreeDragPosition]="tablePositions[activeArea.tables.indexOf(table)]" 
             (cdkDragEnded)="onDragEnded($event, activeArea.tables.indexOf(table))"
             (dblclick)="selectTable(table.id)"
@@ -60,21 +62,21 @@
         </div>
         <div class="buttonsDiv">
           <div>
-            <button mat-raised-button color="accent" class="addTableBttn" (click)="addTable()">
+            <button mat-raised-button color="accent" class="addTableBttn" name="addTableBttn" (click)="addTable()">
               <mat-icon>add</mat-icon>
               <span> Add table</span>
             </button>
           </div>
           
           <div>
-            <button mat-raised-button color="accent" class="saveBttn" (click)="saveChanges()">
+            <button mat-raised-button color="accent" class="saveBttn" name="saveTableBttn" (click)="saveChanges()">
               <mat-icon>save</mat-icon>
               <span> Save changes</span>
             </button>
           </div>
 
           <div>
-            <button mat-raised-button color="accent" class="deleteBttn" (click)="deleteTable()" [disabled]="selectedTable===-1" >
+            <button mat-raised-button color="accent" class="deleteBttn" name="deleteTableBttn" (click)="deleteTable()" [disabled]="selectedTable===-1" >
               <mat-icon>save</mat-icon>
               <span> Delete table</span>
             </button>

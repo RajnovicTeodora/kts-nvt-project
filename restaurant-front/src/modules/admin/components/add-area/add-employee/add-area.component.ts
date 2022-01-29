@@ -45,6 +45,7 @@ export class AddAreaComponent implements OnInit {
         error: (error) => {
           this.toastr.error('Area already exists!');
           console.log(error);
+          this.dialogRef.close();
         },
       });
     }

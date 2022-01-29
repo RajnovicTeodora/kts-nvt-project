@@ -16,7 +16,6 @@ import { MatTableModule } from '@angular/material/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
-import { DeleteEmployeeComponent } from './components/delete-employee/delete-employee.component';
 import { EditAreaComponent } from './pages/edit-area/edit-area.component';
 import { AddAreaComponent } from './components/add-area/add-employee/add-area.component';
 
@@ -25,7 +24,6 @@ import { AddAreaComponent } from './components/add-area/add-employee/add-area.co
     AdminDashboardComponent,
     AddEmployeeComponent,
     EditEmployeeComponent,
-    DeleteEmployeeComponent,
     EditAreaComponent,
     AddAreaComponent
   ],
