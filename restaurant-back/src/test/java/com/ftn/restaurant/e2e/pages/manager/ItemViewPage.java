@@ -17,13 +17,13 @@ public class ItemViewPage {
     @FindBy(id = "submit-button")
     private WebElement submitButton;
 
-    @FindBy(xpath = "//div[@class='card-deck']//mat-list//mat-card-title")
+    @FindBy(xpath = "//div[@class='card-deck']//mat-card-title")
     private List<WebElement> itemTitleTexts;
 
-    @FindBy(xpath = "//div[@class='card-deck']//mat-list//button[span[contains(text(),'Approve')]]")
+    @FindBy(xpath = "//div[@class='card-deck']//button[span[contains(text(),'Approve')]]")
     private List<WebElement> approveItemButtons;
 
-    @FindBy(xpath = "//div[@class='card-deck']//mat-list//button[span[contains(text(),'Delete')]]")
+    @FindBy(xpath = "//div[@class='card-deck']//button[span[contains(text(),'Delete')]]")
     private List<WebElement> deleteItemButton;
 
     public ItemViewPage(WebDriver driver) {
@@ -58,7 +58,7 @@ public class ItemViewPage {
     }
 
     public void waitUntilItemsPresent() {
-        Utilities.visibilityWaitByLocator(driver, By.className("card-deck"), 10);
+        Utilities.visibilityWaitByLocator(driver, By.className("card-deck"), 20);
     }
 
     public void approveBtnClick(int index){
