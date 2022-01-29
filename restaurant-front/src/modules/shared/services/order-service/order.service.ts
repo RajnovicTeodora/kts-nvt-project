@@ -33,15 +33,15 @@ export class OrderService {
     );
   }
 
-  getActiveOrdersForTable(tableNum: number, waiterUsername: string): Observable<Array<number>>{
+  getActiveOrdersForTable(tableId: number, waiterUsername: string): Observable<Array<number>>{
     return this.http.get<Array<number>>(
-      `${environment.baseUrl}/${environment.order}/getActiveOrdersForTable/${tableNum}/${waiterUsername}`
+      `${environment.baseUrl}/${environment.order}/getActiveOrdersForTable/${tableId}/${waiterUsername}`
     );
   }
 
-  getOrder(tableNum: number): Observable<Order>{
+  getOrder(orderNum: number): Observable<Order>{
     return this.http.get<Order>(
-      `${environment.baseUrl}/${environment.order}/getOrder/${tableNum}`,
+      `${environment.baseUrl}/${environment.order}/getOrder/${orderNum}`,
       { responseType: 'json' }
     );
   }

@@ -19,7 +19,7 @@ public class UserPaycheckDTO {
         this.name = employee.getName();
         this.surname = employee.getSurname();
         this.paycheck = paycheck;
-        this.role = employee.getRole().getName();
+        this.role = employee.getRole() != null ? employee.getRole().getName() : " ";
     }
 
     public UserPaycheckDTO(String username, String name, String surname, String role, double paycheck) {

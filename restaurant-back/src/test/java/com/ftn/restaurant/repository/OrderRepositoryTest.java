@@ -35,8 +35,8 @@ public class OrderRepositoryTest {
 
     @Before
     public void setUp() {
-        entityManager.persist(new Order(true, 5.5, LocalDate.now().minusDays(5), "some note...", LocalTime.now(), null, null));
-        entityManager.persist(new Order(true, 75, LocalDate.now(), "some note...", LocalTime.now(), null, null));
+        entityManager.persist(new Order(true, 5.5, LocalDate.now().minusDays(5), "some note...", LocalTime.now(), null));
+        entityManager.persist(new Order(true, 75, LocalDate.now(), "some note...", LocalTime.now(), null));
 
     }
 

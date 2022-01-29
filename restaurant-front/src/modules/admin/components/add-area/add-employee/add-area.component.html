@@ -1,7 +1,7 @@
 <h2 mat-dialog-title class="title">Add new area</h2>
 <mat-dialog-content [formGroup]="addAreaForm" style="white-space: pre-line">
   <!-- name -->
-  <mat-form-field id="name" class="input">
+  <mat-form-field class="input">
     <input
       matInput
       type="text"
@@ -20,12 +20,12 @@
     type="submit"
     class="submit-button"
     (click)="cancel()"
-    id="submit-button"
+    id="cancel-button"
   >
     Cancel
   </button>
   <button mat-stroked-button color="accent" type="submit" class="submit-button" (click)="saveArea()"
-          [disabled]="addAreaForm.invalid" id="submit-button" >
+          [disabled]="addAreaForm.invalid" id="save-button" >
     Save
   </button>
 </mat-dialog-actions>

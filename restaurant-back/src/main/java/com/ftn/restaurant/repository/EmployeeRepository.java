@@ -12,8 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    
-    // Page<Employee> findAll(Pageable pageable);
 
     Optional<Employee> findByUsername(@Param("username") String username);
 
@@ -23,4 +21,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         "(lower(e.surname) like lower(concat('%', :search,'%'))))  and"+
         "(e.role.name = :filter OR :filter = '') and e.deleted = false")
     List<Employee> findBySearchCriteriaAndUserRoleAndNotDeleted(@Param("search") String search, @Param("filter") String filter);
+
+    @Query("select e from Employee e where " + 
+        "e.username = :username and e.deleted = false")
+    Optional<Employee> findByUsernameAndNotDeleted(@Param("username") String username);
 }

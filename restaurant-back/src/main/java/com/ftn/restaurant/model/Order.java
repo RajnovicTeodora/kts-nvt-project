@@ -65,6 +65,15 @@ public class Order {
         this.time = time;
         this.orderedItems = orderedItems;
     }
+    public Order(boolean isPaid, double totalPrice, LocalDate date, String note, LocalTime time, List<OrderedItem> orderedItems, RestaurantTable table) {
+        this.isPaid = isPaid;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.note = note;
+        this.time = time;
+        this.orderedItems = orderedItems;
+        this.restaurantTable = table;
+    }
 
     public Order(boolean isPaid, double totalPrice, LocalDate date, String note, LocalTime time, List<OrderedItem> orderedItems, int orderNumber) {
         this.isPaid = isPaid;

@@ -2,21 +2,25 @@
 
   <div class="content mat-elevation-z8">
     <div class="row">
-      <button mat-fab class="dugmic-back" (click)="onBackClick()">
+      <button mat-fab class="dugmic-back" id="backBttn" (click)="onBackClick()">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <mat-form-field class="example-container" id="search-field">
         <input
           matInput
+          id="searchInput"
           placeholder="Search..."
           #searchInputField
           [value]="searchInput"
+          class="searchInput"
         />
       </mat-form-field>
       <button
         mat-fab
+        id="searchBttn"
         class="dugmic-search"
         (click)="onSearchClicked(searchInputField.value)"
+        name="searchBttn"
       >
         <mat-icon>search</mat-icon>
       </button>
@@ -25,10 +29,13 @@
         <div *ngIf="searchName !== '...'">
           <div *ngIf="menuItems.length !== 0; else noSearchResults">
             <button
+              id="search-result-button"
               mat-button
               class="dugmic-item"
               name="menuItem"
               *ngFor="let item of menuItems"
+              name="menuItem"
+              (click)="onCustomizeOrderedItemClicked(item.id)"
             >
               {{ item.name }}
             </button>
@@ -43,6 +50,8 @@
               mat-button
               class="dugmic-item"
               (click)="onFilterClick('dish')"
+              id="dishBttn"
+              name=dish
             >
               <mat-icon> fastfood</mat-icon> Dishes
             </button>
@@ -50,6 +59,8 @@
               mat-button
               class="dugmic-item"
               (click)="onFilterClick('drink')"
+              id="drinkBttn"
+              name="drink"
             >
               <mat-icon>free_breakfast</mat-icon> Drinks
             </button>
@@ -63,6 +74,7 @@
                   class="dugmic-item"
                   *ngFor="let item of dishTypes"
                   (click)="onFilterClick(item)"
+                  name="dishType"
                 >
                   {{ editGroupName(item) }}
                 </button>
@@ -71,7 +83,7 @@
                 <button
                   mat-button
                   class="dugmic-item"
-                  name="menuItem"
+                  name="drinkType"
                   *ngFor="let item of drinkTypes"
                   (click)="onFilterClick(item)"
                 >

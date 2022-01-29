@@ -16,7 +16,6 @@
       class="avatar mat-elevation-z8"
       src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
       alt="”animated”"
-      (click)="this.router.navigate([''])"
     />
 
     <h4 class="name">Ordered Items</h4>
@@ -67,20 +66,21 @@
     <mat-divider></mat-divider>
     <div class="row">
       <span style="margin-right: 50%; font-size: 1rem; ">Total cost: </span>
-      <span style="text-align: right; font-size: 1rem; "
+      <span style="text-align: right; font-size: 1rem; " id="total-order-cost"
         >$ {{ this.totalCost }}
       </span>
     </div>
 
     <mat-divider></mat-divider>
 
-    <button mat-button class="menu-button" (click)="onAdditionalNotesClicked()">
+    <button mat-button class="menu-button" (click)="onAdditionalNotesClicked()" id="additional-notes-button">
       <mat-icon>notes</mat-icon>
       <span>Additional notes</span>
     </button>
 
     <div class="modal-footer">
       <button
+        id="cancel-create-order-button"
         mat-flat-button
         type="button"
         color="accent"
@@ -90,6 +90,7 @@
         Cancel
       </button>
       <button
+        id="confirm-create-order-button"
         mat-flat-button
         type="button"
         color="primary"

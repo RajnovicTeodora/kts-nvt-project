@@ -24,4 +24,14 @@ public class DishConstants {
             new ArrayList<MenuItemPrice>(),
             INGREDIENTS_1,
             DishType.DESERT);
+    public static final Dish DISH_2 = new Dish(
+            "Sladoled",
+            "a",
+            true,
+            false,
+            new ArrayList<MenuItemPrice>(),
+            INGREDIENTS_1,
+            DishType.ENTREE);
+    public static final ArrayList<Dish> LIST_DISHES = new ArrayList<>(
+            Arrays.asList(DISH_1, DISH_2));
 }

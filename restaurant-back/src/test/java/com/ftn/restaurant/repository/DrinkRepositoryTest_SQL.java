@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -24,13 +25,12 @@ public class DrinkRepositoryTest_SQL {
   public DrinkRepositoryTest_SQL() {
   }
 
-  //TODO T
   @Test
   public void testFindByNameAndDrinkTypeAndContainerType() {
-    Optional<Drink> found = this.drinkRepository.findByNameAndDrinkTypeAndContainerType("Sprite", DrinkType.COLD_DRINK,
+    Optional<Drink> found = this.drinkRepository.findByNameAndDrinkTypeAndContainerType("Ice Latte", DrinkType.COLD_DRINK,
         ContainerType.BOTTLE);
     Assert.assertTrue(found.isPresent());
-    Assert.assertEquals("Sprite", found.get().getName());
+    Assert.assertEquals("Ice Latte", found.get().getName());
 
     found = drinkRepository.findByNameAndDrinkTypeAndContainerType(
             "Non existent drink",
@@ -44,6 +44,17 @@ public class DrinkRepositoryTest_SQL {
             DrinkType.ALCOHOLIC,
             ContainerType.BOTTLE);
     Assert.assertFalse(found.isPresent());
+
+    found = drinkRepository.findByNameAndDrinkTypeAndContainerType(
+            "Hot chocolate", //deleted
+            DrinkType.COLD_DRINK,
+            ContainerType.BOTTLE);
+    Assert.assertFalse(found.isPresent());
   }
 
+  @Test
+  public void testGetApprovedDrink() {
+    List<Drink> found = this.drinkRepository.getApprovedDrinks();
+    Assert.assertEquals(2, found.size());
+  }
 }

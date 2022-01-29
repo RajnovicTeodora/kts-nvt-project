@@ -16,7 +16,6 @@
         class="avatar mat-elevation-z8"
         src="https://media.giphy.com/media/UJvttT1byONauiwlex/giphy.gif"
         alt="”animated”"
-        (click)="this.router.navigate([''])"
       />
   
       <h4 class="name">Edit Ordered Items</h4>
@@ -25,23 +24,24 @@
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
           <ng-container matColumnDef="quantity">
             <th mat-header-cell *matHeaderCellDef>Quantity</th>
-            <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+            <td mat-cell *matCellDef="let element" name="ordered-item-quantity">{{ element.quantity }}</td>
           </ng-container>
   
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.menuItemName }}</td>
+            <td mat-cell *matCellDef="let element" name="ordered-item-name">{{ element.menuItemName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let element">{{ element.status | replaceUnderscore}}</td>
+            <td mat-cell *matCellDef="let element" name="ordered-item-status">{{ element.status | replaceUnderscore}}</td>
           </ng-container>
   
           <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef>Edit</th>
             <td mat-cell *matCellDef="let element">
               <button              
+                name="edit-ordered-item"
                 class="details"
                 (click)="viewOrderedItemDetailsAndEdit(element)"
                 matTooltip="View ordered item details and edit."
@@ -55,6 +55,7 @@
             <th mat-header-cell *matHeaderCellDef>Delete</th>
             <td mat-cell *matCellDef="let element">
               <button
+                name="delete-ordered-item"
               *ngIf="element.status == 'ORDERED' || element.status == 'PENDING'"
                 class="details"
                 (click)="onDeleteOrderedItemClicked(element)"
@@ -73,20 +74,21 @@
       <mat-divider></mat-divider>
       <div class="row">
         <span style="margin-right: 50%; font-size: 1rem; ">Total cost: </span>
-        <span style="text-align: right; font-size: 1rem; "
+        <span style="text-align: right; font-size: 1rem; " id="total-order-cost"
           >$ {{ this.totalCost }}
         </span>
       </div>
   
       <mat-divider></mat-divider>
   
-      <button mat-button class="menu-button" (click)="onAdditionalNotesClicked()">
+      <button mat-button class="menu-button" (click)="onAdditionalNotesClicked()" id="additional-notes-button">
         <mat-icon>notes</mat-icon>
         <span>Additional notes</span>
       </button>
   
       <div class="modal-footer">
         <button
+          id="cancel-edit-order-button"
           mat-flat-button
           type="button"
           color="accent"
@@ -96,6 +98,7 @@
           Cancel
         </button>
         <button
+          id="confirm-edit-order-button"
           mat-flat-button
           type="button"
           color="primary"

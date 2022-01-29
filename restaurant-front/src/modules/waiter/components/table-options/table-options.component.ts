@@ -15,7 +15,7 @@ import { RestaurantTableService } from 'src/modules/shared/services/restaurant-t
   styleUrls: ['./table-options.component.scss'],
 })
 export class TableOptionsComponent implements OnInit {
-  @Input() tableNumber = 0;
+  @Input() tableId = 0;
   @Input() refreshRequired :boolean;
   @Output() onRestaurantTableClose = new EventEmitter();
   @Output() onViewOrderAndBill = new EventEmitter();
@@ -65,7 +65,7 @@ export class TableOptionsComponent implements OnInit {
   }
 
   setTable() {
-    this.tableService.getRestaurantTable(this.tableNumber).subscribe({
+    this.tableService.getRestaurantTable(this.tableId).subscribe({
       next: (result) => {
         this.title = 'Table ' + result.tableNum;
         this.table = new RestaurantTable(
@@ -76,6 +76,7 @@ export class TableOptionsComponent implements OnInit {
           result.waiterUsername,
           result.occupied
         );
+        this.table.id = result.id;
       },
       error: (data) => {
         this.toastr.error(data.error);
@@ -84,9 +85,12 @@ export class TableOptionsComponent implements OnInit {
   }
 
   getActiveTableOrderNumbers(){
-    this.orderService.getActiveOrdersForTable(this.tableNumber, this.currentUser.username).subscribe({
+    this.orderService.getActiveOrdersForTable(this.tableId, this.currentUser.username).subscribe({
       next: (result) => {
-        result.forEach(value =>{
+        let temp1 = result.sort(function (a, b) {
+          return a - b;
+        });
+        temp1.forEach(value =>{
           this.element_data.push(value);
           this.dataSource.push(value);
           this.matTable.renderRows();
@@ -101,7 +105,7 @@ export class TableOptionsComponent implements OnInit {
 
   claim() {
     this.tableService
-      .claimTable(this.tableNumber, this.currentUser.username)
+      .claimTable(this.tableId, this.currentUser.username)
       .subscribe({
         next: (result) => {
           this.toastr.success(result);
@@ -116,7 +120,7 @@ export class TableOptionsComponent implements OnInit {
 
   unclaim() {
     this.tableService
-      .unclaimTable(this.tableNumber, this.currentUser.username)
+      .unclaimTable(this.tableId, this.currentUser.username)
       .subscribe({
         next: (result) => {
           this.toastr.success(result);
@@ -131,7 +135,7 @@ export class TableOptionsComponent implements OnInit {
 
   setOccupied() {
     this.tableService
-      .occupyTable(this.tableNumber, this.currentUser.username)
+      .occupyTable(this.tableId, this.currentUser.username)
       .subscribe({
         next: (result) => {
           this.toastr.success(result);
@@ -145,7 +149,7 @@ export class TableOptionsComponent implements OnInit {
 
   setUnoccupied() {
     this.tableService
-      .unoccupyTable(this.tableNumber, this.currentUser.username)
+      .unoccupyTable(this.tableId, this.currentUser.username)
       .subscribe({
         next: (result) => {
           this.toastr.success(result);
@@ -162,7 +166,16 @@ export class TableOptionsComponent implements OnInit {
   }
 
   newOrder() {
-    this.router.navigate(['/create-order/'+this.tableNumber]);
+    this.tableService
+      .getRestaurantTableNumber(this.tableId)
+      .subscribe({
+        next: (result) => {
+          this.router.navigate(['/create-order/'+result]);
+        },
+        error: (data) => {
+          this.toastr.error(data.error);
+        },
+      });    
   }
 
   editOrder(orderNumber:number){

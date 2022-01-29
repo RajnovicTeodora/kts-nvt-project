@@ -42,7 +42,6 @@ public class EmployeeController {
         return (new EmployeeDTO(userService.editUser(employeeDTO)));
     }
 
-    //TODO testirati :')
     @ResponseBody
     @DeleteMapping(path = "/deleteUser/{username}")
     @PreAuthorize("hasRole('ADMIN')")
