@@ -59,7 +59,7 @@ public class ReportControllerIntegrationTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$.[0].period").value("Q4 - 2021"))
-                .andExpect(jsonPath("$.[0].totalSoldItems").value(23));
+                .andExpect(jsonPath("$.[0].totalSoldItems").value(24));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ReportControllerIntegrationTest {
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$.[0].period").value("2021"))
-                .andExpect(jsonPath("$.[0].totalSoldItems").value(23));
+                .andExpect(jsonPath("$.[0].totalSoldItems").value(24));
     }
 
     @Test

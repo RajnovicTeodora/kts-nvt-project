@@ -1,5 +1,7 @@
 package com.ftn.restaurant.constants;
 
+import com.ftn.restaurant.dto.UpdatePaycheckDTO;
+
 import java.time.LocalDate;
 
 public class PaycheckConstants {
@@ -23,4 +25,10 @@ public class PaycheckConstants {
     public static double NEW_PAYCHECK = 500;
     public static double NEW_PAYCHECK1 = 400;
     public static double INVALID_PAYCHECK = 0;
+
+    public static UpdatePaycheckDTO UPDATE_PAYCHECK_DTO = new UpdatePaycheckDTO("chef", 199);
+    public static UpdatePaycheckDTO UPDATE_PAYCHECK_DTO1 = new UpdatePaycheckDTO("chef", 29);
+    public static UpdatePaycheckDTO INVALID_USERNAME_PAYCHECK_DTO = new UpdatePaycheckDTO("none", 199);
+    public static UpdatePaycheckDTO INVALID_NUMBER_PAYCHECK_DTO = new UpdatePaycheckDTO("chef", 0);
+
 }

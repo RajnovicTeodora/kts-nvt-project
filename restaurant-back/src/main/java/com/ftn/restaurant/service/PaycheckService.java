@@ -38,10 +38,9 @@ public class PaycheckService {
 
         Paychecks employeePaychecks = maybeEmployeePaycheck.get();
         LocalDate dateFrom = employeePaychecks.getDateFrom();
-
+        Employee employee = employeePaychecks.getEmployee();
         // paycheck has lasted more than 1 month
         if (!dateFrom.getMonth().equals(LocalDate.now().getMonth())) {
-            Employee employee = employeePaychecks.getEmployee();
 
             employee.setPaychecksList(paycheckRepository.findByEmployeeUsername(employee.getUsername()));
             LocalDate lastDayPreviousMonth = YearMonth.now().minusMonths(1).atEndOfMonth();
@@ -53,6 +52,7 @@ public class PaycheckService {
             paycheckRepository.save(employeePaychecks);
             return paycheckRepository.save(newPaycheck);
         }
+
         // paycheck hasn't lasted for a month
         employeePaychecks.setPaycheck(updatePaycheckDTO.getNewSalary());
         return paycheckRepository.save(employeePaychecks);

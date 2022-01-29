@@ -163,7 +163,7 @@ public class    MenuService {
     public MenuItem deleteMenuItem(long id) {
         Optional<MenuItem> menuItem = menuItemRepository.findByIdAndDeletedFalse(id);
         if (!menuItem.isPresent())
-            throw new ForbiddenException("Menu item with " + id + " not found.");
+            throw new ForbiddenException("Menu item with id" + id + " not found.");
 
         //Get last price
         Optional<MenuItemPrice> menuItemPrice = menuItemPriceRepository.findByItemIdAndItemDeletedFalseAndItemApprovedTrueAndDateToIsNull(id);
